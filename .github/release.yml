@@ -1,0 +1,23 @@
+changelog:
+  exclude:
+    authors:
+      - dependabot
+  categories:
+    - title: Correction de bugs 🐛
+      labels:
+        - bug
+    - title: Améliorations et nouvelles fonctionnalités 🎉
+      labels:
+        - enhancement
+    - title: Amélioration de la qualité
+      labels:
+        - quality
+    - title: Outillage 🔧
+      labels:
+        - tooling
+    - title: Documentation 📖
+      labels:
+        - documentation
+    - title: Divers
+      labels:
+        - "*"

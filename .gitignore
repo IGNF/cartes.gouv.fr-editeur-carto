@@ -1,0 +1,14 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Fichier de config personnel
+config.ini
+config_*.ini
+config-*.ini
+test.ini
