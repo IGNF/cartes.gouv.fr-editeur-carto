@@ -1,49 +1,91 @@
-# Modèle de ReadMe
+# Éditeur cartographique de Cartes.gouv.fr
 
-Ci-dessous une proposition de readme pour tout projet
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
+
+L'éditeur cartographique est l'un des outils de Cartes.gouv.fr : il est constitué d'une interface cartographique d'édition permettant de personnaliser ses propres cartes et de les publier pour les partager, les cartes sont visibles dans une interface de visualisation ou via une intégration sur site distant (via iframe par exemple)
 
 
 ## Description/Résumé du projet
 
-Dans cette section, on décrit la vision générale du projet ainsi que ses objectifs à destination des futurs utilisateurs et des développeurs.
+À compléter...
 
-Pour ce dépôt : 
+## Arborescence du dépôt
 
-Ce dépôt permet de répertorier les différents éléments essentiels dans un dépôt SIDC :
-* ce ReadMe
-* des modèles de tickets type pour des ajouts de fonctionnalité, réparation de bug, ajout de documentation, maintenance/montée de version...
-* des milestones témoins (ex: backlog, sprint1...)
-* des exemples de github Actions CI/CD (lancement de test, build d'images...)
-* des exemples de label pour les futurs tickets
+À compléter...
 
+## Installer les dépendances
 
-## Installation
+```sh
+npm install
+```
 
-La procédure d'installation du projet doit être décrite dans cette section ou dans un fichier complémentaire dont le lien est présent ici.
+### Compilation et Hot-Reload pour le développement
 
+```sh
+npm run dev
+```
 
-## Documentation développeurs
+### Vérification des types, Compilation et Minification pour la Production
 
-Lien vers la documentation pour les développeurs, à la fois pour maintenir le projet, le déployer et ajouter de nouvelles fonctionnalités. Schémas UML...
+```sh
+npm run build
+```
 
+## Voir l'application avec le code de production
 
-## L'arborescence du projet
+```sh
+npm run preview
+```
 
-Exemple d'arborescence de projet :
+## Déployer le code de production
 
-* `.github/` : dossier contenant les modèles d'issues et github actions ;
-* `.vscode/` : dossier contenant une configuration vscode pour le projet;
-* `doc/` : dossier contenant des fichiers .md de documentation (ex: install.md) ;
-* `tests/`: scripts et explications pour lancer les tests ;
-* `README.md` : ce fichier
+Déployer le contenu du dossier `dist` après avoir généré le code de production.
 
-## Contacts du projets
+### Vérifier la syntaxe et le formattage avec [ESLint](https://eslint.org/)
 
-Ici on met la liste des personnes qui travaillent sur ce projet et le maintiennent à jour.
+```sh
+npm run lint
+```
 
+### Lancer les Tests Unitaires avec [Vitest](https://vitest.dev/)
 
-|Nom|Prénom|mail|fonction|
-|---|---|---|---|
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
+```sh
+npm run test:unit
+```
+
+### Lancer les tests de composants avec [Cypress](https://www.cypress.io/)
+
+#### Avec une interface graphique
+
+```sh
+npm run test:ct
+```
+
+#### Sans interface graphique (pour la CI)
+
+```sh
+npm run test:ct:ci
+```
+
+### Lancer les Tests End-to-End Tests avec [Cypress](https://www.cypress.io/)
+
+```sh
+npm run test:e2e:dev
+```
+
+Cela lance les tests end-to-end avec le code de développement et le server de développement Vite.
+C’est bien plus rapide que le build de production.
+
+Cependant, il est recommandé de lancer les tests end-to-end avec le code de production : il faut lancer le build puis lancer
+cypress avec le server Vite qui sert le code de production :
+
+```sh
+npm run build
+npm run test:e2e
+```
+
+### Analyse statique du code avec [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```
