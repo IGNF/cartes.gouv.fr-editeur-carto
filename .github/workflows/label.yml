@@ -1,0 +1,150 @@
+name: Sync priorité entre projets 1 (suivi général) et 2 (projet source)
+
+on:
+  issues:
+    types: [labeled, unlabeled]
+  pull_request:
+    types: [labeled, unlabeled]
+
+jobs:
+  sync-priority:
+    if: github.event.label.name == 'Priorité'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Installer jq
+      run: sudo apt-get install jq
+
+    - name: Extraire titre de l’issue
+      run: echo "ISSUE_TITLE=${{ github.event.issue.title || github.event.pull_request.title }}" >> $GITHUB_ENV
+
+    - name: Appeler l’API GraphQL pour trouver l’item source et sa valeur
+      id: get_value
+      run: |
+        query='
+        {
+          organization(login: "IGNF") {
+            projectV2(id: "PVT_kwDOAG0jjM4A5AZv") {
+              items(first: 100) {
+                nodes {
+                  id
+                  content {
+                    ... on Issue {
+                      title
+                    }
+                  }
+                  fieldValues(first: 10) {
+                    nodes {
+                      ... on ProjectV2ItemFieldSingleSelectValue {
+                        field {
+                          ... on ProjectV2SingleSelectField {
+                            id
+                          }
+                        }
+                        optionId
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }'
+
+        data=$(curl -s -X POST -H "Authorization: bearer ${{ secrets.GH_PAT }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"query\":\"$(echo $query | tr '\n' ' ')\"}" \
+          https://api.github.com/graphql)
+
+        echo "$data" > result.json
+
+        item_id=$(jq -r --arg title "$ISSUE_TITLE" '.data.organization.projectV2.items.nodes[] | select(.content.title == $title) | .id' result.json)
+        option_name=$(jq -r --arg title "$ISSUE_TITLE" '.data.organization.projectV2.items.nodes[] | select(.content.title == $title) | .fieldValues.nodes[0].name' result.json)
+
+        echo "ITEM_ID=$item_id" >> $GITHUB_ENV
+        echo "OPTION_ID=$option_id" >> $GITHUB_ENV
+
+    - name: Trouver l’item correspondant dans Projet 1 (suivi général)
+      id: find_target
+      run: |
+        query='
+        {
+          organization(login: "IGNF") {
+            projectV2(id: "PVT_kwDOAG0jjM4A4_z6") {
+              items(first: 100) {
+                nodes {
+                  id
+                  content {
+                    ... on Issue {
+                      title
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }'
+
+        data=$(curl -s -X POST -H "Authorization: bearer ${{ secrets.GH_PAT }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"query\":\"$(echo $query | tr '\n' ' ')\"}" \
+          https://api.github.com/graphql)
+
+        target_id=$(echo "$data" | jq -r --arg title "$ISSUE_TITLE" '.data.organization.projectV2.items.nodes[] | select(.content.title == $title) | .id')
+        echo "TARGET_ID=$target_id" >> $GITHUB_ENV
+
+    - name: Récupérer l’optionId correspondant dans Projet 1 (suivi général)
+      run: |
+        query='
+        {
+          node(id: "PVT_kwDOAG0jjM4A4_z6") {
+            ... on ProjectV2 {
+              fields(first: 20) {
+                nodes {
+                  ... on ProjectV2SingleSelectField {
+                    id
+                    name
+                    options {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }'
+
+        data=$(curl -s -X POST -H "Authorization: bearer ${{ secrets.GH_PAT }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"query\":\"$(echo $query | tr '\n' ' ')\"}" \
+          https://api.github.com/graphql)
+
+        matching_option_id=$(echo "$data" | jq -r --arg opt "$OPTION_NAME" '.data.node.fields.nodes[] | select(.name == "Priorité") | .options[] | select(.name == $opt) | .id')
+
+        echo "OPTION_ID=$matching_option_id" >> $GITHUB_ENV
+
+    - name: Mettre à jour le champ "Priorité" dans Projet 1 (suivi général)
+      run: |
+        mutation='
+        mutation {
+          updateProjectV2ItemFieldValue(
+            input: {
+              projectId: "PVT_kwDOAG0jjM4A4_z6",
+              itemId: "'"$TARGET_ID"'",
+              fieldId: "PVTSSF_lADOAG0jjM4A5AZvzgt4MBg",
+              value: {
+                singleSelectOptionId: "'"$OPTION_ID"'"
+              }
+            }
+          ) {
+            projectV2Item {
+              id
+            }
+          }
+        }'
+
+        curl -s -X POST -H "Authorization: bearer ${{ secrets.GH_PAT }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"query\":\"$(echo $mutation | tr '\n' ' ')\"}" \
+          https://api.github.com/graphql
