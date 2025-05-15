@@ -1,4 +1,4 @@
-name: Sync priorité entre projets 1 (suivi général) et 2 (projet source)
+name: Sync priorité entre projets 1 (suivi général) et 2 (projet éditeur)
 
 on:
   issues:
@@ -24,7 +24,7 @@ jobs:
         query='
         {
           organization(login: "IGNF") {
-            projectV2(id: "PVT_kwDOAG0jjM4A5AZv") {
+            projectV2(id: "PVT_kwDOAG0jjM4A44pC") {
               items(first: 100) {
                 nodes {
                   id
@@ -132,7 +132,7 @@ jobs:
             input: {
               projectId: "PVT_kwDOAG0jjM4A4_z6",
               itemId: "'"$TARGET_ID"'",
-              fieldId: "PVTSSF_lADOAG0jjM4A5AZvzgt4MBg",
+              fieldId: "PVTSSF_lADOAG0jjM4A44pCzgtxtL4",
               value: {
                 singleSelectOptionId: "'"$OPTION_ID"'"
               }
