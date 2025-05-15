@@ -11,6 +11,9 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'suivi')
     runs-on: ubuntu-latest
 
+    permissions:
+      repository-projects: write
+
     steps:
     - name: Trouver le projet Suivi global
       env:
