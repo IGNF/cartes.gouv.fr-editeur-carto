@@ -1,4 +1,4 @@
-name: Ajouter au projet "Suivi global Cartes.gouv" si label "Suivi" est ajouté
+name: Ajouter au projet "Suivi global Cartes.gouv" si label "suivi" est ajouté
 
 on:
   issues:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   add-to-project:
-    if: contains(github.event.issue.labels.*.name, 'Suivi')
+    if: contains(github.event.issue.labels.*.name, 'suivi')
     runs-on: ubuntu-latest
 
     steps:
