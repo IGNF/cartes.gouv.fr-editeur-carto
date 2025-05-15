@@ -1,0 +1,32 @@
+name: Ajouter au projet "Suivi global Cartes.gouv" si label "suivi" est ajouté
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, labeled]
+
+jobs:
+  add-to-project:
+    if: contains(github.event.issue.labels.*.name, 'suivi')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ajouter l’issue au projet Suivi global
+      run: |
+        mutation='
+        mutation {
+          addProjectV2ItemById(input: {
+            projectId: "PVT_kwDOAG0jjM4A4_z6",
+            contentId: "${{ github.event.issue.node_id }}"
+          }) {
+            item {
+              id
+            }
+          }
+        }'
+
+        curl -s -X POST https://api.github.com/graphql \
+          -H "Authorization: bearer ${{ secrets.GH_PAT }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"query\":\"$(echo $mutation | tr '\n' ' ')\"}"
