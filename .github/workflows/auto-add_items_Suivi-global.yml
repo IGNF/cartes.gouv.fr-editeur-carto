@@ -2,40 +2,18 @@ name: Ajouter au projet "Suivi global Cartes.gouv" si label "suivi" est ajouté
 
 on:
   issues:
-    types: [opened, labeled]
+    types: opened
   pull_request:
-    types: [opened, labeled]
+    types: opened
 
 jobs:
   add-to-project:
-    if: contains(github.event.issue.labels.*.name, 'suivi')
+    name: Ajoute issue au projet Suivi global si label suivi
     runs-on: ubuntu-latest
-
     steps:
-    - name: Trouver le projet Suivi global
-      env:
-        GH_TOKEN: ${{ secrets.GH_PAT }}
-        ORGANIZATION: IGNF
-        PROJECT_NUMBER: 53
-      run: |
-        gh api graphql -f query='
-          query($org: String!, $number: Int!) {
-            organization(login: $org){
-              projectV2(number: $number) {
-                id
-              }
-            }
-          }' -f org=$ORGANIZATION -F number=$PROJECT_NUMBER > project_data.json
-
-        echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
+      - uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/orgs/IGNF/projects/53
+          github-token: ${{ secrets.GH_PAT }}
+          labeled: suivi
           
-    - name: Ajouter l’issue au projet Suivi global
-      run: |
-        item_id="$( gh api graphql -f query='
-          mutation($project:ID!, $issue:ID!) {
-            addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
-              item {
-                id
-              }
-            }
-          }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')" 
