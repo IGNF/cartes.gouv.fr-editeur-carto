@@ -11,13 +11,10 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'suivi')
     runs-on: ubuntu-latest
 
-    permissions:
-      repository-projects: write
-
     steps:
     - name: Trouver le projet Suivi global
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_PAT }}
         ORGANIZATION: IGNF
         PROJECT_NUMBER: 53
       run: |
