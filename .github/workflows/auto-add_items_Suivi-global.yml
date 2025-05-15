@@ -2,13 +2,13 @@ name: Ajouter au projet "Suivi global Cartes.gouv" si label "suivi" est ajouté
 
 on:
   issues:
-    types: opened
+    types: [opened, labeled]
   pull_request:
-    types: opened
+    types: [opened, labeled]
 
 jobs:
   add-to-project:
-    name: Ajoute issue au projet Suivi global si label suivi
+    name: Ajoute au projet
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v1.0.2
