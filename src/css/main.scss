@@ -1,0 +1,62 @@
+// @use 'dsfrign/dsfr/src/module/media-query/mixin/' as rf;
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Marianne, arial, sans-serif !important;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; // takes all remaining height after header
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+[data-role='map'] {
+  flex: 1; // fills the remaining space inside <main>
+  width: 100%;
+}
+
+[id^='GPsearchEngine-'] {
+  position: absolute;
+  left: 50% !important;
+  transform: translateX(-50%);
+}
+
+// Hide permalink control
+.ol-permalink {
+  display: none !important;
+}
+
+.ol-scale-line {
+  right: auto;
+}
+
+// AIDE POUR LES BREAKPOINTS
+// body,
+// .fr-header__navbar,
+// .fr-header__tools {
+//   background-color: #e59dff;
+//   @include rf.respond-from('sm') {
+//     background-color: #92f4fb;
+//   }
+//   @include rf.respond-from('md') {
+//     background-color: #aeff82;
+//   }
+//   @include rf.respond-from('lg') {
+//     background-color: #fbe05b;
+//   }
+//   @include rf.respond-from('xl') {
+//     background-color: #ffaaaa;
+//   }
+// }

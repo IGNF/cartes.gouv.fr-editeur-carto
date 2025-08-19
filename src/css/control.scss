@@ -1,0 +1,25 @@
+.ol-print-map {
+  .gpf-widget {
+    display: none;
+  }
+}
+
+.ol-ext-print-dialog {
+  margin: 0;
+  box-sizing: content-box;
+  
+  &.ol-visible {
+    font-size: 1em;
+  }
+  input, select, textarea {
+    font-size: 1em;
+    appearance: auto;
+    border: 1px solid #666;
+    padding: 0.5em;
+  }
+
+}
+
+.position-container-top-right div[id^=GPlayerSwitcher-] {
+  top:20%;
+}

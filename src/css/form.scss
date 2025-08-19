@@ -1,0 +1,21 @@
+.default-status, .success-status, .error-status {
+  display: none;
+}
+
+[data-status="default"] {
+  .default-status {
+    display: block;
+  }
+}
+
+[data-status="success"] {
+  .success-status {
+    display: block;
+  }
+}
+
+[data-status="error"] {
+  .error-status {
+    display: block;
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "param": {
+    "lon": 2.96,
+    "lat": 47,
+    "rot": 0,
+    "zoom": 5,
+    "titre": "Ma carte",
+    "description": "",
+    "status": "brouillon",
+    "controlParams": {
+      "limitGeo": "1",
+      "zoomBtn": "1",
+      "selectLayer": "1",
+      "contextMap": "1",
+      "legend": 0,
+      "scaleLine": "1",
+      "pSearchBar": "0",
+      "coords": "0",
+      "attribution": 1
+    },
+    "proj": {
+      "valeur": "EPSG:4326",
+      "unite": "ds"
+    }
+  },
+  "legende": {
+    "legendVisible": false,
+    "legendPos": "bottom-left",
+    "legendWidth": 300,
+    "lineHeight": 45,
+    "legendParam": {
+      "width": 300,
+      "lineHeight": 45
+    },
+    "legendtitle": "Ma légende",
+    "legend": []
+  },
+  "layers": [
+    {
+      "type": "Geoportail",
+      "name": "Plan IGN",
+      "titre": "sans-titre",
+      "visibility": true,
+      "opacity": 1,
+      "description": "Cartographie multi-échelles sur le territoire national, issue des bases de données vecteur de l’IGN, mis à jour régulièrement et réalisée selon un processus entièrement automatisé. Version actuellement en beta test",
+      "layer": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
+    }
+  ],
+  "symbolLib": []
+}

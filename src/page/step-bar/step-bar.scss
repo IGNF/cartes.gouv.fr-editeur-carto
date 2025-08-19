@@ -1,0 +1,80 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+.ol-control.ol-bar.ol-custom-bar .ol-custom-toggle.action-button.ol-active {
+  &.ol-active > button,
+  > button {
+    &,
+    &:hover,
+    &:active {
+      background-color: var(--background-open-blue-france);
+      --hover: var(--background-open-blue-france-hover);
+      --active: var(--background-open-blue-france-active);
+    }
+
+    &:hover {
+      background-color: var(--hover-tint);
+    }
+
+    &:active {
+      background-color: var(--active-tint);
+    }
+  }
+}
+
+.ol-control.ol-bar.ol-custom-bar.ol-top.ol-bar--row .ol-custom-toggle.action-button {
+  > button {
+    height: 40px;
+    width: 40px;
+    font-size: 1.5rem;
+    padding: 0;
+    > i {
+      display: unset;
+    }
+    > span {
+      display: none;
+    }
+
+    @include rf.respond-from('xl') {
+      height: unset;
+      width: unset;
+      font-size: unset;
+      padding: 0.5rem 1rem;
+      > i {
+        display: none;
+      }
+      > span {
+        display: unset;
+      }
+    }
+  }
+}
+
+.ol-control.ol-bar.ol-custom-bar.ol-top.ol-bar--row {
+
+  .ol-custom-button {
+    &.share-button, &.save-button {
+      display: none;
+    }
+    @include rf.respond-from('md') {
+      &.share-button {
+        display: unset;
+      }
+    }
+    @include rf.respond-from('lg') {
+      &.save-button {
+        display: unset;
+      }
+    }
+  }
+
+  // > .ol-control.ol-bar.ol-custom-bar {
+  //    &:first-child {
+  //       padding: 0;
+  //     }
+  //    @include rf.respond-from('sm') {
+  //     &:first-child {
+  //       padding: unset;
+  //     }
+  //   }
+  // }
+}

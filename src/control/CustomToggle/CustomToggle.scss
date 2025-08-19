@@ -1,0 +1,79 @@
+.ol-control.ol-bar .ol-custom-toggle, .ol-control.ol-bar .ol-custom-button {
+  &.ol-active > button,
+  > button {
+    &,
+    &:hover,
+    &:active {
+      color: var(--text-action-high-blue-france);
+      background-color: unset;
+    }
+
+    &:hover {
+      background-color: var(--hover-tint);
+    }
+
+    &:active {
+      background-color: var(--active-tint);
+    }
+  }
+
+  &.ol-active > button {
+    & {
+      background-color: var(--hover-tint);
+    }
+
+    &:hover {
+      background-color: var(--hover-tint);
+    }
+
+    &:active {
+      background-color: var(--active-tint);
+    }
+  }
+}
+
+.ol-control.ol-bar .ol-custom-toggle.dsfr-btn {
+  // Bouton DSFR (copie des valeurs)
+  .fr-btn.fr-btn {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: row;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    background-color: var(--ol-background-color);
+
+    &,
+    &:hover,
+    &:active {
+      color: var(--text-action-high-blue-france);
+    }
+
+    &:hover {
+      background-color: var(--hover-tint);
+    }
+
+    &:active {
+      background-color: var(--active-tint);
+    }
+  }
+
+  &.ol-active > .fr-btn {
+    & {
+      background-color: var(--hover-tint);
+    }
+
+    &:hover {
+      background-color: var(--hover-tint);
+    }
+
+    &:active {
+      background-color: var(--active-tint);
+    }
+  }
+}
+
+.ol-control.ol-bar .ol-control.ol-option-bar .ol-custom-toggle.dsfr-btn {
+  button {
+    border-radius: 0;
+  }
+}

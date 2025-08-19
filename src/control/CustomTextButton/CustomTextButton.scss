@@ -1,0 +1,25 @@
+
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+.ol-custom-text-button {
+  border: 0;
+}
+
+.ol-control.ol-bar .ol-control.ol-custom-text-button {
+  border: 0;
+
+  & > div {
+    padding: 0;
+    color: unset;
+    font: unset;
+    font-size:1rem;
+
+    &:not(:disabled):hover {
+      color: unset;
+    }
+
+    &:not(:disabled):active {
+      color: unset;
+    }
+  }
+}

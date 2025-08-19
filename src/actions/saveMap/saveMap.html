@@ -1,0 +1,22 @@
+<fieldset class="fr-fieldset" id="form-save-map" aria-labelledby="form-save-map__messages">
+  <div class="fr-fieldset__element">
+    <div class="fr-input-group">
+      <label class="fr-label" for="save-name">Nom*</label>
+      <input class="fr-input" aria-describedby="save-name__messages" name="name" id="save-name" data-field="title"
+        type="text">
+      <div class="fr-messages-group" id="save-name__messages" aria-live="polite">
+      </div>
+    </div>
+  </div>
+  <div class="fr-fieldset__element">
+    <div class="fr-select-group">
+      <label for="save-theme" class="fr-label">Thématique*</label>
+      <select class="fr-select" id="save-theme" name="theme" aria-describedby="save-theme__messages" data-field="theme">
+        <option value="" selected disabled hidden>Sélectionner une thématique</option>
+      </select>
+      <div class="fr-messages-group" id="save-theme__messages" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="fr-messages-group" id="form-save-map__messages" aria-live="polite">
+  </div>
+</fieldset>

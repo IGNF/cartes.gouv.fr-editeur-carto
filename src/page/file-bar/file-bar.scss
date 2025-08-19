@@ -1,0 +1,89 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+.ol-control.ol-bar .ol-custom-button button.map-item {
+  color: var(--text-default-grey);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  height: auto;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  height: auto;
+  min-height: auto;
+
+  &:not(:disabled):hover {
+    background-color: var(--hover-tint);
+    color: var(--text-default-grey);
+  }
+
+  &:not(:disabled):active {
+    background-color: var(--active-tint);
+    color: var(--text-default-grey);
+  }
+}
+
+.ol-control.ol-custom-bar.ol-bar--separator.ol-bar.map-handle >  .ol-custom-button:first-child {
+
+  padding:0;
+
+  @include rf.respond-from('lg') {
+    padding: 0 0.25rem 0 0;
+  }
+}
+
+
+.ol-control.ol-bar .ol-control.ol-custom-text-button.file-name > div {
+  font-size:0.875rem;
+  color: var(--text-disabled-grey);
+
+  &:not(:disabled):hover {
+    color: var(--text-disabled-grey);
+  }
+
+  &:not(:disabled):active {
+    color: var(--text-disabled-grey);
+  }
+}
+
+
+.ol-control.ol-bar .ol-control.ol-custom-text-button.map-title {
+  display:none;
+  overflow: hidden;
+  // white-space: pre-wrap;
+
+  @include rf.respond-from('lg') {
+    display:block;
+    width:132px;
+  }
+
+
+  @include rf.respond-from('xl') {
+    display:block;
+    width:276px;
+  }
+}
+
+
+.ol-control.ol-bar .ol-control.ol-custom-text-button.map-title {
+  display:none;
+  overflow: hidden;
+  // white-space: pre-wrap;
+
+  @include rf.respond-from('lg') {
+    display:block;
+    width:132px; // 8.25rem;
+  }
+
+
+  @include rf.respond-from('xl') {
+    // display:block;
+    width:278px; // 17.375rem;
+  }
+}
+
+.ol-control.ol-bar.map-handle .ol-control.ol-bar.map-file-actions {
+  width:330px;
+}

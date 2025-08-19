@@ -1,0 +1,6 @@
+header nav [data-connected="false"] {
+  [data-action="board"],
+  [data-action="account"] {
+    display: none;
+  }
+}
