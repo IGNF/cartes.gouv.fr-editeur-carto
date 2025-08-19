@@ -6,7 +6,7 @@ export default defineConfig(({ command }) => ({
 
   build: {
     outDir: './docs',
-    emptyOutDir: true, // also necessary
+    emptyOutDir: true,
   },
 }));
 
