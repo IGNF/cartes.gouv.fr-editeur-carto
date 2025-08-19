@@ -9,7 +9,7 @@ L'éditeur cartographique est l'un des outils de Cartes.gouv.fr : il est constit
 
 À compléter...
 
-## Arborescence du dépôt
+## Projets liés
 
 * [API de l'editeur carte](https://github.com/IGNF/carte.gouv.fr-editeur-api)
 * [Version compacte du DSFR](https://github.com/IGNF/carte.gouv.fr-editeur-dsfr)
