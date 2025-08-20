@@ -21,7 +21,7 @@ body:
         description: |
           Décrivez la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
         placeholder: |
-          [exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification]
+          exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification
   - type: textarea
     id: criteres-d-acceptation
     attributes:
