@@ -34,7 +34,7 @@ body:
           - [ ] Exemple : Le message d'erreur s'affiche si format non conforme
     validations:
         required: true
-    - type: textarea
+  - type: textarea
     id: impact-attendu
     attributes:
 		label: 🔗 Liens
