@@ -1,22 +1,18 @@
-<div data-status="default">
+<div>
   <form>
     <div class="fr-upload-group">
-      <label class="fr-label" for="upload-file"> Ajouter un fichier <span class="fr-hint-text">Taille maximale : ??
-          Mo.
-          Formats supportés : Géopackage, Geojson, KML, GPX</span>
+      <label class="fr-label" for="upload-file"> Ajouter un fichier <span class="fr-hint-text">Formats supportés : ShapeFile (format compressé), Geojson, GeoPackage, CSV, KML, GPX</span>
       </label>
       <input class="fr-upload" aria-describedby="upload-file-messages" type="file" id="upload-file" name="file">
       <div class="fr-messages-group" id="upload-file-messages" aria-live="polite">
       </div>
     </div>
-    <div class="error-status">
-      <div class="fr-mt-2w">
-        <a title="Documentation - nouvelle fenêtre" data-documentation="import-data" href="#" target="_blank"
-          rel="noopener external" class="fr-link">Consulter la documentation</a>
-      </div>
-    </div>
     <div class="fr-mt-2w">
       <button type="submit" class="fr-btn" data-action="import-file">Importer</button>
+    </div>
+    <div class="fr-mt-3w">
+      <a title="Documentation - nouvelle fenêtre" data-documentation="import-data" href="#" target="_blank"
+        rel="noopener external" class="fr-link">Comment importer mon fichier</a>
     </div>
   </form>
 </div>
