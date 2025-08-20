@@ -96,13 +96,13 @@ class GPPCarte extends Carte {
    * @param {import("ol/layer").Layer} layer 
    * @param {boolean} zoom
    */
-  addLayer(layer, zoom = false) {
+  addLayer(layer, zoom = true) {
     // const layers = this.getMap().getLayers();
     // layers.insertAt(layers.getLength(), layer);
     let map = this.getMap();
     map.addLayer(layer);
 
-    if (map.getView() && map.getSize() && layer.getExtent) {
+    if (zoom && map.getView() && map.getSize() && layer.getExtent) {
       let extent = layer.getExtent();
       if (!extent) {
         let source = layer.getSource();
@@ -113,7 +113,11 @@ class GPPCarte extends Carte {
         }
       }
       if (extent && extent[0] !== Infinity) {
-        map.getView().fit(extent, map.getSize());
+        map.getView().fit(extent, {
+          size: map.getSize(),
+          minResolution: 10,
+          duration: 1000,
+        });
       }
     }
   }

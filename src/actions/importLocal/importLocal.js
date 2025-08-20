@@ -23,6 +23,8 @@ const accepted = [
   'application/gpx+xml',
   'application/zip',
   'text/csv',
+  // 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  // 'application/vnd.oasis.opendocument.spreadsheet',
   '.gpx',
 ]
 
@@ -126,7 +128,6 @@ function addMessage(input, message, options) {
  * mettre la classe d'erreur. Par défaut 'div'.
  */
 function removeMessage(input, closest = 'div') {
-
   // Récupère les éléments importants
   const msgId = input.getAttribute('aria-describedby');
   let element = input.closest(closest);
@@ -159,19 +160,19 @@ function importFile(e) {
       info(file).then(r => {
         let layers = r.layers;
         layers.forEach(layer => {
-          toGeoJSON(file, { layerName: layer.name }).then(json => {
-            // Créé un nouveau fichier pour envoyer à l'application
-            let geojson = new File([JSON.stringify(json)], `${json.name}.geojson`, {
-              type: 'application/geo+json',
-            });
-            loadFile(geojson, (e) => processFile(e, form), { silent: true });
-          })
+          toGeoJSON(file, { layerName: layer.name, writeBbox: true })
+            .then(json => {
+              // Créé un nouveau fichier pour envoyer à l'application
+              let geojson = new File([JSON.stringify(json)], `${json.name}.geojson`, {
+                type: 'application/geo+json',
+              });
+              loadFile(geojson, (e) => processFile(e, form), { silent: true });
+            })
             .catch(r => {
               processFile({ name: layer.name }, form)
             });
         });
       });
-
     } else {
       loadFile(file, (e) => processFile(e, form), { silent: true });
     }
@@ -193,7 +194,6 @@ function importFile(e) {
  * @param {HTMLFormElement} form Formulaire de l'ajout de fichier.
  */
 function processFile(result, form) {
-  let dialog = importLocalAction.getDialog();
   let input = form.querySelector('input');
   const name = result.name;
   if (result.features) {
@@ -203,10 +203,11 @@ function processFile(result, form) {
       title: name,
       source: new VectorSource()
     });
-    carte.addLayer(layer);
-
     // Ajout des features à la couche
     layer.getSource().addFeatures(result.features);
+
+    // Ajout du layer à la carte
+    carte.addLayer(layer);
     addMessage(input, `Le fichier ${name} a été ajouté à vos couches.`, { error: false })
   } else {
     addMessage(input, `Le fichier ${name} n'a pas pu être correctement importé.`, { error: true })
