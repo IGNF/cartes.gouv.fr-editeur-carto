@@ -4,6 +4,10 @@ import './importLocal.scss';
 import { getUid } from '../../charte/utils.js';
 import carte from '../../carte.js';
 import { getValidFeatures, loadFile } from 'mcutils/dialog/dialogImportFile'
+import { info, init, toGeoJSON } from 'geoimport';
+import workerUrl from 'geoimport/dist/static/gdal3.js?url';
+import dataUrl from 'geoimport/dist/static/gdal3WebAssembly.data?url';
+import wasmUrl from 'geoimport/dist/static/gdal3WebAssembly.wasm?url';
 
 import VectorSource from 'ol/source/Vector';
 import VectorStyle from 'mcutils/layer/VectorStyle';
@@ -16,10 +20,21 @@ const accepted = [
   'application/json',
   'application/vnd.google-earth.kml+xml',
   'application/geopackage+sqlite3',
-  // 'application/vnd.gpxsee.map+xml',
   'application/gpx+xml',
+  'application/zip',
+  'text/csv',
   '.gpx',
 ]
+
+// Initialise geoimport
+init({
+  paths: {
+    wasm: wasmUrl,
+    data: dataUrl,
+    js: workerUrl,
+  },
+  useWorker: false,
+});
 
 function onOpen(e) {
   let dialog = importLocalAction.getDialog();
@@ -29,23 +44,6 @@ function onOpen(e) {
 
   let input = dialog.selectElement('input[type="file"]');
   input.accept = accepted.join(',');
-
-  let importAgain = dialog.selectAllElements('[data-action="import-again"]');
-  importAgain.forEach(button => {
-    button.addEventListener('click', resetForm)
-  })
-
-
-}
-
-function resetForm(e) {
-  let dialog = importLocalAction.getDialog();
-
-  let dataStatus = dialog.selectElement('[data-status]')
-  dataStatus.dataset.status = 'default'
-
-  let input = dialog.selectElement('input')
-  input.value = '';
 }
 
 /**
@@ -147,17 +145,36 @@ function removeMessage(input, closest = 'div') {
  */
 function importFile(e) {
   e.preventDefault();
+  let form = e.target;
 
-  let form = e.target
-  let dialog = importLocalAction.getDialog();
-
-  let dataStatus = dialog.selectElement('[data-status]')
   if (validateForm(form)) {
     const formData = new FormData(form);
+    let file = formData.get('file');
 
-    loadFile(formData.get('file'), (e) => processFile(e, form), { silent: true })
-  } else {
-    dataStatus.dataset.status = 'error'
+    // TODO : Gérer l'import des fichiers de cette manière là pour les autres
+    // type de fichier aussi ?
+    // GPX : à traiter comme actuellement ou via geoimport ?
+    if (file.type === "application/zip" || file.type === "application/geopackage+sqlite3") {
+      // Gère les fichiers zip / shp autrement
+      info(file).then(r => {
+        let layers = r.layers;
+        layers.forEach(layer => {
+          toGeoJSON(file, { layerName: layer.name }).then(json => {
+            // Créé un nouveau fichier pour envoyer à l'application
+            let geojson = new File([JSON.stringify(json)], `${json.name}.geojson`, {
+              type: 'application/geo+json',
+            });
+            loadFile(geojson, (e) => processFile(e, form), { silent: true });
+          })
+            .catch(r => {
+              processFile({ name: layer.name }, form)
+            });
+        });
+      });
+
+    } else {
+      loadFile(file, (e) => processFile(e, form), { silent: true });
+    }
   }
 }
 
@@ -177,7 +194,6 @@ function importFile(e) {
  */
 function processFile(result, form) {
   let dialog = importLocalAction.getDialog();
-  let dataStatus = dialog.selectElement('[data-status]')
   let input = form.querySelector('input');
   const name = result.name;
   if (result.features) {
@@ -192,10 +208,7 @@ function processFile(result, form) {
     // Ajout des features à la couche
     layer.getSource().addFeatures(result.features);
     addMessage(input, `Le fichier ${name} a été ajouté à vos couches.`, { error: false })
-
-    dataStatus.dataset.status = 'success'
   } else {
-    dataStatus.dataset.status = 'error'
     addMessage(input, `Le fichier ${name} n'a pas pu être correctement importé.`, { error: true })
   }
 }
