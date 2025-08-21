@@ -46,6 +46,7 @@ function onOpen(e) {
 
   let input = dialog.selectElement('input[type="file"]');
   input.accept = accepted.join(',');
+  input.addEventListener('change', (e) => removeMessage(e.target))
 }
 
 /**
