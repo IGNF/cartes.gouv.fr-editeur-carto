@@ -72,15 +72,22 @@ class Menu {
     const idMenu = getUid('access')
 
     // Button
-    ol_ext_element.create('BUTTON', {
-      text: options.text,
+    const btnOptions = {
       title: options.title || options.text,
       className: 'fr-access__btn fr-nav__btn fr-btn fr-btn--sm fr-btn--icon-left fr-btn--tertiary-no-outline ' + options.icon,
       'aria-expanded': false,
       'aria-controls': idMenu,
       type: 'button',
       parent: nav
-    })
+    }
+
+    // For remixicons
+    if (options.html) {
+      btnOptions.html = options.html;
+    } else {
+      btnOptions.text = options.text;
+    }
+    ol_ext_element.create('BUTTON', btnOptions)
 
     // Menu
     const menu = ol_ext_element.create('DIV', {

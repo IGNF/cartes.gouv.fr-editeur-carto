@@ -3,7 +3,7 @@ import displasyDialog from '../displayDialog.js'
 
 // Set service info
 charte.setService({
-  service: 'Cartes.gouv.fr <span class="fr-badge fr-badge--sm fr-badge--green-emeraude">BETA</span>',
+  service: 'cartes.gouv.fr <span class="fr-badge fr-badge--sm fr-badge--green-emeraude">BETA</span>',
   href: '/',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
 })

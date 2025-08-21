@@ -5,6 +5,7 @@ import './charte/navigation.js'
 import carte from './carte.js'
 import api from 'mcutils/api/api.js'
 import account from './charte/nav-user.js'
+import charte from './charte/charte.js'
 
 import './page/connect/connect.js'
 import './page/edit-bar/edit-bar.js'
@@ -21,12 +22,16 @@ window.api = api;
 /**/
 
 function setUser(e) {
-  if (e) {
+  if (e && !e.error) {
+    charte.setConnected(true)
     account.setMenu('user', {
       label: e.username,
       info: e.email
     })
+    
   } else {
+    console.log('not set')
+    charte.setConnected(false)
   }
 }
 
