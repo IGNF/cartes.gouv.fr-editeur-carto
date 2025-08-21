@@ -42,7 +42,7 @@ class Header {
 
     // Title / logo
     const brand = ol_ext_element.create('DIV', {
-      className: 'fr-header__brand fr-enlarge-link', 
+      className: 'fr-header__brand fr-enlarge-link',
       html: ol_ext_element.create('DIV', {
         className: 'fr-header__brand-top'
       }),
@@ -88,13 +88,13 @@ class Header {
     // Modal
     const container = ol_ext_element.create('DIV', {
       className: 'fr-container',
-      parent: 
-      ol_ext_element.create('DIV', {
-        className: 'fr-header__menu fr-modal', 
-        id: idmodal, 
-        'aria-labelledby': this.navButton.id,
-        parent: header,
-      })
+      parent:
+        ol_ext_element.create('DIV', {
+          className: 'fr-header__menu fr-modal',
+          id: idmodal,
+          'aria-labelledby': this.navButton.id,
+          parent: header,
+        })
     })
     // Close box
     ol_ext_element.create('BUTTON', {
@@ -282,7 +282,7 @@ class Footer {
    */
   addButton(title, options) {
     let btnOptions = {
-      className: 'fr-footer__bottom-link fr-link--icon-left fr-px-2v' + (options.icon ? ' '+options.icon : ''),
+      className: 'fr-footer__bottom-link fr-link--icon-left fr-px-2v' + (options.icon ? ' ' + options.icon : ''),
       text: ' ' + title + ' ',
       parent: ol_ext_element.create('LI', {
         className: 'fr-footer__bottom-item',
@@ -300,7 +300,7 @@ class Footer {
    * @param {string} [title] default use href
    */
   addContentLink(href, title) {
-    title = title || href.replace(/^http(s)?:\/\/(www.)?/,'').replace(/\//g, '');
+    title = title || href.replace(/^http(s)?:\/\/(www.)?/, '').replace(/\//g, '');
     return ol_ext_element.create('A', {
       className: 'fr-footer__content-link',
       target: '_blank',
@@ -347,6 +347,8 @@ class Charte {
     this.header = new Header
     this.element = ol_ext_element.create('main', { parent: document.body })
     this.footer = new Footer()
+
+    this._actions = {}
   }
   /** Get en element in the main (or create it)
    * @param {string} role
@@ -379,12 +381,15 @@ class Charte {
     options = options || {}
     // Existing menu
     if (options.action) {
-      const menu = this.header.element.querySelector('[data-action="' + options.action + '"]')
-      if (menu) return menu
+      // const menu = this.header.element.querySelector('[data-action="' + options.action + '"]')
+      const menu = this._actions[options.action];
+      if (menu) return menu;
     }
     // Create new one
-    options.parent = this.header.tools
-    return new Menu(options)
+    options.parent = this.header.tools;
+    let menu = new Menu(options);
+    this._actions[options.action] = menu;
+    return menu;
   }
   /** Get existing or create button 
    * 
@@ -398,18 +403,26 @@ class Charte {
   getHeaderButton(options) {
     options = options || {};
     options.parent = this.header.tools;
+
+    // Existing menu
+    if (options.action) {
+      const button = this.header.element.querySelector('button[data-action="' + options.action + '"]')
+      if (button) return button
+    }
     let btnOptions = {
       className: 'fr-btn ' + (options.icon ? options.icon : ''),
-      text: ' ' + options.label + ' ',
+      text: options.label,
       parent: options.parent,
     }
     // Ajoute les attributs supplémentaires au bouton
     for (const attr in options) {
-      if (!['icon', 'label', 'type'].includes(attr)) btnOptions[attr] = options[attr];
+      if (!['icon', 'label', 'type'].includes(attr)) {
+        btnOptions[attr] = options[attr];
+      }
     }
-    ol_ext_element.create(options.type, btnOptions);
+    return ol_ext_element.create(options.type, btnOptions);
   }
-  
+
   /**
    * Check if the user is connected (only through the body dataset, not
    * with the api)
@@ -424,21 +437,24 @@ class Charte {
    * @param {boolean} connected True if connected, false otherwise
    */
   setConnected(connected) {
-    let btnConnect = this.header.tools.querySelector("[data-action='login']");
-    let connectAccess = this.header.tools.querySelector("[data-action='connect']");
-    let navConnect = connectAccess.parentElement;
-    if (connected) {
-      delete document.body.dataset.disconnected;
-      btnConnect.classList.add('fr-hidden');
-      navConnect.style.visibility = 'inherit';
-      // navConnect.classList.remove('fr-hidden');
-    } else {
-      document.body.dataset.disconnected = '';
-      // navConnect.classList.add('fr-hidden');
-      btnConnect.classList.remove('fr-hidden');
-      // navConnect.style.display = 'none';
-      navConnect.style.visibility = 'collapse';
-
+    let btnsConnect = this.header.element.querySelectorAll("[data-action='login']");
+    let connectAccesses = this.header.element.querySelectorAll("[data-action='connect']");
+    for (let index = 0; index < connectAccesses.length; index++) {
+      const connectAccess = connectAccesses[index];
+      const btnConnect = btnsConnect[index];
+      let navConnect = connectAccess.parentElement;
+      if (connected) {
+        delete document.body.dataset.disconnected;
+        btnConnect.classList.add('fr-hidden');
+        navConnect.style.visibility = 'inherit';
+        // navConnect.classList.remove('fr-hidden');
+      } else {
+        document.body.dataset.disconnected = '';
+        // navConnect.classList.add('fr-hidden');
+        btnConnect.classList.remove('fr-hidden');
+        // navConnect.style.display = 'none';
+        navConnect.style.visibility = 'collapse';
+      }
     }
   }
   /** Set service information

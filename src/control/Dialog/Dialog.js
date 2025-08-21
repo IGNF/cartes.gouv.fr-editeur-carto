@@ -152,12 +152,12 @@ class Dialog {
     if (options.icon) {
       this.setIcon(options.icon, this.dialogIcon);
     }
-    this.onOpen = typeof options.onOpen === 'function' ? options.onOpen : (e) => { };
+    this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen : (e) => { };
 
-    this.dialog.addEventListener(this.selectors.OPEN_EVENT, this.onOpen);
+    this.dialog.addEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
     this.dialog.addEventListener(this.selectors.CLOSE_EVENT, () => {
-      this.dialog.removeEventListener(this.selectors.OPEN_EVENT, this.onOpen);
-    }, { once: true });
+      this.dialog.removeEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
+    });
   }
 
   /**
@@ -480,10 +480,10 @@ class Dialog {
    * @param {Fonction} onOpen Fonction à l'ouverture du dialog.
    */
   setOnOpen(onOpen) {
-    this.dialog.removeEventListener(this.selectors.OPEN_EVENT, this.onOpen);
+    this.dialog.removeEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
     if (typeof onOpen === 'function') {
-      this.onOpen = onOpen;
-      this.dialog.addEventListener(this.selectors.OPEN_EVENT, this.onOpen);
+      this.onOpenFn = onOpen;
+      this.dialog.addEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
     }
   }
 

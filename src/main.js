@@ -20,20 +20,3 @@ import './css/index.scss';
 window.carte = carte;
 window.api = api;
 /**/
-
-function setUser(e) {
-  if (e && !e.error) {
-    charte.setConnected(true)
-    account.setMenu('user', {
-      label: e.username,
-      info: e.email
-    })
-    
-  } else {
-    charte.setConnected(false)
-  }
-}
-
-api.whoami(setUser)
-
-api.on('me', setUser)

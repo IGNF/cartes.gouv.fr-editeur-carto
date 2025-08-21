@@ -1,5 +1,5 @@
 import ol_ext_element from 'ol-ext/util/element'
-
+import charte from './charte';
 
 let currentId = 0;
 
@@ -41,6 +41,23 @@ function htmlToNode(html) {
     );
   }
   return template.content.firstChild;
+}
+
+/**
+ * Set the user from an API event
+ * @param {Event} e 
+ */
+function setUser(e) {
+  if (e && !e.error) {
+    charte.setConnected(true);
+    charte.getHeaderMenu({action: 'connect'}).setMenu('user', {
+      label: e.username,
+      info: e.email
+    })
+    
+  } else {
+    charte.setConnected(false)
+  }
 }
 
 /** Menu */
@@ -258,4 +275,4 @@ class Menu {
 
 
 
-export { Menu, getUid, htmlToNode }
+export { Menu, getUid, htmlToNode, setUser}
