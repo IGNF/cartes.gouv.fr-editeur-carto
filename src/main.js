@@ -30,7 +30,6 @@ function setUser(e) {
     })
     
   } else {
-    console.log('not set')
     charte.setConnected(false)
   }
 }
