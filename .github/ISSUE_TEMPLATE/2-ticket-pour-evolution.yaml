@@ -1,7 +1,6 @@
 ---
 name: 🚀 Spécifier une évolution
-description: Renseigner les informations nécessaires pour créer ou améliorer une
-  fonctionnalité pour cartes.gouv.fr
+description: Renseigner les informations nécessaires pour créer ou améliorer une fonctionnalité pour cartes.gouv.fr
 labels:
   - enhancement
 body:
@@ -21,19 +20,28 @@ body:
     id: job-to-be-done
     attributes:
       label: 📝 Job to be done (JTBD)
-      description: >
-        Décrivez la tâche générique que l'utilisateur cherche à accomplir,
-        indépendamment de l'outil.
-      placeholder: >
-        exemple : Représenter mes données publiques sur une carte pour
-        identifier des zones sous-dotées et ajuster la planification
+      description: |
+        Décrivez la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
+      placeholder: |
+        exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification
+  - type: textarea
+    id: design
+    attributes:
+      label: 🎨 Design
+      description: |
+        Décrivez les éléments de design nécéssaire au développement de la fonctionnalité.
+      placeholder: |
+        - Composition |
+        - Comportement |
+        - Contenus |
+        - Emplacement |
+        - Points de rupture
   - type: textarea
     id: criteres-d-acceptation
     attributes:
       label: ✅ Critères d'acceptation
       description: >
-        Décrivez les conditions observables qui permettent d'identifier la
-        bonne mise en place de l'US.
+        Décrivez les conditions observables qui permettent d'identifier la bonne mise en place de l'US.
       placeholder: |
         - [ ] Exemple : Importe de fichiers CSV/Excel possible |
         - [ ] Exemple : Les points apparaissent correctement sur la carte |
@@ -47,9 +55,9 @@ body:
       description: |
         Renseignez les liens utiles à l'évolution.
       placeholder: |
-        - **Maquette figma :** [lien] |
-        - **Données de test :** [lien] |
-        - **Documentation annexe :** [lien]
+        - Maquette figma : [lien] |
+        - Données de test : [lien] |
+        - Documentation annexe : [lien]
   - type: textarea
     id: impact-attendu
     attributes:
@@ -58,10 +66,8 @@ body:
         Décrivez quelle valeur cela apporte-t-il à l'utilisateur, et
         comment le mesurer.
       placeholder: >
-        - **Valeur utilisateur :** [Exemple : Faciliter la décision =>
-        l'agent gagne du temps et fiabilise ses analyses] |
-
-        - **Mesure :** [Exemple : % d'imports réussis sans erreur, temps moyen de traitement gagné]
+        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses] |
+        - Mesure : [Exemple : % d'imports réussis sans erreur, temps moyen de traitement gagné]
   - type: textarea
     id: additional-context
     attributes:
