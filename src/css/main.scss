@@ -42,6 +42,12 @@ main {
   right: auto;
 }
 
+.fr-header__tools-links {
+  > button {
+    margin-left: -.5rem
+  }
+}
+
 // AIDE POUR LES BREAKPOINTS
 // body,
 // .fr-header__navbar,

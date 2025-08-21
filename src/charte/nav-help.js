@@ -20,7 +20,7 @@ help.addMenu([
     url: '#',
   },{
     type: 'link',
-    label: 'Nous ocntacter',
+    label: 'Nous contacter',
     icon: 'fr-icon-mail-line',
     url: '#',
   }

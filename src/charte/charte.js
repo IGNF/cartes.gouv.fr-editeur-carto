@@ -369,6 +369,7 @@ class Charte {
    *  @param {string} options.href information for type link
    *  @param {string} options.icon
    *  @param {string} options.action 
+   * @returns {Menu}
    */
   getHeaderMenu(options) {
     options = options || {}
@@ -380,6 +381,61 @@ class Charte {
     // Create new one
     options.parent = this.header.tools
     return new Menu(options)
+  }
+  /** Get existing or create button 
+   * 
+   * @see {@link ol_ext_element} for more info on the options
+   * @param {Objet} options options to create the button / link
+   *  @param {string} options.type menu type button|a
+   *  @param {string} options.label 
+   *  @param {string} options.href information for type link
+   *  @param {string} options.icon
+   */
+  getHeaderButton(options) {
+    options = options || {};
+    options.parent = this.header.tools;
+    let btnOptions = {
+      className: 'fr-btn ' + (options.icon ? options.icon : ''),
+      text: ' ' + options.label + ' ',
+      parent: options.parent,
+    }
+    // Ajoute les attributs supplémentaires au bouton
+    for (const attr in options) {
+      if (!['icon', 'label', 'type'].includes(attr)) btnOptions[attr] = options[attr];
+    }
+    ol_ext_element.create(options.type, btnOptions);
+  }
+  
+  /**
+   * Check if the user is connected (only through the body dataset, not
+   * with the api)
+   * @return {boolean} True if the user is connected, false otherwise
+   */
+  isConnected() {
+    return document.body.dataset.disconnected === undefined;
+  }
+
+  /**
+   * 
+   * @param {boolean} connected True if connected, false otherwise
+   */
+  setConnected(connected) {
+    let btnConnect = this.header.tools.querySelector("[data-action='login']");
+    let connectAccess = this.header.tools.querySelector("[data-action='connect']");
+    let navConnect = connectAccess.parentElement;
+    if (connected) {
+      delete document.body.dataset.disconnected;
+      btnConnect.classList.add('fr-hidden');
+      navConnect.style.visibility = 'inherit';
+      // navConnect.classList.remove('fr-hidden');
+    } else {
+      document.body.dataset.disconnected = '';
+      // navConnect.classList.add('fr-hidden');
+      btnConnect.classList.remove('fr-hidden');
+      // navConnect.style.display = 'none';
+      navConnect.style.visibility = 'collapse';
+
+    }
   }
   /** Set service information
    * @param {Object} options

@@ -1,3 +1,6 @@
+import openAction from '../actions/actions'
+import loginDialog from '../loginDialog'
+import api from 'mcutils/api/api'
 import charte from './charte'
 import './nav-user.scss'
 
@@ -37,32 +40,19 @@ account.addMenu([
   }
 ])
 
-// Set user account
-account.setMenu('user', {
-  info: 'adresseutilisateur@email.com'
+let disconnect = account.getMenu('disconnect')[0];
+disconnect.link.addEventListener('click', (e) => {
+  api.logout((e) => charte.setConnected(false))
 })
 
-// Get info when ready
-setTimeout(() => {
-  // Connect / disconnect user
-  account.getMenu('disconnect').forEach(m => {
-    m.link.addEventListener('click', () => {
-      const connected = m.element.dataset.connected === 'false'; 
-      account.setMenu('user', {
-        info: connected ? 'toto@ign.fr' : 'not connected...'
-      })
-      account.setMenu('disconnect', {
-        label: connected ? 'Se déconnecter' : 'Se connecter...',
-        title: connected ? 'Se déconnecter' : 'Se connecter...',
-        data: {
-          connected: connected,
-          parent: {
-            connected: connected
-          }
-        },
-      })
-    })
-  })
-}, 100 /* ready */)
+const accountBtn = charte.getHeaderButton({
+  type: 'button',
+  label: 'Se connecter',
+  icon: 'fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline',
+  'data-action': 'login',
+  click: openAction,
+  'aria-controls': loginDialog.getId(),
+  'data-fr-opened': false,
+})
 
 export default account;
