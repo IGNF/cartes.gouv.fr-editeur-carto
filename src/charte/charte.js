@@ -147,7 +147,8 @@ class Footer {
     const containBt = ol_ext_element.create('BUTTON', {
       id: getUid('button'),
       type: 'button',
-      className: 'fr-btn--close fr-btn btn-more-info',
+      // className: 'fr-btn--close fr-btn btn-more-info',
+      className: 'fr-icon-arrow-down-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
       'aria-label': 'plus d\'informations',
       'title': 'plus d\'informations',
       'aria-expanded': 'false',
@@ -157,11 +158,14 @@ class Footer {
     containBt.addEventListener('click', () => {
       const expanded = containBt.getAttribute('aria-expanded') === 'true'
       containBt.setAttribute('aria-expanded', !expanded);
+      containBt.classList.toggle('fr-icon-arrow-down-s-line', expanded)
+      containBt.classList.toggle('fr-btn--tertiary-no-outline', expanded)
+      containBt.classList.toggle('fr-btn--close', !expanded)
       containBt.setAttribute('aria-label', expanded ? 'plus d\'informations' : 'Fermer')
       containBt.setAttribute('title', expanded ? 'plus d\'informations' : 'Fermer')
     })
     const container = this.container = ol_ext_element.create('DIV', {
-      className: 'fr-container',
+      className: 'fr-container--fluid',
       id: idContain,
       'aria-labelledby': containBt.id,
       parent: this.element
