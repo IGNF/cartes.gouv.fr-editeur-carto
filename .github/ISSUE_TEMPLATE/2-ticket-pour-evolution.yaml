@@ -11,8 +11,8 @@ body:
       description: |
         Décrivez précisément le comportement de la nouvelle fonctionnalité.
       placeholder: |
-        - En tant que [type d'utilisateur / persona] |
-        - Je veux [action concrète à réaliser] |
+        - En tant que [type d'utilisateur / persona]
+        - Je veux [action concrète à réaliser]
         - Afin de [valeur attendue / bénéfice]
     validations:
       required: true
@@ -31,10 +31,10 @@ body:
       description: |
         Décrivez les éléments de design nécéssaire au développement de la fonctionnalité.
       placeholder: |
-        - Composition |
-        - Comportement |
-        - Contenus |
-        - Emplacement |
+        - Composition
+        - Comportement
+        - Contenus
+        - Emplacement
         - Points de rupture
   - type: textarea
     id: criteres-d-acceptation
@@ -43,8 +43,8 @@ body:
       description: >
         Décrivez les conditions observables qui permettent d'identifier la bonne mise en place de l'US.
       placeholder: |
-        - [ ] Exemple : Importe de fichiers CSV/Excel possible |
-        - [ ] Exemple : Les points apparaissent correctement sur la carte |
+        - [ ] Exemple : Importe de fichiers CSV/Excel possible
+        - [ ] Exemple : Les points apparaissent correctement sur la carte
         - [ ] Exemple : Le message d'erreur s'affiche si format non conforme
     validations:
       required: true
@@ -55,8 +55,8 @@ body:
       description: |
         Renseignez les liens utiles à l'évolution.
       placeholder: |
-        - Maquette figma : [lien] |
-        - Données de test : [lien] |
+        - Maquette figma : [lien]
+        - Données de test : [lien]
         - Documentation annexe : [lien]
   - type: textarea
     id: impact-attendu
@@ -66,7 +66,7 @@ body:
         Décrivez quelle valeur cela apporte-t-il à l'utilisateur, et
         comment le mesurer.
       placeholder: >
-        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses] |
+        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses]
         - Mesure : [Exemple : % d'imports réussis sans erreur, temps moyen de traitement gagné]
   - type: textarea
     id: additional-context
