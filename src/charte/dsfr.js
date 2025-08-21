@@ -1,5 +1,5 @@
 import charte from './charte.js'
-import displasyDialog from '../displayDialog.js'
+import displayDialog from '../displayDialog.js'
 
 // Set service info
 charte.setService({
@@ -33,6 +33,6 @@ charte.addFooterLink('Gestion des cookies', '#')
 charte.addFooterButton('Paramètres d\'affichage', {
   icon: 'fr-icon-theme-fill',
   title: "Paramètres d'affichage",
-  'aria-controls': 'display-modal',
+  'aria-controls': displayDialog.id,
   'data-fr-opened': false,
 })

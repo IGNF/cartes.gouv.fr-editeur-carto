@@ -5,6 +5,7 @@ import { Menu, getUid } from './utils';
 
 // DSFR
 import 'dsfrign/dist/core/core.module.min.js';
+import 'dsfrign/dist/scheme/scheme.module.min';
 import 'dsfrign/dist/component/header/header.module.min.js';
 import 'dsfrign/dist/component/navigation/navigation.module.min.js';
 import 'dsfrign/dist/component/button/button.module.min.js';
