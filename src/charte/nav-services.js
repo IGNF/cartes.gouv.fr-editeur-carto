@@ -1,9 +1,9 @@
 import charte from './charte'
 
 // Menu
-const service = charte.getHeaderMenu ({
-  icon: 'fr-icon-menu-fill',
+const service = charte.getHeaderMenu({
   action: 'services',
+  html: '<i class="fr-mr-1w ri-lg ri-grid-fill"></i>Services',
   text: 'Services',
 })
 
@@ -20,28 +20,13 @@ service.addMenu([
     url: '#',
   },{
     type: 'link',
-    label: 'Diffuser une donnée',
-    icon: 'fr-icon-upload-line',
+    label: 'Publier une donnée',
+    icon: 'fr-icon-database-line',
     url: '#',
   },{
     type: 'link',
     label: 'Créer une carte',
     icon: 'fr-icon-pen-nib-line',
-    url: '#',
-  },{
-    type: 'link',
-    label: 'Contribuer',
-    icon: 'fr-icon-message-2-line',
-    url: '#',
-  },{
-    type: 'link',
-    label: 'Géocoder',
-    icon: 'fr-icon-code-s-slash-line',
-    url: '#',
-  },{
-    type: 'link',
-    label: 'Documentation',
-    icon: 'fr-icon-file-text-line',
     url: '#',
   },{
     type: 'option',

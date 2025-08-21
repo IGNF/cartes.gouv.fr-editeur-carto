@@ -5,6 +5,7 @@ import './charte/navigation.js'
 import carte from './carte.js'
 import api from 'mcutils/api/api.js'
 import account from './charte/nav-user.js'
+import charte from './charte/charte.js'
 
 import './page/connect/connect.js'
 import './page/edit-bar/edit-bar.js'
@@ -19,17 +20,3 @@ import './css/index.scss';
 window.carte = carte;
 window.api = api;
 /**/
-
-function setUser(e) {
-  if (e) {
-    account.setMenu('user', {
-      label: e.username,
-      info: e.email
-    })
-  } else {
-  }
-}
-
-api.whoami(setUser)
-
-api.on('me', setUser)

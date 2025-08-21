@@ -7,9 +7,9 @@ import importCatalogAction from './importCatalog/importCatalog';
 import importLocalAction from './importLocal/importLocal';
 import importFlowAction from './importFlow/importFlow';
 import editLayerStyleAction from './editLayerStyle/editLayerStyle';
+import loginAction from './login/login';
 
 import getDialog from './dialogs';
-import loginAction from './login/login';
 import Modal from '../control/Modal/Modal';
 
 

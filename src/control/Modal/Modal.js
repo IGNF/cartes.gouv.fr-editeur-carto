@@ -59,6 +59,28 @@ class Modal extends Dialog {
   _open() {
     // Laisse le DSFR gérer l'ouverture de la modale
   }
+
+
+  /**
+   * Ajoute ou remplace la fonction lancée à l'ouverture
+   * du dialog.
+   * 
+   * @param {Fonction} onOpen Fonction à l'ouverture du dialog.
+   */
+  setOnOpen(onOpen) {
+    super.setOnOpen(onOpen);
+
+    // Vérifie si la modale était ouverte (elle s'ouvre avant
+    // si openAction est ajouté à la création du bouton
+    // Sinon elle s'ouvre après
+    let dsfr = window.dsfr;
+    if (typeof dsfr === 'function') {
+      let modal = dsfr(this.getDialog()).modal
+      if (modal && modal.isDisclosed) {
+        onOpen()
+      }
+    }
+  }
 }
 
 export default Modal;
