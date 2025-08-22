@@ -5,6 +5,14 @@ labels:
   - enhancement
 body:
   - type: textarea
+    id: job-to-be-done
+    attributes:
+      label: 📝 Job to be done (JTBD)
+      description: |
+        Décrivez la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
+      placeholder: |
+        exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification
+  - type: textarea
     id: user-story
     attributes:
       label: 🎯 User Story
@@ -16,14 +24,6 @@ body:
         - Afin de [valeur attendue / bénéfice]
     validations:
       required: true
-  - type: textarea
-    id: job-to-be-done
-    attributes:
-      label: 📝 Job to be done (JTBD)
-      description: |
-        Décrivez la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
-      placeholder: |
-        exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification
   - type: textarea
     id: design
     attributes:
