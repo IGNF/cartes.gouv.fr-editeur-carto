@@ -1,6 +1,8 @@
 name: 🐛 Signaler une anomalie
 description: Aidez nous à améliorer cartes.gouv.fr en complétant ce rapport d'anomalie
-labels: [bug]
+labels: ["bug"]
+projects: ["IGNF/52"]
+type: "Bug"
 body:
   - type: textarea
     id: description
