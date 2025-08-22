@@ -1,8 +1,9 @@
 ---
 name: 🚀 Spécifier une évolution
 description: Renseigner les informations nécessaires pour créer ou améliorer une fonctionnalité pour cartes.gouv.fr
-labels:
-  - enhancement
+labels: ["enhancement"]
+projects: ["IGNF/52"]
+type: "Feature"
 body:
   - type: textarea
     id: job-to-be-done
