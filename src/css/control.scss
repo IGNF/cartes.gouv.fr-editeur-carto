@@ -1,3 +1,5 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
 .ol-print-map {
   .gpf-widget {
     display: none;
@@ -22,4 +24,15 @@
 
 .position-container-top-right div[id^=GPlayerSwitcher-] {
   top:20%;
+}
+
+[id^='GPsearchEngine-'] {
+  position: absolute;
+  left: 50% !important;
+  transform: translateX(-50%);
+  top: 3.625rem;
+  
+  @include rf.respond-from('sm') {
+    top: 0.625rem;
+  }
 }

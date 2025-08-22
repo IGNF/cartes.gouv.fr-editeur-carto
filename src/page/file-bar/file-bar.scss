@@ -25,18 +25,16 @@
   }
 }
 
-.ol-control.ol-custom-bar.ol-bar--separator.ol-bar.map-handle >  .ol-custom-button:first-child {
-
-  padding:0;
+.ol-control.ol-custom-bar.ol-bar--separator.ol-bar.map-handle > .ol-custom-button:first-child {
+  padding: 0;
 
   @include rf.respond-from('lg') {
     padding: 0 0.25rem 0 0;
   }
 }
 
-
 .ol-control.ol-bar .ol-control.ol-custom-text-button.file-name > div {
-  font-size:0.875rem;
+  font-size: 0.875rem;
   color: var(--text-disabled-grey);
 
   &:not(:disabled):hover {
@@ -48,42 +46,46 @@
   }
 }
 
-
 .ol-control.ol-bar .ol-control.ol-custom-text-button.map-title {
-  display:none;
+  display: none;
   overflow: hidden;
   // white-space: pre-wrap;
 
   @include rf.respond-from('lg') {
-    display:block;
-    width:132px;
+    display: block;
+    width: 132px;
   }
 
-
   @include rf.respond-from('xl') {
-    display:block;
-    width:276px;
+    display: block;
+    width: 276px;
   }
 }
 
-
 .ol-control.ol-bar .ol-control.ol-custom-text-button.map-title {
-  display:none;
+  display: none;
   overflow: hidden;
   // white-space: pre-wrap;
 
   @include rf.respond-from('lg') {
-    display:block;
-    width:132px; // 8.25rem;
+    display: block;
+    width: 132px; // 8.25rem;
   }
-
 
   @include rf.respond-from('xl') {
     // display:block;
-    width:278px; // 17.375rem;
+    width: 278px; // 17.375rem;
   }
 }
 
 .ol-control.ol-bar.map-handle .ol-control.ol-bar.map-file-actions {
-  width:330px;
+  width: 330px;
+}
+
+.ol-control.ol-custom-bar.ol-bar--separator.ol-bar.map-handle {
+  display: none;
+
+  @include rf.respond-from('sm') {
+    display: flex;
+  }
 }

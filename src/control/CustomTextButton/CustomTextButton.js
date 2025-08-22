@@ -43,6 +43,8 @@ class CustomTextButton extends TextButton {
     for (let attr in options.textAttributes) {
       this.button_.setAttribute(attr, options.textAttributes[attr]);
     }
+
+    this._options = options;
   }
 }
 
