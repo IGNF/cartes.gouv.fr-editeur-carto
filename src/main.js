@@ -7,10 +7,7 @@ import api from 'mcutils/api/api.js'
 import account from './charte/nav-user.js'
 import charte from './charte/charte.js'
 
-import './page/connect/connect.js'
-import './page/edit-bar/edit-bar.js'
-import './page/step-bar/step-bar.js'
-import './page/file-bar/file-bar.js'
+import './page/page.js'
 
 // Custom CSS
 import 'remixicon/fonts/remixicon.css'

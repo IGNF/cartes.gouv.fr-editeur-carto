@@ -8,6 +8,7 @@ import CustomToggle from '../../control/CustomToggle/CustomToggle.js'
 
 import './step-bar.scss'
 import openAction from '../../actions/actions.js'
+import duplicate from '../mobile-bar/mobile-bar.js';
 
 // Barre ajout de donnée
 let createmap = new CustomToggle({
@@ -85,7 +86,7 @@ let modeBar = new CustomBar({
 
 // Barre principale
 let mainbar = new CustomBar({
-  className: 'ol-bar--separator ol-bar--row',
+  className: 'ol-bar--separator ol-bar--row step-bar',
   controls: [modeBar, save, share]
 })
 
@@ -94,6 +95,8 @@ let mainbar = new CustomBar({
 function info(i) {
   console.log(i || "");
 }
+
+duplicate(mainbar)
 
 carte.addControl('stepBar', mainbar)
 

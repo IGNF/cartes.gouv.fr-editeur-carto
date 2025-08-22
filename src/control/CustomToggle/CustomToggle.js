@@ -41,6 +41,8 @@ class CustomToggle extends Toggle {
     for (let attr in options.buttonAttributes) {
       this.button_.setAttribute(attr, options.buttonAttributes[attr]);
     }
+
+    this._options = options;
   }
 
   toggle() {

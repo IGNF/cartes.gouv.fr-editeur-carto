@@ -1,0 +1,51 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+.ol-control.ol-bar.ol-custom-bar.ol-top.mobile-bar {
+  top: 0rem;
+  padding: 0.5rem;
+  width: inherit;
+  border-radius: 0;
+  left: unset;
+  transform: unset;
+
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  justify-items: stretch;
+
+  :not(:first-child) {
+    border-radius: 0;
+    border-left: 1px solid var(--border-default-grey);
+  }
+
+  > :nth-child(1) {
+    grid-column: 1;
+    justify-content: center;
+  }
+
+  > .ol-control:nth-child(2) {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0.5rem;
+
+    > :nth-child(1) {
+      grid-column: 1;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      > :nth-child(n) {
+        justify-content: center;
+      }
+    }
+
+    > :nth-child(n + 2) {
+      grid-column: auto;
+      justify-content: center;
+    }
+  }
+
+  @include rf.respond-from('sm') {
+    display: none;
+  }
+}

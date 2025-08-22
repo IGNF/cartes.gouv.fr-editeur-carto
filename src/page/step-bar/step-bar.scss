@@ -1,6 +1,6 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 
-.ol-control.ol-bar.ol-custom-bar .ol-custom-toggle.action-button.ol-active {
+.ol-control.ol-bar.ol-custom-bar.step-bar .ol-custom-toggle.action-button.ol-active {
   &.ol-active > button,
   > button {
     &,
@@ -21,7 +21,7 @@
   }
 }
 
-.ol-control.ol-bar.ol-custom-bar.ol-top.ol-bar--row .ol-custom-toggle.action-button {
+.ol-control.ol-bar.ol-custom-bar.step-bar.ol-bar--row .ol-custom-toggle.action-button {
   > button {
     height: 40px;
     width: 40px;
@@ -49,10 +49,10 @@
   }
 }
 
-.ol-control.ol-bar.ol-custom-bar.ol-top.ol-bar--row {
-
-  .ol-custom-button {
-    &.share-button, &.save-button {
+.ol-control.ol-bar.ol-custom-bar.step-bar.ol-bar--row {
+  &.ol-top .ol-custom-button {
+    &.share-button,
+    &.save-button {
       display: none;
     }
     @include rf.respond-from('md') {
@@ -66,15 +66,12 @@
       }
     }
   }
+}
 
-  // > .ol-control.ol-bar.ol-custom-bar {
-  //    &:first-child {
-  //       padding: 0;
-  //     }
-  //    @include rf.respond-from('sm') {
-  //     &:first-child {
-  //       padding: unset;
-  //     }
-  //   }
-  // }
+.ol-control.ol-bar.ol-custom-bar.ol-bar--row.step-bar {
+  display: none;
+
+  @include rf.respond-from('sm') {
+    display: flex;
+  }
 }

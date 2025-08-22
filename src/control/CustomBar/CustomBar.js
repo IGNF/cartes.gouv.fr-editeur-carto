@@ -30,6 +30,8 @@ class CustomBar extends Bar {
     options.className = options.className + ' ol-custom-bar'
 
     super(options);
+
+    this._options = options;
   }
 }
 

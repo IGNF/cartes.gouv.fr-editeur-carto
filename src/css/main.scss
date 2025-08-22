@@ -27,12 +27,6 @@ main {
   width: 100%;
 }
 
-[id^='GPsearchEngine-'] {
-  position: absolute;
-  left: 50% !important;
-  transform: translateX(-50%);
-}
-
 // Hide permalink control
 .ol-permalink {
   display: none !important;

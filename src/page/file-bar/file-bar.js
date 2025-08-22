@@ -12,6 +12,7 @@ import CustomBar from '../../control/CustomBar/CustomBar.js'
 import CustomToggle from '../../control/CustomToggle/CustomToggle.js'
 import CustomTextButton from '../../control/CustomTextButton/CustomTextButton.js';
 import openAction from '../../actions/actions.js';
+import duplicate from '../mobile-bar/mobile-bar.js';
 
 // Variables utiles
 let title = carte.get('title');
@@ -52,7 +53,7 @@ let fileName = new CustomTextButton({
   className: 'ol-custom-text-button file-name fr-px-2w fr-py-1w fr-text--sm file-name fr-m-0'
 })
 
-// --- First bar (Ouvrir / Créer) ---
+// --- Première barre (Ouvrir / Créer) ---
 let openMapBtn = new CustomButton({
   className: 'ol-custom-button',
   buttonClasses: ['map-item', 'fr-icon-dashboard-3-line', 'fr-link--icon-left'],
@@ -65,8 +66,6 @@ let openMapBtn = new CustomButton({
   html: 'Ouvrir une carte',
   handleClick: openAction
 });
-
-
 
 let createMapBtn = new CustomButton({
   className: 'ol-custom-button',
@@ -84,7 +83,8 @@ let bar1 = new CustomBar({
   controls: [openMapBtn, createMapBtn]
 });
 
-// --- Second bar (Enregistrer / Renommer) ---
+
+// --- Deuxième barre (Enregistrer / Renommer) ---
 let saveMapBtn = new CustomButton({
   className: 'ol-custom-button',
   buttonClasses: ['map-item', 'fr-icon-save-line', 'fr-link--icon-left'],
@@ -116,7 +116,7 @@ let bar2 = new CustomBar({
   controls: [saveMapBtn, renameMapBtn]
 });
 
-// --- Third bar (Prévisualiser / Partager / Exporter / Imprimer) ---
+// --- Troisième barre (Prévisualiser / Partager / Exporter / Imprimer) ---
 let previewMapBtn = new CustomButton({
   className: 'ol-custom-button',
   buttonClasses: ['map-item', 'fr-icon-play-line', 'fr-link--icon-left'],
@@ -168,7 +168,7 @@ let bar3 = new CustomBar({
   controls: [previewMapBtn, shareMapBtn, exportMapBtn, printMapBtn]
 });
 
-// --- Main bar that groups everything ---
+// --- Barre principale regroupant les autres ---
 let btnBar = new CustomBar({
   className: 'ol-bar--separator ol-bar--column fr-p-2w map-file-actions',
   controls: [fileName, bar1, bar2, bar3]
@@ -184,7 +184,7 @@ let fileToggle = new CustomToggle({
   bar: btnBar
 });
 
-// Map title
+// Titre de la carte
 let mapTitle = new CustomTextButton({
   html: title || 'Carte sans titre',
   textAttributes: {
@@ -215,6 +215,9 @@ let filebar = new CustomBar({
   className: 'ol-bar--separator ol-bar--row map-handle',
   controls: [fileToggle, mapTitle]
 });
+
+// Ajoute le contrôle dans la barre d'outil mobile
+duplicate(filebar)
 
 carte.addControl('filebar', filebar)
 
