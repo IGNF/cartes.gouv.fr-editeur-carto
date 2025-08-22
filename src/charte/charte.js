@@ -444,17 +444,17 @@ class Charte {
       const connectAccess = connectAccesses[index];
       const btnConnect = btnsConnect[index];
       let navConnect = connectAccess.parentElement;
+      let navItem = navConnect.querySelector('.fr-nav__item');
       if (connected) {
         delete document.body.dataset.disconnected;
         btnConnect.classList.add('fr-hidden');
-        navConnect.style.visibility = 'inherit';
-        // navConnect.classList.remove('fr-hidden');
+        navConnect.classList.remove('fr-hidden');
+        // TODO : mieux gérer le problème ?
+        navItem.classList.add('fr-nav__item--align-right')
       } else {
         document.body.dataset.disconnected = '';
-        // navConnect.classList.add('fr-hidden');
         btnConnect.classList.remove('fr-hidden');
-        // navConnect.style.display = 'none';
-        navConnect.style.visibility = 'collapse';
+        navConnect.classList.add('fr-hidden');
       }
     }
   }
