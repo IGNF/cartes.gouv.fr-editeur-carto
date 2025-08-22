@@ -33,14 +33,12 @@
 }
 
 .ol-control.ol-bar .ol-custom-toggle.dsfr-btn {
-  // Bouton DSFR (copie des valeurs)
   .fr-btn.fr-btn {
     align-items: center;
     display: inline-flex;
     flex-direction: row;
     padding: 0.5rem 1rem;
     width: fit-content;
-    background-color: var(--ol-background-color);
 
     &,
     &:hover,

@@ -9,7 +9,7 @@
     .ol-button,
     .ol-toggle:hover,
     .ol-button:hover {
-      background-color: unset;
+      background-color: var(--background-default-grey);
       outline: none;
 
       button {
@@ -83,7 +83,6 @@
   }
 
   &.ol-custom-bar.ol-bar--row {
-
     &,
     .ol-bar:not(.ol-bar--column) {
       display: flex;
@@ -118,8 +117,8 @@
     }
   }
 
-  &.ol-custom-bar.ol-bar--column,   .ol-control.ol-active > .ol-custom-bar.ol-bar--column {
-
+  &.ol-custom-bar.ol-bar--column,
+  .ol-control.ol-active > .ol-custom-bar.ol-bar--column {
     &,
     .ol-bar:not(.ol-bar--row) {
       display: flex;
@@ -165,6 +164,18 @@
 
 .ol-control.ol-bar.ol-left.ol-top .ol-option-bar {
   border-radius: 0.25rem;
-  top:calc(100% + 0.5rem);
+  top: calc(100% + 0.5rem);
   left: -0.25rem;
+}
+
+.ol-control.ol-bar.ol-custom-bar {
+  background-color: var(--background-default-grey);
+
+  .ol-control {
+    &,
+    &:hover,
+    &:active {
+      background-color: var(--background-default-grey);
+    }
+  }
 }
