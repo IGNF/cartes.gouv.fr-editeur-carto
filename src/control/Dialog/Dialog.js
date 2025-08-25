@@ -1,6 +1,6 @@
 import ol_ext_element from 'ol-ext/util/element'
 import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper";
-
+import BaseObject from 'ol/Object.js';
 
 const dsfrPrefix = 'fr-icon'
 const dsfrClasses = ['fr-icon', 'fr-icon--sm'];
@@ -13,6 +13,8 @@ const buttonKind = {
   2: 'fr-btn--tertiary',
   3: 'fr-btn--tertiary-no-outline',
 }
+
+const dialogs = {}
 
 /**
  * Bouton à insérer dans le dialog
@@ -59,13 +61,32 @@ const buttonKind = {
  * @property {Dialog} target - Objet dialog.
  */
 
+class Dialog extends BaseObject {
 
-class Dialog {
+  static getDialog(id) {
+    if (id in dialogs) {
+      return dialogs[id];
+    } else {
+      throw new Error(`Aucun dialogue n'existe avec cet id : ${id}`);
+    }
+  }
+
+  #addDialog(id) {
+    if (!id) {
+      throw new Error("Un id doit être donné au dialogue");
+    } else if (id in dialogs) {
+      throw new Error(`Un dialogue avec l'id '${id}' existe déjà`);
+    } else {
+      dialogs[id] = this;
+    }
+  }
+
   /**
    * 
-   * @param {DialogOptions} options 
+   * @param {DialogOptions} options
    */
   constructor(options) {
+    super();
     /**
      * @private Nom générique de la classe du dialog
      */
@@ -88,6 +109,8 @@ class Dialog {
       }
     }
 
+    this.#addDialog(options.id)
+
     const dialogOptions = Utils.assign(this.options, optionsToKeep);
 
     this.dialog = ol_ext_element.create('DIALOG', dialogOptions);
@@ -96,7 +119,6 @@ class Dialog {
 
     this._createDialog(createOptions);
   }
-
 
   /**
    * Initie les sélecteurs CSS utiles dans le reste
@@ -397,8 +419,15 @@ class Dialog {
     }
   }
 
+  /**
+   * Retourne le bouton à l'index donné.
+   * Renvoie null si aucun bouton n'est trouvé.
+   * 
+   * @param {number} index Index du bouton.
+   * @returns {Node | null} Bouton à l'index correspondant.
+   */
   getButton(index) {
-
+    return this.selectAllElements(this.selectors.BUTTONS).item(index);
   }
 
 

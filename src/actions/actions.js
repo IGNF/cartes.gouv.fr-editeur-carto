@@ -9,7 +9,8 @@ import importFlowAction from './importFlow/importFlow';
 import editLayerStyleAction from './editLayerStyle/editLayerStyle';
 import loginAction from './login/login';
 
-import getDialog from './dialogs';
+import Dialog from '../control/Dialog/Dialog';
+// import getDialog from './dialogs';
 import Modal from '../control/Modal/Modal';
 
 
@@ -39,7 +40,7 @@ let openAction = function (e) {
   const pressed = target.ariaPressed;
   const action = actions[actionName];
 
-  let dialog = getDialog(dialogId);
+  let dialog = Dialog.getDialog(dialogId);
 
   if (!dialog) return;
 

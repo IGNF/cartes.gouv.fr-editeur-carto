@@ -2,7 +2,6 @@ import carte from '../../carte.js'
 
 import modal from '../../modal.js';
 
-
 import './file-bar.scss'
 // Download
 import FileSaver from 'file-saver'
@@ -23,7 +22,7 @@ let createNewMap = function (e) {
 }
 
 let previewMap = function (e) {
-  console.log("ouvre la visualisation")
+  console.log("ouvre la visualisation");
 }
 
 let exportMap = function (e) {
@@ -47,7 +46,6 @@ carte.getControl('printDlg')._printDialog.on('hide', () => {
 })
 
 // Nom du fichier
-
 let fileName = new CustomTextButton({
   html: 'Nom du fichier',
   className: 'ol-custom-text-button file-name fr-px-2w fr-py-1w fr-text--sm file-name fr-m-0'

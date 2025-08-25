@@ -2,7 +2,6 @@
 import carte from '../../carte.js'
 
 import Toggle from 'ol-ext/control/Toggle'
-import CustomButton from '../../control/CustomButton/CustomButton.js'
 import CustomBar from '../../control/CustomBar/CustomBar.js'
 import CustomToggle from '../../control/CustomToggle/CustomToggle.js'
 
@@ -13,8 +12,6 @@ import openAction from '../../actions/actions.js'
 
 import './edit-bar.scss'
 import rightPanel from '../../rightPanel.js';
-import getDialog from '../../actions/dialogs.js';
-import leftPanel from '../../leftPanel.js';
 
 /**
  * @type {CustomToggle}
