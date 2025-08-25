@@ -1,6 +1,8 @@
 
 import carte from '../../carte.js'
 import modal from '../../modal.js';
+import charte from '../../charte/charte.js';
+import { Charte } from '../../charte/charte.js';
 
 import CustomButton from '../../control/CustomButton/CustomButton.js'
 import CustomBar from '../../control/CustomBar/CustomBar.js'
@@ -10,43 +12,48 @@ import './step-bar.scss'
 import openAction from '../../actions/actions.js'
 import duplicate from '../mobile-bar/mobile-bar.js';
 
+
+let onToggleMode = function (e) {
+  let toggle = this;
+  const action = this.button_.getAttribute('data-action');
+  charte.setMode(action);
+  let mode = charte.getMode();
+  if (mode === action) {
+    toggle.setActive(true)
+    toggle.set('autoActivate', true);
+  } else {
+    toggle.setActive(false)
+    toggle.set('autoActivate', false);
+  }
+}
+
 // Barre ajout de donnée
 let createmap = new CustomToggle({
   // html: '<i class="fr-mr-1w ri-1x ri-map-pin-line"></i>Création',
   html: '<i class="ri-pencil-line"></i><span>Création</span>',
-  autoActivate:true,
+  autoActivate: true,
   className: 'action-button ol-custom-button',
   buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline'],
   buttonAttributes: {
     title: "Gérer le contenu de la carte",
     'aria-label': "Gérer le contenu de la carte",
+    'data-action': Charte.modes.EDITOR,
   },
-  onToggle: function () {
-    if (createmap.getActive()) {
-      storymap.set('autoActivate', false);
-      createmap.set('autoActivate', true);
-    }
-    info("Création de la map");
-  }
+  onToggle: onToggleMode
 });
 
 let storymap = new CustomToggle({
   // html: '<i class="fr-mr-1w ri-1x ri-map-pin-line"></i>Mise en page',
   html: '<i class="ri-collage-line"></i><span>Mise en page</span>',
   className: 'action-button ol-custom-button',
-  autoActivate:true,
+  autoActivate: true,
   buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline'],
   buttonAttributes: {
     title: "Gérer la mise en page de la carte",
     'aria-label': "Gérer la mise en page de la carte",
+    'data-action': Charte.modes.STORYMAP,
   },
-  onToggle: function () {
-    if (storymap.getActive()) {
-      storymap.set('autoActivate', true);
-      createmap.set('autoActivate', false);
-    }
-    info("Storymap");
-  }
+  onToggle: onToggleMode
 });
 
 let save = new CustomButton({
@@ -90,14 +97,24 @@ let mainbar = new CustomBar({
   controls: [modeBar, save, share]
 })
 
-
-// Show info
-function info(i) {
-  console.log(i || "");
-}
-
+// Ajout à la barre mobile
 duplicate(mainbar)
 
 carte.addControl('stepBar', mainbar)
 
 mainbar.setPosition('top-right')
+
+// Lien avec la barre mobile
+const toggleModes = {}
+toggleModes[Charte.modes.EDITOR] = createmap;
+toggleModes[Charte.modes.STORYMAP] = storymap;
+
+charte.on('change:mode', (e) => {
+  let mode = e.target.getMode();
+  let previousMode = e.oldValue;
+  const toggle = toggleModes[mode];
+  const oldToggle = toggleModes[previousMode]
+  toggle.setActive(true);
+  toggle.set('autoActivate', true);
+  oldToggle.set('autoActivate', false);
+});

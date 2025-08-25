@@ -1,7 +1,7 @@
 import ol_ext_element from 'ol-ext/util/element'
 
 import { Menu, getUid } from './utils';
-
+import BaseObject from 'ol/Object.js';
 
 // DSFR
 import 'dsfrign/dist/core/core.module.min.js';
@@ -19,8 +19,9 @@ import 'dsfrign/dist/utility/icons/icons.min.css';
 import './charte.scss'
 
 /** Header */
-class Header {
+class Header extends BaseObject {
   constructor() {
+    super()
     const header = document.querySelector('header') || ol_ext_element.create('HEADER', {
       role: 'banner',
       className: 'fr-header fr-header--compact',
@@ -135,8 +136,9 @@ class Header {
   }
 }
 
-class Footer {
+class Footer extends BaseObject {
   constructor() {
+    super()
     this.element = ol_ext_element.create('FOOTER', {
       id: 'fr-footer',
       className: 'fr-footer',
@@ -343,14 +345,26 @@ class Footer {
 /** DSFR charte
  * 
  */
-class Charte {
-  constructor() {
-    this.header = new Header
-    this.element = ol_ext_element.create('main', { parent: document.body })
-    this.footer = new Footer()
+class Charte extends BaseObject {
+  /**
+   * Modes de l'application
+   */
+  static modes = Object.freeze({
+    EDITOR: 'editor',
+    STORYMAP: 'storymap',
+    PREVIEW: 'preview',
+  })
 
-    this._actions = {}
+  constructor() {
+    super();
+    this.header = new Header();
+    this.element = ol_ext_element.create('main', { parent: document.body });
+    this.footer = new Footer();
+    this.mode = this.setMode(Charte.modes.EDITOR);
+
+    this._actions = {};
   }
+
   /** Get en element in the main (or create it)
    * @param {string} role
    * @param {Object} options
@@ -510,10 +524,41 @@ class Charte {
     this._updateFooter()
   }
 
-}
+  /**
+   * Récupère le mode actuel de l'application
+   * @returns {"storymap"|"editor"|"preview"}
+   */
+  getMode() {
+    return this.get('mode')
+  }
 
+  /**
+   * Définit le mode de l'application.
+   *
+   * @param {"storymap"|"editor"|"preview"} mode
+   * Un des modes définis dans {@link Charte.modes}
+   *
+   * @example
+   * const charte = new Charte();
+   * // Passage en mode mise en page
+   * charte.setMode(Charte.modes.STORYMAP);
+   */
+  setMode(mode) {
+    // Vérifie si le mode est valide
+    if (!Object.values(Charte.modes).includes(mode)) {
+      throw new Error(`Mode invalide (utilisez Charte.modes): ${mode}`);
+    }
+
+    // Envoie un événement de cette manière
+    if (this.getMode() !== mode) {
+      this.set('mode', mode, false);
+      document.body.dataset.mode = mode;
+    }
+  }
+}
 // Copy footer > header
 // charte.header.footer.querySelector('.fr-header__menu-footer .footer-links').innerHTML = charte.footer.element.innerHTML;
 
 // Export singleton
 export default new Charte
+export { Charte }
