@@ -9,12 +9,17 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
+    "lint": "eslint --fix \"src/*.js\" || exit 0",
     "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.34.0",
+    "eslint": "^9.34.0",
+    "globals": "^16.3.0",
     "sass-embedded": "^1.89.2",
     "vite": "^7.0.4"
   },
