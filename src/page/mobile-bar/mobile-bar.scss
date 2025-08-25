@@ -12,7 +12,8 @@
   grid-template-columns: 1fr 4fr;
   justify-items: stretch;
 
-  :not(:first-child) {
+  > :not(:first-child),
+  > :not(:first-child) :not(:first-child) {
     border-radius: 0;
     border-left: 1px solid var(--border-default-grey);
   }
