@@ -74,12 +74,12 @@ class Panel extends Dialog {
 
     super._createDialog(options);
 
-    this.navigation = this.selectElement(this.selectors.NAVIGATION)
+    this.navigation = this.querySelector(this.selectors.NAVIGATION)
 
     // Ajoute les événements à l'ouverture / fermeture des onglets
     let self = this;
-    this.dialog.addEventListener(this.selectors.OPEN_TAB, self._tabHandler);
-    this.dialog.addEventListener(this.selectors.CLOSE_TAB, self._tabHandler);
+    this.on(this.selectors.OPEN_TAB, self._tabHandler);
+    this.on(this.selectors.CLOSE_TAB, self._tabHandler);
 
 
     if (options.position) {
@@ -91,19 +91,13 @@ class Panel extends Dialog {
     super.setContent(options);
 
     this.addNavItems(options.items);
-    // let items = this.selectAllElements(this.selectors.NAVIGATION_LINK)
-    // let self = this;
-    // items.forEach(item => {
-    //   console.log(item)
-
-    // })
 
     this.navigation.classList.toggle('fr-hidden', !this.hasNavItem());
   }
 
   addNavItems(items) {
     if (Array.isArray(items)) {
-      let navList = this.selectElement(this.selectors.NAVIGATION_LIST);
+      let navList = this.querySelector(this.selectors.NAVIGATION_LIST);
       navList.replaceChildren();
       items.forEach(item => {
         this.addNavItem(item);
@@ -118,7 +112,7 @@ class Panel extends Dialog {
    * @param {TabNavItem} item Lien à ajouter 
    */
   addNavItem(item) {
-    const navList = this.selectElement(this.selectors.NAVIGATION_LIST);
+    const navList = this.querySelector(this.selectors.NAVIGATION_LIST);
     if (!item) {
       navList.replaceChildren();
       return;
@@ -179,11 +173,11 @@ class Panel extends Dialog {
   }
 
   hasNavItem() {
-    return this.selectAllElements(this.selectors.NAVIGATION_ITEM).length;
+    return this.querySelectorAll(this.selectors.NAVIGATION_ITEM).length;
   }
 
   getCurrentLink() {
-    return this.selectElement(this.selectors.CURRENT_LINK);
+    return this.querySelector(this.selectors.CURRENT_LINK);
   }
 
   /**
@@ -200,30 +194,26 @@ class Panel extends Dialog {
       currentLink.ariaSelected = false;
 
       const currentContentId = currentLink.getAttribute('aria-controls');
-      const currentContent = this.selectElement(`#${currentContentId}`);
+      const currentContent = this.querySelector(`#${currentContentId}`);
       currentContent.classList.add('fr-hidden');
-      const closeEvent = new CustomEvent('panel:tab:close', {
-        detail: {
-          'tab': currentLink,
-          'content': currentContent,
-        }
+      this.dispatchEvent({
+        type: this.selectors.CLOSE_TAB,
+        tab: currentLink,
+        content: currentContent,
       })
-      this.dialog.dispatchEvent(closeEvent)
     }
 
     // Sélectionne l'élément
     link.ariaSelected = true;
     // Affiche le contenu
     const contentId = link.getAttribute('aria-controls');
-    const content = this.selectElement(`#${contentId}`);
+    const content = this.querySelector(`#${contentId}`);
     content.classList.remove('fr-hidden');
-    const openEvent = new CustomEvent('panel:tab:open', {
-      detail: {
-        'tab': link,
-        'content': content,
-      }
+    this.dispatchEvent({
+      type: this.selectors.OPEN_TAB,
+      tab: link,
+      content: content,
     })
-    this.dialog.dispatchEvent(openEvent)
   }
 
   /**
@@ -238,20 +228,21 @@ class Panel extends Dialog {
   }
 
   _tabHandler(e) {
-    let tab = e.detail.tab;
-    let content = e.detail.content;
+    const dialog = e.target;
+    let tab = e.tab;
+    let content = e.content;
     let type = e.type;
 
     let onOpen = tab.onTabOpen;
     let onClose = tab.onTabClose;
 
     switch (type) {
-      case 'panel:tab:open':
+      case dialog.selectors.OPEN_TAB:
         if (typeof onOpen === 'function') {
           onOpen(tab, content)
         }
         break;
-      case 'panel:tab:close':
+      case dialog.selectors.CLOSE_TAB:
         if (typeof onClose === 'function') {
           onClose(tab, content)
         }
@@ -273,7 +264,7 @@ class Panel extends Dialog {
     super._open();
     // Focus sur le premier item
     if (this.hasNavItem()) {
-      this.setCurrentLink(this.selectElement(this.selectors.NAVIGATION_LINK))
+      this.setCurrentLink(this.querySelector(this.selectors.NAVIGATION_LINK))
     }
   }
 }

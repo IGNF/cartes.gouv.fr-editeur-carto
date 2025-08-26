@@ -4,9 +4,22 @@ import account from '../../charte/nav-user.js'
 import content from './login.html?raw'
 import Action from '../Action';
 
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
+
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
 function onOpen(e) {
-  let dialog = loginAction.getDialog();
-  let form = dialog.selectElement('form');
+  dialog = e.target
+  let form = dialog.querySelector('form');
   form.addEventListener('submit', login);
 }
 
@@ -14,9 +27,8 @@ function login(e) {
   e.preventDefault();
 
   let form = e.target
-  const dialog = loginAction.getDialog();
   const formData = new FormData(form);
-  
+
   const username = formData.get('username')?.trim();
   const password = formData.get('password')?.trim();
   const rememberMe = formData.get('remember');
@@ -55,17 +67,17 @@ function login(e) {
   if (hasError) return;
 
   api.login(username, password, (e) => {
-  if (e) {
-    account.setMenu('user', {
-      label: e.username,
-      info: e.email
-    });
-    api.rememberMe(!!rememberMe)
-    dialog.close();
-  } else {
-    setError('login-fieldset', 'Le couple nom utilisateur / mot de passe est incorrect.');
-  }
-})
+    if (e) {
+      account.setMenu('user', {
+        label: e.username,
+        info: e.email
+      });
+      api.rememberMe(!!rememberMe)
+      dialog.close();
+    } else {
+      setError('login-fieldset', 'Le couple nom utilisateur / mot de passe est incorrect.');
+    }
+  })
 }
 
 const loginAction = new Action({
@@ -75,7 +87,7 @@ const loginAction = new Action({
     {
       label: "Se connecter",
       kind: 0,
-      type:'submit',
+      type: 'submit',
       form: 'login',
     },
     {
@@ -84,7 +96,7 @@ const loginAction = new Action({
       close: true
     }
   ],
-  onOpen:onOpen,
+  onOpen: onOpen,
 });
 
 export default loginAction;

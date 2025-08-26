@@ -28,14 +28,14 @@ class Modal extends Dialog {
 
 
     this.selectors.FOOTER = '.fr-modal__footer';
-    this.selectors.OPEN_EVENT = 'dsfr.disclose';
-    this.selectors.CLOSE_EVENT = 'dsfr.conceal';
+    // this.selectors.OPEN_EVENT = 'dsfr.disclose';
+    // this.selectors.CLOSE_EVENT = 'dsfr.conceal';
   }
 
   addButton(button) {
     super.addButton(button);
     // Enlève la classe 'fr-hidden' sur le footer au besoin
-    const footer = this.selectElement(this.selectors.FOOTER)
+    const footer = this.querySelector(this.selectors.FOOTER)
     if (button) {
       footer.classList.remove('fr-hidden')
     } else {
@@ -65,19 +65,22 @@ class Modal extends Dialog {
    * Ajoute ou remplace la fonction lancée à l'ouverture
    * du dialog.
    * 
-   * @param {Fonction} onOpen Fonction à l'ouverture du dialog.
+   * @param {function(Modal)} onOpen Fonction à l'ouverture du dialog.
    */
   setOnOpen(onOpen) {
     super.setOnOpen(onOpen);
 
     // Vérifie si la modale était ouverte (elle s'ouvre avant
-    // si openAction est ajouté à la création du bouton
-    // Sinon elle s'ouvre après
+    // si openAction est ajouté à la création du bouton.
+    // Sinon elle s'ouvre après)
     let dsfr = window.dsfr;
     if (typeof dsfr === 'function') {
       let modal = dsfr(this.getDialog()).modal
       if (modal && modal.isDisclosed) {
-        onOpen()
+        // Envoie un événement pour l'ouverture du dialog
+        this.dispatchEvent({
+          type: this.selectors.OPEN_EVENT
+        })
       }
     }
   }

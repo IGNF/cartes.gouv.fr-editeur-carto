@@ -36,11 +36,24 @@ const buttonConnect = [
   }
 ];
 
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
+
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
 function onOpen(e) {
-  let dialog = openMapAction.getDialog();
+  dialog = e.target
 
   if (api.isConnected) {
-    api.getMaps({}, getUserMaps);
+    api.getMaps({}, (e) => getUserMaps(e, dialog));
 
   } else {
     dialog.setDialogContent(connectContent);
@@ -48,9 +61,11 @@ function onOpen(e) {
   }
 }
 
+/**
+ * 
+ * @param {*} e event renvoyé par l'API getMaps
+ */
 function getUserMaps(e) {
-  let dialog = openMapAction.getDialog();
-
   const maps = e.maps;
 
   if (maps && maps.length) {
@@ -78,29 +93,6 @@ function getUserMaps(e) {
     dialog.setDialogContent("<p>Vous n'avez pas de cartes enregistrées</p>")
   }
 }
-
-function selectCard(e) {
-  if (e.type === 'click' || (e.type === 'keyup' && (e.code === 'Enter' || e.code === 'Space'))) {
-    let dialog = openMapAction.getDialog();
-    let dialogElement = dialog.getDialog();
-
-    // Active le bouton d'ouverture
-    dialog.getButton(0).disabled = false;
-
-    // Déselctionne les autres éléments s'il y'en a
-    let currents = dialogElement.querySelectorAll('[aria-current="true"]')
-    currents.forEach(card => {
-      card.ariaCurrent = false
-    });
-
-    let target;
-    if (e.target.classList.contains('ol-map-card')) target = e.target;
-    else target = e.target.closest('.ol-map-card');
-
-    target.ariaCurrent = true;
-  }
-}
-
 
 /**
  * 
@@ -141,9 +133,29 @@ function createMapCard({ title, timestamp, img, id }) {
   return card;
 }
 
+
+function selectCard(e) {
+  if (e.type === 'click' || (e.type === 'keyup' && (e.code === 'Enter' || e.code === 'Space'))) {
+    // Active le bouton d'ouverture
+    dialog.getButton(0).disabled = false;
+
+    // Déselctionne les autres éléments s'il y'en a
+    let currents = dialog.querySelectorAll('[aria-current="true"]')
+    currents.forEach(card => {
+      card.ariaCurrent = false
+    });
+
+    let target;
+    if (e.target.classList.contains('ol-map-card')) target = e.target;
+    else target = e.target.closest('.ol-map-card');
+
+    target.ariaCurrent = true;
+  }
+}
+
+
 function openMap(e) {
-  let dialog = openMapAction.getDialog();
-  let card = dialog.getDialog().querySelector('[aria-current="true"]');
+  let card = dialog.querySelector('[aria-current="true"]');
 
   let mapId = card.dataset.mapId;
 

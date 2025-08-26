@@ -3,7 +3,21 @@ import carte from '../../carte.js';
 import content from './shareMap.html?raw';
 import './shareMap.scss';
 
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
+
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
 function onOpen(e) {
+  dialog = e.target
   let copyBtns = e.target.querySelectorAll('button.copy');
   copyBtns.forEach(btn => {
     btn.addEventListener('click', copy)
