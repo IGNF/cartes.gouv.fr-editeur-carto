@@ -1,18 +1,6 @@
 import ol_ext_element from 'ol-ext/util/element'
 import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper";
-
-
-const dsfrPrefix = 'fr-icon'
-const dsfrClasses = ['fr-icon', 'fr-icon--sm'];
-const remixIconPrefix = 'ri-'
-const remixIconClasses = ['ri-1x'];
-
-const buttonKind = {
-  0: 'fr-btn',
-  1: 'fr-btn--secondary',
-  2: 'fr-btn--tertiary',
-  3: 'fr-btn--tertiary-no-outline',
-}
+import BaseObject from 'ol/Object.js';
 
 /**
  * Bouton à insérer dans le dialog
@@ -35,7 +23,7 @@ const buttonKind = {
  * @property {string} id - Id du dialog.
  * @property {string} className - Classe à ajouter à la modale.
  * @property {string} [icon] - Icône du titre. Par défaut, aucune icône.
- * @property {Function} [onOpen] - Fonction à l'ouverture du dialog.
+ * @property {DialogOnOpen} [onOpen] - Fonction appelée à l'ouverture du dialog.
  * @property {Element} [parent] - Élément HTML du dialog. Par défaut, l'ajoute
  * au body.
  * @property {string|Element} [html] - Contenu html du dialog.
@@ -43,9 +31,16 @@ const buttonKind = {
 
 
 /**
+ * Callback exécuté à l'ouverture du dialog.
+ *
+ * @callback DialogOnOpen
+ * @param {Dialog} dialog - Instance du dialog qui vient de s'ouvrir.
+ */
+
+/**
  * Événement à l'ouverture du dialog.
  *
- * @event HTMLDialogElement#dialog:open
+ * @event Dialog#dialog:open
  * @type {object}
  * @property {Dialog} target - Objet dialog.
  */
@@ -54,18 +49,52 @@ const buttonKind = {
 /**
  * Événement à la fermeture du dialog.
  *
- * @event HTMLDialogElement#dialog:close
- * @type {object}
+ * @event Dialog#dialog:close
  * @property {Dialog} target - Objet dialog.
  */
 
 
-class Dialog {
+
+const dsfrPrefix = 'fr-icon'
+const dsfrClasses = ['fr-icon', 'fr-icon--sm'];
+const remixIconPrefix = 'ri-'
+const remixIconClasses = ['ri-1x'];
+
+const buttonKind = {
+  0: 'fr-btn',
+  1: 'fr-btn--secondary',
+  2: 'fr-btn--tertiary',
+  3: 'fr-btn--tertiary-no-outline',
+}
+
+const dialogs = {}
+
+class Dialog extends BaseObject {
+
+  static getDialog(id) {
+    if (id in dialogs) {
+      return dialogs[id];
+    } else {
+      throw new Error(`Aucun dialogue n'existe avec cet id : ${id}`);
+    }
+  }
+
+  #addDialog(id) {
+    if (!id) {
+      throw new Error("Un id doit être donné au dialogue");
+    } else if (id in dialogs) {
+      throw new Error(`Un dialogue avec l'id '${id}' existe déjà`);
+    } else {
+      dialogs[id] = this;
+    }
+  }
+
   /**
    * 
-   * @param {DialogOptions} options 
+   * @param {DialogOptions} options
    */
   constructor(options) {
+    super();
     /**
      * @private Nom générique de la classe du dialog
      */
@@ -88,6 +117,8 @@ class Dialog {
       }
     }
 
+    this.#addDialog(options.id)
+
     const dialogOptions = Utils.assign(this.options, optionsToKeep);
 
     this.dialog = ol_ext_element.create('DIALOG', dialogOptions);
@@ -96,7 +127,6 @@ class Dialog {
 
     this._createDialog(createOptions);
   }
-
 
   /**
    * Initie les sélecteurs CSS utiles dans le reste
@@ -131,7 +161,7 @@ class Dialog {
     let dialog = this.dialog;
     let self = this;
 
-    this.closeBtn = this.selectElement(this.selectors.BTN_CLOSE);
+    this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE);
     this.closeBtn.setAttribute('aria-controls', this.getId());
 
     // Permet de laisser les sous-classes override la fonction
@@ -142,9 +172,9 @@ class Dialog {
     });
 
     // Titre et contenu du dialog
-    this.dialogTitle = this.selectElement(this.selectors.TITLE);
-    this.dialogIcon = this.selectElement(this.selectors.ICON);
-    this.dialogContent = this.selectElement(this.selectors.CONTENT);
+    this.dialogTitle = this.querySelector(this.selectors.TITLE);
+    this.dialogIcon = this.querySelector(this.selectors.ICON);
+    this.dialogContent = this.querySelector(this.selectors.CONTENT);
 
     if (options.title) {
       this.dialogTitle.innerHTML = options.title;
@@ -154,9 +184,9 @@ class Dialog {
     }
     this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen : (e) => { };
 
-    this.dialog.addEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
-    this.dialog.addEventListener(this.selectors.CLOSE_EVENT, () => {
-      this.dialog.removeEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
+    this.on(this.selectors.OPEN_EVENT, this.onOpenFn);
+    this.on(this.selectors.CLOSE_EVENT, () => {
+      this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
     });
   }
 
@@ -183,7 +213,7 @@ class Dialog {
    * @param {string} selector Sélecteur CSS.
    * @returns {Element} Premier élément correspondant au sélecteur.
    */
-  selectElement(selector) {
+  querySelector(selector) {
     return this.dialog.querySelector(selector);
   }
 
@@ -194,7 +224,7 @@ class Dialog {
    * @param {string} selector Sélecteur CSS
    * @returns {NodeList} Liste des élements correspondant au sélecteur
    */
-  selectAllElements(selector) {
+  querySelectorAll(selector) {
     return this.dialog.querySelectorAll(selector);
   }
 
@@ -319,7 +349,7 @@ class Dialog {
    * @param {DialogButton} button bouton à ajouter au dialog.
    */
   addButton(button) {
-    let buttonGroup = this.selectElement(this.selectors.BUTTON_GROUP);
+    let buttonGroup = this.querySelector(this.selectors.BUTTON_GROUP);
 
     if (!button) {
       buttonGroup.replaceChildren();
@@ -376,7 +406,7 @@ class Dialog {
         }
       }
 
-      buttonGroup.appendChild(btn, this.selectElement(this.selectors.BUTTONS))
+      buttonGroup.appendChild(btn, this.querySelector(this.selectors.BUTTONS))
     }
   }
 
@@ -387,7 +417,7 @@ class Dialog {
    */
   setButtons(buttons) {
     if (Array.isArray(buttons)) {
-      let buttonGroup = this.selectElement(this.selectors.BUTTON_GROUP);
+      let buttonGroup = this.querySelector(this.selectors.BUTTON_GROUP);
       buttonGroup.replaceChildren();
       buttons.forEach(button => {
         this.addButton(button);
@@ -397,18 +427,13 @@ class Dialog {
     }
   }
 
-  getButton(index) {
-
-  }
-
-
   /**
    * Retourne les boutons du groupe de bouton.
    * 
    * @returns {NodeList} Liste des boutons.
    */
   getButtons() {
-    return this.selectAllElements(this.selectors.BUTTONS);
+    return this.querySelectorAll(this.selectors.BUTTONS);
   }
 
   /**
@@ -429,7 +454,7 @@ class Dialog {
    * @returns {HTMLButtonElement} Bouton de fermeture du dialog
    */
   getCloseButton() {
-    return this.selectElement(this.selectors.BTN_CLOSE);
+    return this.querySelector(this.selectors.BTN_CLOSE);
   }
 
   /**
@@ -444,15 +469,17 @@ class Dialog {
 
   /**
    * Ferme le dialog en simulant un click sur le bouton de fermeture.
-   * Envoie un événement sur le dialog.
+   * Envoie un événement de fermeture.
    * 
    * @param {Dialog} self 
    * 
-   * @fires HTMLDialogElement#dialog:close
+   * @fires Dialog#dialog:close
    */
   close(self = this) {
     self._close(self);
-    self.dialog.dispatchEvent(new Event(self.selectors.CLOSE_EVENT, self));
+    self.dispatchEvent({
+      type: self.selectors.CLOSE_EVENT
+    });
   }
 
   /**
@@ -466,11 +493,13 @@ class Dialog {
   /**
    * Ouvre le dialog et envoie un événement sur le dialog.
    * 
-   * @fires HTMLDialogElement#dialog:open
+   * @fires Dialog#dialog:open
    */
   open() {
     this._open();
-    this.dialog.dispatchEvent(new Event(this.selectors.OPEN_EVENT, this));
+    this.dispatchEvent({
+      type: this.selectors.OPEN_EVENT
+    });
   }
 
   /**
@@ -480,17 +509,11 @@ class Dialog {
    * @param {Fonction} onOpen Fonction à l'ouverture du dialog.
    */
   setOnOpen(onOpen) {
-    this.dialog.removeEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
+    this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
     if (typeof onOpen === 'function') {
       this.onOpenFn = onOpen;
-      this.dialog.addEventListener(this.selectors.OPEN_EVENT, this.onOpenFn);
+      this.on(this.selectors.OPEN_EVENT, this.onOpenFn);
     }
-  }
-
-  on(type, callback, once = true) {
-    let dialog = this.dialog;
-
-    dialog.addEventListener(type, callback, { once: !!once })
   }
 
   onOpen(callback, once) {
@@ -498,6 +521,7 @@ class Dialog {
   }
 
   onClose(callback, once) {
+    console.log('on close')
     this.on(this.selectors.CLOSE_EVENT, callback, once)
   }
 }

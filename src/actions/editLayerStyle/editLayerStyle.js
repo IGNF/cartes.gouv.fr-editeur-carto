@@ -5,15 +5,27 @@ import editInfobulleItem from './edit-infobulle.js';
 import editAttributeItem from './edit-attribute.js';
 import './editLayerStyle.scss';
 
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
+
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
 function onOpen(e) {
-  let dialog = editLayerAction.getDialog();
+  dialog = e.target;
 }
 
 const editLayerAction = new Action({
   title: 'Point',
   icon: 'ri-global-line',
   onOpen: onOpen,
-  // content: content,
   items: [editStyleItem, editTexteItem, editInfobulleItem, editAttributeItem]
 })
 

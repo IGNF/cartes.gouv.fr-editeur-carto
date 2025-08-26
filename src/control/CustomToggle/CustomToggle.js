@@ -3,8 +3,6 @@ import Toggle from 'ol-ext/control/Toggle'
 import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
 import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-import './CustomToggle.scss'
-
 const logger = Logger.getLogger("CustomToggle");
 
 /**
@@ -20,27 +18,12 @@ const logger = Logger.getLogger("CustomToggle");
  * @param {Boolean}[options.collapsed=true]   - start collapsed (dialog closed)
  * @param {String} [options.title="Modal"]   - dialog title (aria‑label & heading)
  * @param {HTMLElement|String} [options.dialogElement] - initial dialog content
- * @param {String[]} [options.buttonClasses]  - extra classes on main button
  *
  * @extends {ol.control.Toggle}
  */
 class CustomToggle extends Toggle {
   constructor(options) {
-    options = options || {};
-    options.className = options.className + ' ol-custom-toggle'
-
     super(options);
-
-    // Ajoute des options supplémentaires au bouton
-    if (options.buttonClasses) {
-      options.buttonClasses = options.buttonClasses instanceof Array ? options.buttonClasses : [options.buttonClasses];
-      this.button_.classList.add(...options.buttonClasses);
-    }
-    // Ajoute des attributs supplémentaires au bouton
-    options.buttonAttributes = options.buttonAttributes ? options.buttonAttributes : {};
-    for (let attr in options.buttonAttributes) {
-      this.button_.setAttribute(attr, options.buttonAttributes[attr]);
-    }
 
     this._options = options;
   }

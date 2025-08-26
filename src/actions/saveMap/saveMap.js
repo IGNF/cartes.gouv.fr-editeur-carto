@@ -5,12 +5,26 @@ import content from './saveMap.html?raw';
 import ol_ext_element from 'ol-ext/util/element';
 
 
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
+
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
 function onOpen(e) {
-  let input = e.target.querySelector('[data-field="title"]');
+  dialog = e.target
+  let input = dialog.querySelector('[data-field="title"]');
   let title = carte.get('title') || carte.getMap().get('title');
   input.value = title ? title : '';
 
-  let select = e.target.querySelector('[data-field="theme"]');
+  let select = dialog.querySelector('[data-field="theme"]');
   api.getThemes((themes) => {
     if (themes.length) {
       addThemes(themes, select);
@@ -30,7 +44,6 @@ function addThemes(themes, select) {
 }
 
 function saveMap(e) {
-  let dialog = saveMapAction.getDialog().getDialog();
   let inputName = dialog.querySelector('[data-field="title"]');
   let select = dialog.querySelector('[data-field="theme"]');
 }

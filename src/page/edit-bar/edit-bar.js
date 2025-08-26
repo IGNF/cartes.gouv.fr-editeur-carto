@@ -1,10 +1,10 @@
 
 import carte from '../../carte.js'
 
-import Toggle from 'ol-ext/control/Toggle'
-import CustomButton from '../../control/CustomButton/CustomButton.js'
-import CustomBar from '../../control/CustomBar/CustomBar.js'
-import CustomToggle from '../../control/CustomToggle/CustomToggle.js'
+// import Bar from 'ol-ext/control/Bar'
+// import Toggle from 'ol-ext/control/Toggle'
+import Bar from '../../control/CustomBar/CustomBar.js'
+import Toggle from '../../control/CustomToggle/CustomToggle.js'
 
 import Draw from 'ol/interaction/Draw.js';
 import VectorSource from 'ol/source/Vector.js';
@@ -13,11 +13,9 @@ import openAction from '../../actions/actions.js'
 
 import './edit-bar.scss'
 import rightPanel from '../../rightPanel.js';
-import getDialog from '../../actions/dialogs.js';
-import leftPanel from '../../leftPanel.js';
 
 /**
- * @type {CustomToggle}
+ * @type {Toggle}
  */
 let toggle;
 // Fonction temporaire pour les toggle
@@ -48,10 +46,9 @@ function closeToggle(e, toggle) {
 }
 
 // Barre ajout de donnée
-let catalogue = new CustomToggle({
-  className: 'button-hint  ol-custom-button ol-custom-toggle',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'ri-book-open-line'],
-  buttonAttributes: {
+let catalogue = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-book-open-line ',
+  attributes: {
     'data-action': 'import-catalog',
     'aria-controls': rightPanel.getId(),
     title: "Importer une donnée de cartes.gouv",
@@ -60,10 +57,9 @@ let catalogue = new CustomToggle({
   onToggle: onToggleAction
 });
 
-let flux = new CustomToggle({
-  className: 'button-hint  ol-custom-button ol-custom-toggle',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'ri-global-line'],
-  buttonAttributes: {
+let flux = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-global-line ',
+  attributes: {
     'data-action': 'import-flow',
     'aria-controls': rightPanel.getId(),
     title: "Importer un flux",
@@ -72,10 +68,9 @@ let flux = new CustomToggle({
   onToggle: onToggleAction
 });
 
-let file = new CustomToggle({
-  className: 'button-hint  ol-custom-button ol-custom-toggle',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'ri-file-upload-line'],
-  buttonAttributes: {
+let file = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-file-upload-line ',
+  attributes: {
     'data-action': 'import-local',
     'aria-controls': rightPanel.getId(),
     title: "Importer une donnée locale",
@@ -84,7 +79,7 @@ let file = new CustomToggle({
   onToggle: onToggleAction
 });
 
-let addDataBar = new CustomBar({
+let addDataBar = new Bar({
   toggleOne: true,
   controls: [
     catalogue,
@@ -94,10 +89,9 @@ let addDataBar = new CustomBar({
 });
 
 // Interaction de select
-let selectToggle = new CustomToggle({
-  className: 'button-hint ol-custom-button ol-custom-toggle',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'ri-cursor-line'],
-  buttonAttributes: {
+let selectToggle = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line ',
+  attributes: {
     title: "Activer la sélection sur la carte",
     'aria-label': "Activer la sélection sur la carte",
   },
@@ -130,26 +124,26 @@ draws.forEach(draw => {
   })
 })
 
-let point = new CustomToggle({
-  className: 'button-hint ol-custom-button dsfr-btn',
+let point = new Toggle({
+  className: 'dsfr-btn',
   html: '<i class="fr-mr-1w ri-1x ri-map-pin-line"></i>Point',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'fr-btn--icon-left'],
+  classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
   interaction: drawPointInteraction,
 });
-let line = new CustomToggle({
-  className: 'button-hint ol-custom-button dsfr-btn',
+let line = new Toggle({
+  className: 'dsfr-btn',
   html: 'Ligne',
-  buttonClasses: ['fr-btn', 'fr-icon-ign-dessiner-trace-line', 'fr-btn--tertiary-no-outline', 'fr-btn--icon-left'],
+  classButton: 'fr-btn fr-icon-ign-dessiner-trace-line fr-btn--tertiary-no-outline fr-btn--icon-left ',
   interaction: drawLineStringInteraction,
 });
-let polygon = new CustomToggle({
-  className: 'button-hint ol-custom-button dsfr-btn',
+let polygon = new Toggle({
+  className: 'dsfr-btn',
   html: 'Surface',
-  buttonClasses: ['fr-btn', 'fr-icon-ign-surface', 'fr-btn--tertiary-no-outline', 'fr-btn--icon-left'],
+  classButton: 'fr-btn fr-icon-ign-surface fr-btn--tertiary-no-outline fr-btn--icon-left ',
   interaction: drawPolygonInteraction,
 });
 
-let drawBar = new CustomBar({
+let drawBar = new Bar({
   className: 'ol-bar--separator',
   toggleOne: true,
   controls: [
@@ -160,34 +154,33 @@ let drawBar = new CustomBar({
 })
 
 
-let drawToggle = new CustomToggle({
-  className: 'button-hint ol-custom-button',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'ri-pen-nib-line'],
+let drawToggle = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-pen-nib-line ',
   bar: drawBar,
 });
 
 
 // Interaction de mesure
 
-let distanceMeasure = new CustomToggle({
-  className: 'button-hint ol-custom-button dsfr-btn',
+let distanceMeasure = new Toggle({
+  className: 'dsfr-btn',
   html: '<i class="fr-mr-1w ri-1x ri-ruler-line"></i>Mesurer une distance',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'fr-btn--icon-left'],
+  classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
 });
-let surfaceMeasure = new CustomToggle({
-  className: 'button-hint ol-custom-button dsfr-btn',
+let surfaceMeasure = new Toggle({
+  className: 'dsfr-btn',
   html: 'Mesurer une surface',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'fr-icon-ign-surface', 'fr-btn--icon-left'],
+  classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-ign-surface fr-btn--icon-left ',
 });
-let isochrone = new CustomToggle({
-  className: 'button-hint ol-custom-button dsfr-btn',
+let isochrone = new Toggle({
+  className: 'dsfr-btn',
   html: '<i class="fr-mr-1w ri-1x ri-map-pin-5-line"></i>Mesurer une isochrone',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'fr-btn--icon-left'],
+  classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
   // html:'Mesurer une isochrone',
-  // buttonClasses: ['fr-btn', 'fr-icon-map-pin-2-line','fr-btn--tertiary-no-outline', 'fr-btn--icon-left'],
+  // classButton: 'fr-btn fr-icon-map-pin-2-line','fr-btn--tertiary-no-outline fr-btn--icon-left ',
 });
 
-let measureBar = new CustomBar({
+let measureBar = new Bar({
   className: 'ol-bar--separator',
   toggleOne: true,
   controls: [
@@ -197,14 +190,13 @@ let measureBar = new CustomBar({
   ]
 })
 
-let measureToggle = new CustomToggle({
-  className: 'button-hint ol-custom-button',
-  buttonClasses: ['fr-btn', 'fr-btn--tertiary-no-outline', 'ri-ruler-line'],
+let measureToggle = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-ruler-line ',
   bar: measureBar
 });
 
 // Barre d'interaction
-let interactionBar = new CustomBar({
+let interactionBar = new Bar({
   toggleOne: true,
   controls: [
     drawToggle,
@@ -213,7 +205,7 @@ let interactionBar = new CustomBar({
 })
 
 // Barre d'édition
-let editDataBar = new CustomBar({
+let editDataBar = new Bar({
   controls: [
     selectToggle,
     interactionBar,
@@ -221,7 +213,7 @@ let editDataBar = new CustomBar({
 })
 
 // Barre principale
-let mainbar = new CustomBar({
+let mainbar = new Bar({
   className: 'ol-bar--separator',
   toggleOne: true,
   controls: [carte.getControl('layerSwitcher'), addDataBar, editDataBar]

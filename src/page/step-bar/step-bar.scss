@@ -1,6 +1,6 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 
-.ol-control.ol-bar.ol-custom-bar.step-bar .ol-custom-toggle.action-button.ol-active {
+.ol-control.ol-bar.step-bar .ol-toggle.action-button.ol-active {
   &.ol-active > button,
   > button {
     &,
@@ -21,7 +21,7 @@
   }
 }
 
-.ol-control.ol-bar.ol-custom-bar.step-bar.ol-bar--row .ol-custom-toggle.action-button {
+.ol-control.ol-bar.step-bar.ol-bar--row .ol-toggle.action-button {
   > button {
     height: 40px;
     width: 40px;
@@ -49,8 +49,8 @@
   }
 }
 
-.ol-control.ol-bar.ol-custom-bar.step-bar.ol-bar--row {
-  &.ol-top .ol-custom-button {
+.ol-control.ol-bar.step-bar.ol-bar--row {
+  &.ol-top .ol-button {
     &.share-button,
     &.save-button {
       display: none;
@@ -68,7 +68,7 @@
   }
 }
 
-.ol-control.ol-bar.ol-custom-bar.ol-bar--row.step-bar {
+.ol-control.ol-bar.ol-top.ol-bar--row.step-bar {
   display: none;
 
   @include rf.respond-from('sm') {

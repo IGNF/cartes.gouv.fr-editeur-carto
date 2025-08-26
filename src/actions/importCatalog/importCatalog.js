@@ -5,8 +5,21 @@ import ol_ext_element from 'ol-ext/util/element';
 import './importCatalog.scss';
 import { htmlToNode } from '../../charte/utils.js';
 
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
+
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
 function onOpen(e) {
-  let dialog = importCatalogAction.getDialog();
+  dialog = e.target;
 }
 
 const importCatalogAction = new Action({

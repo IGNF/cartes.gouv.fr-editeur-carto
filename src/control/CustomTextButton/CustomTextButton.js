@@ -3,8 +3,6 @@ import TextButton from 'ol-ext/control/TextButton'
 import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
 import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-import './CustomTextButton.scss'
-
 const logger = Logger.getLogger("CustomTextButton");
 
 /**
@@ -27,22 +25,7 @@ const logger = Logger.getLogger("CustomTextButton");
  */
 class CustomTextButton extends TextButton {
   constructor(options) {
-    options = options || {};
-    options.className = options.className + ' ol-custom-text-button' 
-
     super(options);
-
-    // Ajoute des options supplémentaires au bouton
-    if (options.textClasses) {
-      options.textClasses = options.textClasses instanceof Array ? options.textClasses : [options.textClasses];
-      this.button_.classList.add(...options.textClasses);
-    }
-
-    // Ajoute des attributs supplémentaires au bouton
-    options.textAttributes = options.textAttributes ? options.textAttributes : {};
-    for (let attr in options.textAttributes) {
-      this.button_.setAttribute(attr, options.textAttributes[attr]);
-    }
 
     this._options = options;
   }

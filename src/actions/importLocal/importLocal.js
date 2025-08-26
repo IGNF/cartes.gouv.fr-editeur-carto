@@ -38,13 +38,26 @@ init({
   useWorker: false,
 });
 
-function onOpen(e) {
-  let dialog = importLocalAction.getDialog();
+/**
+ * @type {import('../../control/Dialog/Dialog.js').default}
+ * Dialog utilisé par l'action 
+ */
+let dialog;
 
-  let form = dialog.selectElement('form');
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
+function onOpen(e) {
+  dialog = e.target
+
+  let form = dialog.querySelector('form');
   form.addEventListener('submit', importFile);
 
-  let input = dialog.selectElement('input[type="file"]');
+  let input = dialog.querySelector('input[type="file"]');
   input.accept = accepted.join(',');
   input.addEventListener('change', (e) => removeMessage(e.target))
 }

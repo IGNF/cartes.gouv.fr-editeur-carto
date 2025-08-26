@@ -27,7 +27,7 @@ carte.on('read', () => {
   switcherBtn.classList.remove('fr-btn--tertiary', 'gpf-btn--tertiary')
   switcherBtn.classList.add('gpf-btn--primary')
   switcherBtn.parentElement.style = ''
-  switcher.on("change:collapsed", (e) => {
+  switcher.on("change:collapsed", () => {
     setTimeout(() => switcherBtn.parentElement.style = '', 1)
   })
 

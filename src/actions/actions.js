@@ -8,10 +8,7 @@ import importLocalAction from './importLocal/importLocal';
 import importFlowAction from './importFlow/importFlow';
 import editLayerStyleAction from './editLayerStyle/editLayerStyle';
 import loginAction from './login/login';
-
-import getDialog from './dialogs';
-import Modal from '../control/Modal/Modal';
-
+import Dialog from '../control/Dialog/Dialog';
 
 let actions = {
   'open-map': openMapAction,
@@ -39,23 +36,17 @@ let openAction = function (e) {
   const pressed = target.ariaPressed;
   const action = actions[actionName];
 
-  let dialog = getDialog(dialogId);
-
+  let dialog = Dialog.getDialog(dialogId);
   if (!dialog) return;
 
   if (action instanceof Action) {
     action.setAction(dialog);
-  } else if (action) {
-    dialog.setContent(action);
   }
 
-  // N'agit pas sur les modales dsfr
-  if (!(dialog instanceof Modal)) {
-    if (pressed === false || pressed === 'false') {
-      dialog.close();
-    } else {
-      dialog.open();
-    }
+  if (pressed === false || pressed === 'false') {
+    dialog.close();
+  } else {
+    dialog.open();
   }
 }
 
