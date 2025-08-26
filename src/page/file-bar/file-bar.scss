@@ -1,6 +1,6 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 
-.ol-control.ol-bar .ol-custom-button button.map-item {
+.ol-control.ol-bar .ol-button button.map-item {
   color: var(--text-default-grey);
   display: flex;
   flex-direction: row;
@@ -25,7 +25,7 @@
   }
 }
 
-.ol-control.ol-custom-bar.ol-bar--separator.ol-bar.map-handle > .ol-custom-button:first-child {
+.ol-control.ol-top.ol-bar--separator.ol-bar.map-handle > .ol-button:first-child {
   padding: 0;
 
   @include rf.respond-from('lg') {
@@ -33,7 +33,7 @@
   }
 }
 
-.ol-control.ol-bar .ol-control.ol-custom-text-button.file-name > div {
+.ol-control.ol-bar .ol-control.ol-text-button.file-name > div {
   font-size: 0.875rem;
   color: var(--text-disabled-grey);
 
@@ -46,7 +46,7 @@
   }
 }
 
-.ol-control.ol-bar .ol-control.ol-custom-text-button.map-title {
+.ol-control.ol-bar .ol-control.ol-text-button.map-title {
   display: none;
   overflow: hidden;
   // white-space: pre-wrap;
@@ -62,7 +62,7 @@
   }
 }
 
-.ol-control.ol-bar .ol-control.ol-custom-text-button.map-title {
+.ol-control.ol-bar .ol-control.ol-text-button.map-title {
   display: none;
   overflow: hidden;
   // white-space: pre-wrap;
@@ -82,7 +82,7 @@
   width: 330px;
 }
 
-.ol-control.ol-custom-bar.ol-bar--separator.ol-bar.map-handle {
+.ol-control.ol-top.ol-bar--separator.ol-bar.map-handle {
   display: none;
 
   @include rf.respond-from('sm') {

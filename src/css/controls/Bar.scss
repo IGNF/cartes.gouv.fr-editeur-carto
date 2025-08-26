@@ -1,0 +1,189 @@
+.ol-control.ol-bar {
+  &,
+  & .ol-control.ol-option-bar {
+    background-color: var(--background-default-grey);
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+
+    .ol-toggle,
+    .ol-button,
+    .ol-toggle:hover,
+    .ol-button:hover {
+      background-color: var(--background-default-grey);
+      outline: none;
+
+      button {
+        margin: 0;
+      }
+
+      button:empty {
+        height: 40px;
+        width: 40px;
+      }
+
+      button:not(:empty) {
+        width: 100%;
+      }
+    }
+  }
+
+  & .ol-control.ol-option-bar {
+    box-shadow: none;
+    border-radius: 0;
+
+    &::before {
+      border: 0;
+    }
+  }
+
+  &.ol-right .ol-control.ol-option-bar {
+    margin: 0 0.5rem;
+  }
+
+  &.ol-right > .ol-control > .ol-bar {
+    display: block;
+  }
+
+  &.ol-right.ol-bar--separator:not(.ol-bar--row),
+  &.ol-right .ol-control.ol-active > .ol-option-bar.ol-bar--separator {
+    > * {
+      padding: 0.25rem 0;
+    }
+    > *:first-child {
+      padding: 0 0 0.25rem;
+    }
+
+    > *:last-child {
+      padding: 0.25rem 0 0;
+    }
+
+    > *:not(:last-child) {
+      border-radius: 0;
+      border-bottom: 1px solid var(--border-default-grey);
+    }
+  }
+
+  .ol-control.ol-active > .ol-option-bar.ol-bar--separator {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Bar en haut à droite
+
+.ol-control.ol-bar.ol-top {
+  &.ol-left,
+  &.ol-right {
+    top: 0.5rem;
+
+    .ol-control {
+      margin: unset;
+      padding: unset;
+    }
+  }
+
+  &.ol-bar--row {
+    &,
+    .ol-bar:not(.ol-bar--column) {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .fr-btn:not(:empty) {
+      padding: 0.5rem 1rem;
+    }
+
+    &.ol-bar--separator {
+      > * {
+        padding: 0 0.25rem;
+      }
+      > *:first-child {
+        padding: 0 0.25rem 0 0;
+      }
+
+      > *:last-child {
+        padding: 0 0 0 0.25rem;
+      }
+
+      > *:last-child:first-child {
+        padding: 0;
+      }
+
+      > *:not(:first-child) {
+        border-radius: 0;
+        border-left: 1px solid var(--border-default-grey);
+      }
+    }
+  }
+
+  &.ol-bar.ol-bar--column,
+  .ol-control.ol-active > .ol-bar.ol-bar--column {
+    &,
+    .ol-bar:not(.ol-bar--row) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fr-btn:not(:empty) {
+      padding: 0.5rem 1rem;
+    }
+
+    &.ol-bar--separator {
+      > * {
+        padding: 0.5rem 0;
+      }
+      > *:first-child {
+        padding: 0 0.25rem 0 0;
+      }
+
+      > *:last-child {
+        padding: 0.5rem 0 0 0;
+      }
+
+      > *:last-child:first-child {
+        padding: 0;
+      }
+
+      > *:not(:first-child) {
+        border-radius: 0;
+        border-top: 1px solid var(--border-default-grey);
+      }
+    }
+  }
+}
+
+.ol-control.ol-bar .ol-control.ol-active .ol-bar.ol-bar--row {
+  display: flex;
+  flex-direction: row;
+}
+.ol-control.ol-bar .ol-control.ol-active .ol-bar.ol-bar--column {
+  display: flex;
+  flex-direction: column;
+}
+
+.ol-control.ol-bar.ol-left.ol-top .ol-option-bar {
+  border-radius: 0.25rem;
+  top: calc(100% + 0.5rem);
+  left: -0.25rem;
+}
+
+.ol-control.ol-bar {
+  background-color: var(--background-default-grey);
+
+  .ol-control {
+    &,
+    &:hover,
+    &:active {
+      background-color: var(--background-default-grey);
+    }
+  }
+}
+
+// Cas mobile
+.ol-touch .ol-control.ol-bar.ol-top {
+  &.ol-left,
+  &.ol-right {
+    top: 0.5rem;
+  }
+}

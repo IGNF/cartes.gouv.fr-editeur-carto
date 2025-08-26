@@ -75,10 +75,10 @@ const toggleModes = {}
 
 // Récupère les toggle de création / mise en page
 duplicateControls.on('add', (e) => {
-  let elem = e.element;
-  let options = elem._options;
-  if (options && options.buttonAttributes && options.buttonAttributes['data-action']) {
-    let action = options.buttonAttributes['data-action'];
+  const elem = e.element;
+  const options = elem._options;
+  if (options && options.attributes && options.attributes['data-action']) {
+    const action = options.attributes['data-action'];
     switch (action) {
       case Charte.modes.EDITOR:
         toggleModes[Charte.modes.EDITOR] = elem;
@@ -92,8 +92,8 @@ duplicateControls.on('add', (e) => {
 })
 
 charte.on('change:mode', (e) => {
-  let mode = e.target.getMode();
-  let previousMode = e.oldValue;
+  const mode = e.target.getMode();
+  const previousMode = e.oldValue;
   const toggle = toggleModes[mode];
   const oldToggle = toggleModes[previousMode]
   if (toggle && oldToggle) {

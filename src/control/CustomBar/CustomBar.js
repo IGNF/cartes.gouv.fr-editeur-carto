@@ -3,8 +3,6 @@ import Bar from 'ol-ext/control/Bar'
 import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
 import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-import './CustomBar.scss'
-
 const logger = Logger.getLogger("CustomBar");
 
 /**
@@ -20,15 +18,11 @@ const logger = Logger.getLogger("CustomBar");
  * @param {Boolean}[options.collapsed=true]   - start collapsed (dialog closed)
  * @param {String} [options.title="Modal"]   - dialog title (aria‑label & heading)
  * @param {HTMLElement|String} [options.dialogElement] - initial dialog content
- * @param {String[]} [options.buttonClasses]  - extra classes on main button
  *
  * @extends {ol.control.Bar}
  */
 class CustomBar extends Bar {
   constructor(options) {
-    options = options || {};
-    options.className = options.className + ' ol-custom-bar'
-
     super(options);
 
     this._options = options;
