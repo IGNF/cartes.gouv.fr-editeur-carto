@@ -1,5 +1,5 @@
-import ol_ext_element from 'ol-ext/util/element'
-import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper";
+import ol_ext_element from 'ol-ext/util/element.js'
+import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 import BaseObject from 'ol/Object.js';
 
 /**
@@ -182,7 +182,7 @@ class Dialog extends BaseObject {
     if (options.icon) {
       this.setIcon(options.icon, this.dialogIcon);
     }
-    this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen : (e) => { };
+    this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen : () => { };
 
     this.on(this.selectors.OPEN_EVENT, this.onOpenFn);
     this.on(this.selectors.CLOSE_EVENT, () => {
@@ -272,7 +272,7 @@ class Dialog extends BaseObject {
    * @param {string} prefix Préfix de la classe à enlever
    */
   _removeClasses(element, prefix) {
-    if (!element instanceof Element) return;
+    if (!(element instanceof Element)) return;
     for (let i = element.classList.length - 1; i > 0; i--) {
       const c = element.classList[i];
       if (c.startsWith(prefix)) {
@@ -521,7 +521,6 @@ class Dialog extends BaseObject {
   }
 
   onClose(callback, once) {
-    console.log('on close')
     this.on(this.selectors.CLOSE_EVENT, callback, once)
   }
 }

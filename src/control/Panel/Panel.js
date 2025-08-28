@@ -1,10 +1,9 @@
-import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper";
+import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 import contentHTML from './panel.html?raw';
-import ol_ext_element from 'ol-ext/util/element';
-import { getUid } from "../../charte/utils";
-
+import ol_ext_element from 'ol-ext/util/element.js';
+import getUid from "../../utils/getUid.js";
 import './panel.scss';
-import Dialog from '../Dialog/Dialog';
+import Dialog from '../Dialog/Dialog.js';
 
 
 /**

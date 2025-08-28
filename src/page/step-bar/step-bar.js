@@ -2,8 +2,7 @@
 import carte from '../../carte.js'
 import modal from '../../modal.js';
 import charte from '../../charte/charte.js';
-import { Charte } from '../../charte/charte.js';
-
+import Charte from '../../charte/objects/Charte.js';
 // import Button from 'ol-ext/control/Button';
 // import Bar from 'ol-ext/control/Bar';
 // import Toggle from 'ol-ext/control/Toggle';
@@ -17,7 +16,7 @@ import openAction from '../../actions/actions.js'
 import duplicate from '../mobile-bar/mobile-bar.js';
 
 
-let onToggleMode = function (e) {
+let onToggleMode = function () {
   let toggle = this;
   const action = this.button_.getAttribute('data-action');
   charte.setMode(action);

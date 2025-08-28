@@ -1,14 +1,14 @@
-import Action from './Action';
-import openMapAction from './openMap/openMap';
-import shareMapAction from './shareMap/shareMap';
-import saveMapAction from './saveMap/saveMap';
-import renameMapAction from './renameMap/renameMap';
-import importCatalogAction from './importCatalog/importCatalog';
-import importLocalAction from './importLocal/importLocal';
-import importFlowAction from './importFlow/importFlow';
-import editLayerStyleAction from './editLayerStyle/editLayerStyle';
-import loginAction from './login/login';
-import Dialog from '../control/Dialog/Dialog';
+import Action from './Action.js';
+import openMapAction from './openMap/openMapAction.js';
+import shareMapAction from './shareMap/shareMapAction.js';
+import saveMapAction from './saveMap/saveMapAction.js';
+import renameMapAction from './renameMap/renameMapAction.js';
+import importCatalogAction from './importCatalog/importCatalogAction.js';
+import importLocalAction from './importLocal/importLocalAction.js';
+import importFlowAction from './importFlow/importFlowAction.js';
+import editLayerStyleAction from './editLayerStyle/editLayerStyleAction.js';
+import loginAction from './login/loginAction.js';
+import Dialog from '../control/Dialog/Dialog.js';
 
 let actions = {
   'open-map': openMapAction,

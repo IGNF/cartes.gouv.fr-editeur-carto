@@ -1,11 +1,11 @@
-import ol_ext_element from 'ol-ext/util/element';
+import ol_ext_element from 'ol-ext/util/element.js';
 
 import contentHTML from './connect.html?raw';
 import './connect.scss';
 
-import loginDialog from '../../loginDialog';
+import loginDialog from '../../loginDialog.js';
 import modal from '../../modal.js';
-import openAction from '../../actions/actions';
+import openAction from '../../actions/actions.js';
 
 const dialogConnect = ol_ext_element.create('DIALOG', {
   id: 'ConnectDialog',
@@ -27,7 +27,7 @@ viewMaps.setAttribute('aria-controls', modal.getId());
 viewMaps.setAttribute('data-fr-opened', false);
 viewMaps.addEventListener('click', openAction);
 
-dialogConnect.querySelector('.disconnected > *').addEventListener('click', (e) => {
+dialogConnect.querySelector('.disconnected > *').addEventListener('click', () => {
   delete document.body.dataset.disconnected;
 
   // dialogConnect.querySelector('.connected button.create').focus();
@@ -41,7 +41,7 @@ dialogConnect.querySelectorAll('.connected > button').forEach(button => {
 });
 
 // dialogConnect.showModal()
-// dialogConnect.show();
+dialogConnect.show();
 
 /* DEBUG */
 window.dialogConnect = dialogConnect;

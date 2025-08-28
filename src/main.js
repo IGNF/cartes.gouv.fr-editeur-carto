@@ -1,4 +1,4 @@
-import './version'
+import './version.js'
 import './charte/dsfr.js'
 import './charte/navigation.js'
 

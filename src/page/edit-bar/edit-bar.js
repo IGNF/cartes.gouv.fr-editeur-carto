@@ -20,7 +20,7 @@ import rightPanel from '../../rightPanel.js';
 let toggle;
 // Fonction temporaire pour les toggle
 // (n'envoient pas d'événement au click)
-function onToggleAction(ev) {
+function onToggleAction() {
   toggle = this;
   let e = new CustomEvent('click', {
     detail: {
@@ -30,8 +30,8 @@ function onToggleAction(ev) {
   openAction(e);
 }
 
-rightPanel.onClose((e) => {
-  closeToggle(e, toggle)
+rightPanel.onClose(() => {
+  closeToggle(toggle)
 }, false)
 
 /**
@@ -39,7 +39,7 @@ rightPanel.onClose((e) => {
  * @param {Event} e 
  * @param {Toggle} toggle 
  */
-function closeToggle(e, toggle) {
+function closeToggle(toggle) {
   if (toggle.getActive()) {
     toggle.setActive(false)
   }
@@ -118,7 +118,7 @@ let drawPolygonInteraction = getDraw('Polygon');
 let draws = [drawPointInteraction, drawLineStringInteraction, drawPolygonInteraction]
 
 draws.forEach(draw => {
-  draw.on('drawend', e => {
+  draw.on('drawend', () => {
     // Code à modifier lorsqu'il y'aura une sélection des couches
     // vector.getSource().addFeature(e.feature);
   })

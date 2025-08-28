@@ -1,8 +1,8 @@
 
-import { LayerSwitcher } from 'geopf-extensions-openlayers';
-import carte from '../carte';
-import leftPanel from '../leftPanel';
-import editLayerAction from '../actions/editLayerStyle/editLayerStyle';
+import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
+import carte from '../carte.js';
+import leftPanel from '../leftPanel.js';
+import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 
 
 function openMapDialog(e, instance, layer, options) {

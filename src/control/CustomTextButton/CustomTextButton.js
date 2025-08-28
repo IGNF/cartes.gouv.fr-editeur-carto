@@ -1,9 +1,8 @@
 // import OpenLayers control base and GeoPF utils
-import TextButton from 'ol-ext/control/TextButton'
-import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
-import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
+import TextButton from 'ol-ext/control/TextButton.js';
+// import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-const logger = Logger.getLogger("CustomTextButton");
+// const logger = Logger.getLogger("CustomTextButton");
 
 /**
  * @classdesc
@@ -30,8 +29,6 @@ class CustomTextButton extends TextButton {
     this._options = options;
   }
 }
-
-Object.assign(CustomTextButton.prototype, Widget);
 
 export default CustomTextButton;
 

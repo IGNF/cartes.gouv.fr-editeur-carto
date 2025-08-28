@@ -1,9 +1,8 @@
 // import OpenLayers control base and GeoPF utils
-import Bar from 'ol-ext/control/Bar'
-import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
-import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
+import Bar from 'ol-ext/control/Bar.js';
+// import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-const logger = Logger.getLogger("CustomBar");
+// const logger = Logger.getLogger("CustomBar");
 
 /**
  * @classdesc
@@ -28,8 +27,6 @@ class CustomBar extends Bar {
     this._options = options;
   }
 }
-
-Object.assign(CustomBar.prototype, Widget);
 
 export default CustomBar;
 

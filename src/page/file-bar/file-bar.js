@@ -6,10 +6,10 @@ import './file-bar.scss'
 // Download
 import FileSaver from 'file-saver'
 
-// import Button from 'ol-ext/control/Button';
-// import Bar from 'ol-ext/control/Bar';
-// import Toggle from 'ol-ext/control/Toggle';
-// import TextButton from 'ol-ext/control/TextButton';
+// import Button from 'ol-ext/control/Button.js';
+// import Bar from 'ol-ext/control/Bar.js';
+// import Toggle from 'ol-ext/control/Toggle.js';
+// import TextButton from 'ol-ext/control/TextButton.js';
 
 import Button from '../../control/CustomButton/CustomButton.js'
 import Bar from '../../control/CustomBar/CustomBar.js'
@@ -23,11 +23,11 @@ import duplicate from '../mobile-bar/mobile-bar.js';
 let title = carte.get('title');
 
 // Actions
-let createNewMap = function (e) {
+let createNewMap = function () {
   window.open(import.meta.env.BASE_URL, '_blank').focus();
 }
 
-let previewMap = function (e) {
+let previewMap = function () {
   console.log("ouvre la visualisation");
 }
 
@@ -38,7 +38,7 @@ let exportMap = function (e) {
   FileSaver.saveAs(blob, "carte.carte");
 }
 
-let printMap = function (e) {
+let printMap = function () {
   // Add ScaleLine on canvas
   carte.getControl('scaleLine').element.style.visibility = 'hidden'
   // Print

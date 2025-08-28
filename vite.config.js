@@ -8,6 +8,18 @@ export default defineConfig(({ command }) => ({
     outDir: './docs',
     emptyOutDir: true,
   },
+
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup/setup.js'],
+    include: ["./tests/test/**/*.{test,spec}.{ts,js}"],
+    server: {
+      deps: {
+        inline: ['mcutils'], // Permet à vitest d'importer mcutils sans avoir à modifier les imports
+      },
+    }
+  },
 }));
 
 

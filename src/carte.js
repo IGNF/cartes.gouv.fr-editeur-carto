@@ -1,7 +1,7 @@
 // Ma Carte
-import Carte from './mcutils/Carte';
+import Carte from './mcutils/Carte.js';
 
-import charte from './charte/charte';
+import charte from './charte/charte.js';
 
 import 'ol-ext/dist/ol-ext.css'
 import 'mcutils/Carte.css';

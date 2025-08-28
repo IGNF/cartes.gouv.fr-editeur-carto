@@ -1,4 +1,4 @@
-import charte from './charte'
+import charte from './charte.js'
 
 // Menu
 const service = charte.getHeaderMenu({

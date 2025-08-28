@@ -1,5 +1,5 @@
-import { getUid } from './charte/utils';
-import Modal from './control/Modal/Modal'
+import getUid from './utils/getUid.js';
+import Modal from './control/Modal/Modal.js'
 
 const modal = new Modal({
   id: getUid('main-modal'),

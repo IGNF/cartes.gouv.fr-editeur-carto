@@ -1,5 +1,3 @@
-import Dialog from '../control/Dialog/Dialog'
-
 /**
  * Bouton à mettre dans le buttons d'un dialog
  *  
@@ -80,7 +78,7 @@ class Action {
   }
 
 
-  /** @returns {Dialog} */
+  /** @returns {import('../control/Dialog/Dialog').default} */
   getDialog() {
     return this.dialog;
   }
@@ -105,7 +103,7 @@ class Action {
 
   /**
    * Lie les éléments d'une action à une modale.
-   * @param {Dialog} dialog Modale auquelle l'action est liée
+   * @param {import('../control/Dialog/Dialog').default} dialog Modale auquelle l'action est liée
    */
   setAction(dialog) {
     this.dialog = dialog;

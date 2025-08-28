@@ -1,9 +1,9 @@
-import openAction from '../actions/actions'
-import loginDialog from '../loginDialog'
-import api from 'mcutils/api/api'
-import charte from './charte'
+import openAction from '../actions/actions.js'
+import loginDialog from '../loginDialog.js'
+import api from 'mcutils/api/api.js'
+import charte from './charte.js'
 import './nav-user.scss'
-import { setUser } from './utils'
+import { setUser } from './utils.js'
 
 // Menu
 const account = charte.getHeaderMenu({
@@ -42,7 +42,7 @@ account.addMenu([
 ])
 
 // Bouton de connexion
-const accountBtn = charte.getHeaderButton({
+charte.getHeaderButton({
   type: 'button',
   label: 'Se connecter',
   icon: 'fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline',
@@ -52,12 +52,12 @@ const accountBtn = charte.getHeaderButton({
 })
 
 // Attend que le DSFR soit prêt pour la duplication du header
-document.documentElement.addEventListener('dsfr.start', (e) => {
+document.documentElement.addEventListener('dsfr.start', () => {
   // Bouton de déconnexion
   let disconnect = account.getMenu('disconnect');
   disconnect.forEach(btn => {
-    btn.link.addEventListener('click', (e) => {
-      api.logout((e) => charte.setConnected(false))
+    btn.link.addEventListener('click', () => {
+      api.logout(() => charte.setConnected(false))
     })
   })
 
@@ -71,13 +71,5 @@ document.documentElement.addEventListener('dsfr.start', (e) => {
 
   api.on('me', setUser)
 })
-
-
-setTimeout(() => {
-  const header = document.querySelector('header')
-  const loginBtn = header.querySelectorAll('button[data-action="login"]')
-  loginBtn.forEach(btn => {
-  })
-}, 1000)
 
 export default account;
