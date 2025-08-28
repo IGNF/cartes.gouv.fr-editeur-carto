@@ -1,9 +1,8 @@
 // import OpenLayers control base and GeoPF utils
-import Toggle from 'ol-ext/control/Toggle'
-import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
-import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
+import Toggle from 'ol-ext/control/Toggle.js';
+// import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-const logger = Logger.getLogger("CustomToggle");
+// const logger = Logger.getLogger("CustomToggle");
 
 /**
  * @classdesc
@@ -33,8 +32,6 @@ class CustomToggle extends Toggle {
     this.button_.setAttribute('aria-pressed', this.getActive())
   }
 }
-
-Object.assign(CustomToggle.prototype, Widget);
 
 export default CustomToggle;
 

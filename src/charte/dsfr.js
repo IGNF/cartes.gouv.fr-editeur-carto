@@ -7,8 +7,8 @@ charte.setService({
   href: '/',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
 })
-charte.setDescription(`Cartes.gouv.fr est développé par l\'Institut national de l\'information géographique et forestière (IGN) 
-  et ses partenaires. Le site s\'appuie sur la Géoplateforme, la nouvelle infrastructure publique, 
+charte.setDescription(`Cartes.gouv.fr est développé par l'Institut national de l'information géographique et forestière (IGN) 
+  et ses partenaires. Le site s'appuie sur la Géoplateforme, la nouvelle infrastructure publique, 
   ouverte et collaborative des données géographiques.`
 )
 

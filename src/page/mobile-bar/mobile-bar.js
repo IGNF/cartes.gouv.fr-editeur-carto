@@ -1,6 +1,6 @@
 import carte from '../../carte.js'
 import charte from '../../charte/charte.js';
-import { Charte } from '../../charte/charte.js';
+import Charte from '../../charte/objects/Charte.js';
 import { Collection } from 'ol';
 
 import './mobile-bar.scss'

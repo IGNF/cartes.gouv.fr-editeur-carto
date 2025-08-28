@@ -1,7 +1,7 @@
-import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper";
+import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 
-import contentHTML from './modal.html?raw'
-import Dialog from '../Dialog/Dialog';
+import contentHTML from './modal.html?raw';
+import Dialog from '../Dialog/Dialog.js';
 
 class Modal extends Dialog {
   constructor(options) {

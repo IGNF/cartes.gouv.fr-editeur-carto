@@ -1,3 +1,5 @@
+const viteConfig = require("./vite.config.js");
+
 const {
     defineConfig,
     globalIgnores,
@@ -17,28 +19,57 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-module.exports = defineConfig([{
-    languageOptions: {
-        globals: {
-            ...globals.browser,
+module.exports = defineConfig([
+    {
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+            },
+
+            "ecmaVersion": 'latest',
+            "sourceType": "module",
+            parserOptions: {},
         },
 
-        "ecmaVersion": 12,
-        "sourceType": "module",
-        parserOptions: {},
-    },
+        plugins: {
+            // sonarjs,
+            import: require("eslint-plugin-import"), // Check extension in imports / exports
+        },
 
-    plugins: {
-//        sonarjs,
-    },
+        extends: compat.extends("eslint:recommended", /* "plugin:sonarjs/recommended" */),
 
-    extends: compat.extends("eslint:recommended", /* "plugin:sonarjs/recommended" */),
+        settings: {
+            "import/resolver": {
+                vite: {
+                    viteConfig,
+                },
+            },
+        },
 
-    "rules": {
-      /*
-        "sonarjs/no-small-switch": "off",
-        "sonarjs/cognitive-complexity": "off",
-        "sonarjs/no-duplicate-string": "off",
-      */
+        "rules": {
+            // Extension des fichiers lors des imports
+            "import/extensions": ["error", "always", {
+                js: "always",
+                jsx: "always",
+            }],
+
+            // Vérifie que l'import existe"
+            "import/no-unresolved": ["error", {
+                ignore: ["\\?raw$", "\\?url$"],
+            }],
+
+            /*
+              "sonarjs/no-small-switch": "off",
+              "sonarjs/cognitive-complexity": "off",
+              "sonarjs/no-duplicate-string": "off",
+            */
+        },
     },
-}, globalIgnores(["**/.*", "**/www/*", "**/todo/*", "**/public/*", "**/docs/*"])]);
+    globalIgnores([
+        "**/.*",
+        "**/www/*",
+        "**/todo/*",
+        "**/public/*",
+        "**/docs/*"
+    ])
+]);

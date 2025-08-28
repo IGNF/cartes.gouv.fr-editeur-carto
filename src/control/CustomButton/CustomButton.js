@@ -1,9 +1,8 @@
 // import OpenLayers control base and GeoPF utils
-import Button from 'ol-ext/control/Button'
-import Widget from "geopf-extensions-openlayers/src/packages/Controls/Widget";
-import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
+import Button from 'ol-ext/control/Button.js';
+// import Logger from "geopf-extensions-openlayers/src/packages/Utils/LoggerByDefault";
 
-const logger = Logger.getLogger("CustomButton");
+// const logger = Logger.getLogger("CustomButton");
 
 /**
  * @classdesc
@@ -29,8 +28,6 @@ class CustomButton extends Button {
     this._options = options;
   }
 }
-
-Object.assign(CustomButton.prototype, Widget);
 
 export default CustomButton;
 

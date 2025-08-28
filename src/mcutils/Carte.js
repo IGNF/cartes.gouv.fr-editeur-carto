@@ -1,15 +1,14 @@
-import Carte from 'mcutils/Carte';
+import Carte from 'mcutils/Carte.js';
 import {
   GeoportalZoom,
   SearchEngine,
-} from 'geopf-extensions-openlayers';
-import switcher from './layerSwitcher';
-import Layer from 'ol/layer/Layer.js';
+} from 'geopf-extensions-openlayers/src/index.js';
+import switcher from './layerSwitcher.js';
 
 /** GPP Carte overwrite Carte options / controls
  */
 class GPPCarte extends Carte {
-  /** Constructor 
+  /** Constructor
    * @param {*} options
    *  @param {string|Element} [options.target]
    *  @param {string} options.key GPP api key
@@ -20,13 +19,12 @@ class GPPCarte extends Carte {
     super(options);
 
     // Remove ScaleLine from canvas
-    this.getControl('scaleLine').element.style.visibility = ''
+    this.getControl('scaleLine').element.style.visibility = '';
     this.getMap().render();
-    const self = this;
 
     this.selectedLayer = null;
 
-    // Remove controls      
+    // Remove controls
     const keyToExcludes = [
       'dialog',
       'title',
@@ -34,9 +32,10 @@ class GPPCarte extends Carte {
       'permalink',
       'scaleLine',
       'ctrlbar',
-      'printDlg'
+      'printDlg',
       // 'layerSwitcher',
-      // 'legend',
+      'legend',
+      'legendBt',
       // 'attribution',
     ]
     // Remove existing controls
@@ -73,7 +72,7 @@ class GPPCarte extends Carte {
   /** Add a new control
    * @param {string} name
    */
-  addControl = function (controlName, control) {
+  addControl(controlName, control) {
     if (!this._controls[controlName]) {
       this._controls[controlName] = control;
       this.map.addControl(control);
@@ -84,7 +83,7 @@ class GPPCarte extends Carte {
 
   /** Carte is ready
    */
-  setReady = () => {
+  setReady() {
     Carte.prototype.setReady.call(this);
     // Remove ScaleLine from canvas
     this.getControl('scaleLine').element.style.visibility = ''

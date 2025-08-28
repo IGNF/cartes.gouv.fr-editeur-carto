@@ -1,19 +1,22 @@
-import Action from '../Action.js';
-import content from './importLocal.html?raw';
-import './importLocal.scss';
-import { getUid } from '../../charte/utils.js';
-import carte from '../../carte.js';
-import { getValidFeatures, loadFile } from 'mcutils/dialog/dialogImportFile'
-import { info, init, toGeoJSON } from 'geoimport';
+/**
+ * @file Gère l'import du fichier.
+ * Ne gère que la partie import, pas la partie DOM.
+ */
+
+import * as errors from '../../utils/errors.js'
+import { loadFile } from 'mcutils/dialog/dialogImportFile.js'
+import * as geoimportRaw from 'geoimport';
+
+// Pour que les tests fonctionnent
+const geoimport = geoimportRaw.default ?? geoimportRaw;
+
 import workerUrl from 'geoimport/dist/static/gdal3.js?url';
 import dataUrl from 'geoimport/dist/static/gdal3WebAssembly.data?url';
 import wasmUrl from 'geoimport/dist/static/gdal3WebAssembly.wasm?url';
 
-import VectorSource from 'ol/source/Vector';
-import VectorStyle from 'mcutils/layer/VectorStyle';
-import VectorLayer from 'ol/layer/Vector';
-
-// https://www.iana.org/assignments/media-types/media-types.xhtml
+import VectorSource from 'ol/source/Vector.js';
+import VectorStyle from 'mcutils/layer/VectorStyle.js';
+// import VectorLayer from 'ol/layer/Vector.js';
 
 const accepted = [
   'application/geo+json',
@@ -23,13 +26,14 @@ const accepted = [
   'application/gpx+xml',
   'application/zip',
   'text/csv',
-  // 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  // 'application/vnd.oasis.opendocument.spreadsheet',
   '.gpx',
 ]
+// Fichiers excel :
+// 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+// 'application/vnd.oasis.opendocument.spreadsheet',
 
 // Initialise geoimport
-init({
+geoimport.init({
   paths: {
     wasm: wasmUrl,
     data: dataUrl,
@@ -38,164 +42,127 @@ init({
   useWorker: false,
 });
 
-/**
- * @type {import('../../control/Dialog/Dialog.js').default}
- * Dialog utilisé par l'action 
- */
-let dialog;
+let metadata = {};
 
 /**
- * Fonction à l'ouverture du dialog.
+ * Fonction permettant de valider le formulaire.
+ * Renvoie des exceptions en cas de problème.
+ * @param {File|null} file Fichier envoyé (null si aucun fichier n'est mis)
  * 
- * @param {Event} e Événement générique openlayer
- * @param {import('../../control/Dialog/Dialog.js').default} e.target
- * Dialog utilisé par l'action
+ * @throws {errors.MissingFileError} Fichier manquant
+ * @throws {errors.UnsupportedExtensionError} Extension non supportée
  */
-function onOpen(e) {
-  dialog = e.target
-
-  let form = dialog.querySelector('form');
-  form.addEventListener('submit', importFile);
-
-  let input = dialog.querySelector('input[type="file"]');
-  input.accept = accepted.join(',');
-  input.addEventListener('change', (e) => removeMessage(e.target))
-}
-
-/**
- * 
- * @param {HTMLFormElement} form 
- */
-function validateForm(form) {
+function checkFile(file) {
   // Input du fichier
-  let fileInput = form.querySelector('input')
-  const file = fileInput.files.item(0);
   if (!file) {
-    addMessage(fileInput, 'Fichier manquant');
-    return false;
+    throw new errors.MissingFileError();
   } else if (!accepted.includes(file.type)) {
-    addMessage(fileInput, 'Format non supporté');
-    return false;
+    throw new errors.UnsupportedExtensionError(file.type);
   }
-  removeMessage(fileInput);
 
   return true;
 }
 
 /**
- * Ajoute une erreur lié à un input / select.
  * 
- * L'input doit avoir un élément pour le message, défini par
- * l'attribut `aria-describedby`.
- * 
- * L'input doit être compris dans un autre élément, dont le
- * tag est défini par le paramètre `closest`.
- * La classe de cet élément doit contenir 'groupe' ou doit être
- * 'fr-fieldset' et sera utilisée pour ajouter la classe globale
- * de validation ou d'erreur.
- * 
- * Si error est vrai, ajoute un message d'erreur.
- * Sinon, ajouter un message de succès.
- * 
- * @param {Element} input Input sur lequel ajouter le message.
- * @param {String} message Message à ajouter.
- * @param {Object} options Options à ajouter
- * @param {Boolean} options.error Optionnel. Définit si c'est une erreur ou un succès
- * @param {String} options.closest Optionnel. Définit le tag de l'élément sur lequel
- * mettre la classe d'erreur. Par défaut 'div'.
- * @param {String} options.append Optionnel. Si vrai, ajoute le message
- * aux autres messages. Sinon, enlève les messages existants. Par défaut `false`.
+ * @param {File} file
  */
-function addMessage(input, message, options) {
-  options = options ? options : {};
-  options.closest = options.closest ? options.closest : 'div';
-  options.error = options.error === undefined ? true : options.error;
-  // Classe à ajouter au message
-  const msgClass = options.error ? '--error' : '--valid';
-  // Classe à enlever sur l'élément englobant
-  const removedClass = options.error ? '--valid' : '--error';
+async function importFile(file) {
+  metadata = {}
 
-  // Récupère les éléments importants
-  const msgId = input.getAttribute('aria-describedby');
-  let element = input.closest(options.closest);
-  let msg = element.querySelector(`#${msgId}`);
-  if (!element) return;
+  try {
+    // Lis les informations du fichier
+    const r = await geoimport.info(file);
 
-  // Ajoute les classes à l'élément
-  let elementClass = element.classList.item(0);
-  element.classList.add(elementClass + msgClass);
-  element.classList.remove(elementClass + removedClass);
+    // Gestion des fichiers CSV par la méthode mcutils directement
+    if (r.driverShortName === 'CSV') {
+      if (r.layers[0].featureCount === 0) {
+        throw new errors.EmptyLayerError(file.name);
+      }
 
-  // Ajoute le message en enlevant les autres
-  if (!options.append) msg.replaceChildren();
-  const p = document.createElement('p');
-  p.classList.add('fr-message', `fr-message${msgClass}`);
-  p.id = getUid(`fr-message${msgClass}`);
-  p.textContent = message;
-  msg.appendChild(p)
-}
+      // Métadonnée : pour retrouver l'origine de la couche
+      metadata = {
+        layerType: 'import-local',
+        fileType: file.type,
+        size: file.size
+      }
 
-/**
- * 
- * @param {Element} input Input sur lequel ajouter le message.
- * @param {String} closest Optionnel. Définit le tag de l'élément sur lequel
- * mettre la classe d'erreur. Par défaut 'div'.
- */
-function removeMessage(input, closest = 'div') {
-  // Récupère les éléments importants
-  const msgId = input.getAttribute('aria-describedby');
-  let element = input.closest(closest);
-  let msg = element.querySelector(`#${msgId}`);
-  if (!element) return;
-
-  let elementClass = element.classList.item(0);
-  element.classList.remove(elementClass + '--valid', elementClass + '--error');
-
-  msg.replaceChildren();
-}
-
-/**
- * 
- * @param {SubmitEvent} e 
- */
-function importFile(e) {
-  e.preventDefault();
-  let form = e.target;
-
-  if (validateForm(form)) {
-    const formData = new FormData(form);
-    let file = formData.get('file');
-
-    // TODO : Gérer l'import des fichiers de cette manière là pour les autres
-    // type de fichier aussi ?
-    // GPX : à traiter comme actuellement ou via geoimport ?
-    if (file.type === "application/zip" || file.type === "application/geopackage+sqlite3") {
-      // Gère les fichiers zip / shp autrement
-      info(file).then(r => {
-        let layers = r.layers;
-        layers.forEach(layer => {
-          toGeoJSON(file, { layerName: layer.name, writeBbox: true })
-            .then(json => {
-              // Créé un nouveau fichier pour envoyer à l'application
-              let geojson = new File([JSON.stringify(json)], `${json.name}.geojson`, {
-                type: 'application/geo+json',
-              });
-              loadFile(geojson, (e) => processFile(e, form), { silent: true });
-            })
-            .catch(r => {
-              processFile({ name: layer.name }, form)
-            });
-        });
+      const layer = await new Promise((resolve, reject) => {
+        try {
+          loadFile(file, (e) => {
+            try {
+              resolve(processFile(e));
+            } catch (err) {
+              reject(err);
+            }
+          }, { silent: true });
+        } catch (err) {
+          reject(err);
+        }
       });
+
+      // Retourne un array pour unifier le résultat avec les autres
+      // type de fichiers
+      return Promise.allSettled([layer]);
+    }
+
+    // Gère les autres couches (dont multicouches type géopackage)
+    const promises = r.layers.map(async (layer) => {
+      // Réinitialise les métadonnées
+      metadata = {}
+
+      // Lis le fichier avec geoimport
+      const json = await geoimport.toGeoJSON(file, { layerName: layer.name, writeBbox: true })
+
+      // Métadonnée : pour retrouver l'origine de la couche
+      metadata = {
+        layerType: 'import-local',
+        fileType: file.type,
+        size: file.size
+      }
+
+      // Créé un nouveau fichier pour envoyer à l'application
+      let geojson = new File([JSON.stringify(json)], `${json.name}`, {
+        type: 'application/geo+json',
+      });
+
+      const layerObj = await new Promise((resolve, reject) => {
+        try {
+          loadFile(geojson, (e) => {
+            try {
+              resolve(processFile(e));
+            } catch (err) {
+              reject(err);
+            }
+          }, { silent: true });
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+      return layerObj;
+    });
+
+    return Promise.allSettled(promises);
+  } catch (err) {
+    // Gère le cas du shapefile
+    if (err instanceof Array && err.length) {
+      let msg = err[0].message;
+      let regex = /Unable to open .*(input\/.*\.shx)/;
+      let match = regex.exec(msg);
+      if (match) {
+        let fileName = match.at(1).slice(6);
+        throw new errors.MissingFileInZipError(fileName);
+      }
+    // Sinon, renvoie l'erreur normale
     } else {
-      loadFile(file, (e) => processFile(e, form), { silent: true });
+      throw err
     }
   }
 }
 
 /**
  * Function permettant de gérer le fichier une fois lu.
- * Ajoute la couche à la carte si c'est bon.
  * 
  * @param {Object} result Résultat de la fonction de lecture du fichier
  * @param {Array<import("ol").Feature>|boolean} result.features
@@ -206,33 +173,24 @@ function importFile(e) {
  * si aucune feature n'est trouvé.
  * @param {Object} [result.carte] Carte au format JSON (si le fichier donnéeen entrée est une carte).
  * @param {HTMLFormElement} form Formulaire de l'ajout de fichier.
+ * @returns {VectorStyle} Couche vectorielle
  */
-function processFile(result, form) {
-  let input = form.querySelector('input');
+function processFile(result) {
   const name = result.name;
   if (result.features) {
     // let layer = new VectorLayer({
     let layer = new VectorStyle({
       type: 'Vector',
       title: name,
-      source: new VectorSource()
+      source: new VectorSource(),
+      metadata: metadata,
     });
     // Ajout des features à la couche
     layer.getSource().addFeatures(result.features);
-
-    // Ajout du layer à la carte
-    carte.addLayer(layer);
-    addMessage(input, `Le fichier ${name} a été ajouté à vos couches.`, { error: false })
+    return layer;
   } else {
-    addMessage(input, `Le fichier ${name} n'a pas pu être correctement importé.`, { error: true })
+    throw new errors.EmptyLayerError;
   }
 }
 
-const importLocalAction = new Action({
-  title: 'Importer une donnée locale',
-  icon: 'ri-file-upload-line',
-  onOpen: onOpen,
-  content: content,
-})
-
-export default importLocalAction;
+export { accepted, checkFile, processFile, importFile };
