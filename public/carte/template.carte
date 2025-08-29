@@ -1,9 +1,9 @@
 {
   "param": {
-    "lon": 2.96,
-    "lat": 47,
     "rot": 0,
-    "zoom": 5,
+    "lon": 2.456979747885131,
+    "lat": 48.83519573989332,
+    "zoom": 17,
     "titre": "Ma carte",
     "description": "",
     "status": "brouillon",

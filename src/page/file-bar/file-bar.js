@@ -40,7 +40,7 @@ let exportMap = function (e) {
 
 let printMap = function () {
   // Add ScaleLine on canvas
-  carte.getControl('scaleLine').element.style.visibility = 'hidden'
+  carte.getControl('scaleLine').element.style.visibility = 'hidden';
   // Print
   carte.getControl('printDlg').print();
 }
@@ -48,14 +48,14 @@ let printMap = function () {
 carte.getControl('printDlg')._printDialog.on('hide', () => {
   // Remove ScaleLine from canvas
   carte.getControl('scaleLine').element.style.visibility = '';
-  carte.getMap().render()
+  carte.getMap().render();
 })
 
 // Nom du fichier
 let fileName = new TextButton({
   className: 'file-name fr-px-2w fr-py-1w fr-text--sm fr-m-0',
   html: 'Nom du fichier',
-})
+});
 
 // --- Première barre (Ouvrir / Créer) ---
 let openMapBtn = new Button({
@@ -186,7 +186,7 @@ let mapTitle = new TextButton({
     title: title || 'Carte sans titre',
   },
   className: 'fr-px-2w fr-py-1w fr-text map-title'
-})
+});
 
 // Mise à jour du titre
 carte.on('change:title', (e) => {
@@ -213,8 +213,8 @@ let filebar = new Bar({
 });
 
 // Ajoute le contrôle dans la barre d'outil mobile
-duplicate(filebar)
+duplicate(filebar);
 
-carte.addControl('filebar', filebar)
+carte.addControl('filebar', filebar);
 
-filebar.setPosition('top-left')
+filebar.setPosition('top-left');
