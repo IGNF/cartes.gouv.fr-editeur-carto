@@ -107,10 +107,18 @@ class Header extends BaseObject {
    *  @param {string} [options.service] service name
    *  @param {string} [options.title]
    *  @param {string} [options.href] main page url
+   *  @param {boolean} [options.beta] beta badge
    */
   setService(options) {
     if (options.service) {
       this.title.querySelector('p').innerHTML = options.service
+    }
+    if (options.beta) {
+      const beta = ol_ext_element.create('span', {
+        className: 'fr-badge fr-badge--sm fr-badge--green-emeraude',
+        text: 'BETA',
+      });
+      this.title.querySelector('p').appendChild(beta);
     }
     ['title', 'href'].forEach(k => {
       if (options[k]) {
