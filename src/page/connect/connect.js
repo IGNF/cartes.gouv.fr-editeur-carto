@@ -40,7 +40,6 @@ dialogConnect.querySelectorAll('.connected > button').forEach(button => {
   })
 });
 
-// dialogConnect.showModal()
 dialogConnect.show();
 
 /* DEBUG */

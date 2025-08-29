@@ -9,21 +9,44 @@
 .ol-ext-print-dialog {
   margin: 0;
   box-sizing: content-box;
-  
+
   &.ol-visible {
     font-size: 1em;
   }
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 1em;
     appearance: auto;
     border: 1px solid #666;
     padding: 0.5em;
   }
-
 }
 
-.position-container-top-right div[id^=GPlayerSwitcher-] {
-  top:20%;
+// Hide permalink control
+.ol-permalink {
+  display: none !important;
+}
+
+.ol-scale-line {
+  display: none;
+  right: 3rem;
+  margin: 0.5rem;
+  bottom: 0;
+
+  @include rf.respond-from('sm') {
+    display: unset;
+  }
+}
+
+div[id^='GPzoom-'] {
+  top: auto;
+  left: auto;
+  right: 0.375rem;
+}
+
+.position-container-top-right div[id^='GPlayerSwitcher-'] {
+  top: 20%;
 }
 
 [id^='GPsearchEngine-'] {
@@ -31,7 +54,7 @@
   left: 50% !important;
   transform: translateX(-50%);
   top: 3.625rem;
-  
+
   @include rf.respond-from('sm') {
     top: 0.625rem;
   }

@@ -37,7 +37,8 @@ class GPPCarte extends Carte {
       'legend',
       'legendBt',
       // 'attribution',
-    ]
+    ];
+
     // Remove existing controls
     for (const key in this._controls) {
       const ctrl = this._controls[key];
@@ -57,14 +58,14 @@ class GPPCarte extends Carte {
       zoom: new GeoportalZoom({
         position: 'bottom-right'
       })
-    }
+    };
 
     // Add GPP controls
     Object.keys(controls).forEach(key => {
       try {
-        this.addControl(key, controls[key])
+        this.addControl(key, controls[key]);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     });
   }
@@ -86,8 +87,10 @@ class GPPCarte extends Carte {
   setReady() {
     Carte.prototype.setReady.call(this);
     // Remove ScaleLine from canvas
-    this.getControl('scaleLine').element.style.visibility = ''
-    this.getMap().render()
+    this.getControl('scaleLine').element.style.visibility = '';
+    this.getMap().render();
+    console.log(this.getControl('zoom').element.style.position)
+    this.getControl('zoom').element.style.position = 'absolute';
   }
 
   /**
