@@ -140,9 +140,10 @@ class Charte extends BaseObject {
    *  @param {string} [options.service] service name
    *  @param {string} [options.title]
    *  @param {string} [options.href] main page url
+   *  @param {boolean} [options.beta] beta badge
    */
-  setService(service, href, title) {
-    this.header.setService(service, href, title)
+  setService(service, href, title, beta) {
+    this.header.setService(service, href, title, beta)
   }
   /** Set service description
    * @param {string} desc

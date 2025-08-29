@@ -41,7 +41,7 @@ dialogConnect.querySelectorAll('.connected > button').forEach(button => {
 });
 
 // dialogConnect.showModal()
-dialogConnect.show();
+// dialogConnect.show();
 
 /* DEBUG */
 window.dialogConnect = dialogConnect;
