@@ -13,7 +13,6 @@ import Toggle from '../../control/CustomToggle/CustomToggle.js'
 
 import './step-bar.scss'
 import openAction from '../../actions/actions.js'
-import duplicate from '../mobile-bar/mobile-bar.js';
 
 
 let onToggleMode = function () {
@@ -97,9 +96,6 @@ let mainbar = new Bar({
   className: 'ol-bar--separator ol-bar--row step-bar',
   controls: [modeBar, save, share]
 })
-
-// Ajout à la barre mobile
-duplicate(mainbar);
 
 carte.addControl('stepBar', mainbar);
 mainbar.setPosition('top-right');
