@@ -13,6 +13,7 @@ let fullScreen = new FullScreen({
   className: 'fr-hidden',
   activeClassName: 'fr-hidden',
   inactiveClassName: 'fr-hidden',
+  source: document.body.querySelector('main'),
 })
 
 fullScreen.on('enterfullscreen', () => {

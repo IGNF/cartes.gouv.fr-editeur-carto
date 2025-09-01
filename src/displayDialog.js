@@ -6,7 +6,7 @@ const displayDialog = ol_ext_element.create('dialog', {
   className: 'fr-modal',
   'aria-labelledby': 'fr-theme-modal-title',
   html: content,
-  parent: document.body,
+  parent: document.body.querySelector('main'),
 })
 
 export default displayDialog;
