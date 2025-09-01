@@ -15,15 +15,6 @@
       button {
         margin: 0;
       }
-
-      button:empty {
-        height: 40px;
-        width: 40px;
-      }
-
-      button:not(:empty) {
-        width: 100%;
-      }
     }
   }
 

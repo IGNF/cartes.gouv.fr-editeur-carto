@@ -49,6 +49,11 @@ div[id^='GPzoom-'] {
   top: 20%;
 }
 
+// Temporaire, position de la barre full screen
+.ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
+  bottom: 5.875rem;
+}
+
 [id^='GPsearchEngine-'] {
   position: absolute;
   left: 50% !important;

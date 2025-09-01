@@ -32,13 +32,12 @@
   }
 }
 
-.ol-control.ol-bar .ol-toggle.dsfr-btn {
+.ol-control.ol-button.dsfr-btn {
   .fr-btn.fr-btn {
     align-items: center;
     display: inline-flex;
     flex-direction: row;
     padding: 0.5rem 1rem;
-    width: fit-content;
 
     &,
     &:hover,
@@ -68,9 +67,7 @@
       background-color: var(--active-tint);
     }
   }
-}
 
-.ol-control.ol-bar .ol-control.ol-option-bar .ol-toggle.dsfr-btn {
   button {
     border-radius: 0;
   }
