@@ -14,6 +14,12 @@ import openAction from '../../actions/actions.js'
 import './edit-bar.scss'
 import rightPanel from '../../rightPanel.js';
 
+let currentEditToggle;
+function activeToggle() {
+  currentEditToggle = this;
+  selectToggle.setActive(!this.getActive());
+}
+
 /**
  * @type {Toggle}
  */
@@ -45,31 +51,36 @@ function closeToggle(toggle) {
   }
 }
 
+// Interaction de select
+let selectToggle = new Toggle({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line',
+  attributes: {
+    title: "Sélecteur",
+    'aria-label': "Sélecteur",
+  },
+  interaction: carte.getSelect(),
+  active: true,
+  onToggle: function () {
+    // Désactive le toggle d'édition s'il existe
+    if (currentEditToggle) currentEditToggle.setActive(false)
+    carte.getSelect().getFeatures().clear();
+  }
+});
+
 // Barre ajout de donnée
 let catalogue = new Toggle({
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-book-open-line ',
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-map-2-line',
   attributes: {
     'data-action': 'import-catalog',
     'aria-controls': rightPanel.getId(),
-    title: "Importer une donnée de cartes.gouv",
-    'aria-label': "Importer une donnée de cartes.gouv",
-  },
-  onToggle: onToggleAction
-});
-
-let flux = new Toggle({
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-global-line ',
-  attributes: {
-    'data-action': 'import-flow',
-    'aria-controls': rightPanel.getId(),
-    title: "Importer un flux",
-    'aria-label': "Importer un flux",
+    title: "Importer une donnée depuis cartes.gouv",
+    'aria-label': "Importer une donnée depuis cartes.gouv",
   },
   onToggle: onToggleAction
 });
 
 let file = new Toggle({
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-file-upload-line ',
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-file-upload-line',
   attributes: {
     'data-action': 'import-local',
     'aria-controls': rightPanel.getId(),
@@ -83,23 +94,8 @@ let addDataBar = new Bar({
   toggleOne: true,
   controls: [
     catalogue,
-    flux,
     file,
   ]
-});
-
-// Interaction de select
-let selectToggle = new Toggle({
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line ',
-  attributes: {
-    title: "Activer la sélection sur la carte",
-    'aria-label': "Activer la sélection sur la carte",
-  },
-  interaction: carte.getSelect(),
-  active: true,
-  onToggle: function () {
-    carte.getSelect().getFeatures().clear();
-  }
 });
 
 
@@ -129,18 +125,21 @@ let point = new Toggle({
   html: '<i class="fr-mr-1w ri-1x ri-map-pin-line"></i>Point',
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
   interaction: drawPointInteraction,
+  onToggle: activeToggle,
 });
 let line = new Toggle({
   className: 'dsfr-btn',
   html: 'Ligne',
   classButton: 'fr-btn fr-icon-ign-dessiner-trace-line fr-btn--tertiary-no-outline fr-btn--icon-left ',
   interaction: drawLineStringInteraction,
+  onToggle: activeToggle,
 });
 let polygon = new Toggle({
   className: 'dsfr-btn',
   html: 'Surface',
   classButton: 'fr-btn fr-icon-ign-surface fr-btn--tertiary-no-outline fr-btn--icon-left ',
   interaction: drawPolygonInteraction,
+  onToggle: activeToggle,
 });
 
 let drawBar = new Bar({
@@ -155,7 +154,11 @@ let drawBar = new Bar({
 
 
 let drawToggle = new Toggle({
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-pen-nib-line ',
+  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-pen-nib-line',
+  attributes: {
+    title: "Annoter la carte",
+    'aria-label': "Annoter la carte",
+  },
   bar: drawBar,
 });
 
@@ -166,16 +169,19 @@ let distanceMeasure = new Toggle({
   className: 'dsfr-btn',
   html: '<i class="fr-mr-1w ri-1x ri-ruler-line"></i>Mesurer une distance',
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
+  onToggle: activeToggle,
 });
 let surfaceMeasure = new Toggle({
   className: 'dsfr-btn',
   html: 'Mesurer une surface',
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-ign-surface fr-btn--icon-left ',
+  onToggle: activeToggle,
 });
 let isochrone = new Toggle({
   className: 'dsfr-btn',
   html: '<i class="fr-mr-1w ri-1x ri-map-pin-5-line"></i>Mesurer une isochrone',
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
+  onToggle: activeToggle,
   // html:'Mesurer une isochrone',
   // classButton: 'fr-btn fr-icon-map-pin-2-line','fr-btn--tertiary-no-outline fr-btn--icon-left ',
 });
@@ -192,7 +198,11 @@ let measureBar = new Bar({
 
 let measureToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-ruler-line ',
-  bar: measureBar
+  attributes: {
+    title: "Mesurer",
+    'aria-label': "Mesurer",
+  },
+  bar: measureBar,
 });
 
 // Barre d'interaction
@@ -207,16 +217,15 @@ let interactionBar = new Bar({
 // Barre d'édition
 let editDataBar = new Bar({
   controls: [
-    selectToggle,
     interactionBar,
   ]
 })
 
 // Barre principale
 let mainbar = new Bar({
-  className: 'ol-bar--separator',
+  className: 'ol-bar--separator edit-bar',
   toggleOne: true,
-  controls: [carte.getControl('layerSwitcher'), addDataBar, editDataBar]
+  controls: [selectToggle, addDataBar, editDataBar]
 })
 
 carte.addControl('mainBar', mainbar)

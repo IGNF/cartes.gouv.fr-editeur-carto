@@ -18,9 +18,9 @@
   }
 
   &.ol-active > button {
-    & {
-      background-color: var(--hover-tint);
-    }
+    background-color: var(--background-open-blue-france);
+    --hover: var(--background-open-blue-france-hover);
+    --active: var(--background-open-blue-france-active);
 
     &:hover {
       background-color: var(--hover-tint);

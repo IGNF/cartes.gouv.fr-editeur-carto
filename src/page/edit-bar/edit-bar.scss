@@ -1,0 +1,13 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+.ol-control.ol-bar.ol-right.edit-bar {
+  transform: unset;
+  // top: calc(6.5rem + 2.625rem);
+  // switcher + taille switcher + espace
+  top: calc(7.25rem + 2.625rem + 0.5rem);
+
+  @include rf.respond-from('sm') {
+    // switcher + taille switcher + espace
+    top: calc(6rem + 2.625rem + 0.5rem)
+  }
+}

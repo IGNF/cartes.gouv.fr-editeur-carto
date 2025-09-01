@@ -13,7 +13,7 @@ function openMapDialog(e, instance, layer, options) {
 
 const switcher = new LayerSwitcher({
   options: {
-    position: 'top-right',
+    // position: 'top-right',
     collapsed: true,
     panel: true,
     counter: true,
