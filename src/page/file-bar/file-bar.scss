@@ -83,9 +83,26 @@
 }
 
 .ol-control.ol-top.ol-bar--separator.ol-bar.map-handle {
-  display: none;
+  display: flex;
+  width: calc(25% - 1rem);
+  text-align: center;
+  top: 0;
+  left: 0;
+  padding: 0.5rem;
 
+  > div:first-child {
+    margin: auto;
+  }
+
+  .ol-option-bar {
+    text-align: initial;
+  }
+  
   @include rf.respond-from('sm') {
     display: flex;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: unset;
+    padding: 0.25rem;
   }
 }

@@ -17,7 +17,6 @@ import Toggle from '../../control/CustomToggle/CustomToggle.js'
 import TextButton from '../../control/CustomTextButton/CustomTextButton.js';
 
 import openAction from '../../actions/actions.js';
-import duplicate from '../mobile-bar/mobile-bar.js';
 
 // Variables utiles
 let title = carte.get('title');
@@ -212,9 +211,5 @@ let filebar = new Bar({
   controls: [fileToggle, mapTitle]
 });
 
-// Ajoute le contrôle dans la barre d'outil mobile
-duplicate(filebar);
-
 carte.addControl('filebar', filebar);
-
 filebar.setPosition('top-left');
