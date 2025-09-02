@@ -12,7 +12,7 @@ import Bar from '../../control/CustomBar/CustomBar.js'
 import Toggle from '../../control/CustomToggle/CustomToggle.js'
 
 import './step-bar.scss'
-import openAction from '../../actions/actions.js'
+import Action from '../../actions/Action.js'
 
 
 let onToggleMode = function () {
@@ -68,7 +68,7 @@ let save = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  handleClick: openAction
+  handleClick: Action.open
 });
 
 let share = new Button({
@@ -82,7 +82,7 @@ let share = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  handleClick: openAction
+  handleClick: Action.open
 });
 
 let modeBar = new Bar({

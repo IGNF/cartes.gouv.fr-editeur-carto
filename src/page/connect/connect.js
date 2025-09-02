@@ -5,7 +5,7 @@ import './connect.scss';
 
 import loginDialog from '../../loginDialog.js';
 import modal from '../../modal.js';
-import openAction from '../../actions/actions.js';
+import Action from '../../actions/Action.js';
 
 const dialogConnect = ol_ext_element.create('DIALOG', {
   id: 'ConnectDialog',
@@ -20,12 +20,12 @@ document.body.dataset.disconnected = '';
 let button = dialogConnect.querySelector('.disconnected > *');
 button.setAttribute('aria-controls', loginDialog.getId());
 button.setAttribute('data-fr-opened', false);
-button.addEventListener('click', openAction);
+button.addEventListener('click', Action.open);
 
 let viewMaps = dialogConnect.querySelector('[data-action="open-map"]');
 viewMaps.setAttribute('aria-controls', modal.getId());
 viewMaps.setAttribute('data-fr-opened', false);
-viewMaps.addEventListener('click', openAction);
+viewMaps.addEventListener('click', Action.open);
 
 dialogConnect.querySelector('.disconnected > *').addEventListener('click', () => {
   delete document.body.dataset.disconnected;

@@ -93,6 +93,7 @@ function handleError(err, input, file, append = false) {
 }
 
 const importLocalAction = new Action({
+  id: 'import-local',
   title: 'Importer une donnée locale',
   icon: 'ri-file-upload-line',
   onOpen: onOpen,

@@ -169,6 +169,7 @@ function openMap() {
 }
 
 const openMapAction = new Action({
+  id: 'open-map',
   title: 'Ouvrir une carte',
   content: content,
   onOpen: onOpen

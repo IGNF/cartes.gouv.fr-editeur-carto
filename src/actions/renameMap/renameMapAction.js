@@ -34,6 +34,7 @@ function renameMap() {
 }
 
 const renameMapAction = new Action({
+  id: 'rename-map',
   title: 'Renommer',
   content: content,
   buttons: [

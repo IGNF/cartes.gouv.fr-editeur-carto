@@ -9,7 +9,7 @@ import Toggle from '../../control/CustomToggle/CustomToggle.js'
 import Draw from 'ol/interaction/Draw.js';
 import VectorSource from 'ol/source/Vector.js';
 
-import openAction from '../../actions/actions.js'
+import Action from '../../actions/Action.js'
 
 import './edit-bar.scss'
 import rightPanel from '../../rightPanel.js';
@@ -27,7 +27,7 @@ function onToggleAction() {
       'target': toggle.button_,
     }
   });
-  openAction(e);
+  Action.open(e);
 }
 
 rightPanel.onClose(() => {

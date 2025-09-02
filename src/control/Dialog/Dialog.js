@@ -79,6 +79,11 @@ class Dialog extends BaseObject {
     }
   }
 
+  /**
+   * 
+   * @param {*} id 
+   * @private
+   */
   #addDialog(id) {
     if (!id) {
       throw new Error("Un id doit être donné au dialogue");
