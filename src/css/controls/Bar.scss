@@ -1,3 +1,5 @@
+@use '../mixins.scss' as mx;
+
 .ol-control.ol-bar {
   &,
   & .ol-control.ol-option-bar {
@@ -176,5 +178,12 @@
   &.ol-left,
   &.ol-right {
     top: 0.5rem;
+  }
+}
+
+.ol-control.ol-bar {
+  .ol-toggle.ol-active button,
+  .ol-button button {
+    @include mx.button-state();
   }
 }

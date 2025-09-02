@@ -16,6 +16,8 @@ import rightPanel from '../../rightPanel.js';
 
 let currentEditToggle;
 function activeToggle() {
+  // Désactive le toggle d'édition
+  if (currentEditToggle) currentEditToggle.setActive(false);
   currentEditToggle = this;
   selectToggle.setActive(!this.getActive());
 }
@@ -164,7 +166,6 @@ let drawToggle = new Toggle({
 
 
 // Interaction de mesure
-
 let distanceMeasure = new Toggle({
   className: 'dsfr-btn',
   html: '<i class="fr-mr-1w ri-1x ri-ruler-line"></i>Mesurer une distance',
@@ -182,8 +183,6 @@ let isochrone = new Toggle({
   html: '<i class="fr-mr-1w ri-1x ri-map-pin-5-line"></i>Mesurer une isochrone',
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left ',
   onToggle: activeToggle,
-  // html:'Mesurer une isochrone',
-  // classButton: 'fr-btn fr-icon-map-pin-2-line','fr-btn--tertiary-no-outline fr-btn--icon-left ',
 });
 
 let measureBar = new Bar({

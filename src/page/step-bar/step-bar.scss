@@ -1,26 +1,5 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 
-.ol-control.ol-bar.step-bar .ol-toggle.action-button.ol-active {
-  &.ol-active > button,
-  > button {
-    &,
-    &:hover,
-    &:active {
-      background-color: var(--background-open-blue-france);
-      --hover: var(--background-open-blue-france-hover);
-      --active: var(--background-open-blue-france-active);
-    }
-
-    &:hover {
-      background-color: var(--hover-tint);
-    }
-
-    &:active {
-      background-color: var(--active-tint);
-    }
-  }
-}
-
 .ol-control.ol-bar.step-bar.ol-bar--row .ol-toggle.action-button {
   > button {
     height: 40px;

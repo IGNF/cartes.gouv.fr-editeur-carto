@@ -1,4 +1,5 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../mixins.scss' as mx;
 
 .ol-button > button {
   line-height: unset;
@@ -176,5 +177,11 @@
         0 0.45rem,
         0 0.5rem;
     }
+  }
+}
+
+.ol-control.ol-button {
+  > button {
+    @include mx.button-state();
   }
 }
