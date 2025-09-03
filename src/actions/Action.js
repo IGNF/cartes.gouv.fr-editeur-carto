@@ -75,7 +75,7 @@ class Action {
     if (!dialog) return;
 
     if (action instanceof Action) {
-      action.setAction(dialog);
+      dialog.setAction(action);
     }
 
     if (pressed === false || pressed === 'false') {
@@ -158,17 +158,6 @@ class Action {
    */
   getButton(index) {
     return this._buttons[index];
-  }
-
-
-  /**
-   * Lie les éléments d'une action à une modale.
-   * @param {import('../control/Dialog/Dialog').default} dialog Modale auquelle l'action est liée
-   */
-  setAction(dialog) {
-    this.dialog = dialog;
-    dialog.setContent({ title: this.title, icon: this.icon, content: this.content, buttons: this.buttons, items: this.items });
-    dialog.setOnOpen(this.onOpen);
   }
 }
 
