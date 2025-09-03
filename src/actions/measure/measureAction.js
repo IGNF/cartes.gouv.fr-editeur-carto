@@ -38,11 +38,12 @@ function onClose() {
     controls.forEach(control => {
       control.setActive(false);
     });
+    carte.removeControl('measure-bar');
   }
-  carte.removeControl('measure-bar');
 }
 
 const measureAction = new Action({
+  id: 'measure',
   title: 'Outils de mesure',
   icon: 'ri-ruler-line',
   onOpen: onOpen,

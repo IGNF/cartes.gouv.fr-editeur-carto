@@ -529,11 +529,17 @@ class AbstractDialog extends BaseObject {
   }
 
   onOpen(callback, once) {
-    this.on(this.selectors.OPEN_EVENT, callback, once)
+    this.on(this.selectors.OPEN_EVENT, callback);
+    if (once) {
+      this.once(this.selectors.OPEN_EVENT, callback);
+    }
   }
 
   onClose(callback, once) {
-    this.on(this.selectors.CLOSE_EVENT, callback, once)
+    this.on(this.selectors.CLOSE_EVENT, callback);
+    if (once) {
+      this.once(this.selectors.CLOSE_EVENT, callback);
+    }
   }
 
   /** Lie une action à une modale

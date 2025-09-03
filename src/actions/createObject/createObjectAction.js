@@ -36,11 +36,12 @@ function onClose() {
     controls.forEach(control => {
       control.setActive(false);
     });
+    carte.removeControl('create-object-bar');
   }
-  carte.removeControl('create-object-bar');
 }
 
 const createObjectAction = new Action({
+  id: 'create-object',
   title: 'Annoter la carte',
   icon: 'ri-pen-nib-line',
   onOpen: onOpen,
