@@ -18,6 +18,7 @@ import Dialog from '../Dialog/AbstractDialog.js';
  * @property {Panel~tabHandler} [onClose] - Fonction à la fermeture de l'onglet.
  */
 
+
 /**
  * Fonction à l'ouverture ou fermeture d'un onglet.
  * Les paramètres sont les mêmes, mais les fonctions sont
@@ -28,6 +29,25 @@ import Dialog from '../Dialog/AbstractDialog.js';
  * @param {Element} content Contenu de l'onglet
  */
 
+
+/**
+ * Classes de position du panneau
+ * @enum {String}
+ */
+const panelClasses = {
+  PANEL_RIGHT: 'ignf-panel__right',
+  PANEL_LEFT: 'ignf-panel__left',
+}
+
+
+/**
+ * Classes des tailles possible du panneau
+ * @enum {String}
+ */
+const sizeClasses = {
+  SM: 'ignf-panel--sm',
+  MD: 'ignf-panel--md',
+}
 
 /**
  * Panneau d'action diverses.
@@ -251,11 +271,27 @@ class Panel extends Dialog {
 
   setPosition(position) {
     if (position === 'left') {
-      this.dialog.classList.add('ignf-panel__left');
-      this.dialog.classList.remove('ignf-panel__right');
+      this.dialog.classList.add(panelClasses.PANEL_LEFT);
+      this.dialog.classList.remove(panelClasses.PANEL_RIGHT);
     } else if (position === 'right') {
-      this.dialog.classList.add('ignf-panel__right');
-      this.dialog.classList.remove('ignf-panel__left');
+      this.dialog.classList.add(panelClasses.PANEL_RIGHT);
+      this.dialog.classList.remove(panelClasses.PANEL_LEFT);
+    }
+  }
+
+  /**
+   * 
+   * @param {sizeClass} size Taille du panneau.
+   * Valeur acceptées : 'sm' ou 'md'.
+   * Par défaut, n'ajoute aucune classe au panneau.
+   */
+  setSize(size) {
+    this.dialog.classList.remove(sizeClasses.SM, sizeClasses.MD)
+    if (!size) return;
+    if (size.toLowerCase() === 'sm') {
+      this.dialog.classList.add(sizeClasses.SM)
+    } else if (size.toLowerCase() === 'md') {
+      this.dialog.classList.add(sizeClasses.MD)
     }
   }
 
@@ -265,6 +301,16 @@ class Panel extends Dialog {
     if (this.hasNavItem()) {
       this.setCurrentLink(this.querySelector(this.selectors.NAVIGATION_LINK))
     }
+  }
+
+  /** Lie une action à une modale
+   * @param {import('../../actions/Action').default} action
+   * @override
+   */
+  setAction(action) {
+    super.setAction(action);
+
+    if (action) this.setSize(action.size);
   }
 }
 

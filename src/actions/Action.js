@@ -19,6 +19,8 @@ import Dialog from '../control/Dialog/AbstractDialog.js';
  * @property {string} [icon] - Icône du titre.
  * @property {FooterButton[]} [buttons] - Boutons d'actions d'un dialog.
  * @property {Function} [onOpen] - Fonction à appeler à l'ouverture d'un dialog.
+ * @property {Function} [onClose] - Fonction à appeler à la fermeture d'un dialog.
+ * @property {String} [size] - Uniquement pour les panneaux. Définit la taille du panneau.
  */
 
 /* Action list */
@@ -44,17 +46,24 @@ class Action {
     this.buttons = options.buttons;
     this.items = options.items;
     this.onOpen = typeof options.onOpen === 'function' ? options.onOpen : () => { };
+    this.onClose = typeof options.onClose === 'function' ? options.onClose : () => { };
     this.icon = options.icon || '';
+    this.size = options.size;
     actions[options.id] = this;
   }
 
-  /** Get action by Id
-   *  @static
+
+  /**
+   * Renvoie l'actipn correspondante à l'id donné
+   * @param {string} id Id de l'action
+   * @returns {Action} Action avec l'id correspondant
+   * @throws {Error} Si aucune action n'existe
+   * @static
    */
-  static getActionById(actionName) {
-    const action = actions[actionName];
+  static getAction(id) {
+    const action = actions[id];
     if (!action) {
-      throw new Error(`L'action ${actionName} n'existe pas`);
+      throw new Error(`L'action ${id} n'existe pas`);
     }
     return action;
   }
@@ -70,18 +79,14 @@ class Action {
     const dialogId = target.getAttribute('aria-controls');
     const pressed = target.ariaPressed;
 
-    const action = Action.getActionById(target.dataset.action);
+    const action = Action.getAction(target.dataset.action);
     const dialog = Dialog.getDialog(dialogId);
-    if (!dialog) return;
-
-    if (action instanceof Action) {
-      dialog.setAction(action);
-    }
+    if (!dialog || !action) return;
 
     if (pressed === false || pressed === 'false') {
       dialog.close();
     } else {
-      dialog.open();
+      dialog.setAction(action);
     }
   }
 

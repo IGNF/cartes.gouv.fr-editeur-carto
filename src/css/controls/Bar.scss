@@ -1,3 +1,4 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 @use '../mixins.scss' as mx;
 
 .ol-control.ol-bar {
@@ -64,8 +65,12 @@
 }
 
 // Bar en haut à droite
-
 .ol-control.ol-bar.ol-top {
+  border-radius: 0;
+  @include rf.respond-from('sm') {
+    border-radius: 0.25rem;
+  }
+
   &.ol-left,
   &.ol-right {
     top: 0.5rem;

@@ -11,20 +11,20 @@ import Action from '../../actions/Action.js'
 import './edit-bar.scss'
 import rightPanel from '../../dialogs/rightPanel.js';
 
-// let currentEditToggle;
-// function activeToggle() {
-//   // Désactive le toggle d'édition
-//   if (currentEditToggle) currentEditToggle.setActive(false);
-//   currentEditToggle = this;
-//   selectToggle.setActive(!this.getActive());
-// }
+// TODO : mieux gérer les toggle d'édition / mesure
+// et leur lien avec l'interaction de sélection
+
+/**
+ * @type {Toggle}
+ */
+let activeToggle;
 
 /**
  * @type {Toggle}
  */
 let toggle;
 // Fonction temporaire pour les toggle
-// (n'envoient pas d'événement au click)
+// (les toggle n'envoient pas d'événement au click)
 function onToggleAction() {
   // Désactive le toggle précédent
   if (toggle && toggle !== this) {
@@ -63,10 +63,14 @@ let selectToggle = new Toggle({
   },
   interaction: carte.getSelect(),
   active: true,
-  onToggle: function () {
-    // Désactive le toggle d'édition s'il existe
-    // if (currentEditToggle) currentEditToggle.setActive(false)
-    carte.getSelect().getFeatures().clear();
+  onToggle: function (e) {
+    if (e) {
+      carte.getSelect().getFeatures().clear();
+      if (activeToggle && activeToggle.getActive()) {
+        // Simule un click sur le toggle
+        activeToggle.button_.click()
+      }
+    }
   }
 });
 
@@ -122,6 +126,21 @@ let measureToggle = new Toggle({
   },
   onToggle: onToggleAction
 });
+
+// Gère l'activation du toggle de sélection
+const interactionToggles = [drawToggle, measureToggle]
+interactionToggles.forEach((toggle) => {
+  toggle.on('change:active', (e) => {
+    if (e.active) {
+      activeToggle = e.target;
+      selectToggle.setActive(false)
+    } else if (!(drawToggle.getActive() || measureToggle.getActive())) {
+      // Les deux sont désactivés, on réactive
+      selectToggle.setActive(true);
+      activeToggle = null;
+    }
+  })
+})
 
 // Barre d'interaction
 let interactionBar = new Bar({
