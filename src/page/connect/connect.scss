@@ -15,11 +15,11 @@
   max-height: calc(100% - 5rem);
   overflow: auto;
 
-  .ign-dialog__header {
+  .intro-dialog__header {
     display: none;
   }
 
-  .fr-icon {
+  .fr-icon.intro {
     font-size: 56px;
     display: flex;
     width: 5.5rem;

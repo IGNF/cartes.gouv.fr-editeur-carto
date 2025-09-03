@@ -1,4 +1,4 @@
-import Dialog from '../control/Dialog/Dialog.js';
+import Dialog from '../control/Dialog/AbstractDialog.js';
 
 /**
  * Bouton à mettre dans le buttons d'un dialog
@@ -138,7 +138,7 @@ class Action {
   }
 
 
-  /** @returns {import('../control/Dialog/Dialog').default} */
+  /** @returns {import('../control/Dialog/AbstractDialog').default} */
   getDialog() {
     return this.dialog;
   }
