@@ -12,7 +12,7 @@ import VectorSource from 'ol/source/Vector.js';
 import Action from '../../actions/Action.js'
 
 import './edit-bar.scss'
-import rightPanel from '../../rightPanel.js';
+import rightPanel from '../../dialogs/rightPanel.js';
 
 /**
  * @type {Toggle}

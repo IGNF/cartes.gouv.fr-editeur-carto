@@ -1,7 +1,7 @@
 
 import introDialog from '../../dialogs/introDialog.js'
-import loginDialog from '../../loginDialog.js';
-import modal from '../../modal.js';
+import loginDialog from '../../dialogs/loginDialog.js';
+import modal from '../../dialogs/modal.js';
 import Action from '../../actions/Action.js';
 
 import contentHTML from './connect.html?raw';

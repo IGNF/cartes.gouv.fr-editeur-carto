@@ -3,7 +3,7 @@ import carte from '../../carte.js';
 import content from './renameMap.html?raw';
 
 /**
- * @type {import('../../control/Dialog/Dialog.js').default}
+ * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
  */
 let dialog;
@@ -12,7 +12,7 @@ let dialog;
  * Fonction à l'ouverture du dialog.
  * 
  * @param {Event} e Événement générique openlayer
- * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
 function onOpen(e) {

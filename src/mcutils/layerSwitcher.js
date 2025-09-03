@@ -1,7 +1,7 @@
 
 import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
 import carte from '../carte.js';
-import leftPanel from '../leftPanel.js';
+import leftPanel from '../dialogs/leftPanel.js';
 import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 
 
