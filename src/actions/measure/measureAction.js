@@ -23,7 +23,6 @@ function onOpen(e) {
   let bar = createBar(dialog.getModalContent());
   carte.removeControl('measure-bar');
   carte.addControl('measure-bar', bar);
-  dialog.onClose(onClose, true);
 }
 
 
@@ -47,6 +46,8 @@ const measureAction = new Action({
   title: 'Outils de mesure',
   icon: 'ri-ruler-line',
   onOpen: onOpen,
+  onClose: onClose,
+  size: 'md',
 })
 
 export default measureAction;

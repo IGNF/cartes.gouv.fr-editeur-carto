@@ -21,7 +21,6 @@ function onOpen(e) {
   let bar = createBar(dialog.getModalContent());
   carte.removeControl('create-object-bar');
   carte.addControl('create-object-bar', bar);
-  dialog.onClose(onClose, true);
 }
 
 
@@ -45,6 +44,8 @@ const createObjectAction = new Action({
   title: 'Annoter la carte',
   icon: 'ri-pen-nib-line',
   onOpen: onOpen,
+  onClose: onClose,
+  size:'sm',
 })
 
 export default createObjectAction;

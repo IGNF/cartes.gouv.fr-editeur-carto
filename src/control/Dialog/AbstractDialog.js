@@ -24,6 +24,8 @@ import BaseObject from 'ol/Object.js';
  * @property {string} className - Classe à ajouter à la modale.
  * @property {string} [icon] - Icône du titre. Par défaut, aucune icône.
  * @property {DialogOnOpen} [onOpen] - Fonction appelée à l'ouverture du dialog.
+ * @property {DialogOnClose} [onClose] - Fonction appelée à la fermeture du dialog.
+ * Cette fonction est aussi appellée en cas de changement du contenu.
  * @property {Element} [parent] - Élément HTML du dialog. Par défaut, l'ajoute
  * au body.
  * @property {string|Element} [html] - Contenu html du dialog.
@@ -36,6 +38,15 @@ import BaseObject from 'ol/Object.js';
  * @callback DialogOnOpen
  * @param {Dialog} dialog - Instance du dialog qui vient de s'ouvrir.
  */
+
+
+/**
+ * Callback exécuté à la fermeture du dialog.
+ *
+ * @callback DialogOnClose
+ * @param {Dialog} dialog - Instance du dialog qui vient de se fermer.
+ */
+
 
 /**
  * Événement à l'ouverture du dialog.
@@ -72,6 +83,13 @@ const dialogs = {}
  */
 class AbstractDialog extends BaseObject {
 
+  /**
+   * Renvoie le dialog correspondant à l'id donné
+   * @param {string} id Id du dialog
+   * @returns {AbstractDialog} Instance du dialog avec l'id correspondant
+   * @throws {Error} Si aucun dialogue n'existe
+   * @static
+   */
   static getDialog(id) {
     if (id in dialogs) {
       return dialogs[id];
@@ -100,9 +118,9 @@ class AbstractDialog extends BaseObject {
    * @param {DialogOptions} options
    */
   constructor(options) {
-    
+
     super();
-    
+
     // Abstract class
     if (this.constructor === AbstractDialog) {
       throw new Error('AbstractDialog is an abstract you have to extent.')
@@ -160,6 +178,7 @@ class AbstractDialog extends BaseObject {
       ICON: `.${this.dialogClass}__title-icon`,
       CONTENT: `.${this.dialogClass}__content`,
       OPEN_EVENT: 'dialog:open',
+      CHANGE_CONTENT: 'dialog:change:content',
       CLOSE_EVENT: 'dialog:close'
     };
   }
@@ -171,13 +190,11 @@ class AbstractDialog extends BaseObject {
    * @param {Object} options Options de création du panneau
    */
   _createDialog(options) {
-
     this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE);
     if (this.closeBtn) {
       this.closeBtn.setAttribute('aria-controls', this.getId());
-      
-      // Permet de laisser les sous-classes override la fonction
-      // de fermeture du dialog
+      // Permet de laisser les sous-classes surcharger
+      // la fonction de fermeture du dialog
       this.closeBtn.addEventListener('click', () => {
         this.close();
       });
@@ -195,8 +212,7 @@ class AbstractDialog extends BaseObject {
       this.setIcon(options.icon, this.dialogIcon);
     }
     this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen : () => { };
-
-    this.on(this.selectors.OPEN_EVENT, this.onOpenFn);
+    this.onCloseFn = typeof options.onClose === 'function' ? options.onClose : () => { };
     this.on(this.selectors.CLOSE_EVENT, () => {
       this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
     });
@@ -492,6 +508,7 @@ class AbstractDialog extends BaseObject {
     self.dispatchEvent({
       type: self.selectors.CLOSE_EVENT
     });
+    self.setAction();
   }
 
   /**
@@ -528,6 +545,21 @@ class AbstractDialog extends BaseObject {
     }
   }
 
+  /**
+   * Ajoute ou remplace la fonction lancée à la fermeture
+   * du dialog.
+   * 
+   * @param {Fonction} onClose Fonction à la fermeture du dialog.
+   */
+  setOnClose(onClose) {
+    this.un([this.selectors.CLOSE_EVENT, this.selectors.CHANGE_CONTENT], this.onCloseFn);
+    if (typeof onClose === 'function') {
+      this.onCloseFn = onClose;
+      this.on(this.selectors.CLOSE_EVENT, this.onCloseFn);
+      this.on(this.selectors.CHANGE_CONTENT, this.onCloseFn);
+    }
+  }
+
   onOpen(callback, once) {
     this.on(this.selectors.OPEN_EVENT, callback);
     if (once) {
@@ -543,22 +575,33 @@ class AbstractDialog extends BaseObject {
   }
 
   /** Lie une action à une modale
-   * @param {import('../../action/Action').default} action
+   * @param {import('../../actions/Action').default} action
    */
   setAction(action) {
-    // Link dialog
-    action.dialog = this;
-    // Action id pour debuggage
-    this.dialog.dataset.actionId = action.id;
-    // Dialog content
-    this.setContent({ 
-      title: action.title, 
-      icon: action.icon, 
-      content: action.content, 
-      buttons: action.buttons, 
-      items: action.items 
-    });
-    this.setOnOpen(action.onOpen);
+    if (this.action && action) {
+      this.dispatchEvent({
+        type: this.selectors.CHANGE_CONTENT
+      });
+    }
+    this.action = action;
+    if (action) {
+      // Link dialog
+      action.dialog = this;
+      // Action id pour debuggage
+      this.dialog.dataset.actionId = action.id;
+      // Simule une fermeture du dialogue
+      // Dialog content
+      this.setContent({
+        title: action.title,
+        icon: action.icon,
+        content: action.content,
+        buttons: action.buttons,
+        items: action.items
+      });
+      this.setOnOpen(action.onOpen);
+      this.setOnClose(action.onClose);
+      this.open();
+    }
   }
 }
 

@@ -1,5 +1,17 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
 .ol-touch {
-  .ol-control button:not([class*="ri-"]) {
+  .ol-control button:not([class*='ri-']) {
     font-size: inherit;
+  }
+
+  @include rf.respond-from('sm') {
+    .ol-control.ol-bar.ol-top {
+      &,
+      &.ol-left,
+      &.ol-right {
+        top: 0;
+      }
+    }
   }
 }
