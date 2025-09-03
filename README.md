@@ -92,3 +92,10 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+### Lancer l'application en local via docker-compose
+
+```sh
+docker compose build
+docker compose up
+```
