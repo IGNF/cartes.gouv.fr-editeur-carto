@@ -100,4 +100,3 @@ const importLocalAction = new Action({
 })
 
 export default importLocalAction;
-// export { accepted, addMessage, removeMessage, processFile };

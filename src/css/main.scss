@@ -15,6 +15,10 @@ body {
   flex-direction: column;
 }
 
+dialog {
+  background-color: var(--background-default-grey);
+}
+
 main {
   flex: 1; // takes all remaining height after header
   display: flex;

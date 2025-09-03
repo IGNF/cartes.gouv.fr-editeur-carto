@@ -2,7 +2,6 @@
 @use '../../css/mixins.scss' as mx;
 
 .ol-control.ol-bar .ol-button button.map-item {
-  // color: var(--text-default-grey);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -32,20 +31,11 @@
 
 .ol-control.ol-bar .ol-control.ol-text-button.file-name > div {
   font-size: 0.875rem;
-  // color: var(--text-disabled-grey);
   &:not(:disabled) {
     @include mx.button-state(
       $text-color: var(--text-disabled-grey)
     );
   }
-
-  // &:not(:disabled):hover {
-  //   color: var(--text-disabled-grey);
-  // }
-
-  // &:not(:disabled):active {
-  //   color: var(--text-disabled-grey);
-  // }
 }
 
 .ol-control.ol-bar .ol-control.ol-text-button.map-title {

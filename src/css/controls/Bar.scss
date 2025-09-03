@@ -8,14 +8,15 @@
     border-radius: 0.25rem;
 
     .ol-toggle,
-    .ol-button,
-    .ol-toggle:hover,
-    .ol-button:hover {
-      background-color: var(--background-default-grey);
-      outline: none;
-
+    .ol-button {
       button {
         margin: 0;
+      }
+
+      &,
+      &:hover {
+        background-color: var(--background-default-grey);
+        outline: none;
       }
     }
   }
@@ -146,11 +147,11 @@
   }
 }
 
-.ol-control.ol-bar .ol-control.ol-active .ol-bar.ol-bar--row {
+.ol-control.ol-bar.ol-bar--row {
   display: flex;
   flex-direction: row;
 }
-.ol-control.ol-bar .ol-control.ol-active .ol-bar.ol-bar--column {
+.ol-control.ol-bar.ol-bar--column {
   display: flex;
   flex-direction: column;
 }
@@ -182,6 +183,10 @@
 }
 
 .ol-control.ol-bar {
+  top: unset;
+  left: unset;
+  transform: unset;
+
   .ol-toggle.ol-active button,
   .ol-button button {
     @include mx.button-state();

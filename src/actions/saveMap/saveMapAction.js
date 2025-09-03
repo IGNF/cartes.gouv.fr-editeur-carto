@@ -43,9 +43,9 @@ function addThemes(themes, select) {
   });
 }
 
-function saveMap(e) {
-  let inputName = dialog.querySelector('[data-field="title"]');
-  let select = dialog.querySelector('[data-field="theme"]');
+function saveMap() {
+  // let inputName = dialog.querySelector('[data-field="title"]');
+  // let select = dialog.querySelector('[data-field="theme"]');
 }
 
 const saveMapAction = new Action({

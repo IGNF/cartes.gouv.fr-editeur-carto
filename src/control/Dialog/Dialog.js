@@ -158,7 +158,6 @@ class Dialog extends BaseObject {
    * @param {Object} options Options de création du panneau
    */
   _createDialog(options) {
-    let dialog = this.dialog;
     let self = this;
 
     this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE);

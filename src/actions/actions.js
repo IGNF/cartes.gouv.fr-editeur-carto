@@ -8,6 +8,8 @@ import importLocalAction from './importLocal/importLocalAction.js';
 import importFlowAction from './importFlow/importFlowAction.js';
 import editLayerStyleAction from './editLayerStyle/editLayerStyleAction.js';
 import loginAction from './login/loginAction.js';
+import createObjectAction from './createObject/createObjectAction.js';
+import measureAction from './measure/measureAction.js';
 import Dialog from '../control/Dialog/Dialog.js';
 
 let actions = {
@@ -20,6 +22,8 @@ let actions = {
   'import-local': importLocalAction,
   'edit-layer-style': editLayerStyleAction,
   'login': loginAction,
+  'create-object': createObjectAction,
+  'measure': measureAction,
 }
 
 /**
