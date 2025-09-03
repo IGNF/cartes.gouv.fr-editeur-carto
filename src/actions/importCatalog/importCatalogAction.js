@@ -20,6 +20,7 @@ function onOpen(e) {
 }
 
 const importCatalogAction = new Action({
+  id: 'import-catalog',
   title: 'Catalogue de cartes',
   icon: 'fr-icon-ign-map-line',
   content: content,

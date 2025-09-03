@@ -2,6 +2,8 @@ import ol_ext_element from 'ol-ext/util/element.js'
 import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 import BaseObject from 'ol/Object.js';
 
+import defaultHTML from './defaultDialog.html?raw';
+
 /**
  * Bouton à insérer dans le dialog
  *  
@@ -79,6 +81,18 @@ class Dialog extends BaseObject {
     }
   }
 
+  /** Default HTML for a dialog class
+   * @param {string} [dialogClass='ign-dialog']
+   */
+  static defaultHTML(dialogClass = 'ign-dialog') {
+    return defaultHTML.replace(/CLASSNAME/g, dialogClass);
+  }
+
+  /**
+   * 
+   * @param {*} id 
+   * @private
+   */
   #addDialog(id) {
     if (!id) {
       throw new Error("Un id doit être donné au dialogue");
@@ -94,11 +108,12 @@ class Dialog extends BaseObject {
    * @param {DialogOptions} options
    */
   constructor(options) {
+
     super();
     /**
      * @private Nom générique de la classe du dialog
      */
-    this.dialogClass = 'ign-dialog';
+    this.dialogClass = options.dialogClass || 'ign-dialog';
 
     this.initialize()
 
@@ -158,18 +173,17 @@ class Dialog extends BaseObject {
    * @param {Object} options Options de création du panneau
    */
   _createDialog(options) {
-    let dialog = this.dialog;
-    let self = this;
 
     this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE);
-    this.closeBtn.setAttribute('aria-controls', this.getId());
-
-    // Permet de laisser les sous-classes override la fonction
-    // de fermeture du dialog
-    let closeFn = this.close;
-    this.closeBtn.addEventListener('click', () => {
-      closeFn(self);
-    });
+    if (this.closeBtn) {
+      this.closeBtn.setAttribute('aria-controls', this.getId());
+      
+      // Permet de laisser les sous-classes override la fonction
+      // de fermeture du dialog
+      this.closeBtn.addEventListener('click', () => {
+        this.close();
+      });
+    }
 
     // Titre et contenu du dialog
     this.dialogTitle = this.querySelector(this.selectors.TITLE);
@@ -363,7 +377,7 @@ class Dialog extends BaseObject {
 
         switch (attr) {
           case 'className':
-            btn.classList.add(value);
+            (value || '').split(' ').forEach(v => btn.classList.add(v));
             break;
 
           case 'label':
@@ -522,6 +536,25 @@ class Dialog extends BaseObject {
 
   onClose(callback, once) {
     this.on(this.selectors.CLOSE_EVENT, callback, once)
+  }
+
+  /** Lie une action à une modale
+   * @param {import('../../action/Action').default} action
+   */
+  setAction(action) {
+    // Link dialog
+    action.dialog = this;
+    // Action id pour debuggage
+    this.dialog.dataset.actionId = action.id;
+    // Dialog content
+    this.setContent({ 
+      title: action.title, 
+      icon: action.icon, 
+      content: action.content, 
+      buttons: action.buttons, 
+      items: action.items 
+    });
+    this.setOnOpen(action.onOpen);
   }
 }
 

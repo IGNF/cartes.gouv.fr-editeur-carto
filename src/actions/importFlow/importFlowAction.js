@@ -20,6 +20,7 @@ function onOpen(e) {
 }
 
 const importFlowAction = new Action({
+  id: 'import-flow',
   title: 'Importer un flux',
   icon: 'ri-global-line',
   onOpen: onOpen,

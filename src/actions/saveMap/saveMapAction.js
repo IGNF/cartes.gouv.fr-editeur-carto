@@ -49,6 +49,7 @@ function saveMap(e) {
 }
 
 const saveMapAction = new Action({
+  id: 'save-map',
   title: 'Enregistrer',
   content: content,
   buttons: [

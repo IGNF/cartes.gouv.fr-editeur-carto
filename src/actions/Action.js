@@ -1,3 +1,5 @@
+import Dialog from '../control/Dialog/Dialog.js';
+
 /**
  * Bouton à mettre dans le buttons d'un dialog
  *  
@@ -19,6 +21,9 @@
  * @property {Function} [onOpen] - Fonction à appeler à l'ouverture d'un dialog.
  */
 
+/* Action list */
+const actions = {};
+
 /**
  * Classe représentant une action complète pour une modale (titre, contenu, pied de page et action à l'ouverture)
  */
@@ -27,12 +32,67 @@ class Action {
    * @param {ActionOptions} options - Options de configuration de l'action
    */
   constructor(options) {
+    if (!options.id) {
+      throw new Error('L\'id de l\'action est obligatoire');
+    }
+    if (actions[options.id]) {
+      throw new Error(`L'action ${options.id} existe déjà`);
+    }
+    this.id = options.id || '';
     this.title = options.title || '';
     this.content = options.content || '';
     this.buttons = options.buttons;
     this.items = options.items;
     this.onOpen = typeof options.onOpen === 'function' ? options.onOpen : () => { };
     this.icon = options.icon || '';
+    actions[options.id] = this;
+  }
+
+  /** Get action by Id
+   *  @static
+   */
+  static getActionById(actionName) {
+    const action = actions[actionName];
+    if (!action) {
+      throw new Error(`L'action ${actionName} n'existe pas`);
+    }
+    return action;
+  }
+
+  /** Open 
+   * @package {Event} e - Événement du clic
+   * @static
+   */
+  static open(e) {
+    // Pour gérer le cas du toggle
+    const target = e.target || e.detail.target;
+
+    const dialogId = target.getAttribute('aria-controls');
+    const pressed = target.ariaPressed;
+
+    const action = Action.getActionById(target.dataset.action);
+    const dialog = Dialog.getDialog(dialogId);
+    if (!dialog) return;
+
+    if (action instanceof Action) {
+      dialog.setAction(action);
+    }
+
+    if (pressed === false || pressed === 'false') {
+      dialog.close();
+    } else {
+      dialog.open();
+    }
+  }
+
+  /** @returns {string} */
+  get id() {
+    return this._id;
+  }
+
+  /** @param {string} value */
+  set id(value) {
+    this._id = value;
   }
 
   /** @returns {string} */
@@ -98,17 +158,6 @@ class Action {
    */
   getButton(index) {
     return this._buttons[index];
-  }
-
-
-  /**
-   * Lie les éléments d'une action à une modale.
-   * @param {import('../control/Dialog/Dialog').default} dialog Modale auquelle l'action est liée
-   */
-  setAction(dialog) {
-    this.dialog = dialog;
-    dialog.setContent({ title: this.title, icon: this.icon, content: this.content, buttons: this.buttons, items: this.items });
-    dialog.setOnOpen(this.onOpen);
   }
 }
 

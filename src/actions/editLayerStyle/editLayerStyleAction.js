@@ -23,6 +23,7 @@ function onOpen(e) {
 }
 
 const editLayerAction = new Action({
+  id: 'edit-layer-style',
   title: 'Point',
   icon: 'ri-global-line',
   onOpen: onOpen,

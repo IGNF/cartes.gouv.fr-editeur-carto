@@ -16,7 +16,7 @@ import Bar from '../../control/CustomBar/CustomBar.js'
 import Toggle from '../../control/CustomToggle/CustomToggle.js'
 import TextButton from '../../control/CustomTextButton/CustomTextButton.js';
 
-import openAction from '../../actions/actions.js';
+import Action from '../../actions/Action.js';
 
 // Variables utiles
 let title = carte.get('title');
@@ -66,7 +66,7 @@ let openMapBtn = new Button({
     'data-fr-opened': 'false'
   },
   html: 'Ouvrir une carte',
-  handleClick: openAction
+  handleClick: Action.open
 });
 
 let createMapBtn = new Button({
@@ -95,7 +95,7 @@ let saveMapBtn = new Button({
     'data-fr-opened': 'false'
   },
   html: 'Enregistrer',
-  handleClick: openAction,
+  handleClick: Action.open,
 });
 
 let renameMapBtn = new Button({
@@ -107,7 +107,7 @@ let renameMapBtn = new Button({
     'data-fr-opened': 'false'
   },
   html: 'Renommer',
-  handleClick: openAction,
+  handleClick: Action.open,
 });
 
 let bar2 = new Bar({
@@ -135,7 +135,7 @@ let shareMapBtn = new Button({
     'data-fr-opened': 'false'
   },
   html: 'Partager',
-  handleClick: openAction,
+  handleClick: Action.open,
 });
 
 let exportMapBtn = new Button({

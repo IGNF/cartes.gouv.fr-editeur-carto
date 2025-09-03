@@ -38,6 +38,7 @@ function copy(e) {
 }
 
 const shareMapAction = new Action({
+  id: 'share-map',
   title: 'Partager',
   content: content,
   onOpen: onOpen

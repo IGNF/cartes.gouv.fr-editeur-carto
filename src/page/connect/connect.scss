@@ -15,6 +15,10 @@
   max-height: calc(100% - 5rem);
   overflow: auto;
 
+  .ign-dialog__header {
+    display: none;
+  }
+
   .fr-icon {
     font-size: 56px;
     display: flex;
@@ -52,12 +56,12 @@
     display: none;
 
   }
-  .connected button:first-child {
-    margin-right: 1rem;
+  button.connected:last-child {
+    margin-left: 1rem;
   }
 }
 
-body:has(.menu-info:open) {
+body:has(.menu-info[open]) {
   .ol-overlaycontainer-stopevent {
     display: none;
   }
@@ -73,7 +77,7 @@ body:has(.menu-info:open) {
 /* Connected */
 [data-disconnected] {
   .menu-info .disconnected {
-    display: block;
+    display: inline-flex;
   }
   .menu-info .connected {
     display: none;

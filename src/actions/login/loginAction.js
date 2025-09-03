@@ -81,6 +81,7 @@ function login(e) {
 }
 
 const loginAction = new Action({
+  id: 'login',
   title: 'Connexion au service',
   content: content,
   buttons: [

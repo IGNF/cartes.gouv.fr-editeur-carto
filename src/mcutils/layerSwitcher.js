@@ -6,7 +6,7 @@ import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 
 
 function openMapDialog(e, instance, layer, options) {
-  editLayerAction.setAction(leftPanel);
+  leftPanel.setAction(editLayerAction);
   // leftPanel.setDialogTitle('Couche : ' + layer.get('name'))
   leftPanel.open();
 }
