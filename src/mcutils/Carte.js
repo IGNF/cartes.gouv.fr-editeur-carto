@@ -3,7 +3,6 @@ import {
   GeoportalZoom,
   SearchEngine,
 } from 'geopf-extensions-openlayers/src/index.js';
-import switcher from './layerSwitcher.js';
 
 /** GPP Carte overwrite Carte options / controls
  */
@@ -47,7 +46,6 @@ class GPPCarte extends Carte {
     }
     // Set GPP controls
     const controls = {
-      layerSwitcher: switcher,
       search: new SearchEngine({
         collapsed: true,
         collapsible: true,

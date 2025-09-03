@@ -6,9 +6,6 @@ import carte from '../../carte.js'
 import Bar from '../../control/CustomBar/CustomBar.js'
 import Toggle from '../../control/CustomToggle/CustomToggle.js'
 
-import Draw from 'ol/interaction/Draw.js';
-import VectorSource from 'ol/source/Vector.js';
-
 import Action from '../../actions/Action.js'
 
 import './edit-bar.scss'

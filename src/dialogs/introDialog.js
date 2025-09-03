@@ -1,4 +1,4 @@
-import Dialog from '../control/Dialog/Dialog'
+import Dialog from '../control/Dialog/Dialog.js'
 
 const introDialog = new Dialog({
   id: 'ConnectDialog',

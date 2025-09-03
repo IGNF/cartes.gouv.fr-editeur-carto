@@ -20,18 +20,4 @@ const carte = new Carte({
   url: import.meta.env.BASE_URL + 'carte/template.carte'
 })
 
-carte.on('read', () => {
-  let switcher = carte.getControl('layerSwitcher');
-  // Transforme le bouton de LayerSwitcher
-  let switcherBtn = document.querySelector("[id^=GPshowLayersListPicto]")
-  switcherBtn.classList.remove('fr-btn--tertiary', 'gpf-btn--tertiary')
-  switcherBtn.classList.add('gpf-btn--primary')
-  switcherBtn.parentElement.style = ''
-  switcher.on("change:collapsed", () => {
-    setTimeout(() => switcherBtn.parentElement.style = '', 1)
-  })
-
-  /* Do something */
-})
-
 export default carte

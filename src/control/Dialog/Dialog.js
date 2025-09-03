@@ -1,4 +1,4 @@
-import AbstractDialog from "./AbstractDialog";
+import AbstractDialog from "./AbstractDialog.js";
 
 import defaultHTML from './defaultDialog.html?raw';
 
