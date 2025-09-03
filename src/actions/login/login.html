@@ -1,37 +1,41 @@
-<div class="fr-mb-6v">
-  <h3>Se connecter avec FranceConnect</h3>
+<div class="fr-mb-1v">
+  <h4>Connexion à cartes.gouv</h4>
   <div class="fr-connect-group">
     <button class="fr-connect" disabled>
-      <span class="fr-connect__login">S’identifier avec</span>
+      <span class="fr-connect__login">S'identifier avec</span>
       <span class="fr-connect__brand">FranceConnect</span>
     </button>
     <p>
       <a href="https://franceconnect.gouv.fr/" target="_blank" rel="noopener"
-        title="Qu’est ce que FranceConnect ? - nouvelle fenêtre">Qu’est ce que FranceConnect ?</a>
+        title="Qu'est ce que FranceConnect ? - nouvelle fenêtre">Qu'est ce que FranceConnect ?</a>
     </p>
   </div>
+  <div class="fr-connect-group">
+    <button class="fr-connect pro-connect" disabled>
+      <span class="fr-connect__login">S'identifier avec</span>
+      <span class="fr-connect__brand">ProConnect</span>
+    </button>
+    <p>
+      <a href="https://agentconnect.gouv.fr/" target="_blank" rel="noopener"
+        title="Qu'est ce que ProConnect ? - nouvelle fenêtre">Qu'est ce que ProConnect ?</a>
+    </p>
+  </div>
+  <p class="fr-hr-or">ou</p>
 </div>
-<p class="fr-hr-or">ou</p>
 <div>
   <form id="login">
     <fieldset class="fr-fieldset" id="login-fieldset"
       aria-labelledby="login-fieldset-legend login-fieldset-messages">
       <legend class="fr-fieldset__legend" id="login-fieldset-legend">
-        <h3>Se connecter avec son compte</h3>
+        <h5>Se connecter avec son compte</h5>
       </legend>
       <div class="fr-fieldset__element">
-        <p class="fr-text--sm">Connexion à l'instance de qualif de Ma Carte.</p>
-      </div>
-      <div class="fr-fieldset__element">
         <fieldset class="fr-fieldset" id="credentials" aria-labelledby="credentials-messages">
-          <div class="fr-fieldset__element">
-            <span class="fr-hint-text">Sauf mention contraire, tous les champs sont obligatoires.</span>
-          </div>
           <div class="fr-fieldset__element">
             <div class="fr-input-group">
               <label class="fr-label" for="username">
                 Identifiant
-                <span class="fr-hint-text">Format attendu : nom@domaine.fr</span>
+                <span class="fr-hint-text">Format attendu : pseudo</span>
               </label>
               <input class="fr-input" autocomplete="username" aria-required="true"
                 aria-describedby="username-messages" name="username" id="username" type="text">
@@ -61,20 +65,22 @@
                 </div>
               </div>
             </div>
+            <div class="fr-messages-group" id="credentials-messages" aria-live="assertive">
+              <a href="https://qlf-macarte.ign.fr/recuperer-mon-mot-de-passe" target="_blank" rel="noopener"
+                title="Mot de passe oublié ? - nouvelle fenêtre">Mot de passe oublié ?</a>
+            </div>
           </div>
-          <div class="fr-messages-group" id="credentials-messages" aria-live="assertive">
+          <div class="fr-fieldset__element">
+            <div class="fr-checkbox-group fr-checkbox-group--sm">
+              <input name="remember" id="remember" type="checkbox" aria-describedby="remember-messages">
+              <label class="fr-label" for="remember">
+                Se souvenir de moi
+              </label>
+              <div class="fr-messages-group" id="remember-messages" aria-live="assertive">
+              </div>
+            </div>
           </div>
         </fieldset>
-      </div>
-      <div class="fr-fieldset__element">
-        <div class="fr-checkbox-group fr-checkbox-group--sm">
-          <input name="remember" id="remember" type="checkbox" aria-describedby="remember-messages">
-          <label class="fr-label" for="remember">
-            Se souvenir de moi
-          </label>
-          <div class="fr-messages-group" id="remember-messages" aria-live="assertive">
-          </div>
-        </div>
       </div>
       <div class="fr-messages-group" id="login-fieldset-messages" aria-live="assertive">
       </div>

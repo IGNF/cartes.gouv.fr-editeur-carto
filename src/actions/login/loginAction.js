@@ -4,6 +4,8 @@ import account from '../../charte/nav-user.js'
 import content from './login.html?raw'
 import Action from '../Action.js';
 
+import './login.scss'
+
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
