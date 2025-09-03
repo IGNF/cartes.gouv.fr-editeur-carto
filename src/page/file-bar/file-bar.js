@@ -1,6 +1,6 @@
 import carte from '../../carte.js'
 
-import modal from '../../modal.js';
+import modal from '../../dialogs/modal.js';
 
 import './file-bar.scss'
 // Download

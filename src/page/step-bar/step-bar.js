@@ -1,6 +1,6 @@
 
 import carte from '../../carte.js'
-import modal from '../../modal.js';
+import modal from '../../dialogs/modal.js';
 import charte from '../../charte/charte.js';
 import Charte from '../../charte/objects/Charte.js';
 // import Button from 'ol-ext/control/Button';

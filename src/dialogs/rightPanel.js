@@ -1,4 +1,4 @@
-import Panel from "./control/Panel/Panel.js";
+import Panel from "../control/Panel/Panel.js";
 
 const rightPanel = new Panel({
   id: 'right-panel-action',

@@ -1,5 +1,5 @@
 import Action from '../actions/Action.js'
-import loginDialog from '../loginDialog.js'
+import loginDialog from '../dialogs/loginDialog.js'
 import api from 'mcutils/api/api.js'
 import charte from './charte.js'
 import './nav-user.scss'
