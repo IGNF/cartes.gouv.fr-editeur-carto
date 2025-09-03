@@ -1,6 +1,6 @@
 
 import carte from '../../carte.js'
-import modal from '../../modal.js';
+import modal from '../../dialogs/modal.js';
 import charte from '../../charte/charte.js';
 import Charte from '../../charte/objects/Charte.js';
 // import Button from 'ol-ext/control/Button';
@@ -12,8 +12,7 @@ import Bar from '../../control/CustomBar/CustomBar.js'
 import Toggle from '../../control/CustomToggle/CustomToggle.js'
 
 import './step-bar.scss'
-import openAction from '../../actions/actions.js'
-import duplicate from '../mobile-bar/mobile-bar.js';
+import Action from '../../actions/Action.js'
 
 
 let onToggleMode = function () {
@@ -69,7 +68,7 @@ let save = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  handleClick: openAction
+  handleClick: Action.open
 });
 
 let share = new Button({
@@ -83,7 +82,7 @@ let share = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  handleClick: openAction
+  handleClick: Action.open
 });
 
 let modeBar = new Bar({
@@ -97,9 +96,6 @@ let mainbar = new Bar({
   className: 'ol-bar--separator ol-bar--row step-bar',
   controls: [modeBar, save, share]
 })
-
-// Ajout à la barre mobile
-duplicate(mainbar);
 
 carte.addControl('stepBar', mainbar);
 mainbar.setPosition('top-right');

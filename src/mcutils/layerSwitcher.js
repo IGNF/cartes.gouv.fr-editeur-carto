@@ -1,12 +1,12 @@
 
 import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
 import carte from '../carte.js';
-import leftPanel from '../leftPanel.js';
+import leftPanel from '../dialogs/leftPanel.js';
 import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 
 
 function openMapDialog(e, instance, layer, options) {
-  editLayerAction.setAction(leftPanel);
+  leftPanel.setAction(editLayerAction);
   // leftPanel.setDialogTitle('Couche : ' + layer.get('name'))
   console.log(e, instance, layer, options);
   leftPanel.open();

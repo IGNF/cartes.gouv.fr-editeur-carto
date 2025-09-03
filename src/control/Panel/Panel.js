@@ -3,7 +3,7 @@ import contentHTML from './panel.html?raw';
 import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from "../../utils/getUid.js";
 import './panel.scss';
-import Dialog from '../Dialog/Dialog.js';
+import Dialog from '../Dialog/AbstractDialog.js';
 
 
 /**

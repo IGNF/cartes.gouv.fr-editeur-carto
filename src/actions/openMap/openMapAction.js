@@ -1,7 +1,7 @@
 import Action from '../Action.js';
 import content from './openMap.html?raw';
 import connectContent from './askConnect.html?raw';
-import loginDialog from '../../loginDialog.js';
+import loginDialog from '../../dialogs/loginDialog.js';
 import cardTemplate from './cardMapTemplate.html?raw';
 import api from 'mcutils/api/api.js';
 import carte from '../../carte.js';
@@ -37,7 +37,7 @@ const buttonConnect = [
 ];
 
 /**
- * @type {import('../../control/Dialog/Dialog.js').default}
+ * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
  */
 let dialog;
@@ -46,7 +46,7 @@ let dialog;
  * Fonction à l'ouverture du dialog.
  * 
  * @param {Event} e Événement générique openlayer
- * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
 function onOpen(e) {
@@ -169,6 +169,7 @@ function openMap() {
 }
 
 const openMapAction = new Action({
+  id: 'open-map',
   title: 'Ouvrir une carte',
   content: content,
   onOpen: onOpen

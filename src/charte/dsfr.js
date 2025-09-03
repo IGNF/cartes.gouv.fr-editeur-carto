@@ -1,5 +1,5 @@
 import charte from './charte.js'
-import displayDialog from '../displayDialog.js'
+import displayDialog from '../dialogs/displayDialog.js'
 
 // Set service info
 charte.setService({

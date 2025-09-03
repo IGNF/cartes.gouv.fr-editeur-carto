@@ -6,10 +6,13 @@ import carte from '../../carte.js'
 import Bar from '../../control/CustomBar/CustomBar.js'
 import Toggle from '../../control/CustomToggle/CustomToggle.js'
 
-import openAction from '../../actions/actions.js'
+import Draw from 'ol/interaction/Draw.js';
+import VectorSource from 'ol/source/Vector.js';
+
+import Action from '../../actions/Action.js'
 
 import './edit-bar.scss'
-import rightPanel from '../../rightPanel.js';
+import rightPanel from '../../dialogs/rightPanel.js';
 
 // let currentEditToggle;
 // function activeToggle() {
@@ -36,7 +39,7 @@ function onToggleAction() {
       'target': toggle.button_,
     }
   });
-  openAction(e);
+  Action.open(e);
 }
 
 rightPanel.onClose(() => {

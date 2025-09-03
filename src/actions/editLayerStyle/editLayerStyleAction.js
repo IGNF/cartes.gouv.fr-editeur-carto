@@ -6,7 +6,7 @@ import editAttributeItem from './edit-attribute.js';
 import './editLayerStyle.scss';
 
 /**
- * @type {import('../../control/Dialog/Dialog.js').default}
+ * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
  */
 // let dialog;
@@ -15,7 +15,7 @@ import './editLayerStyle.scss';
  * Fonction à l'ouverture du dialog.
  * 
  * @param {Event} e Événement générique openlayer
- * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
 function onOpen() {
@@ -23,6 +23,7 @@ function onOpen() {
 }
 
 const editLayerAction = new Action({
+  id: 'edit-layer-style',
   title: 'Point',
   icon: 'ri-global-line',
   onOpen: onOpen,

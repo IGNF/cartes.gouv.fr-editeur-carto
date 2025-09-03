@@ -1,5 +1,5 @@
-import openAction from '../actions/actions.js'
-import loginDialog from '../loginDialog.js'
+import Action from '../actions/Action.js'
+import loginDialog from '../dialogs/loginDialog.js'
 import api from 'mcutils/api/api.js'
 import charte from './charte.js'
 import './nav-user.scss'
@@ -64,7 +64,7 @@ document.documentElement.addEventListener('dsfr.start', () => {
   const header = document.querySelector('header')
   const loginBtn = header.querySelectorAll('button[data-action="login"]')
   loginBtn.forEach(btn => {
-    btn.addEventListener('click', openAction)
+    btn.addEventListener('click', Action.open)
   })
 
   api.whoami(setUser)

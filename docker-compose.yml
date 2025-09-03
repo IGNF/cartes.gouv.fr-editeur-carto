@@ -1,0 +1,13 @@
+services:
+
+  site:
+    image: cartosp-editeur-carto
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      args:
+        - http_proxy
+        - https_proxy
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

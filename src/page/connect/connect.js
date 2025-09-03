@@ -1,48 +1,53 @@
-import ol_ext_element from 'ol-ext/util/element.js';
+
+import introDialog from '../../dialogs/introDialog.js'
+import loginDialog from '../../dialogs/loginDialog.js';
+import modal from '../../dialogs/modal.js';
+import Action from '../../actions/Action.js';
 
 import contentHTML from './connect.html?raw';
 import './connect.scss';
 
-import loginDialog from '../../loginDialog.js';
-import modal from '../../modal.js';
-import openAction from '../../actions/actions.js';
-
-const dialogConnect = ol_ext_element.create('DIALOG', {
-  id: 'ConnectDialog',
-  className: 'menu-info menu-connect',
-  'aria-modal': false,
-  html: contentHTML,
-  parent: document.body
+const connectAction = new Action({
+  id: 'connect',
+  title: 'Créer votre carte',
+  content: contentHTML,
+  buttons: [
+    {
+      label: "Connectez-vous pour commencer",
+      className: 'disconnected fr-icon-arrow-right-s-line fr-btn--icon-right',
+      kind: 0,
+      close: true,
+      'data-action': 'login',
+      'aria-controls': loginDialog.getId(),
+      callback: e => {
+        delete document.body.dataset.disconnected;
+        Action.open(e)
+      }
+    },
+    {
+      label: "Voir mes cartes",
+      className: 'view connected',
+      kind: 1,
+      close: true,
+      'data-action': 'open-map',
+      'aria-controls': modal.getId(),
+      callback: e => {
+        Action.open(e),
+        introDialog.close()
+      }
+    },
+    {
+      label: "Créer une carte",
+      className: 'create connected fr-icon-arrow-right-s-line fr-btn--icon-right',
+      kind: 0,
+      close: true,
+      callback: () => introDialog.close()
+    }
+  ],
+  onOpen: () => {}
 });
 
-document.body.dataset.disconnected = '';
 
-let button = dialogConnect.querySelector('.disconnected > *');
-button.setAttribute('aria-controls', loginDialog.getId());
-button.setAttribute('data-fr-opened', false);
-button.addEventListener('click', openAction);
-
-let viewMaps = dialogConnect.querySelector('[data-action="open-map"]');
-viewMaps.setAttribute('aria-controls', modal.getId());
-viewMaps.setAttribute('data-fr-opened', false);
-viewMaps.addEventListener('click', openAction);
-
-dialogConnect.querySelector('.disconnected > *').addEventListener('click', () => {
-  delete document.body.dataset.disconnected;
-
-  // dialogConnect.querySelector('.connected button.create').focus();
-  // e.preventDefault();
-  // e.stopPropagation();
-});
-dialogConnect.querySelectorAll('.connected > button').forEach(button => {
-  button.addEventListener('click', () => {
-    dialogConnect.close();
-  })
-});
-
-dialogConnect.show();
-
-/* DEBUG */
-window.dialogConnect = dialogConnect;
-
-export default dialogConnect;
+/* intro dialog */
+introDialog.setAction(connectAction);
+introDialog.open()

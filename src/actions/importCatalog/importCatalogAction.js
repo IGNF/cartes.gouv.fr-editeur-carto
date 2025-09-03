@@ -3,7 +3,7 @@ import content from './importCatalog.html?raw';
 import './importCatalog.scss';
 
 /**
- * @type {import('../../control/Dialog/Dialog.js').default}
+ * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
  */
 // let dialog;
@@ -12,7 +12,7 @@ import './importCatalog.scss';
  * Fonction à l'ouverture du dialog.
  * 
  * @param {Event} e Événement générique openlayer
- * @param {import('../../control/Dialog/Dialog.js').default} e.target
+ * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
 function onOpen() {
@@ -20,6 +20,7 @@ function onOpen() {
 }
 
 const importCatalogAction = new Action({
+  id: 'import-catalog',
   title: 'Catalogue de cartes',
   icon: 'fr-icon-ign-map-line',
   content: content,
