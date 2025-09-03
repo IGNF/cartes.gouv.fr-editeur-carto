@@ -20,7 +20,6 @@ const connectAction = new Action({
     callback: e => {
       delete document.body.dataset.disconnected;
       Action.open(e)
-      introDialog.open()
     }
   }, {
     label: 'Voir mes cartes',
