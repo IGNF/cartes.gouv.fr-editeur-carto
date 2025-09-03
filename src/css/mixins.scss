@@ -1,0 +1,29 @@
+// Du DSFR
+@mixin hover-media-query() {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Change la couleur du background du bouton
+@mixin button-state(
+  $text-color: var(--text-action-high-blue-france),
+  $background: unset
+) {
+  &,
+  &:hover,
+  &:active {
+    color: $text-color;
+    background-color: $background;
+  }
+
+  @include hover-media-query {
+    &:hover {
+      background-color: var(--hover-tint);
+    }
+
+    &:active {
+      background-color: var(--active-tint);
+    }
+  }
+}

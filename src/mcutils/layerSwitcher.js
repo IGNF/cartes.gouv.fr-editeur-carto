@@ -8,12 +8,13 @@ import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 function openMapDialog(e, instance, layer, options) {
   leftPanel.setAction(editLayerAction);
   // leftPanel.setDialogTitle('Couche : ' + layer.get('name'))
+  console.log(e, instance, layer, options);
   leftPanel.open();
 }
 
 const switcher = new LayerSwitcher({
   options: {
-    position: 'top-right',
+    // position: 'top-right',
     collapsed: true,
     panel: true,
     counter: true,

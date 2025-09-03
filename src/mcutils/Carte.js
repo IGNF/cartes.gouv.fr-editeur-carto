@@ -41,10 +41,8 @@ class GPPCarte extends Carte {
 
     // Remove existing controls
     for (const key in this._controls) {
-      const ctrl = this._controls[key];
       if (!keyToExcludes.includes(key)) {
-        this.map.removeControl(ctrl);
-        delete this._controls[key];
+        this.removeControl(key)
       }
     }
     // Set GPP controls
@@ -79,6 +77,20 @@ class GPPCarte extends Carte {
       this.map.addControl(control);
     } else {
       throw new Error('Un contrôle du même nom existe déjà');
+    }
+  }
+
+  /**
+   * Remove an existing control
+   * @param {string} controlName name of the control
+   */
+  removeControl(controlName) {
+    const ctrl = this._controls[controlName];
+    if (ctrl) {
+      this.map.removeControl(ctrl);
+      delete this._controls[controlName];
+    } else {
+      console.warn(`Aucun contrôle avec le nom "${controlName}" existe`);
     }
   }
 

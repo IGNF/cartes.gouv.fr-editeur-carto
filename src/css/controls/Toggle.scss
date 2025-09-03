@@ -1,71 +1,22 @@
-.ol-control.ol-bar .ol-toggle, .ol-control.ol-bar .ol-button {
-  &.ol-active > button,
-  > button {
-    &,
-    &:hover,
-    &:active {
-      color: var(--text-action-high-blue-france);
-      background-color: unset;
-    }
+@use '../mixins.scss' as mx;
 
-    &:hover {
-      background-color: var(--hover-tint);
-    }
+.ol-toggle.ol-button.ol-control.ol-active > button {
+  // Surcharge couleurs ol-ext
+  --hover: var(--background-open-blue-france-hover);
+  --active: var(--background-open-blue-france-active);
 
-    &:active {
-      background-color: var(--active-tint);
-    }
-  }
-
-  &.ol-active > button {
-    & {
-      background-color: var(--hover-tint);
-    }
-
-    &:hover {
-      background-color: var(--hover-tint);
-    }
-
-    &:active {
-      background-color: var(--active-tint);
-    }
-  }
+  @include mx.button-state(
+    $text-color: var(--text-action-high-blue-france),
+    $background: var(--background-open-blue-france)
+  );
 }
 
 .ol-control.ol-button.dsfr-btn {
-  .fr-btn.fr-btn {
+  .fr-btn {
     align-items: center;
     display: inline-flex;
     flex-direction: row;
     padding: 0.5rem 1rem;
-
-    &,
-    &:hover,
-    &:active {
-      color: var(--text-action-high-blue-france);
-    }
-
-    &:hover {
-      background-color: var(--hover-tint);
-    }
-
-    &:active {
-      background-color: var(--active-tint);
-    }
-  }
-
-  &.ol-active > .fr-btn {
-    & {
-      background-color: var(--hover-tint);
-    }
-
-    &:hover {
-      background-color: var(--hover-tint);
-    }
-
-    &:active {
-      background-color: var(--active-tint);
-    }
   }
 
   button {

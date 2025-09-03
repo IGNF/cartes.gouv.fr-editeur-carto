@@ -6,7 +6,7 @@ import './importCatalog.scss';
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
  */
-let dialog;
+// let dialog;
 
 /**
  * Fonction à l'ouverture du dialog.
@@ -15,8 +15,8 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
-  dialog = e.target;
+function onOpen() {
+  // dialog = e.target;
 }
 
 const importCatalogAction = new Action({

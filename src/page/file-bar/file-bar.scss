@@ -1,7 +1,7 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../../css/mixins.scss' as mx;
 
 .ol-control.ol-bar .ol-button button.map-item {
-  color: var(--text-default-grey);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -14,14 +14,10 @@
   height: auto;
   min-height: auto;
 
-  &:not(:disabled):hover {
-    background-color: var(--hover-tint);
-    color: var(--text-default-grey);
-  }
-
-  &:not(:disabled):active {
-    background-color: var(--active-tint);
-    color: var(--text-default-grey);
+  &:not(:disabled) {
+    @include mx.button-state(
+      $text-color: var(--text-default-grey)
+    );
   }
 }
 
@@ -35,30 +31,10 @@
 
 .ol-control.ol-bar .ol-control.ol-text-button.file-name > div {
   font-size: 0.875rem;
-  color: var(--text-disabled-grey);
-
-  &:not(:disabled):hover {
-    color: var(--text-disabled-grey);
-  }
-
-  &:not(:disabled):active {
-    color: var(--text-disabled-grey);
-  }
-}
-
-.ol-control.ol-bar .ol-control.ol-text-button.map-title {
-  display: none;
-  overflow: hidden;
-  // white-space: pre-wrap;
-
-  @include rf.respond-from('lg') {
-    display: block;
-    width: 132px;
-  }
-
-  @include rf.respond-from('xl') {
-    display: block;
-    width: 276px;
+  &:not(:disabled) {
+    @include mx.button-state(
+      $text-color: var(--text-disabled-grey)
+    );
   }
 }
 

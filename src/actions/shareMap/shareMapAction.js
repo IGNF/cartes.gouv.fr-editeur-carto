@@ -17,7 +17,7 @@ let dialog;
  */
 function onOpen(e) {
   dialog = e.target
-  let copyBtns = e.target.querySelectorAll('button.copy');
+  let copyBtns = dialog.querySelectorAll('button.copy');
   copyBtns.forEach(btn => {
     btn.addEventListener('click', copy)
   });

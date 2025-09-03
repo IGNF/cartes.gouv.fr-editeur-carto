@@ -1,3 +1,6 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../mixins.scss' as mx;
+
 .ol-button > button {
   line-height: unset;
   font-weight: 500;
@@ -17,130 +20,6 @@
 
   &[class*='ri-'] {
     font-size: 1.5rem;
-  }
-
-  &[aria-label]:hover::after {
-    font-family: Marianne, arial, sans-serif;
-    content: attr(aria-label);
-    position: absolute;
-    top: 0;
-    color: var(--text-default-grey);
-    font-size: 0.75rem;
-    font-weight: 500;
-    width: fit-content;
-    white-space: nowrap;
-    background-size:
-      0.375rem 0.5rem,
-      0.375rem 0.5rem,
-      1px,
-      100%,
-      calc(100% - 0.5rem) 100%;
-    background-repeat: no-repeat;
-    background-position:
-      0.125rem 50%,
-      0% 50%,
-      0.375rem 100%,
-      0.375rem 100%;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 18, 0.16));
-    filter: drop-shadow(var(--overlap-shadow));
-    background-image: conic-gradient(
-        from 56.31deg at 0% 50%,
-        transparent 0deg,
-        var(--background-overlap-grey) 0deg,
-        var(--background-overlap-grey) 67.38deg,
-        transparent 67.38deg
-      ),
-      conic-gradient(
-        from 56.31deg at 0% 50%,
-        transparent 0deg,
-        var(--border-default-grey) 0deg,
-        var(--border-default-grey) 67.38deg,
-        transparent 67.38deg
-      ),
-      linear-gradient(90deg, var(--border-default-grey), var(--border-default-grey)),
-      linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
-  }
-}
-
-.ol-bar.ol-right .ol-button > button {
-  &[aria-label]:hover::after {
-    transform: translateX(-100%) translateY(1px);
-    padding: 0.5rem 1.25rem 0.5rem 0.5rem;
-    background-image: conic-gradient(
-        from 236.31deg at 100% 50%,
-        transparent 0deg,
-        var(--background-overlap-grey) 0deg,
-        var(--background-overlap-grey) 67.38deg,
-        transparent 67.38deg
-      ),
-      conic-gradient(
-        from 236.31deg at 100% 50%,
-        transparent 0deg,
-        var(--border-default-grey) 0deg,
-        var(--border-default-grey) 67.38deg,
-        transparent 67.38deg
-      ),
-      linear-gradient(90deg, var(--border-default-grey), var(--border-default-grey)),
-      linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
-    background-size:
-      0.375rem 0.5rem,
-      0.375rem 0.5rem,
-      1px 100%,
-      100%;
-    background-position:
-      calc(100% - 0.125rem) 50%,
-      100% 50%,
-      calc(100% - 0.375rem) 0,
-      calc(100% - 0.375rem) 0;
-  }
-}
-
-.ol-bar.ol-top .ol-button > button {
-  &[aria-label]:hover::after {
-    transform: translateX(-16px) translateY(40px);
-
-    // Flèche vers le haut
-    background-image: conic-gradient(
-        from 146.31deg at 50% 0%,
-        transparent 0deg,
-        var(--background-overlap-grey) 0deg,
-        var(--background-overlap-grey) 67.38deg,
-        transparent 67.38deg
-      ),
-      conic-gradient(
-        from 146.31deg at 50% 10%,
-        transparent 0deg,
-        var(--border-default-grey) 0deg,
-        var(--border-default-grey) 67.38deg,
-        transparent 67.38deg
-      ),
-      linear-gradient(to bottom, var(--border-default-grey), var(--border-default-grey)),
-      linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
-    background-position:
-      16px 0.125rem,
-      16px 0,
-      0 0.45rem,
-      0 0.5rem;
-    background-size:
-      0.5rem 0.5rem,
-      0.5rem 0.5rem,
-      100% 1px,
-      100%;
-    background-repeat: no-repeat;
-    padding-top: 1rem;
-    padding-left: 0.5rem;
-    margin-top: 0.125rem;
-  }
-}
-.ol-bar.ol-top.ol-right .ol-button > button {
-  &[aria-label]:hover::after {
-    transform: translateY(40px);
-    right: 0;
-    background-position:
-      calc(100% - 20px) 0.125rem,
-      calc(100% - 20px) 0,
-      0 0.45rem,
-      0 0.5rem;
   }
 }
 
@@ -167,5 +46,142 @@
 
   &:not(:empty) {
     width: 100%;
+  }
+}
+
+@include rf.respond-from('sm') {
+  .ol-button > button {
+    &[aria-label]:hover::after {
+      font-family: Marianne, arial, sans-serif;
+      content: attr(aria-label);
+      position: absolute;
+      top: 0;
+      color: var(--text-default-grey);
+      font-size: 0.75rem;
+      font-weight: 500;
+      width: fit-content;
+      white-space: nowrap;
+      background-size:
+        0.375rem 0.5rem,
+        0.375rem 0.5rem,
+        1px,
+        100%,
+        calc(100% - 0.5rem) 100%;
+      background-repeat: no-repeat;
+      background-position:
+        0.125rem 50%,
+        0% 50%,
+        0.375rem 100%,
+        0.375rem 100%;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 18, 0.16));
+      filter: drop-shadow(var(--overlap-shadow));
+      background-image:
+        conic-gradient(
+          from 56.31deg at 0% 50%,
+          transparent 0deg,
+          var(--background-overlap-grey) 0deg,
+          var(--background-overlap-grey) 67.38deg,
+          transparent 67.38deg
+        ),
+        conic-gradient(
+          from 56.31deg at 0% 50%,
+          transparent 0deg,
+          var(--border-default-grey) 0deg,
+          var(--border-default-grey) 67.38deg,
+          transparent 67.38deg
+        ),
+        linear-gradient(90deg, var(--border-default-grey), var(--border-default-grey)),
+        linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
+    }
+  }
+
+  .ol-bar.ol-right .ol-button > button {
+    &[aria-label]:hover::after {
+      transform: translateX(-100%) translateY(1px);
+      padding: 0.5rem 1.25rem 0.5rem 0.5rem;
+      background-image:
+        conic-gradient(
+          from 236.31deg at 100% 50%,
+          transparent 0deg,
+          var(--background-overlap-grey) 0deg,
+          var(--background-overlap-grey) 67.38deg,
+          transparent 67.38deg
+        ),
+        conic-gradient(
+          from 236.31deg at 100% 50%,
+          transparent 0deg,
+          var(--border-default-grey) 0deg,
+          var(--border-default-grey) 67.38deg,
+          transparent 67.38deg
+        ),
+        linear-gradient(90deg, var(--border-default-grey), var(--border-default-grey)),
+        linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
+      background-size:
+        0.375rem 0.5rem,
+        0.375rem 0.5rem,
+        1px 100%,
+        100%;
+      background-position:
+        calc(100% - 0.125rem) 50%,
+        100% 50%,
+        calc(100% - 0.375rem) 0,
+        calc(100% - 0.375rem) 0;
+    }
+  }
+
+  .ol-bar.ol-top .ol-button > button {
+    &[aria-label]:hover::after {
+      transform: translateX(-16px) translateY(40px);
+
+      // Flèche vers le haut
+      background-image:
+        conic-gradient(
+          from 146.31deg at 50% 0%,
+          transparent 0deg,
+          var(--background-overlap-grey) 0deg,
+          var(--background-overlap-grey) 67.38deg,
+          transparent 67.38deg
+        ),
+        conic-gradient(
+          from 146.31deg at 50% 10%,
+          transparent 0deg,
+          var(--border-default-grey) 0deg,
+          var(--border-default-grey) 67.38deg,
+          transparent 67.38deg
+        ),
+        linear-gradient(to bottom, var(--border-default-grey), var(--border-default-grey)),
+        linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
+      background-position:
+        16px 0.125rem,
+        16px 0,
+        0 0.45rem,
+        0 0.5rem;
+      background-size:
+        0.5rem 0.5rem,
+        0.5rem 0.5rem,
+        100% 1px,
+        100%;
+      background-repeat: no-repeat;
+      padding-top: 1rem;
+      padding-left: 0.5rem;
+      margin-top: 0.125rem;
+    }
+  }
+  .ol-bar.ol-top.ol-right .ol-button > button {
+    &[aria-label]:hover::after {
+      transform: translateY(40px);
+      right: 0;
+      background-position:
+        calc(100% - 20px) 0.125rem,
+        calc(100% - 20px) 0,
+        0 0.45rem,
+        0 0.5rem;
+    }
+  }
+}
+
+.ol-control.ol-button {
+  > button {
+    @include mx.button-state();
   }
 }
