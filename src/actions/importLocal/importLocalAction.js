@@ -6,6 +6,7 @@ import message from '../../utils/message.js';
 
 import * as importLocal from './importLocal.js';
 import * as errors from '../../utils/errors.js';
+
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 

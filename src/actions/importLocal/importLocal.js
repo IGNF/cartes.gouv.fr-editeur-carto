@@ -20,6 +20,7 @@ import VectorStyle from 'mcutils/layer/VectorStyle.js';
 const accepted = [
   'application/geo+json',
   'application/vnd.geo+json', // Obsolète géojson media type
+  '.geojson',
   'application/json',
   'application/vnd.google-earth.kml+xml',
   'application/geopackage+sqlite3', // Geopackage
@@ -58,10 +59,12 @@ let metadata = {};
  * @throws {errors.UnsupportedExtensionError} Extension non supportée
  */
 function checkFile(file) {
+  // Test extension
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
   // Input du fichier
   if (!file) {
     throw new errors.MissingFileError();
-  } else if (!accepted.includes(file.type)) {
+  } else if (!accepted.includes(file.type) && !accepted.includes(ext)) {
     throw new errors.UnsupportedExtensionError(file.type);
   }
 
