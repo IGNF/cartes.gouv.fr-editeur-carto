@@ -1,14 +1,11 @@
+import carte from '../../carte.js';
 
-import carte from '../../carte.js'
+import Bar from 'ol-ext/control/Bar.js';
+import Toggle from 'ol-ext/control/Toggle.js';
 
-// import Bar from 'ol-ext/control/Bar'
-// import Toggle from 'ol-ext/control/Toggle'
-import Bar from '../../control/CustomBar/CustomBar.js'
-import Toggle from '../../control/CustomToggle/CustomToggle.js'
+import Action from '../../actions/Action.js';
 
-import Action from '../../actions/Action.js'
-
-import './edit-bar.scss'
+import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure

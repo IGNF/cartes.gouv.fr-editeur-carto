@@ -1,15 +1,11 @@
 
-import carte from '../../carte.js'
+import carte from '../../carte.js';
 import modal from '../../dialogs/modal.js';
 import charte from '../../charte/charte.js';
 import Charte from '../../charte/objects/Charte.js';
-// import Button from 'ol-ext/control/Button';
-// import Bar from 'ol-ext/control/Bar';
-// import Toggle from 'ol-ext/control/Toggle';
-
-import Button from '../../control/CustomButton/CustomButton.js'
-import Bar from '../../control/CustomBar/CustomBar.js'
-import Toggle from '../../control/CustomToggle/CustomToggle.js'
+import Button from 'ol-ext/control/Button.js';
+import Bar from 'ol-ext/control/Bar.js';
+import Toggle from 'ol-ext/control/Toggle.js';
 
 import './step-bar.scss'
 import Action from '../../actions/Action.js'
@@ -99,18 +95,3 @@ let mainbar = new Bar({
 
 carte.addControl('stepBar', mainbar);
 mainbar.setPosition('top-right');
-
-// Lien avec la barre mobile
-const toggleModes = {};
-toggleModes[Charte.modes.EDITOR] = createmap;
-toggleModes[Charte.modes.STORYMAP] = storymap;
-
-charte.on('change:mode', (e) => {
-  let mode = e.target.getMode();
-  let previousMode = e.oldValue;
-  const toggle = toggleModes[mode];
-  const oldToggle = toggleModes[previousMode];
-  toggle.setActive(true);
-  toggle.set('autoActivate', true);
-  oldToggle.set('autoActivate', false);
-});

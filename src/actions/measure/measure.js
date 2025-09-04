@@ -3,10 +3,8 @@
  */
 
 
-// import Bar from 'ol-ext/control/Bar'
-// import Toggle from 'ol-ext/control/Toggle'
-import Bar from '../../control/CustomBar/CustomBar.js'
-import Toggle from '../../control/CustomToggle/CustomToggle.js'
+import Bar from 'ol-ext/control/Bar.js';
+import Toggle from 'ol-ext/control/Toggle.js';
 
 // Interaction de mesure
 let distanceMeasure = new Toggle({

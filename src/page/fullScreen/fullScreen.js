@@ -1,8 +1,6 @@
 import { FullScreen } from 'ol/control.js';
-// import Toggle from 'ol-ext/control/Toggle.js';
-// import Bar from 'ol-ext/control/Bar.js';
-import Toggle from '../../control/CustomToggle/CustomToggle.js'
-import Bar from '../../control/CustomBar/CustomBar.js';
+import Toggle from 'ol-ext/control/Toggle.js';
+import Bar from 'ol-ext/control/Bar.js';
 import carte from '../../carte.js';
 
 function onToggle() {
