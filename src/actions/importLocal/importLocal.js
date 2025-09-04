@@ -16,17 +16,22 @@ import wasmUrl from 'geoimport/dist/static/gdal3WebAssembly.wasm?url';
 
 import VectorSource from 'ol/source/Vector.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
-// import VectorLayer from 'ol/layer/Vector.js';
 
 const accepted = [
   'application/geo+json',
+  'application/vnd.geo+json', // Obsolète géojson media type
   'application/json',
   'application/vnd.google-earth.kml+xml',
-  'application/geopackage+sqlite3',
-  'application/gpx+xml',
-  'application/zip',
-  'text/csv',
+  'application/geopackage+sqlite3', // Geopackage
+  '.gpkg',
+  'application/gpx+xml', // Gpx
   '.gpx',
+  'application/zip',
+  'application/x-zip-compressed', // Windows zip
+  'application/x-7z-compressed', // Fichiers 7zip
+  '.zip',
+  'text/csv',
+  'application/vnd.ms-excel', // Windows csv
 ]
 // Fichiers excel :
 // 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
