@@ -2,7 +2,7 @@
 
 ## JSON / GeoJSON
 
-* Communes du Grand-est : Data-Grand-Est-Communes.json
+* Communes du Grand-est : [Data-Grand-Est-Communes.json](https://raw.githubusercontent.com/IGNF/cartes.gouv.fr-editeur-carto/refs/heads/main/tests/data/Data-Grand-Est-Communes.json)
 * INSEE : bassin-de-vie.geojson
 
 ## CSV
