@@ -51,7 +51,7 @@ div[id^='GPlayerSwitcher-'] {
 
   // Pas de recherche en mobile
   @include rf.respond-from('sm') {
-  top: calc(0.5rem + 3rem + 2.5rem);
+    top: calc(0.5rem + 3rem + 2.5rem);
   }
 }
 

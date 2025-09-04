@@ -1,20 +1,15 @@
-import carte from '../../carte.js'
+import carte from '../../carte.js';
 
 import modal from '../../dialogs/modal.js';
 
-import './file-bar.scss'
+import './file-bar.scss';
 // Download
-import FileSaver from 'file-saver'
+import FileSaver from 'file-saver';
 
-// import Button from 'ol-ext/control/Button.js';
-// import Bar from 'ol-ext/control/Bar.js';
-// import Toggle from 'ol-ext/control/Toggle.js';
-// import TextButton from 'ol-ext/control/TextButton.js';
-
-import Button from '../../control/CustomButton/CustomButton.js'
-import Bar from '../../control/CustomBar/CustomBar.js'
-import Toggle from '../../control/CustomToggle/CustomToggle.js'
-import TextButton from '../../control/CustomTextButton/CustomTextButton.js';
+import Button from 'ol-ext/control/Button.js';
+import Bar from 'ol-ext/control/Bar.js';
+import Toggle from 'ol-ext/control/Toggle.js';
+import TextButton from 'ol-ext/control/TextButton.js';
 
 import Action from '../../actions/Action.js';
 
