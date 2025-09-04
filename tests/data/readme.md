@@ -20,5 +20,5 @@
 
 ## Big data
 
-* Arbres de Marseilles : [Predictions_lidar_Marseille.geojson](https://raw.githubusercontent.com/IGNF/cartes.gouv.fr-editeur-carto/refs/heads/main/tests/data/Predictions_lidar_Marseille.geojson)
-* Bars : [bars.geojson](https://raw.githubusercontent.com/IGNF/cartes.gouv.fr-editeur-carto/refs/heads/main/tests/data/bars.geojson)
+* Arbres de Marseilles : [Predictions_lidar_Marseille.geojson](https://raw.githubusercontent.com/IGNF/cartes.gouv.fr-editeur-carto/refs/heads/main/tests/data/big%20data/Predictions_lidar_Marseille.geojson)
+* Bars : [bars.geojson](https://raw.githubusercontent.com/IGNF/cartes.gouv.fr-editeur-carto/refs/heads/main/tests/data/big%20data/bars.geojson)
