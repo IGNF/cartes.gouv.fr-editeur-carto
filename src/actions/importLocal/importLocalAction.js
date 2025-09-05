@@ -46,7 +46,7 @@ async function submitForm(e) {
   try {
     if (importLocal.checkFile(inputFile)) {
 
-      message.addMessage(input, 'Chargement en cours', { wait: true, append: false });
+      message.addMessage(input, 'Chargement en cours', { error: 'wait', append: false });
       form.querySelector('[type="submit"]').disabled = true;
 
       const promises = await importLocal.importFile(file);
@@ -57,8 +57,12 @@ async function submitForm(e) {
       promises.forEach(promise => {
         if (promise.status === "fulfilled") {
           const layer = promise.value
-          carte.addLayer(layer);
-          message.addMessage(input, `Le fichier ${layer.get('title')} a été ajouté à vos couches.`, { error: false, append: true });
+          if (layer.getSource().getFeatures().length) {
+            carte.addLayer(layer);
+            message.addMessage(input, `La couche ${layer.get('title')} a été ajouté à votre carte.`, { error: false, append: true });
+          } else {
+            message.addMessage(input, `La couche ${layer.get('title')} ne contient pas de données.`, { error: 'warning', append: true });
+          }
         } else {
           handleError(promise.reason, input, file, true);
         }
