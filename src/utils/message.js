@@ -34,9 +34,23 @@ function addMessage(input, message, options) {
   options.closest = options.closest ? options.closest : 'div';
   options.error = options.error === undefined ? true : options.error;
   // Classe à ajouter au message
-  const msgClass = options.error ? '--error' : '--valid';
+  let msgClass;
+  switch (options.error) {
+    case 'warning': {
+      msgClass = '--warning'
+      break
+    }
+    case 'wait': {
+      msgClass = '--info'
+      break
+    }
+    default: {
+      msgClass = options.error ? '--error' : '--valid';
+      break;
+    }
+  } 
   // Classe à enlever sur l'élément englobant
-  const removedClass = options.error ? '--valid' : '--error';
+  const removedClass = [ '--valid', '--error', '--info', '--warning' ];
 
   // Récupère les éléments importants
   const msgId = input.getAttribute('aria-describedby');
@@ -46,8 +60,8 @@ function addMessage(input, message, options) {
 
   // Ajoute les classes à l'élément
   let elementClass = element.classList.item(0);
+  removedClass.forEach(k => element.classList.remove(elementClass + removedClass) )
   element.classList.add(elementClass + msgClass);
-  element.classList.remove(elementClass + removedClass);
 
   // Ajoute le message en enlevant les autres
   if (!options.append) msg.replaceChildren();

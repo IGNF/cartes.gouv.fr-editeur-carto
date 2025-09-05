@@ -6,9 +6,7 @@
 import * as errors from '../../utils/errors.js'
 import { loadFile } from 'mcutils/dialog/dialogImportFile.js'
 import * as geoimportRaw from 'geoimport';
-
-// Pour que les tests fonctionnent
-const geoimport = geoimportRaw.default ?? geoimportRaw;
+import ol_format_GeoJSON from 'ol/format/GeoJSON'
 
 import workerUrl from 'geoimport/dist/static/gdal3.js?url';
 import dataUrl from 'geoimport/dist/static/gdal3WebAssembly.data?url';
@@ -17,6 +15,10 @@ import wasmUrl from 'geoimport/dist/static/gdal3WebAssembly.wasm?url';
 import VectorSource from 'ol/source/Vector.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
 
+// Pour que les tests fonctionnent
+const geoimport = geoimportRaw.default ?? geoimportRaw;
+
+/** Liste des formats acceptés */
 const accepted = [
   'application/geo+json',
   'application/vnd.geo+json', // Obsolète géojson media type
@@ -48,8 +50,6 @@ geoimport.init({
   useWorker: false,
 });
 
-let metadata = {};
-
 /**
  * Fonction permettant de valider le formulaire.
  * Renvoie des exceptions en cas de problème.
@@ -71,25 +71,50 @@ function checkFile(file) {
   return true;
 }
 
+/** Type de fichier
+ * @param {File} file
+ * @returns {string}
+ */
+function getDriver(file) {
+  switch(file.type) {
+    case 'text/csv': return 'CSV';
+    case 'application/geo+json':
+    case 'application/vnd.geo+json':
+    case 'application/json':
+      return 'GeoJSON';
+    case 'application/vnd.google-earth.kml+xml': return 'KML';
+    case 'application/geopackage+sqlite3': return 'GPKG';
+    case 'application/gpx+xml': return 'GPX';
+    case 'application/zip': 
+    case 'application/x-zip-compressed':
+    case 'application/x-7z-compressed':
+      return 'ZIP'
+    case 'text/csv':
+    case 'application/vnd.ms-excel':
+      return 'CSV'
+    default: {
+      const ext = file.name.split('.').pop().toLowerCase()
+      switch(ext) {
+        case 'gpkg': return 'GPKG';
+        case 'gpx': return 'GPX'
+        case 'zip': return 'ZIP'
+        case 'geojson': return 'GeoJSON'
+      }
+    }
+  }
+  return ''
+}
+
 /**
  * 
  * @param {File} file
  */
 async function importFile(file) {
-  metadata = {}
-
   try {
-    // Lis les informations du fichier
-    const r = await geoimport.info(file);
-
-    // Gestion des fichiers CSV par la méthode mcutils directement
-    if (r.driverShortName === 'CSV') {
-      if (r.layers[0].featureCount === 0) {
-        throw new errors.EmptyLayerError(file.name);
-      }
-
+    // Gestion des fichiers CSV/GeoJSON par la méthode mcutils directement
+    if (/^(CSV|GeoJSON)$/.test(getDriver(file))) {
       // Métadonnée : pour retrouver l'origine de la couche
-      metadata = {
+      const metadata = {
         layerType: 'import-local',
         fileType: file.type,
         size: file.size
@@ -99,7 +124,11 @@ async function importFile(file) {
         try {
           loadFile(file, (e) => {
             try {
-              resolve(processFile(e));
+              // Problème à l'import
+              if (e.features.layer === 0 || e.error) {
+                throw new errors.EmptyLayerError(file.name);
+              }
+              resolve(processFile(e, metadata));
             } catch (err) {
               reject(err);
             }
@@ -114,41 +143,32 @@ async function importFile(file) {
       return Promise.allSettled([layer]);
     }
 
+    // Contenu du fichier
+    const r = await geoimport.info(file);
+
     // Gère les autres couches (dont multicouches type géopackage)
     const promises = r.layers.map(async (layer) => {
-      // Réinitialise les métadonnées
-      metadata = {}
-
       // Lis le fichier avec geoimport
       const json = await geoimport.toGeoJSON(file, { layerName: layer.name, writeBbox: true })
 
       // Métadonnée : pour retrouver l'origine de la couche
-      metadata = {
+      const metadata = {
         layerType: 'import-local',
         fileType: file.type,
         size: file.size
       }
+      
+      // Read GeoJSON
+      const format = new ol_format_GeoJSON();
+      const features = format.readFeatures(json, {
+        featureProjection: 'EPSG:3857'
+      })
 
-      // Créé un nouveau fichier pour envoyer à l'application
-      let geojson = new File([JSON.stringify(json)], `${json.name}`, {
-        type: 'application/geo+json',
-      });
-
-      const layerObj = await new Promise((resolve, reject) => {
-        try {
-          loadFile(geojson, (e) => {
-            try {
-              resolve(processFile(e));
-            } catch (err) {
-              reject(err);
-            }
-          }, { silent: true });
-        } catch (err) {
-          reject(err);
-        }
-      });
-
-      return layerObj;
+      return processFile({
+        name: json.name,
+        features: features
+      }, metadata)
+      
     });
 
     return Promise.allSettled(promises);
@@ -183,7 +203,7 @@ async function importFile(file) {
  * @param {HTMLFormElement} form Formulaire de l'ajout de fichier.
  * @returns {VectorStyle} Couche vectorielle
  */
-function processFile(result) {
+function processFile(result, metadata) {
   const name = result.name;
   if (result.features) {
     // let layer = new VectorLayer({
