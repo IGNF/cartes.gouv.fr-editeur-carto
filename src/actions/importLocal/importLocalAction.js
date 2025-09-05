@@ -45,9 +45,14 @@ async function submitForm(e) {
 
   try {
     if (importLocal.checkFile(inputFile)) {
-      message.removeMessage(input);
+
+      message.addMessage(input, 'Chargement en cours', { wait: true, append: false });
+      form.querySelector('[type="submit"]').disabled = true;
 
       const promises = await importLocal.importFile(file);
+
+      message.removeMessage(input);
+      setTimeout(() => form.querySelector('[type="submit"]').disabled = false, 500);
 
       promises.forEach(promise => {
         if (promise.status === "fulfilled") {

@@ -34,7 +34,7 @@ function addMessage(input, message, options) {
   options.closest = options.closest ? options.closest : 'div';
   options.error = options.error === undefined ? true : options.error;
   // Classe à ajouter au message
-  const msgClass = options.error ? '--error' : '--valid';
+  const msgClass = options.wait ? '--info' : (options.error ? '--error' : '--valid');
   // Classe à enlever sur l'élément englobant
   const removedClass = options.error ? '--valid' : '--error';
 
