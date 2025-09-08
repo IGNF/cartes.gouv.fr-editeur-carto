@@ -32,8 +32,9 @@ function onOpen(e) {
 }
 
 /**
+ * Gère l'envoi du formulaire.
  * 
- * @param {SubmitEvent} e 
+ * @param {SubmitEvent} e Événement submit du formulaire.
  */
 async function submitForm(e) {
   e.preventDefault();
@@ -46,38 +47,49 @@ async function submitForm(e) {
   try {
     if (importLocal.checkFile(inputFile)) {
 
-      message.addMessage(input, 'Chargement en cours', { error: 'wait', append: false });
-      form.querySelector('[type="submit"]').disabled = true;
+      message.addMessage(input, 'Chargement en cours', { type: 'info', append: false });
+      const submit = form.querySelector('[type="submit"]');
+      submit.disabled = true;
 
       const promises = await importLocal.importFile(file);
 
       message.removeMessage(input);
-      setTimeout(() => form.querySelector('[type="submit"]').disabled = false, 500);
+      // setTimeout(() => form.querySelector('[type="submit"]').disabled = false, 500);
 
       promises.forEach(promise => {
         if (promise.status === "fulfilled") {
           const layer = promise.value
           if (layer.getSource().getFeatures().length) {
             carte.addLayer(layer);
-            message.addMessage(input, `La couche ${layer.get('title')} a été ajouté à votre carte.`, { error: false, append: true });
+            message.addMessage(input, `La couche ${layer.get('title')} a été ajouté à votre carte.`, { type: 'valid', append: true });
           } else {
-            message.addMessage(input, `La couche ${layer.get('title')} ne contient pas de données.`, { error: 'warning', append: true });
+            message.addMessage(input, `La couche ${layer.get('title')} ne contient pas de données.`, { type: 'warning', append: true });
           }
         } else {
-          handleError(promise.reason, input, file, true);
+          handleError(promise.reason, form, file, true);
         }
       });
-
+      submit.disabled = false;
     }
   } catch (err) {
-    handleError(err, input, file);
+    handleError(err, form, file);
   }
 }
 
-function handleError(err, input, file, append = false) {
+/**
+ * Gère les erreurs en affichant les bons messages.
+ * 
+ * @param {Error} err Erreur à gérer
+ * @param {HTMLFormElement} form Formulaire d'import
+ * @param {File} file Fichier dont l'erreur provient
+ * @param {boolean} [append] Optionnel. Ajoute le message d'erreur si vrai.
+ * Par défaut : `false` 
+ */
+function handleError(err, form, file, append = false) {
   let options = {
     append: append
   };
+  let input = form.querySelector('input');
   switch (true) {
     case err instanceof errors.MissingFileError:
       message.addMessage(input, "Fichier manquant", options);
@@ -100,6 +112,7 @@ function handleError(err, input, file, append = false) {
       console.error(err);
       break;
   }
+  form.querySelector('[type="submit"]').disabled = false;
 }
 
 const importLocalAction = new Action({

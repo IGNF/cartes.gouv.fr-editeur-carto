@@ -6,7 +6,7 @@
 import * as errors from '../../utils/errors.js'
 import { loadFile } from 'mcutils/dialog/dialogImportFile.js'
 import * as geoimportRaw from 'geoimport';
-import ol_format_GeoJSON from 'ol/format/GeoJSON'
+import ol_format_GeoJSON from 'ol/format/GeoJSON.js'
 
 import workerUrl from 'geoimport/dist/static/gdal3.js?url';
 import dataUrl from 'geoimport/dist/static/gdal3WebAssembly.data?url';
@@ -59,13 +59,15 @@ geoimport.init({
  * @throws {errors.UnsupportedExtensionError} Extension non supportée
  */
 function checkFile(file) {
-  // Test extension
-  const ext = '.' + file.name.split('.').pop().toLowerCase();
   // Input du fichier
   if (!file) {
     throw new errors.MissingFileError();
-  } else if (!accepted.includes(file.type) && !accepted.includes(ext)) {
-    throw new errors.UnsupportedExtensionError(file.type);
+  } else {
+    // Test extension
+    const ext = '.' + file.name.split('.').pop().toLowerCase();
+    if (!accepted.includes(file.type) && !accepted.includes(ext)) {
+      throw new errors.UnsupportedExtensionError(file.type);
+    }
   }
 
   return true;
@@ -76,8 +78,7 @@ function checkFile(file) {
  * @returns {string}
  */
 function getDriver(file) {
-  switch(file.type) {
-    case 'text/csv': return 'CSV';
+  switch (file.type) {
     case 'application/geo+json':
     case 'application/vnd.geo+json':
     case 'application/json':
@@ -85,7 +86,7 @@ function getDriver(file) {
     case 'application/vnd.google-earth.kml+xml': return 'KML';
     case 'application/geopackage+sqlite3': return 'GPKG';
     case 'application/gpx+xml': return 'GPX';
-    case 'application/zip': 
+    case 'application/zip':
     case 'application/x-zip-compressed':
     case 'application/x-7z-compressed':
       return 'ZIP'
@@ -94,7 +95,7 @@ function getDriver(file) {
       return 'CSV'
     default: {
       const ext = file.name.split('.').pop().toLowerCase()
-      switch(ext) {
+      switch (ext) {
         case 'gpkg': return 'GPKG';
         case 'gpx': return 'GPX'
         case 'zip': return 'ZIP'
@@ -157,7 +158,7 @@ async function importFile(file) {
         fileType: file.type,
         size: file.size
       }
-      
+
       // Read GeoJSON
       const format = new ol_format_GeoJSON();
       const features = format.readFeatures(json, {
@@ -168,7 +169,7 @@ async function importFile(file) {
         name: json.name,
         features: features
       }, metadata)
-      
+
     });
 
     return Promise.allSettled(promises);
@@ -182,7 +183,7 @@ async function importFile(file) {
         let fileName = match.at(1).slice(6);
         throw new errors.MissingFileInZipError(fileName);
       }
-    // Sinon, renvoie l'erreur normale
+      // Sinon, renvoie l'erreur normale
     } else {
       throw err
     }
