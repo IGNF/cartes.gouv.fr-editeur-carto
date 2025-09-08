@@ -1,6 +1,5 @@
 
 import api from 'mcutils/api/api.js';
-import account from '../../charte/nav-user.js'
 import content from './login.html?raw'
 import Action from '../Action.js';
 

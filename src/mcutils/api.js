@@ -1,6 +1,6 @@
-import api from "mcutils/api/api";
-import { setUser } from "../charte/utils";
+import api from "mcutils/api/api.js";
+import { setUser } from "../charte/utils.js";
 
-api.on(['login', 'logout'], setUser)
+api.on(['login', 'logout'], setUser);
 
 export default api;

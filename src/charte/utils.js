@@ -19,4 +19,13 @@ function setUser(e) {
   }
 }
 
-export { setUser }
+/**
+ * Vérifie si la propriété `inert` est supportée par le navigateur.
+ * 
+ * @returns {boolean}
+ */
+function isInertAvailable() {
+  return "inert" in HTMLElement.prototype;
+}
+
+export { setUser, isInertAvailable }
