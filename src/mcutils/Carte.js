@@ -99,7 +99,6 @@ class GPPCarte extends Carte {
     // Remove ScaleLine from canvas
     this.getControl('scaleLine').element.style.visibility = '';
     this.getMap().render();
-    console.log(this.getControl('zoom').element.style.position)
     this.getControl('zoom').element.style.position = 'absolute';
   }
 

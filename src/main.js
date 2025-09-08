@@ -4,7 +4,9 @@ import './charte/navigation.js'
 import './actions/actions.js'
 
 import carte from './carte.js'
-import api from 'mcutils/api/api.js'
+import api from './mcutils/api.js'
+import introDialog from './dialogs/introDialog.js'
+import connectAction from './actions/connect/connectAction.js'
 
 import switcher from './mcutils/layerSwitcher.js';
 
@@ -18,6 +20,9 @@ import './css/index.scss';
 carte.once('read', () => {
   carte.addControl('layerSwitcher', switcher)
 })
+
+introDialog.setAction(connectAction);
+introDialog.open()
 
 /* DEBUG */
 window.carte = carte;
