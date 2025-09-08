@@ -1,4 +1,5 @@
 import Panel from "../control/Panel/Panel.js";
+import './rightPanel.scss'
 
 const rightPanel = new Panel({
   id: 'right-panel-action',
