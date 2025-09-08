@@ -45,7 +45,7 @@ account.addMenu([
 charte.getHeaderButton({
   type: 'button',
   label: 'Se connecter',
-  icon: 'fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline',
+  icon: 'fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-hidden',
   'data-action': 'login',
   'aria-controls': loginDialog.getId(),
   'data-fr-opened': false,
@@ -57,7 +57,7 @@ document.documentElement.addEventListener('dsfr.start', () => {
   let disconnect = account.getMenu('disconnect');
   disconnect.forEach(btn => {
     btn.link.addEventListener('click', () => {
-      api.logout(() => charte.setConnected(false))
+      api.logout()
     })
   })
 
@@ -68,8 +68,6 @@ document.documentElement.addEventListener('dsfr.start', () => {
   })
 
   api.whoami(setUser)
-
-  api.on('me', setUser)
 })
 
 export default account;

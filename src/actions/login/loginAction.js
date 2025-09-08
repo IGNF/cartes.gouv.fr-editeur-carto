@@ -1,6 +1,5 @@
 
 import api from 'mcutils/api/api.js';
-import account from '../../charte/nav-user.js'
 import content from './login.html?raw'
 import Action from '../Action.js';
 
@@ -28,7 +27,7 @@ function onOpen(e) {
 function login(e) {
   e.preventDefault();
 
-  let form = e.target
+  let form = e.target;
   const formData = new FormData(form);
 
   const username = formData.get('username')?.trim();
@@ -68,13 +67,9 @@ function login(e) {
 
   if (hasError) return;
 
+  api.rememberMe(!!rememberMe)
   api.login(username, password, (e) => {
     if (e) {
-      account.setMenu('user', {
-        label: e.username,
-        info: e.email
-      });
-      api.rememberMe(!!rememberMe)
       dialog.close();
     } else {
       setError('login-fieldset', 'Le couple nom utilisateur / mot de passe est incorrect.');
@@ -84,21 +79,7 @@ function login(e) {
 
 const loginAction = new Action({
   id: 'login',
-  title: 'Connexion au service',
   content: content,
-  buttons: [
-    {
-      label: "Se connecter",
-      kind: 0,
-      type: 'submit',
-      form: 'login',
-    },
-    {
-      label: "Annuler",
-      kind: 1,
-      close: true
-    }
-  ],
   onOpen: onOpen,
 });
 

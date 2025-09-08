@@ -382,12 +382,15 @@ class AbstractDialog extends BaseObject {
     if (!button) {
       buttonGroup.replaceChildren();
     } else {
-      const btn = document.createElement('button');
+      const markup = ['button', 'a'].includes(button.markup) ? button.markup : 'button';
+      const btn = document.createElement(markup);
       btn.type = button.type ? button.type : 'button';
       btn.classList.add('fr-btn');
 
       for (const attr in button) {
         const value = button[attr];
+
+        if (attr === 'markup') continue;
 
         switch (attr) {
           case 'className':
@@ -561,16 +564,18 @@ class AbstractDialog extends BaseObject {
   }
 
   onOpen(callback, once) {
-    this.on(this.selectors.OPEN_EVENT, callback);
     if (once) {
       this.once(this.selectors.OPEN_EVENT, callback);
+    } else {
+      this.on(this.selectors.OPEN_EVENT, callback);
     }
   }
 
   onClose(callback, once) {
-    this.on(this.selectors.CLOSE_EVENT, callback);
     if (once) {
       this.once(this.selectors.CLOSE_EVENT, callback);
+    } else {
+      this.on(this.selectors.CLOSE_EVENT, callback);
     }
   }
 

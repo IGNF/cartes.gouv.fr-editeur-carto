@@ -1,4 +1,3 @@
-import './connect/connect.js'
 import './edit-bar/edit-bar.js'
 import './file-bar/file-bar.js'
 import './step-bar/step-bar.js'
