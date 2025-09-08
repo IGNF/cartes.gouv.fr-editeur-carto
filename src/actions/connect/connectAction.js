@@ -101,7 +101,6 @@ const connectAction = new Action({
     className: 'view connected',
     kind: 1,
     markup: 'a',
-    target: '_blank',
     href: '#',
     callback: closeDialog
   }, {
