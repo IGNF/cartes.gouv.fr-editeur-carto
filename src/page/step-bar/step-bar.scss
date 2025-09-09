@@ -53,22 +53,29 @@
   width: calc(75% + 2rem);
 
   display: grid;
-  grid-column: 2;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0;
   top: 0;
   right: 0;
   padding: 0.5rem;
   border-radius: 0;
-  
+
   > div {
     text-align: center;
     background-color: transparent;
-    padding: 0;
   }
   > div button {
     display: inline-block;
   }
+
+  > .ol-bar:first-child {
+    padding: 0;
+
+    @include rf.respond-from('sm') {
+      padding: 0 0.25rem 0 0;
+    }
+  }
+
   .ol-bar {
     justify-content: space-between;
     background-color: transparent;
@@ -89,7 +96,7 @@
       border-radius: 0;
     }
   }
-  
+
   @include rf.respond-from('sm') {
     display: flex;
     width: unset;
