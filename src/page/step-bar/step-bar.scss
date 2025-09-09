@@ -71,7 +71,7 @@
   > .ol-bar:first-child {
     padding: 0;
 
-    @include rf.respond-from('sm') {
+    @include rf.respond-from('md') {
       padding: 0 0.25rem 0 0;
     }
   }

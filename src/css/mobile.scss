@@ -5,12 +5,14 @@
     font-size: inherit;
   }
 
-  @include rf.respond-from('sm') {
-    .ol-control.ol-bar.ol-top {
-      &,
-      &.ol-left,
-      &.ol-right {
-        top: 0;
+  .ol-control.ol-bar.ol-top {
+    &,
+    &.ol-left,
+    &.ol-right {
+      top: 0;
+
+      @include rf.respond-from('sm') {
+        top: 0.5rem;
       }
     }
   }
