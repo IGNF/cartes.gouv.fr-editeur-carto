@@ -29,14 +29,9 @@
 }
 
 .ol-scale-line {
-  display: none;
   right: 3rem;
   margin: 0.5rem;
   bottom: 0;
-
-  @include rf.respond-from('sm') {
-    display: unset;
-  }
 }
 
 div[id^='GPzoom-'] {
@@ -68,5 +63,20 @@ div[id^='GPlayerSwitcher-'] {
 
   @include rf.respond-from('sm') {
     top: 0.625rem;
+  }
+}
+
+// Mode mobile
+@media not (pointer: fine) {
+  .ol-scale-line {
+    display: none;
+  }
+
+  div[id^='GPzoom-'] {
+    display: none;
+  }
+
+  .ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
+    display: none;
   }
 }
