@@ -2,19 +2,10 @@
 import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
 import carte from '../carte.js';
 import leftPanel from '../dialogs/leftPanel.js';
-import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 import addLayer from './addLayer.js';
 import Action from '../actions/Action.js';
 import modal from '../dialogs/modal.js';
 import "./layerSwitcher.scss";
-
-
-function openMapDialog(e, instance, layer, options) {
-  // leftPanel.setAction(editLayerAction);
-  // leftPanel.setDialogTitle('Couche : ' + layer.get('name'))
-  // console.log(e, instance, layer, options);
-  // leftPanel.open();
-}
 
 const switcher = new LayerSwitcher({
   options: {
@@ -59,9 +50,8 @@ const switcher = new LayerSwitcher({
         attributes: {
           "aria-controls": modal.getId(),
         },
-        cb: (e, instance, layer, options) => {
+        cb: (e) => {
           Action.open(e);
-          // open(e, instance, layer, options);
         }
       },
     ]

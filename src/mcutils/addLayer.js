@@ -1,7 +1,7 @@
 import VectorStyle from "mcutils/layer/VectorStyle.js";
-import VectorLayer from "ol/layer/Vector.js";
+// import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js"
-import carte from "../carte";
+import carte from "../carte.js";
 
 /**
  * 
@@ -10,7 +10,7 @@ import carte from "../carte";
  */
 function addLayer(e, layerSwitcher) {
   console.log(e, layerSwitcher);
-  let layer = new VectorLayer({
+  let layer = new VectorStyle({
     source: new VectorSource(),
     description: "Bla bla bla mon dessin",
     title: "Dessin",
