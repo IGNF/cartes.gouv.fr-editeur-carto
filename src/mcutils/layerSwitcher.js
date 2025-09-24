@@ -3,13 +3,17 @@ import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
 import carte from '../carte.js';
 import leftPanel from '../dialogs/leftPanel.js';
 import editLayerAction from '../actions/editLayerStyle/editLayerStyleAction.js';
+import addLayer from './addLayer.js';
+import Action from '../actions/Action.js';
+import modal from '../dialogs/modal.js';
+import "./layerSwitcher.scss";
 
 
 function openMapDialog(e, instance, layer, options) {
-  leftPanel.setAction(editLayerAction);
+  // leftPanel.setAction(editLayerAction);
   // leftPanel.setDialogTitle('Couche : ' + layer.get('name'))
-  console.log(e, instance, layer, options);
-  leftPanel.open();
+  // console.log(e, instance, layer, options);
+  // leftPanel.open();
 }
 
 const switcher = new LayerSwitcher({
@@ -19,10 +23,25 @@ const switcher = new LayerSwitcher({
     panel: true,
     counter: true,
     allowEdit: true,
+    headerButtons: [
+      {
+        id: "add-layer-layerswitcher",
+        label: "Ajouter",
+        icon: "fr-icon-add-line",
+        cb: addLayer,
+      }
+    ],
     advancedTools: [
       {
-        label: 'Sélectionner la couche',
-        icon: 'fr-icon-cursor-line',
+        key: LayerSwitcher.switcherButtons.INFO
+      },
+      {
+        label: 'Style',
+        icon: 'fr-icon-brush-line',
+        attributes: {
+          'data-action': "edit-layer-style",
+          "aria-controls": leftPanel.getId(),
+        },
         cb: (e, instance, layer, options) => {
           carte.selectedLayer = layer;
           carte.dispatchEvent({
@@ -30,7 +49,19 @@ const switcher = new LayerSwitcher({
             layer: layer,
             options: options,
           })
-          openMapDialog(e, instance, layer, options);
+          Action.open(e);
+          // open(e, instance, layer, options);
+        }
+      },
+      {
+        label: 'Paramètres',
+        icon: 'fr-icon-settings-5-line',
+        attributes: {
+          "aria-controls": modal.getId(),
+        },
+        cb: (e, instance, layer, options) => {
+          Action.open(e);
+          // open(e, instance, layer, options);
         }
       },
     ]
