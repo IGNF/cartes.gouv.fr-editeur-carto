@@ -25,6 +25,7 @@ const accepted = [
   '.geojson',
   'application/json',
   'application/vnd.google-earth.kml+xml',
+  '.kml',
   'application/geopackage+sqlite3', // Geopackage
   '.gpkg',
   'application/gpx+xml', // Gpx
@@ -34,6 +35,7 @@ const accepted = [
   'application/x-7z-compressed', // Fichiers 7zip
   '.zip',
   'text/csv',
+  '.txt',
   'application/vnd.ms-excel', // Windows csv
 ]
 // Fichiers excel :
@@ -99,6 +101,8 @@ function getDriver(file) {
         case 'gpkg': return 'GPKG';
         case 'gpx': return 'GPX'
         case 'zip': return 'ZIP'
+        case 'kml': return 'KML'
+        case 'txt': return 'CSV' // Parfois les csv sont en txt
         case 'geojson': return 'GeoJSON'
       }
     }
