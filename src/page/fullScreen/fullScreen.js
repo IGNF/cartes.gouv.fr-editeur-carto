@@ -21,12 +21,16 @@ fullScreen.on('enterfullscreen', () => {
   fullScreenToggle.setActive(true);
   fullScreenToggle.button_.classList.add(fullScreenExitClass);
   fullScreenToggle.button_.classList.remove(fullScreenClass);
+  fullScreenToggle.setTitle("Sortir du plein écran");
+  fullScreenToggle.button_.ariaLabel = "Sortir du plein écran";
 })
 
 fullScreen.on('leavefullscreen', () => {
   fullScreenToggle.setActive(false);
   fullScreenToggle.button_.classList.add(fullScreenClass);
   fullScreenToggle.button_.classList.remove(fullScreenExitClass);
+  fullScreenToggle.setTitle("Afficher le plein écran");
+  fullScreenToggle.button_.ariaLabel = "Afficher le plein écran";
 })
 
 let fullScreenToggle = new Toggle({
