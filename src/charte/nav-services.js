@@ -26,7 +26,7 @@ service.addMenu([
   },{
     type: 'link',
     label: 'Créer une carte',
-    icon: 'fr-icon-pen-nib-line',
+    icon: 'fr-icon-brush-line',
     url: '#',
   },{
     type: 'option',
