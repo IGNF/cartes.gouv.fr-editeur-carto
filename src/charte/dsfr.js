@@ -4,7 +4,7 @@ import displayDialog from '../dialogs/displayDialog.js'
 // Set service info
 charte.setService({
   service: 'cartes.gouv.fr',
-  href: '/',
+  href: '/editeur',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
 })
 charte.setDescription(`Cartes.gouv.fr est développé par l'Institut national de l'information géographique et forestière (IGN) 
