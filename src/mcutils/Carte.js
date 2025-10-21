@@ -46,11 +46,6 @@ class GPPCarte extends Carte {
     }
     // Set GPP controls
     const controls = {
-      search: new SearchEngine({
-        collapsed: true,
-        collapsible: true,
-        position: 'center'
-      }),
       zoom: new GeoportalZoom({
         position: 'bottom-right'
       })
@@ -76,6 +71,12 @@ class GPPCarte extends Carte {
     } else {
       throw new Error('Un contrôle du même nom existe déjà');
     }
+
+    const layers = this.getMap().getAllLayers();
+    console.log("nombre de couches : ", layers.length);
+    layers.forEach(l => {
+      console.log(l);
+    })
   }
 
   /**
