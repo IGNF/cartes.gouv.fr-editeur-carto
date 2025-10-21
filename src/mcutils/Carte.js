@@ -1,7 +1,6 @@
 import Carte from 'mcutils/Carte.js';
 import {
   GeoportalZoom,
-  SearchEngine,
 } from 'geopf-extensions-openlayers/src/index.js';
 
 /** GPP Carte overwrite Carte options / controls
