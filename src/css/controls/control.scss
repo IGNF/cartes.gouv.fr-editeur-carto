@@ -55,14 +55,15 @@ div[id^='GPlayerSwitcher-'] {
   bottom: 5.875rem;
 }
 
-[id^='GPsearchEngine-'] {
-  position: absolute;
-  left: 50% !important;
-  transform: translateX(-50%);
-  top: 3.625rem;
-
+[id^='GPsearchEngine-Advanced-'] {
+  top: 3.75rem;
+  width: 100%;
+  left: 0;
+  
   @include rf.respond-from('sm') {
     top: 0.625rem;
+    width: 360px;
+    left: calc(50% - 180px);
   }
 }
 
