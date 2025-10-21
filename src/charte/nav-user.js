@@ -23,13 +23,13 @@ account.addMenu([
     type: 'link',
     label: 'Tableau de bord',
     action: 'board',
-    href: '#',
+    href: '/tableau-de-bord',
     icon: 'fr-icon-dashboard-3-line'
   }, {
     type: 'link',
     label: 'Mon compte',
     action: 'account',
-    href: '#',
+    href: '/mon-compte',
     icon: 'fr-icon-user-line'
   }, {
     type: 'option',

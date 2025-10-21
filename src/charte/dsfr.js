@@ -4,7 +4,7 @@ import displayDialog from '../dialogs/displayDialog.js'
 // Set service info
 charte.setService({
   service: 'cartes.gouv.fr',
-  href: '/editeur',
+  href: './',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
 })
 charte.setDescription(`Cartes.gouv.fr est développé par l'Institut national de l'information géographique et forestière (IGN) 
@@ -20,7 +20,7 @@ charte.addPartner('Conseil National de l’Information Géolocalisée', 'https:/
 
 // Main links
 charte.addContentLink('https://www.info.gouv.fr/')
-charte.addContentLink('https://service-public.fr/')
+charte.addContentLink('https://service-public.gouv.fr/')
 charte.addContentLink('https://legifrance.gouv.fr/')
 charte.addContentLink('https://data.gouv.fr/')
 

@@ -12,16 +12,16 @@ help.addMenu([
     type: 'link',
     label: 'Questions fréquentes',
     icon: 'fr-icon-question-mark',
-    url: '#',
+    href: '/documentation/fr',
   },{
     type: 'link',
     label: 'Documentation',
     icon: 'fr-icon-file-text-line',
-    url: '#',
+    href: '/documentation/fr/guides-utilisateur/editeur-cartographique',
   },{
     type: 'link',
     label: 'Nous contacter',
     icon: 'fr-icon-mail-line',
-    url: '#',
+    href: '/nous-ecrire',
   }
 ])
