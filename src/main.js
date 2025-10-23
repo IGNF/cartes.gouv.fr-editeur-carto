@@ -17,7 +17,7 @@ import './page/page.js'
 import 'remixicon/fonts/remixicon.css'
 import './css/index.scss';
 
-// Ajout du layerSwitcher (gère le )
+// Ajout des contrôles
 carte.once('read', () => {
   carte.addControl('layerSwitcher', switcher);
   carte.addControl('search', search);
