@@ -3,8 +3,8 @@ import SearchEngineAdvanced from "geopf-extensions-openlayers/src/packages/Contr
 import InseeAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/InseeAdvancedSearch.js";
 import LocationAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/LocationAdvancedSearch.js";
 import CoordinateAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/CoordinateAdvancedSearch.js";
-import carte from "../carte";
-import VectorSource from "ol/source/Vector";
+import carte from "../carte.js";
+import VectorSource from "ol/source/Vector.js";
 
 const insee = new InseeAdvancedSearch({
 })
