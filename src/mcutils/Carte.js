@@ -72,7 +72,6 @@ class GPPCarte extends Carte {
     }
 
     const layers = this.getMap().getAllLayers();
-    console.log("nombre de couches : ", layers.length);
     layers.forEach(l => {
       console.log(l);
     })
