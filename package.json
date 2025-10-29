@@ -7,7 +7,7 @@
   "author": "IGNF",
   "license": "GPL-3",
   "scripts": {
-    "start": "vite",
+    "start": "vite --force",
     "dev": "vite",
     "lint": "eslint --fix \"src/**/*.js\" || exit 0",
     "build": "npm run lint && vite build",
