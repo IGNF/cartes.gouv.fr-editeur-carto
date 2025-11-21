@@ -5,7 +5,6 @@ import LocationAdvancedSearch from "geopf-extensions-openlayers/src/packages/Con
 import CoordinateAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/CoordinateAdvancedSearch.js";
 import ParcelAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/ParcelAdvancedSearch.js";
 import carte from "../carte.js";
-import VectorSource from "ol/source/Vector.js";
 
 const insee = new InseeAdvancedSearch({
 })
