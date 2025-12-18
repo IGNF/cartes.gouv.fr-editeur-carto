@@ -11,6 +11,12 @@
 
     > button {
       color: var(--text-action-high-blue-france);
+
+      &:not([aria-extended='true']):not([aria-pressed='true']) {
+        &:not(:hover):not(:active) { 
+          background-color: var(--background-default-grey);
+        }
+      }
     }
   }
   @include rf.respond-from('sm') {
