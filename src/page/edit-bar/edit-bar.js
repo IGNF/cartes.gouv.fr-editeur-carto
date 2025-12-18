@@ -28,7 +28,6 @@ let toggle;
 function onToggleAction() {
   // Désactive le toggle précédent
   if (toggle && toggle !== this) {
-    console.log(toggle !== drawToggle)
     toggle !== drawToggle && toggle.setActive(false);
   }
   toggle = this;
@@ -248,13 +247,25 @@ let editDataBar = new Bar({
 })
 
 drawToggle.on("change:active", (e) => {
-  console.log(e)
   if (e.target.get(e.key)) {
+    console.log(switcher.getSelectedLayer());
     selectToggle.getInteraction().getFeatures().clear();
     activeToggle = e.target;
     if (rightPanel.getDialog().open) {
       rightPanel.close();
     }
+  }
+})
+
+drawToggle.on("drawstart", (e) => {
+  if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource) && e.target.type_ !== "Point") {
+    alert("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+  }
+})
+drawToggle.on("drawend", (e) => {
+  if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
+    alert("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+    drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   }
 })
 
