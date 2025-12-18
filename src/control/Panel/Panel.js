@@ -14,8 +14,8 @@ import Dialog from '../Dialog/AbstractDialog.js';
  * @property {string} content - Contenu lié au bouton.
  * @property {string} [title] - Titre du bouton.
  * @property {string|Element} [icon] - Icône du bouton.
- * @property {Panel~tabHandler} [onOpen] - Fonction à l'ouverture de l'onglet.
- * @property {Panel~tabHandler} [onClose] - Fonction à la fermeture de l'onglet.
+ * @property {TabHandler} [onOpen] - Fonction à l'ouverture de l'onglet.
+ * @property {TabHandler} [onClose] - Fonction à la fermeture de l'onglet.
  */
 
 
@@ -24,7 +24,7 @@ import Dialog from '../Dialog/AbstractDialog.js';
  * Les paramètres sont les mêmes, mais les fonctions sont
  * déclenchées à des moments différents.
  * 
- * @callback Panel~tabHandler
+ * @callback TabHandler
  * @param {HTMLButtonElement} tab Bouton de l'onglet
  * @param {Element} content Contenu de l'onglet
  */

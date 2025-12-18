@@ -6,8 +6,26 @@
   // switcher + taille switcher + espace
   top: calc(7.25rem + 2.625rem + 0.5rem);
 
+  .gpf-widget {
+    position: unset;
+
+    > button {
+      color: var(--text-action-high-blue-france);
+    }
+  }
   @include rf.respond-from('sm') {
     // switcher + taille switcher + espace
-    top: calc(6rem + 2.625rem + 0.5rem)
+    top: calc(6rem + 2.625rem + 0.5rem);
+  }
+}
+
+.GPF-dialog {
+  @include rf.respond-from('sm') {
+    // switcher + taille switcher + espace
+    top: calc(6rem + 2.625rem + 0.5rem);
+  }
+
+  &#style-dialog {
+    min-height: 300px;
   }
 }

@@ -22,6 +22,7 @@ import './css/index.scss';
 carte.once('read', () => {
   carte.addControl('layerSwitcher', switcher);
   carte.addControl('search', search);
+  carte.getMap().getOverlayContainerStopEvent().style.cursor = "auto";
 })
 
 
