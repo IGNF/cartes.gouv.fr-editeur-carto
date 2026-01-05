@@ -103,28 +103,41 @@ class Header extends BaseObject {
     })
   }
   /** Set service information
-   * @param {Object} options
-   *  @param {string} [options.service] service name
-   *  @param {string} [options.title]
-   *  @param {string} [options.href] main page url
-   *  @param {boolean} [options.beta] beta badge
+   * @param {ServiceOptions} options
    */
   setService(options) {
     if (options.service) {
-      this.title.querySelector('p').innerHTML = options.service
+      this.title.querySelector('p').innerHTML = options.service;
     }
-    if (options.beta) {
-      const beta = ol_ext_element.create('span', {
-        className: 'fr-badge fr-badge--sm fr-badge--green-emeraude',
-        text: 'BETA',
-      });
-      this.title.querySelector('p').appendChild(beta);
+
+    if (options.badge) {
+      this.setBadge(options.badge);
     }
+    
     ['title', 'href'].forEach(k => {
       if (options[k]) {
         this.title.setAttribute(k, options[k])
       }
     })
+  }
+
+  /**
+   * Ajoute / remplace le badge d'entête.
+   * 
+   * @see {@link https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/badge} Composant badge
+   * @see {@link https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/badge/code-du-badge#variantes-d-accentuation} Couleurs utilisables
+   * 
+   * @param {BadgeOptions} options Options du badge
+   */
+  setBadge(options) {
+    this.title.querySelector('p > span')?.remove();
+    if (options.text) {
+      const badge = ol_ext_element.create('span', {
+        className: `fr-badge fr-badge--sm ${options.icon && options.icon + ' fr-badge--icon-left'} ${options.colorClass || ""}`,
+        text: options.text,
+      });
+      this.title.querySelector('p').appendChild(badge);
+    }
   }
 }
 

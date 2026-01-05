@@ -1,0 +1,13 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+/* HEADER */
+header {
+  .fr-header__service-title > .fr-badge {
+    display: none;
+    margin-left: 0.625rem;
+
+    @include rf.respond-from('sm') {
+      display: inline-flex;
+    }
+  }
+}
