@@ -8,13 +8,13 @@ class Header extends BaseObject {
     super()
     const header = document.querySelector('header') || ol_ext_element.create('HEADER', {
       role: 'banner',
-      className: 'fr-header fr-header--compact',
+      className: 'fr-header',
       parent: document.body
     });
     this.element = header;
     // Wrapper
     const wrapper = ol_ext_element.create('DIV', {
-      className: 'fr-container--fluid',
+      className: 'fr-container',
       parent: ol_ext_element.create('DIV', {
         className: 'fr-header__body',
         parent: header
@@ -36,7 +36,7 @@ class Header extends BaseObject {
     })
     this.logoContainer = ol_ext_element.create('DIV', {
       className: 'fr-header__logo',
-      html: '<p class="fr-logo"></p>',
+      html: '<p class="fr-logo"> République <br> française </p></p>',
       parent: brand
     })
     this.title = ol_ext_element.create('A', {
@@ -102,6 +102,19 @@ class Header extends BaseObject {
       parent: container
     })
   }
+
+  /**
+   * Passe le header en mode compact
+   * 
+   * @param {boolean} compact Si vrai, passe en mode compact 
+   */
+  setCompact(compact) {
+    // Header
+    this.element.classList.toggle("fr-header--compact", !!compact);
+    // Conteneur (fluide ou non)
+    this.wrapper.classList.toggle("fr-container--fluid", !!compact);
+    this.wrapper.classList.toggle("fr-container", !compact);
+  }
   /** Set service information
    * @param {ServiceOptions} options
    */
@@ -109,6 +122,15 @@ class Header extends BaseObject {
     if (options.service) {
       this.title.querySelector('p').innerHTML = options.service;
     }
+
+    if (options.baseline) {
+      const baseline = ol_ext_element.create("p", {
+        text: options.baseline,
+        className: 'fr-header__service-tagline'
+      });
+      this.title.after(baseline);
+    }
+
 
     if (options.badge) {
       this.setBadge(options.badge);

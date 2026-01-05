@@ -1,13 +1,17 @@
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 
 /* HEADER */
-header {
-  .fr-header__service-title > .fr-badge {
-    display: none;
-    margin-left: 0.625rem;
+header.fr-header {
+  .fr-header__service {
+    order: 3;
 
-    @include rf.respond-from('sm') {
-      display: inline-flex;
+    &-title > .fr-badge {
+      display: none;
+      margin-left: 0.625rem;
+
+      @include rf.respond-from('sm') {
+        display: inline-flex;
+      }
     }
   }
 
@@ -16,8 +20,15 @@ header {
     padding: 0;
     > img {
       min-width: unset;
-      width: 26px;
-      height: 28px;
+    }
+  }
+
+  &--compact {
+    .fr-header__operator {
+      > img {
+        width: 26px;
+        height: 28px;
+      }
     }
   }
 }

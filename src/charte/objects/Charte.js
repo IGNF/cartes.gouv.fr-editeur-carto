@@ -184,6 +184,16 @@ class Charte extends BaseObject {
     this._updateFooter()
   }
 
+
+  /**
+   * Passe le header en mode compact
+   * 
+   * @param {boolean} compact Si vrai, passe en mode compact 
+   */
+  setCompact(compact) {
+    this.header.setCompact(compact);
+  }
+
   /**
    * Récupère le mode actuel de l'application
    * @returns {"storymap"|"editor"|"preview"}

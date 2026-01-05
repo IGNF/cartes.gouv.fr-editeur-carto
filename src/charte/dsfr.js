@@ -6,6 +6,7 @@ charte.setService({
   service: 'Cartes.gouv.fr',
   href: './',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
+  baseline: 'Le service public des cartes et données du territoire',
   operator: {
     logo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo.svg',
     darkLogo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo-dark.svg'

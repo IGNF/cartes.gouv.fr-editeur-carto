@@ -2,6 +2,7 @@
 /**
  * @typedef ServiceOptions Options du service
  * @property {string} [service] Nom du service
+ * @property {string} [baseline] Baseline du site
  * @property {string} [title] Balise `title` associée
  * @property {string} [href] Lien associé
  * @property {OperatorLogo} [operator] Logo partenaire
