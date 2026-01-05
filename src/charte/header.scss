@@ -4,15 +4,6 @@
 header.fr-header {
   .fr-header__service {
     order: 3;
-
-    &-title > .fr-badge {
-      display: none;
-      margin-left: 0.625rem;
-
-      @include rf.respond-from('sm') {
-        display: inline-flex;
-      }
-    }
   }
 
   .fr-header__operator {
@@ -28,6 +19,15 @@ header.fr-header {
       > img {
         width: 26px;
         height: 28px;
+      }
+    }
+
+    .fr-header__service-title > .fr-badge {
+      display: none;
+      margin-left: 0.625rem;
+
+      @include rf.respond-from('sm') {
+        display: inline-flex;
       }
     }
   }

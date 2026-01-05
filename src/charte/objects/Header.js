@@ -27,25 +27,29 @@ class Header extends BaseObject {
     });
 
     // Title / logo
-    const brand = ol_ext_element.create('DIV', {
+    const brand = this.brand = ol_ext_element.create('DIV', {
       className: 'fr-header__brand fr-enlarge-link',
-      html: ol_ext_element.create('DIV', {
-        className: 'fr-header__brand-top'
-      }),
       parent: hbody
     })
+
+    const brandTop = ol_ext_element.create('DIV', {
+      className: 'fr-header__brand-top',
+      parent: brand
+    });
     this.logoContainer = ol_ext_element.create('DIV', {
       className: 'fr-header__logo',
       html: '<p class="fr-logo"> République <br> française </p></p>',
+      parent: brandTop
+    })
+
+    const headerService = this.headerService = ol_ext_element.create('DIV', {
+      className: 'fr-header__service',
       parent: brand
     })
     this.title = ol_ext_element.create('A', {
       href: '/',
       html: '<p class="fr-header__service-title"></p>',
-      parent: ol_ext_element.create('DIV', {
-        className: 'fr-header__service',
-        parent: brand
-      })
+      parent: headerService
     })
 
     // Tools
@@ -58,18 +62,18 @@ class Header extends BaseObject {
     })
     // Nav button
     const idmodal = getUid('modal')
-
-    this.navButton = ol_ext_element.create('BUTTON', {
+    const navbar = this.navbar = ol_ext_element.create('DIV', {
+      className: 'fr-header__navbar',
+      parent: brandTop,
+    })
+    const navButton = ol_ext_element.create('BUTTON', {
       id: getUid('button'),
       className: 'fr-btn--menu fr-btn',
       title: 'Menu',
       type: 'button',
       'data-fr-opened': 'false',
       'aria-controls': idmodal,
-      parent: ol_ext_element.create('DIV', {
-        className: 'fr-header__navbar',
-        parent: brand
-      })
+      parent: navbar,
     })
     // Modal
     const container = ol_ext_element.create('DIV', {
@@ -78,10 +82,11 @@ class Header extends BaseObject {
         ol_ext_element.create('DIV', {
           className: 'fr-header__menu fr-modal',
           id: idmodal,
-          'aria-labelledby': this.navButton.id,
+          'aria-labelledby': navButton.id,
           parent: header,
         })
     })
+
     // Close box
     ol_ext_element.create('BUTTON', {
       type: 'button',
@@ -109,6 +114,12 @@ class Header extends BaseObject {
    * @param {boolean} compact Si vrai, passe en mode compact 
    */
   setCompact(compact) {
+    // Déplace le header en fonction du mode
+    if (compact) {
+      this.navbar.before(this.headerService);
+    } else {
+      this.brand.before(this.headerService);
+    }
     // Header
     this.element.classList.toggle("fr-header--compact", !!compact);
     // Conteneur (fluide ou non)
@@ -124,13 +135,13 @@ class Header extends BaseObject {
     }
 
     if (options.baseline) {
+      this.headerService.querySelector("fr-header__service-tagline")?.remove;
       const baseline = ol_ext_element.create("p", {
         text: options.baseline,
         className: 'fr-header__service-tagline'
       });
-      this.title.after(baseline);
+      this.headerService.appendChild(baseline);
     }
-
 
     if (options.badge) {
       this.setBadge(options.badge);
@@ -172,7 +183,7 @@ class Header extends BaseObject {
    * @param {OperatorLogo} operator Logo opérateur
    */
   setOperator(operator) {
-    this.logoContainer.querySelector('.fr-header--operator')?.remove();
+    this.logoContainer.parentElement.querySelector('.fr-header--operator')?.remove();
     if (operator.logo) {
       // Conteneur de l'image
       const container = ol_ext_element.create('div', {
