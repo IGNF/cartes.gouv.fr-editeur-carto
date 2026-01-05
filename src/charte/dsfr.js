@@ -3,7 +3,7 @@ import displayDialog from '../dialogs/displayDialog.js'
 
 // Set service info
 charte.setService({
-  service: 'cartes.gouv.fr',
+  service: 'Cartes.gouv.fr',
   href: './',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
   operator: {
