@@ -34,7 +34,7 @@ class Header extends BaseObject {
       }),
       parent: hbody
     })
-    ol_ext_element.create('DIV', {
+    this.logoContainer = ol_ext_element.create('DIV', {
       className: 'fr-header__logo',
       html: '<p class="fr-logo"></p>',
       parent: brand
@@ -113,12 +113,16 @@ class Header extends BaseObject {
     if (options.badge) {
       this.setBadge(options.badge);
     }
-    
+
+    if (options.operator) {
+      this.setOperator(options.operator);
+    }
+
     ['title', 'href'].forEach(k => {
       if (options[k]) {
-        this.title.setAttribute(k, options[k])
+        this.title.setAttribute(k, options[k]);
       }
-    })
+    });
   }
 
   /**
@@ -137,6 +141,39 @@ class Header extends BaseObject {
         text: options.text,
       });
       this.title.querySelector('p').appendChild(badge);
+    }
+  }
+
+  /**
+   * Ajoute / remplace le logo opérateur.
+   * 
+   * @param {OperatorLogo} operator Logo opérateur
+   */
+  setOperator(operator) {
+    this.logoContainer.querySelector('.fr-header--operator')?.remove();
+    if (operator.logo) {
+      // Conteneur de l'image
+      const container = ol_ext_element.create('div', {
+        className: `fr-header__operator`,
+      });
+      // Source de l'image
+      const img = ol_ext_element.create('img', {
+        className: `fr-responsive-img`,
+        src: operator.logo,
+        alt: '',
+        parent: container,
+      });
+      this.logoContainer.after(container);
+      // Gère le passage en mode sombre (si le logo doit changer)
+      if (operator.darkLogo) {
+        document.documentElement.addEventListener("dsfr.theme", (e) => {
+          if (e.detail?.theme === "dark") {
+            img.src = operator.darkLogo;
+          } else {
+            img.src = operator.logo;
+          }
+        })
+      }
     }
   }
 }

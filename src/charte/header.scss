@@ -10,4 +10,14 @@ header {
       display: inline-flex;
     }
   }
+
+  .fr-header__operator {
+    margin-left: 0.125rem;
+    padding: 0;
+    > img {
+      min-width: unset;
+      width: 26px;
+      height: 28px;
+    }
+  }
 }

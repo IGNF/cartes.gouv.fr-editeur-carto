@@ -6,12 +6,17 @@ charte.setService({
   service: 'cartes.gouv.fr',
   href: './',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
+  operator: {
+    logo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo.svg',
+    darkLogo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo-dark.svg'
+  },
   badge: {
     text: 'Créer',
     colorClass: 'fr-badge--yellow-tournesol',
-    icon:'fr-icon-brush-fill'
+    icon: 'fr-icon-brush-fill'
   }
-})
+});
+
 charte.setDescription(`Cartes.gouv.fr est développé par l'Institut national de l'information géographique et forestière (IGN) 
   et ses partenaires. Le site s'appuie sur la Géoplateforme, la nouvelle infrastructure publique, 
   ouverte et collaborative des données géographiques.`
