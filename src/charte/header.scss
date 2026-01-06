@@ -14,7 +14,27 @@ header.fr-header {
     }
   }
 
+  footer {
+    display: none;
+
+    .fr-footer__brand .fr-logo {
+      font-size: 1.05rem;
+      margin: -1rem;
+      padding: 1rem;
+
+      @include rf.respond-from('sm') {
+        font-size: 1.3125rem;
+        margin: -1.25rem;
+        padding: 1.25rem;
+      }
+    }
+  }
+
   &--compact {
+    footer {
+      display: flex;
+      box-shadow: none;
+    }
     .fr-header__operator {
       > img {
         width: 26px;

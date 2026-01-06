@@ -43,7 +43,7 @@ class Charte extends BaseObject {
    */
   _updateFooter() {
     // Move footer to the header
-    this.header.footer.innerHTML = this.footer.container.innerHTML
+    this.header.footer.innerHTML = this.footer.element.innerHTML
   }
   /** Get existing or create menu 
    * @param {Objet} options 
@@ -192,6 +192,7 @@ class Charte extends BaseObject {
    */
   setCompact(compact) {
     this.header.setCompact(compact);
+    this.footer.setCompact(compact);
   }
 
   /**

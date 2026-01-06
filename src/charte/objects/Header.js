@@ -20,7 +20,7 @@ class Header extends BaseObject {
         parent: header
       })
     })
-    this.wrapper = wrapper
+    this.container = wrapper
     const hbody = ol_ext_element.create('DIV', {
       className: 'fr-header__body-row',
       parent: wrapper
@@ -101,9 +101,8 @@ class Header extends BaseObject {
       className: 'fr-header__menu-links',
       parent: container
     })
-    this.footer = ol_ext_element.create('DIV', {
-      className: 'fr-header__menu-footer',
-      html: '<div class="footer-links"></div>',
+    this.footer = ol_ext_element.create('footer', {
+      className: 'fr-footer',
       parent: container
     })
   }
@@ -123,8 +122,8 @@ class Header extends BaseObject {
     // Header
     this.element.classList.toggle("fr-header--compact", !!compact);
     // Conteneur (fluide ou non)
-    this.wrapper.classList.toggle("fr-container--fluid", !!compact);
-    this.wrapper.classList.toggle("fr-container", !compact);
+    this.container.classList.toggle("fr-container--fluid", !!compact);
+    this.container.classList.toggle("fr-container", !compact);
   }
   /** Set service information
    * @param {ServiceOptions} options
