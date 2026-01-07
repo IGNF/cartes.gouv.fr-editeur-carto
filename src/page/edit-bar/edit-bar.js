@@ -262,14 +262,14 @@ drawToggle.on("drawstart", (e) => {
     alert("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
 })
-drawToggle.on("drawend", (e) => {
+drawToggle.on("drawend", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
     alert("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   }
 })
 
-rightPanel.on("dialog:open", (e) => {
+rightPanel.on("dialog:open", () => {
   drawToggle.getActive() && drawToggle.setActive(false);
 })
 
