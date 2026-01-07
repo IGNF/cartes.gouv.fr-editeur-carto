@@ -13,7 +13,7 @@ class Dialog extends AbstractDialog {
     // Default options
     options = Object.assign(options || {})
     options.dialogClass = options.dialogClass || 'ign-dialog'
-    options.parent = options.parent | document.body.querySelector('main') | document.body
+    options.parent = options.parent || document.body.querySelector('main') || document.body
     if (!options.html) {
       options.html = defaultHTML.replace(/CLASSNAME/g, options.dialogClass)
     }

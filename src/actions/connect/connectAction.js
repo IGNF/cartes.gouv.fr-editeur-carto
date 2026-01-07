@@ -6,6 +6,7 @@ import introDialog from '../../dialogs/introDialog.js';
 import api from 'mcutils/api/api.js';
 import { isInertAvailable, setUser } from '../../charte/utils.js';
 import carte from '../../carte.js';
+import charte from '../../charte/charte.js';
 
 
 /**
@@ -83,6 +84,7 @@ function unsetInert() {
 function closeDialog() {
   dialog.close();
   unsetInert();
+  charte.setCompact(true);
 }
 
 const connectAction = new Action({

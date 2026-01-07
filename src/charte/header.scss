@@ -1,0 +1,70 @@
+@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+
+/* HEADER */
+header.fr-header {
+  .fr-header__service {
+    order: 3;
+
+    &-tagline {
+      display: none;
+      @include rf.respond-from('lg') {
+        display: block;
+      }
+    }
+  }
+
+  .fr-header__operator {
+    margin-left: 0.125rem;
+    padding: 0;
+    > img {
+      min-width: unset;
+    }
+  }
+
+  footer {
+    display: none;
+
+    .fr-footer__brand .fr-logo {
+      font-size: 1.05rem;
+      margin: -1rem;
+      padding: 1rem;
+
+      @include rf.respond-from('sm') {
+        font-size: 1.3125rem;
+        margin: -1.25rem;
+        padding: 1.25rem;
+      }
+    }
+  }
+
+  .fr-header__tools-links {
+    gap:1rem
+  }
+
+  &--compact {
+    footer {
+      display: flex;
+      box-shadow: none;
+    }
+    .fr-header__operator {
+      > img {
+        width: 26px;
+        height: 28px;
+      }
+    }
+
+    .fr-header__service {
+      &-title > .fr-badge {
+        display: none;
+        margin-left: 0.625rem;
+
+        @include rf.respond-from('sm') {
+          display: inline-flex;
+        }
+      }
+      &-tagline {
+        display: none;
+      }
+    }
+  }
+}

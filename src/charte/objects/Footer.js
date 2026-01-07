@@ -2,23 +2,23 @@ import BaseObject from 'ol/Object.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from '../../utils/getUid.js';
 
-/** Footer */
+/** Footer complet avec tous les éléments du DSFR */
 class Footer extends BaseObject {
   constructor() {
     super()
     this.element = ol_ext_element.create('FOOTER', {
-      id: 'fr-footer',
+      id: getUid('footer'),
       className: 'fr-footer',
       role: 'contentinfo',
       parent: document.body
     })
-    // Container
-    const idContain = getUid('modal')
+
+    // Bouton d'expansion (visible uniquement en mode compact)
+    const idContain = getUid('footer-container')
     const containBt = ol_ext_element.create('BUTTON', {
-      id: getUid('button'),
+      id: getUid('footer-expand-button'),
       type: 'button',
-      // className: 'fr-btn--close fr-btn btn-more-info',
-      className: 'fr-icon-arrow-down-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
+      className: 'fr-icon-arrow-up-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
       'aria-label': 'plus d\'informations',
       'title': 'plus d\'informations',
       'aria-expanded': 'false',
@@ -28,24 +28,31 @@ class Footer extends BaseObject {
     containBt.addEventListener('click', () => {
       const expanded = containBt.getAttribute('aria-expanded') === 'true'
       containBt.setAttribute('aria-expanded', !expanded);
-      containBt.classList.toggle('fr-icon-arrow-down-s-line', expanded)
-      containBt.classList.toggle('fr-btn--tertiary-no-outline', expanded)
+      containBt.classList.toggle('fr-icon-arrow-up-s-line', expanded)
       containBt.classList.toggle('fr-btn--close', !expanded)
+      containBt.classList.toggle('fr-btn--icon-right', !expanded)
       containBt.setAttribute('aria-label', expanded ? 'plus d\'informations' : 'Fermer')
+      containBt.innerText = "Fermer";
       containBt.setAttribute('title', expanded ? 'plus d\'informations' : 'Fermer')
     })
+
+    // Container
     const container = this.container = ol_ext_element.create('DIV', {
-      className: 'fr-container--fluid',
+      className: 'fr-container',
       id: idContain,
       'aria-labelledby': containBt.id,
       parent: this.element
     })
+
+    // Body
     const body = ol_ext_element.create('DIV', {
-      className: 'fr-footer__body frx-expanded',
+      className: 'fr-footer__body',
       parent: container
     })
+
     // Brand
     const brand = ol_ext_element.create('A', {
+      id: 'footer-brand-link-' + getUid('brand'),
       className: 'router-link-active router-link-exact-active',
       title: 'Retour à l\'accueil',
       'aria-current': 'page',
@@ -55,9 +62,9 @@ class Footer extends BaseObject {
         parent: body
       })
     })
-    ol_ext_element.create('P', {
+    this.logo = ol_ext_element.create('P', {
       className: 'fr-logo',
-      html: 'République<br>Française',
+      html: ' République <br> Française',
       parent: brand
     })
 
@@ -68,7 +75,6 @@ class Footer extends BaseObject {
     })
     this.description = ol_ext_element.create('P', {
       className: 'fr-footer__content-desc',
-      text: 'Lorem ipsum dolor sit amet',
       parent: content
     })
     this.contentLink = ol_ext_element.create('UL', {
@@ -78,10 +84,10 @@ class Footer extends BaseObject {
 
     // Partners
     const partners = ol_ext_element.create('DIV', {
-      className: 'fr-footer__partners frx-expanded',
+      className: 'fr-footer__partners',
       parent: container
     })
-    ol_ext_element.create('H4', {
+    ol_ext_element.create('H2', {
       className: 'fr-footer__partners-title',
       text: 'Nos partenaires',
       parent: partners
@@ -90,11 +96,9 @@ class Footer extends BaseObject {
       className: 'fr-footer__partners-logos',
       parent: partners
     })
-    this.partnerMainList = ol_ext_element.create('UL', {
-      parent: ol_ext_element.create('DIV', {
-        className: 'ffr-footer__partners-main',
-        parent: logos
-      })
+    this.partnerMainList = ol_ext_element.create('DIV', {
+      className: 'fr-footer__partners-main',
+      parent: logos
     })
     this.partnerList = ol_ext_element.create('UL', {
       parent: ol_ext_element.create('DIV', {
@@ -108,19 +112,17 @@ class Footer extends BaseObject {
       className: 'fr-footer__bottom',
       parent: container
     })
+
     // Links
     this.links = ol_ext_element.create('UL', {
       className: 'fr-footer__bottom-list',
-      parent: ol_ext_element.create('DIV', {
-        className: 'fr-container--fluid',
-        parent: bottom
-      })
+      parent: bottom
     })
+
     // Copy
     this.copy = ol_ext_element.create('P', {
-      className: 'frx-expanded',
       html: `Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous 
-        <a class="fr-link-licence no-content-after" href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank" title="licence etalab-2.0 (nouvelle fenêtre)" rel="noopener noreferrer">
+        <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank" rel="noopener external" title="Licence etalab - Nouvelle fenêtre">
         licence etalab-2.0
         </a>`,
       parent: ol_ext_element.create('DIV', {
@@ -128,27 +130,118 @@ class Footer extends BaseObject {
         parent: bottom
       })
     })
-
   }
-  /** Add a bottom link
-   * @param {string} title
-   * @param {string} href
+
+  /**
+   * Définit le texte du logo
+   * @param {string} html Contenu HTML du logo
    */
-  addLink(title, href) {
+  setLogoText(html) {
+    this.logo.innerHTML = html
+  }
+
+  /**
+   * Définit le texte de description
+   * @param {string} text Texte de description
+   */
+  setDescription(text) {
+    this.description.textContent = text
+  }
+
+  /**
+   * Passe le footer en mode compact
+   * 
+   * @param {boolean} compact Si vrai, passe en mode compact
+   */
+  setCompact(compact) {
+    // Footer
+    this.element.classList.toggle("fr-footer--compact", !!compact);
+    // Conteneur (fluide ou non)
+    this.container.classList.toggle("fr-container--fluid", !!compact);
+    this.container.classList.toggle("fr-container", !compact);
+  }
+
+  /**
+   * Ajoute un lien de contenu
+   * @param {FooterContentLink} options Option d'un lien de contenu
+   */
+  addContentLink(options) {
+    const title = options.title || options.href.replace(/^http(s)?:\/\/(www.)?/, '').replace(/\//g, '');
+    const linkId = 'footer__content-link-' + getUid('content-link')
+    return ol_ext_element.create('A', {
+      id: linkId,
+      className: 'fr-footer__content-link',
+      target: '_blank',
+      rel: 'noopener external',
+      title: options.titleAttr || title + ' - Nouvelle fenêtre',
+      text: title,
+      href: options.href,
+      parent: ol_ext_element.create('LI', {
+        className: 'fr-footer__content-item',
+        parent: this.contentLink
+      })
+    })
+  }
+
+  /** 
+   * Ajoute un logo de partenaire
+   * @param {FooterPartner} options Options d'un partenaire
+   */
+  addPartner(options) {
+    const imgElement = ol_ext_element.create('IMG', {
+      className: 'fr-footer__logo',
+      alt: options.alt,
+      src: options.img
+    })
+
+    if (options.main) {
+      // Partenaire principal : directement dans partnerMainList sans <li>
+      return ol_ext_element.create('A', {
+        className: 'fr-footer__partners-link',
+        href: options.url,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        html: imgElement,
+        parent: this.partnerMainList
+      })
+    } else {
+      // Partenaire secondaire : dans partnerList avec <li>
+      return ol_ext_element.create('A', {
+        className: 'fr-footer__partners-link',
+        href: options.url,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        html: imgElement,
+        parent: ol_ext_element.create('LI', {
+          parent: this.partnerList
+        })
+      })
+    }
+  }
+
+  /** 
+   * Ajoute un lien dans la section du bas
+   * @param {FooterBottomLink} options Option d'un lien du footer
+   */
+  addLink(options) {
+    const linkId = 'footer__bottom-link-' + getUid('bottom-link')
     ol_ext_element.create('A', {
+      id: linkId,
       className: 'fr-footer__bottom-link',
-      text: ' ' + title + ' ',
-      href: href,
+      text: options.title,
+      href: options.href,
       parent: ol_ext_element.create('LI', {
         className: 'fr-footer__bottom-item',
         parent: this.links
       })
     })
   }
-  /** Add a bottom button
-   * @param {string} title
-   * @param {Object} options
-   *  @param {string} options.icon
+
+  /** 
+   * Ajoute un bouton dans la section du bas
+   * @param {string} title Texte du bouton
+   * @param {Object} options Options du bouton
+   * @param {string} [options.icon] Classe d'icône DSFR
    */
   addButton(title, options) {
     let btnOptions = {
@@ -165,46 +258,26 @@ class Footer extends BaseObject {
     }
     ol_ext_element.create('BUTTON', btnOptions)
   }
+
   /**
-   * @param {string} href
-   * @param {string} [title] default use href
+   * Supprime tous les liens de contenu
    */
-  addContentLink(href, title) {
-    title = title || href.replace(/^http(s)?:\/\/(www.)?/, '').replace(/\//g, '');
-    return ol_ext_element.create('A', {
-      className: 'fr-footer__content-link',
-      target: '_blank',
-      text: title,
-      href: href,
-      id: 'footer-info-' + title.replace(/\./g, '-'),
-      parent: ol_ext_element.create('LI', {
-        className: 'fr-footer__content-item',
-        parent: this.contentLink
-      })
-    })
+  clearContentLinks() {
+    this.contentLink.innerHTML = ''
   }
-  /** Add partner logo
-   * @param {string} title
-   * @param {string} url
-   * @param {string} img image src
-   * @param {boolean} [main=false]
+
+  /**
+   * Supprime tous les partenaires
    */
-  addPartner(title, url, img, main) {
-    return ol_ext_element.create('A', {
-      className: 'fr-footer__partners-link',
-      href: url,
-      target: '_blank',
-      rel: 'noopener noreferrer',
-      html: ol_ext_element.create('IMG', {
-        className: 'fr-footer__logo',
-        alt: title,
-        src: img
-      }),
-      parent: ol_ext_element.create('LI', {
-        // className: 'fr-footer__content-item',
-        parent: main ? this.partnerMainList : this.partnerList
-      })
-    })
+  clearPartners() {
+    this.partnerList.innerHTML = ''
+  }
+
+  /**
+   * Supprime tous les liens du bas
+   */
+  clearLinks() {
+    this.links.innerHTML = ''
   }
 }
 

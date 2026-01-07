@@ -1,40 +1,9 @@
 // @use 'dsfrign/dsfr/src/module/media-query/mixin/' as rf;
 @use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  font-family: Marianne, arial, sans-serif !important;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-dialog {
-  background-color: var(--background-default-grey);
-}
-
-main {
-  flex: 1; // takes all remaining height after header
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
 [data-role='map'] {
-  flex: 1; // fills the remaining space inside <main>
+  flex: 1;
   width: 100%;
-}
-
-.fr-header__tools-links {
-  > button {
-    margin-left: -.5rem
-  }
 }
 
 // // AIDE POUR LES BREAKPOINTS

@@ -1,14 +1,33 @@
-@use 'footer';
+@use './header.scss';
+@use './footer.scss';
 
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  font-family: Marianne, arial, sans-serif !important;
 }
 
 body {
   display: flex;
   flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  min-height: 700px;
+  max-height: calc(100vh - 3.25rem);
+  overflow: hidden;
+
+  @media (max-height : 800px) {
+    min-height: 640px;
+  }
+}
+
+dialog {
+  background-color: var(--background-default-grey);
 }

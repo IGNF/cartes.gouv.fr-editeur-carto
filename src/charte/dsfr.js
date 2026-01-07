@@ -3,36 +3,95 @@ import displayDialog from '../dialogs/displayDialog.js'
 
 // Set service info
 charte.setService({
-  service: 'cartes.gouv.fr',
+  service: 'Cartes.gouv.fr ',
   href: './',
   title: 'Accueil - Cartes.gouv.fr - IGN France',
-})
+  baseline: 'Le service public des cartes et données du territoire',
+  operator: {
+    logo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo.svg',
+    darkLogo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo-dark.svg'
+  },
+  badge: {
+    text: 'Créer',
+    colorClass: 'fr-badge--yellow-tournesol',
+    icon: 'fr-icon-brush-fill'
+  }
+});
+
 charte.setDescription(`Cartes.gouv.fr est développé par l'Institut national de l'information géographique et forestière (IGN) 
   et ses partenaires. Le site s'appuie sur la Géoplateforme, la nouvelle infrastructure publique, 
   ouverte et collaborative des données géographiques.`
-)
+);
 
 // Partner list / logo
-charte.addPartner('IGN', 'https://www.ign.fr/', './icon/logo-ign.png', true)
-charte.addPartner('Ministère de la transformation et de la fonction publiques', 'https://www.transformation.gouv.fr/', './icon/logo-transformation-fonction-publiques.png')
-charte.addPartner('Ministère de la transition écologique et de la cohésion des territoires', 'https://www.ecologie.gouv.fr/', './icon/logo-transition-ecologique.png')
-charte.addPartner('Conseil National de l’Information Géolocalisée', 'https://cnig.gouv.fr/', './icon/logo-cnig.png')
+charte.addPartner({
+  alt: 'IGN',
+  url: 'https://www.ign.fr/',
+  img: 'https://data.geopf.fr/annexes/ressources/footer/ign.png',
+  main: true
+});
+charte.addPartner({
+  alt: 'Ministère de la transformation et de la fonction publiques',
+  url: 'https://www.transformation.gouv.fr/',
+  img: 'https://data.geopf.fr/annexes/ressources/footer/min_fp.jpg'
+});
+charte.addPartner({
+  alt: 'Ministère de la Transition Écologique et de la Cohésion des Territoires',
+  url: 'https://www.ecologie.gouv.fr/',
+  img: 'https://data.geopf.fr/annexes/ressources/footer/min_ecologie.jpg'
+});
+charte.addPartner({
+  alt: 'Conseil national de l\'information géolocalisée',
+  url: 'https://cnig.gouv.fr/',
+  img: 'https://data.geopf.fr/annexes/ressources/footer/rf_cnig.jpg'
+});
 
 // Main links
-charte.addContentLink('https://www.info.gouv.fr/')
-charte.addContentLink('https://service-public.gouv.fr/')
-charte.addContentLink('https://legifrance.gouv.fr/')
-charte.addContentLink('https://data.gouv.fr/')
+charte.addContentLink({
+  href:
+    'https://www.info.gouv.fr/'
+});
+charte.addContentLink({
+  href:
+    'https://service-public.gouv.fr/'
+});
+charte.addContentLink({
+  href:
+    'https://legifrance.gouv.fr/'
+});
+charte.addContentLink({
+  href:
+    'https://data.gouv.fr/'
+});
 
 // Footer links
-charte.addFooterLink('Plan du site', 'https://cartes.gouv.fr/plan-du-site')
-charte.addFooterLink('Accessibilité : partiellement conforme', 'https://cartes.gouv.fr/accessibilite')
-charte.addFooterLink('Mentions légales', 'https://cartes.gouv.fr/mentions-legales')
-charte.addFooterLink('Données personnelles', 'https://cartes.gouv.fr/donnees-personnelles')
-charte.addFooterLink('Gestion des cookies', '#')
+charte.addFooterLink({
+  title: 'Plan du site',
+  href: 'https://cartes.gouv.fr/plan-du-site'
+});
+charte.addFooterLink({
+  title: 'Accessibilité : partiellement conforme',
+  href: 'https://cartes.gouv.fr/accessibilite'
+});
+charte.addFooterLink({
+  title: 'Mentions légales',
+  href: 'https://cartes.gouv.fr/mentions-legales'
+});
+charte.addFooterLink({
+  title: "Conditions générales d'utilisation",
+  href: 'https://cartes.gouv.fr/cgu'
+});
+charte.addFooterLink({
+  title: 'Données personnelles',
+  href: 'https://cartes.gouv.fr/donnees-personnelles'
+});
+charte.addFooterLink({
+  title: 'Gestion des cookies',
+  href: '#'
+});
 charte.addFooterButton('Paramètres d\'affichage', {
   icon: 'fr-icon-theme-fill',
   title: "Paramètres d'affichage",
   'aria-controls': displayDialog.id,
   'data-fr-opened': false,
-})
+});

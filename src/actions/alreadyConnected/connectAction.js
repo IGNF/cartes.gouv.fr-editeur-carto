@@ -1,9 +1,10 @@
 import Action from '../../actions/Action.js';
-import content from './connect.html?raw';
-import './connect.scss';
+import content from '../connect/connect.html?raw';
+import '../connect/connect.scss';
 
 import { isInertAvailable } from '../../charte/utils.js';
 import carte from '../../carte.js';
+import charte from '../../charte/charte.js';
 
 
 /**
@@ -67,6 +68,7 @@ function unsetInert() {
 function closeDialog() {
   dialog.close();
   unsetInert();
+  charte.setCompact(true);
 }
 
 const connectActionTest = new Action({

@@ -30,8 +30,8 @@ service.addMenu([
     href: '/editeur/cartes',
   },{
     type: 'option',
-    label: 'Découvrir cartes.gouv',
-    title: 'Découvrir cartes.gouv',
+    label: 'Découvrir cartes.gouv.fr',
+    title: 'Découvrir cartes.gouv.fr',
     href: '/accueil',
     icon : 'fr-icon-external-link-line fr-btn--icon-right'
   }
