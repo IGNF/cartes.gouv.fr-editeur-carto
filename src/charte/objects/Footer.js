@@ -3,7 +3,7 @@ import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from '../../utils/getUid.js';
 
 /** Footer complet avec tous les éléments du DSFR */
-class FooterComplet extends BaseObject {
+class Footer extends BaseObject {
   constructor() {
     super()
     this.element = ol_ext_element.create('FOOTER', {
@@ -163,21 +163,19 @@ class FooterComplet extends BaseObject {
 
   /**
    * Ajoute un lien de contenu
-   * @param {string} href URL du lien
-   * @param {string} title Texte du lien
-   * @param {string} [titleAttr] Attribut title pour l'accessibilité
+   * @param {FooterContentLink} options Option d'un lien de contenu
    */
-  addContentLink(href, title, titleAttr) {
-    title = title || href.replace(/^http(s)?:\/\/(www.)?/, '').replace(/\//g, '');
+  addContentLink(options) {
+    const title = options.title || options.href.replace(/^http(s)?:\/\/(www.)?/, '').replace(/\//g, '');
     const linkId = 'footer__content-link-' + getUid('content-link')
     return ol_ext_element.create('A', {
       id: linkId,
       className: 'fr-footer__content-link',
       target: '_blank',
       rel: 'noopener external',
-      title: titleAttr || title + ' - Nouvelle fenêtre',
+      title: options.titleAttr || title + ' - Nouvelle fenêtre',
       text: title,
-      href: href,
+      href: options.href,
       parent: ol_ext_element.create('LI', {
         className: 'fr-footer__content-item',
         parent: this.contentLink
@@ -187,23 +185,20 @@ class FooterComplet extends BaseObject {
 
   /** 
    * Ajoute un logo de partenaire
-   * @param {string} alt Texte alternatif de l'image
-   * @param {string} url URL du lien
-   * @param {string} img Source de l'image
-   * @param {boolean} [main=false] Si true, ajoute dans les partenaires principaux
+   * @param {FooterPartner} options Options d'un partenaire
    */
-  addPartner(alt, url, img, main) {
+  addPartner(options) {
     const imgElement = ol_ext_element.create('IMG', {
       className: 'fr-footer__logo',
-      alt: alt,
-      src: img
+      alt: options.alt,
+      src: options.img
     })
 
-    if (main) {
+    if (options.main) {
       // Partenaire principal : directement dans partnerMainList sans <li>
       return ol_ext_element.create('A', {
         className: 'fr-footer__partners-link',
-        href: url,
+        href: options.url,
         target: '_blank',
         rel: 'noopener noreferrer',
         html: imgElement,
@@ -213,7 +208,7 @@ class FooterComplet extends BaseObject {
       // Partenaire secondaire : dans partnerList avec <li>
       return ol_ext_element.create('A', {
         className: 'fr-footer__partners-link',
-        href: url,
+        href: options.url,
         target: '_blank',
         rel: 'noopener noreferrer',
         html: imgElement,
@@ -226,16 +221,15 @@ class FooterComplet extends BaseObject {
 
   /** 
    * Ajoute un lien dans la section du bas
-   * @param {string} title Texte du lien
-   * @param {string} href URL du lien
+   * @param {FooterBottomLink} options Option d'un lien du footer
    */
-  addLink(title, href) {
+  addLink(options) {
     const linkId = 'footer__bottom-link-' + getUid('bottom-link')
     ol_ext_element.create('A', {
       id: linkId,
       className: 'fr-footer__bottom-link',
-      text: title,
-      href: href,
+      text: options.title,
+      href: options.href,
       parent: ol_ext_element.create('LI', {
         className: 'fr-footer__bottom-item',
         parent: this.links
@@ -287,4 +281,4 @@ class FooterComplet extends BaseObject {
   }
 }
 
-export default FooterComplet;
+export default Footer;

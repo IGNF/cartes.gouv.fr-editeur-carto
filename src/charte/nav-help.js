@@ -12,16 +12,16 @@ help.addMenu([
     type: 'link',
     label: 'Questions fréquentes',
     icon: 'fr-icon-question-mark',
-    href: '/documentation/fr',
+    href: 'https://cartes.gouv.fr/aide/fr/',
   },{
     type: 'link',
-    label: 'Documentation',
-    icon: 'fr-icon-file-text-line',
-    href: '/documentation/fr/guides-utilisateur/editeur-cartographique',
+    label: 'Guide d\'utilisation',
+    icon: 'fr-icon-book-2-line',
+    href: 'https://cartes.gouv.fr/aide/fr/guides-utilisateur/presentation-utilisateur/generalites-utilisateur/',
   },{
     type: 'link',
     label: 'Nous contacter',
     icon: 'fr-icon-mail-line',
-    href: '/nous-ecrire',
+    href: 'https://cartes.gouv.fr/nous-ecrire',
   }
 ])

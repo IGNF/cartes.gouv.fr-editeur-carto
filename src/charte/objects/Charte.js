@@ -5,7 +5,7 @@ import Menu from './Menu.js';
 import Footer from './Footer.js';
 import Header from './Header.js';
 
-/** DSFR charte
+/** Classe représentant la charte DSFR
  * 
  */
 class Charte extends BaseObject {
@@ -18,6 +18,10 @@ class Charte extends BaseObject {
     PREVIEW: 'preview',
   })
 
+  /**
+   * Constructeur de la classe Charte
+   * Initialise le header, le main et le footer de la page
+   */
   constructor() {
     super();
     this.header = new Header();
@@ -28,9 +32,10 @@ class Charte extends BaseObject {
     this._actions = {};
   }
 
-  /** Get en element in the main (or create it)
-   * @param {string} role
-   * @param {Object} options
+  /** Récupère un élément dans le main (ou le crée s'il n'existe pas)
+   * @param {string} role Le rôle de l'élément à récupérer
+   * @param {Object} options Options de création de l'élément
+   * @returns {HTMLElement} L'élément trouvé ou créé
    */
   getElement(role, options) {
     options = options || {};
@@ -39,21 +44,22 @@ class Charte extends BaseObject {
     return this.element.querySelector('[data-role="' + role + '"]') || ol_ext_element.create('DIV', options)
   }
   /**
+   * Met à jour le footer dans le header
    * @private
    */
   _updateFooter() {
-    // Move footer to the header
+    // Déplace le footer vers le header
     this.header.footer.innerHTML = this.footer.element.innerHTML
   }
-  /** Get existing or create menu 
-   * @param {Objet} options 
-   *  @param {string} options.type menu type description|link|option
-   *  @param {string} options.label 
-   *  @param {string} options.info information for type description
-   *  @param {string} options.href information for type link
-   *  @param {string} options.icon
-   *  @param {string} options.action 
-   * @returns {Menu}
+  /** Récupère un menu existant ou en crée un nouveau
+   * @param {Object} options Options du menu
+   *  @param {string} options.type Type de menu : description|link|option
+   *  @param {string} options.label Label du menu
+   *  @param {string} options.info Information pour le type description
+   *  @param {string} options.href Lien pour le type link
+   *  @param {string} options.icon Icône du menu
+   *  @param {string} options.action Action associée au menu
+   * @returns {Menu} Le menu trouvé ou créé
    */
   getHeaderMenu(options) {
     options = options || {}
@@ -69,14 +75,16 @@ class Charte extends BaseObject {
     this._actions[options.action] = menu;
     return menu;
   }
-  /** Get existing or create button 
+  /** Récupère un bouton existant ou en crée un nouveau
    * 
-   * @see {@link ol_ext_element} for more info on the options
-   * @param {Objet} options options to create the button / link
-   *  @param {string} options.type menu type button|a
-   *  @param {string} options.label 
-   *  @param {string} options.href information for type link
-   *  @param {string} options.icon
+   * @see {@link ol_ext_element} pour plus d'informations sur les options
+   * @param {Object} options Options pour créer le bouton / lien
+   *  @param {string} options.type Type du menu : button|a
+   *  @param {string} options.label Label du bouton
+   *  @param {string} options.href Lien pour le type a
+   *  @param {string} options.icon Icône du bouton
+   *  @param {string} options.action Action associée au bouton
+   * @returns {HTMLElement} Le bouton créé ou trouvé
    */
   getHeaderButton(options) {
     options = options || {};
@@ -102,17 +110,17 @@ class Charte extends BaseObject {
   }
 
   /**
-   * Check if the user is connected (only through the body dataset, not
-   * with the api)
-   * @return {boolean} True if the user is connected, false otherwise
+   * Vérifie si l'utilisateur est connecté (uniquement via le dataset du body,
+   * pas via l'API)
+   * @returns {boolean} Vrai si l'utilisateur est connecté, faux sinon
    */
   isConnected() {
     return document.body.dataset.disconnected === undefined;
   }
 
   /**
-   * 
-   * @param {boolean} connected True if connected, false otherwise
+   * Définit l'état de connexion de l'utilisateur et met à jour l'interface
+   * @param {boolean} connected Vrai si connecté, faux sinon
    */
   setConnected(connected) {
     let btnsConnect = this.header.element.querySelectorAll("[data-action='login']");
@@ -135,49 +143,45 @@ class Charte extends BaseObject {
       }
     }
   }
-  /** Set service information
+  /** Définit les informations du service
    * @param {ServiceOptions} options Options du service
    */
   setService(options) {
     this.header.setService(options)
   }
-  /** Set service description
-   * @param {string} desc
+  /** Définit la description du service
+   * @param {string} desc Description du service
    */
   setDescription(desc) {
     this.footer.description.innerHTML = desc
     this._updateFooter()
   }
-  /** Add partner logo
-   * @param {string} title
-   * @param {string} url
-   * @param {string} img image src
-   * @param {boolean} [main=false]
+  /** Ajoute un logo de partenaire
+   * @param {FooterPartner} options Options d'un partenaire
    */
-  addPartner(title, url, img, main) {
-    this.footer.addPartner(title, url, img, main)
+  addPartner(options) {
+    this.footer.addPartner(options)
     this._updateFooter()
   }
   /**
-   * @param {string} href
-   * @param {string} [title] default use href
+   * Ajoute un lien de contenu au footer
+   * @param {FooterContentLink} options Contenu d'un lien pour le footer
    */
-  addContentLink(href, title) {
-    this.footer.addContentLink(href, title)
+  addContentLink(options) {
+    this.footer.addContentLink(options)
     this._updateFooter()
   }
-  /** Add a bottom link
-   * @param {string} title
-   * @param {string} href
+  /** Ajoute un lien en bas de page
+   * @param {FooterBottomLink} options Option d'un lien de bas de page
    */
-  addFooterLink(title, href) {
-    this.footer.addLink(title, href)
+  addFooterLink(options) {
+    this.footer.addLink(options)
     this._updateFooter()
   }
-  /** Add a bottom button
-   * @param {string} title
-   * @param {Object} options
-   *  @param {string} options.icon
+  /** Ajoute un bouton en bas de page
+   * @param {string} title Titre du bouton
+   * @param {Object} options Options du bouton
+   *  @param {string} options.icon Icône du bouton
    */
   addFooterButton(title, options) {
     this.footer.addButton(title, options)
