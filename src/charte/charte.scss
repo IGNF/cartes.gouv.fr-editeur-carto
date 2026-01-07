@@ -19,9 +19,13 @@ main {
   display: flex;
   flex-direction: column;
   height: 90vh;
-  min-height: 650px;
+  min-height: 700px;
   max-height: calc(100vh - 3.25rem);
   overflow: hidden;
+
+  @media (max-height : 800px) {
+    min-height: 640px;
+  }
 }
 
 dialog {

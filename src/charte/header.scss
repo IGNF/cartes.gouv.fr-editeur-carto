@@ -4,6 +4,13 @@
 header.fr-header {
   .fr-header__service {
     order: 3;
+
+    &-tagline {
+      display: none;
+      @include rf.respond-from('lg') {
+        display: block;
+      }
+    }
   }
 
   .fr-header__operator {
@@ -30,6 +37,10 @@ header.fr-header {
     }
   }
 
+  .fr-header__tools-links {
+    gap:1rem
+  }
+
   &--compact {
     footer {
       display: flex;
@@ -42,12 +53,17 @@ header.fr-header {
       }
     }
 
-    .fr-header__service-title > .fr-badge {
-      display: none;
-      margin-left: 0.625rem;
+    .fr-header__service {
+      &-title > .fr-badge {
+        display: none;
+        margin-left: 0.625rem;
 
-      @include rf.respond-from('sm') {
-        display: inline-flex;
+        @include rf.respond-from('sm') {
+          display: inline-flex;
+        }
+      }
+      &-tagline {
+        display: none;
       }
     }
   }
