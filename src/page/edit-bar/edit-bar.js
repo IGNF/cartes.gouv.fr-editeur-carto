@@ -148,7 +148,7 @@ const dialog = new Dialog({
 
 let drawToggle = new Draw({
   position: "right",
-  // select: carte.getSelect()
+  select: carte.getSelect()
 });
 
 const typeObjects = {

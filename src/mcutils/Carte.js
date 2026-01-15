@@ -1,7 +1,9 @@
 import Carte from 'mcutils/Carte.js';
 import {
   GeoportalZoom,
+  SelectingInteraction,
 } from 'geopf-extensions-openlayers/src/index.js';
+import SelectMultiple from 'mcutils/ol/SelectMultiple';
 
 /** GPP Carte overwrite Carte options / controls
  */
@@ -15,6 +17,9 @@ class GPPCarte extends Carte {
    */
   constructor(options) {
     super(options);
+
+    // SelectInteraction overwrite
+    SelectMultiple.prototype.clear = SelectingInteraction.prototype.clear;
 
     // Remove ScaleLine from canvas
     this.getControl('scaleLine').element.style.visibility = '';

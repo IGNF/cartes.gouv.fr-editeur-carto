@@ -12,6 +12,7 @@ import charte from './charte/charte.js';
 import 'ol-ext/dist/ol-ext.css'
 import 'mcutils/Carte.css';
 import 'mcutils/Carte.js';
+import ModifyingInteraction from 'geopf-extensions-openlayers/src/packages/Interactions/Modifying.js';
 
 // The Carte
 const carte = new Carte({
@@ -19,5 +20,10 @@ const carte = new Carte({
   // Default Carte
   url: import.meta.env.BASE_URL + 'carte/template.carte'
 })
+
+const modify = new ModifyingInteraction({
+  select : carte.getInteraction('select'),
+})
+carte.getMap().addInteraction(modify);
 
 export default carte

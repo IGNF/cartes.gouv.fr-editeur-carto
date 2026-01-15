@@ -34,7 +34,7 @@
   "dependencies": {
     "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.14.1/ignf-dsfr-v1.14.1.tgz",
     "geoimport": "^0.7.0",
-    "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.6-452.tgz",
+    "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.6-453.tgz",
     "mcutils": "git+https://github.com/IGNF/cartes.gouv.fr-editeur-lib",
     "remixicon": "^4.6.0"
   }
