@@ -13,18 +13,29 @@ class Footer extends BaseObject {
       parent: document.body
     })
 
+    const containId = getUid('footer-container');
+    const expandBtnId = getUid('footer-expand-button');
+
+    // Container
+    const container = this.container = ol_ext_element.create('DIV', {
+      className: 'fr-container',
+      id: containId,
+      'aria-labelledby': expandBtnId,
+      parent: this.element
+    });
+
     // Bouton d'expansion (visible uniquement en mode compact)
-    const idContain = getUid('footer-container')
     const containBt = ol_ext_element.create('BUTTON', {
-      id: getUid('footer-expand-button'),
+      id: expandBtnId,
       type: 'button',
       className: 'fr-icon-arrow-up-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
       'aria-label': 'plus d\'informations',
       'title': 'plus d\'informations',
       'aria-expanded': 'false',
-      'aria-controls': idContain,
+      'aria-controls': containId,
       parent: this.element
-    })
+    });
+
     containBt.addEventListener('click', () => {
       const expanded = containBt.getAttribute('aria-expanded') === 'true'
       containBt.setAttribute('aria-expanded', !expanded);
@@ -34,19 +45,16 @@ class Footer extends BaseObject {
       containBt.setAttribute('aria-label', expanded ? 'plus d\'informations' : 'Fermer')
       containBt.innerText = "Fermer";
       containBt.setAttribute('title', expanded ? 'plus d\'informations' : 'Fermer')
-    })
 
-    // Container
-    const container = this.container = ol_ext_element.create('DIV', {
-      className: 'fr-container',
-      id: idContain,
-      'aria-labelledby': containBt.id,
-      parent: this.element
+      // Scroll en bas de la page
+      const top = !expanded ? document.body.scrollHeight : 0;
+      setTimeout(window.scrollTo({left:0, top:top, behavior:'smooth'}), 1);
     })
 
     // Body
     const body = ol_ext_element.create('DIV', {
       className: 'fr-footer__body',
+      id: getUid('footer-body'),
       parent: container
     })
 

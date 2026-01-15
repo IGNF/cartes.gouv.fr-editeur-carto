@@ -20,20 +20,34 @@ footer.fr-footer {
   // Mode compact
   &--compact {
     display: none;
+    padding: 0 1rem 0 0.75rem;
+    box-shadow: inset 0 2px 0 0 var(--border-plain-blue-france);
 
     @include rf.respond-from('lg') {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-direction: row-reverse;
+      flex-direction: row;
     }
 
+    // Gère le contenu en mode
     &:has(button.btn-more-info[aria-expanded='true']) {
-      flex-direction: column;
+      flex-direction: column-reverse;
       align-items: unset;
 
       > div[class^='fr-container'] {
         padding: 1rem 0.75rem 0;
+
+        .fr-footer__partners,
+        .fr-footer__bottom-copy {
+          display: block;
+        }
+        .fr-footer__body {
+          display: flex;
+        }
+        .fr-footer__bottom-list {
+          display: none;
+        }
       }
 
       .fr-footer__brand.fr-enlarge-link {
@@ -41,12 +55,20 @@ footer.fr-footer {
       }
     }
 
-    padding: 0 1rem 0 0.75rem;
+    &:has(button.btn-more-info[aria-expanded='false']) {
+      .fr-footer__bottom {
+        box-shadow: none;
+        margin-top: 0.125rem;
+        padding: 0;
+        &-list {
+          padding: 0.125rem 0;
+        }
+      }
+    }
+
     > div[class^='fr-container'] {
       padding: 0 0.25rem;
     }
-
-    box-shadow: inset 0 2px 0 0 var(--border-plain-blue-france);
 
     .fr-footer__body,
     .fr-footer__partners,
@@ -59,34 +81,11 @@ footer.fr-footer {
 
       &[aria-expanded='true'] {
         margin: 1rem 0 0.625rem auto;
-
-        & ~ div {
-          .fr-footer__partners,
-          .fr-footer__bottom-copy {
-            display: block;
-          }
-          .fr-footer__body {
-            display: flex;
-          }
-          .fr-footer__bottom-list {
-            display: none;
-          }
-        }
       }
 
       &[aria-expanded='false'] {
-        margin-top: 1px;
+        margin-top: 2px;
         color: var(--text-mention-grey);
-
-        ~ div .fr-footer__bottom {
-          box-shadow: none;
-          margin-top: 0.125rem;
-          padding: 0;
-
-          &-list {
-            padding: 0.125rem 0;
-          }
-        }
       }
     }
   }
