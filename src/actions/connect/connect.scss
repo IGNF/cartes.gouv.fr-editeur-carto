@@ -5,13 +5,13 @@
   z-index: 100;
   border: 0;
   right: auto;
-  transform: translateY(27px);
+  top:50%;
+  transform: translateY(-50%);
   box-shadow: 0px 6px 18px 0px rgba(0, 0, 18, 0.16);
   max-width: calc(100% - 1rem);
   max-height:620px;
   left: 1rem;
   right: 1rem;
-  bottom: auto;
   height: auto;
   overflow: auto;
 

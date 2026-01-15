@@ -49,6 +49,7 @@ class Charte extends BaseObject {
    */
   _updateFooter() {
     // Déplace le footer vers le header
+    // TODO : modifier les id des éléments en ajoutant un "header-" avant
     this.header.footer.innerHTML = this.footer.element.innerHTML
   }
   /** Récupère un menu existant ou en crée un nouveau
@@ -197,6 +198,7 @@ class Charte extends BaseObject {
   setCompact(compact) {
     this.header.setCompact(compact);
     this.footer.setCompact(compact);
+    document.body.classList.toggle("compact", compact)
   }
 
   /**
