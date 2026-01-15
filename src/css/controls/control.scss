@@ -81,3 +81,8 @@ div[id^='GPlayerSwitcher-'] {
     display: none;
   }
 }
+
+.ol-viewport .ol-control.gpf-simple-menu {
+  background-color: var(--background-default-grey);
+  border-radius: 0;
+}

@@ -3,7 +3,7 @@ import {
   GeoportalZoom,
   SelectingInteraction,
 } from 'geopf-extensions-openlayers/src/index.js';
-import SelectMultiple from 'mcutils/ol/SelectMultiple';
+import SelectMultiple from 'mcutils/ol/SelectMultiple.js';
 
 /** GPP Carte overwrite Carte options / controls
  */

@@ -148,6 +148,7 @@ const dialog = new Dialog({
 
 let drawToggle = new Draw({
   position: "right",
+  title: "Annoter la carte",
   select: carte.getSelect()
 });
 
@@ -161,7 +162,7 @@ const typeObjects = {
     label: "Ligne",
   },
   "Polygon": {
-    icon: "fr-icon-ign-surface-hole-fill",
+    icon: "fr-icon-ign-shape-3-fill",
     label: "Surface",
   }
 }

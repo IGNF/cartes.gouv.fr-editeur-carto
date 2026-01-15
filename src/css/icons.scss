@@ -1,4 +1,5 @@
-// .gpf-btn-icon-map-modal::after {
-//   -webkit-mask: url("/icon/mapmodal.svg") center no-repeat;
-//   mask: url("/icon/mapmodal.svg") center no-repeat;
-// }
+.fr-icon-ign-shape-3-fill::before,
+.fr-icon-ign-shape-3-fill::after {
+  -webkit-mask-image: url("./ign-shape-3-fill.svg");
+  mask-image: url("./ign-shape-3-fill.svg");
+}
