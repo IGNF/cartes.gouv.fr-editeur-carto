@@ -4,6 +4,7 @@ import {
   SelectingInteraction,
 } from 'geopf-extensions-openlayers/src/index.js';
 import SelectMultiple from 'mcutils/ol/SelectMultiple.js';
+import {gpfStyleFn, gpfShownStyleFn} from './gpfStyleFn.js';
 
 /** GPP Carte overwrite Carte options / controls
  */
@@ -26,6 +27,18 @@ class GPPCarte extends Carte {
     this.getMap().render();
 
     this.selectedLayer = null;
+
+    /* Update style with blue points */
+    this.getSelect().style_ = gpfStyleFn({
+      features: this.getSelect().getFeatures(),
+      // type: 'zoom',
+      points: true
+    }); 
+    this.getSelect().shownStyle_ = gpfShownStyleFn({
+      features: this.getSelect().getFeatures(),
+      // type: 'zoom',
+      points: true
+    }); 
 
     // Remove controls
     const keyToExcludes = [

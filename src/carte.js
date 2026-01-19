@@ -20,6 +20,8 @@ const carte = new Carte({
   // Default Carte
   url: import.meta.env.BASE_URL + 'carte/template.carte'
 })
+// Only one selction when editing features
+carte.getSelect().multi_ = false;
 
 const modify = new ModifyingInteraction({
   select : carte.getInteraction('select'),
