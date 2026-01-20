@@ -25,6 +25,7 @@ class GPPCarte extends Carte {
     // Remove ScaleLine from canvas
     this.getControl('scaleLine').element.style.visibility = '';
     this.getMap().render();
+    this.getSelect().multi_ = false;
 
     this.selectedLayer = null;
 

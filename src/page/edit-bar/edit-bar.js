@@ -2,7 +2,8 @@ import carte from '../../carte.js';
 
 import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
-import { Dialog, DrawingInteraction as Drawing, Draw } from 'geopf-extensions-openlayers';
+import { DrawingInteraction as Drawing, Draw } from 'geopf-extensions-openlayers';
+import styleDialog, { styleForm } from '../../control/StyleDialog/styleDialog.js';
 import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 
@@ -65,11 +66,11 @@ let selectToggle = new Toggle({
   active: true,
   onToggle: function (e) {
     if (e) {
-      carte.getSelect().getFeatures().clear();
-      if (activeToggle && activeToggle.getActive()) {
-        // Simule un click sur le toggle
-        activeToggle.button_? activeToggle.button_.click() : activeToggle.setActive(false)
-      }
+      carte.getSelect().clear();
+      // if (activeToggle && activeToggle.getActive()) {
+      //   // Simule un click sur le toggle
+      //   activeToggle.button_? activeToggle.button_.click() : activeToggle.setActive(false)
+      // }
     }
   }
 });
@@ -116,36 +117,6 @@ let addDataBar = new Bar({
 //   onToggle: onToggleAction
 // });
 
-// Création du Dialog avec navigation tertiaire
-const dialog = new Dialog({
-  id: "style-dialog",
-  title: "Dialog",
-  position: "left",
-  items: [
-    {
-      label: "Style",
-      content: "<p>Onglet Style</p>",
-      title: "Configuration du style"
-    },
-    {
-      label: "Texte",
-      content: "<p>Onglet Texte</p>",
-      title: "Configuration du texte"
-    },
-    {
-      label: "Infobulle",
-      content: "<p>Onglet Infobulle</p>",
-      title: "Configuration de l'infobulle"
-    },
-    {
-      label: "Attributs",
-      content: "<p>Onglet Attributs</p>",
-      title: "Configuration des attributs"
-    }
-  ],
-  labelTabNav: "Navigation de configuration"
-});
-
 let drawToggle = new Draw({
   position: "right",
   title: "Annoter la carte",
@@ -183,17 +154,20 @@ Object.keys(typeObjects).forEach(k => {
 })
 
 const onSelect = (e) => {
+
+  styleForm.setFeatures(e.selected, e.deselected)
   if (e.selected.length) {
     const geomType = e.selected[0].getGeometry().getType();
-    dialog.setDialogTitle(typeObjects[geomType].label);
-    dialog.setIcon(typeObjects[geomType].icon);
+    styleDialog.setDialogTitle(typeObjects[geomType].label);
+    styleDialog.setIcon(typeObjects[geomType].icon);
 
-    dialog.show();
+    styleDialog.show();
+
   } else {
-    dialog.close();
+    styleDialog.close();
   }
 }
-drawToggle.getSelect().on("select", onSelect)
+// drawToggle.getSelect().on("select", onSelect)
 carte.getSelect().on("select", onSelect)
 
 switcher.on("layerswitcher:change:selected", (e) => {
@@ -216,20 +190,20 @@ let measureToggle = new Toggle({
   onToggle: onToggleAction
 });
 
-// Gère l'activation du toggle de sélection
-const interactionToggles = [drawToggle, measureToggle]
-interactionToggles.forEach((toggle) => {
-  toggle.on('change:active', (e) => {
-    if (e.target.get(e.key) || e.active) {
-      activeToggle = e.target;
-      selectToggle.setActive(false);
-    } else if (!(drawToggle.getActive() || measureToggle.getActive())) {
-      // Les deux sont désactivés, on réactive la sélection
-      selectToggle.setActive(true);
-      activeToggle = null;
-    }
-  })
-})
+// // Gère l'activation du toggle de sélection
+// const interactionToggles = [drawToggle, measureToggle]
+// interactionToggles.forEach((toggle) => {
+//   toggle.on('change:active', (e) => {
+//     if (e.target.get(e.key) || e.active) {
+//       activeToggle = e.target;
+//       selectToggle.setActive(false);
+//     } else if (!(drawToggle.getActive() || measureToggle.getActive())) {
+//       // Les deux sont désactivés, on réactive la sélection
+//       selectToggle.setActive(true);
+//       activeToggle = null;
+//     }
+//   })
+// })
 
 // Barre d'interaction
 let interactionBar = new Bar({
@@ -247,16 +221,16 @@ let editDataBar = new Bar({
   ]
 })
 
-drawToggle.on("change:active", (e) => {
-  if (e.target.get(e.key)) {
-    console.log(switcher.getSelectedLayer());
-    selectToggle.getInteraction().getFeatures().clear();
-    activeToggle = e.target;
-    if (rightPanel.getDialog().open) {
-      rightPanel.close();
-    }
-  }
-})
+// drawToggle.on("change:active", (e) => {
+//   if (e.target.get(e.key)) {
+//     console.log(switcher.getSelectedLayer());
+//     selectToggle.getInteraction().getFeatures().clear();
+//     activeToggle = e.target;
+//     if (rightPanel.getDialog().open) {
+//       rightPanel.close();
+//     }
+//   }
+// })
 
 drawToggle.on("drawstart", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource) && e.target.type_ !== "Point") {
@@ -282,6 +256,8 @@ let mainbar = new Bar({
 })
 
 carte.addControl('mainBar', mainbar)
-carte.addControl("styleDialog", dialog);
+carte.addControl("styleDialog", styleDialog);
 
 mainbar.setPosition('right')
+
+export { drawToggle };

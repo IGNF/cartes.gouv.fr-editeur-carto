@@ -1,50 +1,82 @@
 {
-  "param": {
-    "rot": 0,
-    "lon": 2,
-    "lat": 47,
-    "zoom": 6,
-    "titre": "Ma carte",
-    "description": "",
-    "status": "brouillon",
-    "controlParams": {
-      "limitGeo": "1",
-      "zoomBtn": "1",
-      "selectLayer": "1",
-      "contextMap": "1",
-      "legend": 0,
-      "scaleLine": "1",
-      "pSearchBar": "0",
-      "coords": "0",
-      "attribution": 1
-    },
-    "proj": {
-      "valeur": "EPSG:4326",
-      "unite": "ds"
-    }
+ "param": {
+  "lon": 2,
+  "lat": 47,
+  "zoom": 6,
+  "rot": 0,
+  "controlParams": {
+   "zoomBtn": true,
+   "scaleLine": true,
+   "pSearchBar": false,
+   "legend": false,
+   "coords": false,
+   "selectLayer": true,
+   "geoloc": false,
+   "profil": false,
+   "printDlg": false
   },
-  "legende": {
-    "legendVisible": false,
-    "legendPos": "bottom-left",
-    "legendWidth": 300,
-    "lineHeight": 45,
-    "legendParam": {
-      "width": 300,
-      "lineHeight": 45
-    },
-    "legendtitle": "Ma légende",
-    "legend": []
+  "proj": {
+   "valeur": "EPSG:4326"
+  }
+ },
+ "legende": {
+  "legendtitle": "Ma légende",
+  "lineHeight": 45,
+  "legendWidth": 300,
+  "legendParam": {
+   "width": 300,
+   "lineHeight": 45
   },
-  "layers": [
-    {
-      "type": "Geoportail",
-      "name": "Plan IGN",
-      "titre": "sans-titre",
-      "visibility": true,
-      "opacity": 1,
-      "description": "Cartographie multi-échelles sur le territoire national, issue des bases de données vecteur de l’IGN, mis à jour régulièrement et réalisée selon un processus entièrement automatisé. Version actuellement en beta test",
-      "layer": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
-    }
-  ],
-  "symbolLib": []
+  "items": [],
+  "legendVisible": false
+ },
+ "layers": [
+  {
+   "id": 1,
+   "type": "Geoportail",
+   "name": "Plan IGN",
+   "title": "Plan IGN",
+   "visibility": true,
+   "opacity": 1,
+   "description": "Cartographie multi-échelles sur le territoire national, issue des bases de données vecteur de l’IGN, mis à jour régulièrement et réalisée selon un processus entièrement automatisé. Version actuellement en beta test",
+   "copyright": "",
+   "popupContent": {},
+   "grayscale": false,
+   "blendMode": "",
+   "minZoom": null,
+   "maxZoom": null,
+   "crop": {},
+   "layer": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
+  },
+  {
+   "dessin": true,
+   "attributes": [],
+   "id": 2,
+   "type": "Vector",
+   "name": "",
+   "title": "Dessin",
+   "visibility": true,
+   "opacity": 1,
+   "copyright": "",
+   "selectable": true,
+   "multiSelect": true,
+   "popupContent": {},
+   "grayscale": false,
+   "blendMode": "",
+   "minZoom": null,
+   "maxZoom": null,
+   "conditionStyle": [],
+   "mode": "vector",
+   "crop": {},
+   "data": {
+    "type": "FeatureCollection",
+    "decimals": 3,
+    "hashProperties": [],
+    "features": [],
+    "style": [],
+    "popupContent": []
+   }
+  }
+ ],
+ "symbolLib": []
 }
