@@ -2,6 +2,28 @@ import { getSelectStyleFn, getShownFeatureStyleFn } from 'mcutils/style/ignStyle
 import CircleStyle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
+import { defaultIgnStyle } from 'mcutils/style/ignStyleFn';
+
+import ol_style_FontSymbol from 'ol-ext/style/FontSymbol'
+
+ol_style_FontSymbol.addDefs({
+  "font":"cursive",
+  "name":"cursive",
+  "copyright":"SIL OFL 1.1",
+  "prefix": "std"
+}, {
+  "std-circle": { char: "\u25cf", "font": "cursive", "theme": "standerd", name: "cercle", "search": "" },
+});
+window.defStyle = defaultIgnStyle;
+
+/* Overwrite defaultIgnStyle for GPF */
+defaultIgnStyle.pointRadius = 19;
+defaultIgnStyle.pointGlyph = "std-circle";
+defaultIgnStyle.pointForm = "marker",
+defaultIgnStyle.symbolColor = "rgba(255, 255, 255, 0.95)";
+defaultIgnStyle.pointColor = "rgba(0, 0, 145, 1)";
+defaultIgnStyle.pointStrokeColor = "rgba(0, 0, 145, 1)";
+defaultIgnStyle.pointStrokeWidth = 0;
 
 const circle = new CircleStyle({
   stroke : new Stroke({ 
