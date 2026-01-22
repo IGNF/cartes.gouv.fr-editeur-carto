@@ -125,7 +125,7 @@ class StyleForm extends ControlExtended {
       this.features.set(f.ol_uid, f);
     });
     // Si au moins une feature, initialiser les inputs avec le style de la première
-    if (this.features.length > 0) {
+    if (this.features.size > 0) {
       this.initInputs(this.features.entries().next().value[1]);
     }
   }
