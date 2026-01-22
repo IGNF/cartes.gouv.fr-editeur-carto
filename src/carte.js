@@ -13,6 +13,8 @@ import 'ol-ext/dist/ol-ext.css'
 import 'mcutils/Carte.css';
 import 'mcutils/Carte.js';
 import ModifyingInteraction from 'geopf-extensions-openlayers/src/packages/Interactions/Modifying.js';
+import switcher from './mcutils/layerSwitcher.js';
+import notification from './control/Notification/notification.js';
 
 // The Carte
 const carte = new Carte({
@@ -28,4 +30,53 @@ const modify = new ModifyingInteraction({
 })
 carte.getMap().addInteraction(modify);
 
+carte.getMap().addControl(notification);
+
+// Copy/paste feature with Ctrl+C / Ctrl+V
+modify.on(['cut', 'delete'], e => {
+  const features = e.features || e.deleted;
+  notification.info(features.length + (features.length > 1 ? ' objets supprimés.' : ' objet supprimé.'), () => {
+    notification.hide();
+    features.forEach(f => {
+      f.layer.getSource().addFeature(f.feature);
+    });
+  });
+});
+
+// Paste feature with Ctrl+V
+modify.on(['paste'], e => {
+  const features = [];
+  const layer = switcher.getSelectedLayer();
+  // Check layer
+  if (!layer || layer.get('type') !== 'Vector') {
+    notification.warning('La couche sélectionnée ne permet pas l\'ajout d\'objets.');
+    return;
+  }
+  // copy features
+  e.features.forEach(f => {
+    const feature = f.feature.clone();
+    features.push({ layer: layer, feature: feature });
+    layer.getSource().addFeature(feature);
+  });
+  // undo notification
+  notification.info(features.length + ' objet(s) ajouté(s).', () => {
+    notification.hide();
+    features.forEach(f => {
+      f.layer.getSource().removeFeature(f.feature);
+    });
+  });
+});
+
+// Duplicate feature
+modify.on(['duplicate'], e => {
+  const features = e.features || [];
+  notification.info(features.length + ' objet(s) ajouté(s).', () => {
+    notification.hide();
+    features.forEach(f => {
+      f.layer.getSource().removeFeature(f.feature);
+    });
+  });
+});
+
+export { notification}
 export default carte

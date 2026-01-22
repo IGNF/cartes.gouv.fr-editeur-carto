@@ -8,6 +8,7 @@ import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 
 import Action from '../../actions/Action.js';
+import notification from '../../control/Notification/notification.js';
 
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
@@ -232,14 +233,20 @@ let editDataBar = new Bar({
 //   }
 // })
 
+
+drawToggle.dialog.on("dialog:open", (e) => {
+  if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
+    notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+  }
+})
 drawToggle.on("drawstart", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource) && e.target.type_ !== "Point") {
-    alert("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
 })
 drawToggle.on("drawend", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
-    alert("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+    notification.error("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   }
 })

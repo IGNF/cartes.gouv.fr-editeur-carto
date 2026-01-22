@@ -1,0 +1,62 @@
+.gpf-notification {
+  position: absolute
+}
+.gpf-notification > div {
+  background-color: var(--background-default-grey);
+  color: var(--text-default-grey);
+  box-shadow: 0 2px 6px 0 var(--shadow-color);
+  border-radius: 4px!important;
+  padding-right: 2.5em !important;
+  padding-left: 2.5em !important;
+}
+.gpf-notification > div:hover {
+  background-color: var(--background-default-grey);
+  color: var(--text-default-grey);
+}
+.gpf-notification > div:before {
+  position: absolute;
+  left: 0.5em;
+  top: 0;
+  bottom: 0;
+  max-height: unset!important;
+  height: 100%;
+}
+
+.gpf-notification > div.fr-icon-info-fill:before {
+  color: var(--text-action-high-blue-france);
+}
+.gpf-notification > div.fr-icon-success-fill:before {
+  color: var(--text-default-success);
+}
+.gpf-notification > div.fr-icon-error-fill:before {
+  color: var(--text-default-error);
+}
+.gpf-notification > div.fr-icon-warning-fill:before {
+  color: var(--text-default-warning);
+}
+
+.gpf-notification > div button {
+  margin-left: 1em;
+}
+
+.gpf-notification > div button.gpf-notification-close {
+  border: 0;
+  width: 2em;
+  margin: 0;
+  box-shadow: none;
+  color: transparent;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  max-height: unset!important;
+}
+.gpf-notification > div button.gpf-notification-close:before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2em;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  color: var(--text-default-grey);
+}
