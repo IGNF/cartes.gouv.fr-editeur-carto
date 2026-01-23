@@ -196,6 +196,11 @@ function flatToIgnStyle(flatStyle) {
   return ignStyle;
 }
 
+function flatToIgnKey(key) {
+  return styleLut[key] || key;
+}
+
+
 /**
  * Convertit le style d'une feature OpenLayers en flat style
  * @param {ol.Feature} feature - La feature dont on extrait le style
@@ -270,5 +275,6 @@ export {
   iconToFlat,
   shapeToFlat,
   imageToFlat,
-  flatToIgnStyle
+  flatToIgnStyle,
+  flatToIgnKey
 };

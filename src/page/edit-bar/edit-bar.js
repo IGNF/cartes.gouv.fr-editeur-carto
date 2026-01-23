@@ -185,6 +185,12 @@ const onSelect = (e) => {
 // drawToggle.getSelect().on("select", onSelect)
 carte.getSelect().on("select", onSelect)
 
+
+styleForm.on("style", (e) => {
+  /* TODO: Appliquer le style à la ou les features sélectionnées */
+  console.log('changer le style ici', e);
+})
+
 switcher.on("layerswitcher:change:selected", (e) => {
   if (e.layer?.getSource() instanceof VectorSource) {
     drawToggle.toggleInteractions.forEach(toggle => {

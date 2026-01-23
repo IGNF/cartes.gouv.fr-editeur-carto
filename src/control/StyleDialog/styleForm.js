@@ -1,6 +1,6 @@
 import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control";
 import getUid from "../../utils/getUid";
-import { flatToIgnStyle, styleToFlatStyle } from "./styleToFlatStyle";
+import { flatToIgnKey, flatToIgnStyle, styleToFlatStyle } from "./styleToFlatStyle";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
 import Feature from "ol/Feature";
@@ -87,12 +87,12 @@ class StyleForm extends ControlExtended {
       }
     });
 
-    Object.assign(this.flatStyle, values);
+    const flatStyle = Object.assign({}, this.flatStyle, values);
 
     console.log('Valeurs du formulaire:', values);
     console.log('Features à styliser:', this.features);
 
-    const st = flatToIgnStyle(this.flatStyle)
+    const st = flatToIgnStyle(flatStyle)
     this.features.forEach(f => {
       Object.keys(st).forEach(key => {
         f.setIgnStyle(key, st[key]);
@@ -107,7 +107,8 @@ class StyleForm extends ControlExtended {
     })
 
 
-    // TODO: Appliquer les styles aux features
+    // Appliquer les styles 
+    this.dispatchEvent({ type: 'style', flatStyle: flatStyle });
 
     return values;
   }
@@ -121,31 +122,47 @@ class StyleForm extends ControlExtended {
     this.features = features;
     // Si au moins une feature, initialiser les inputs avec le style de la première
     if (this.features.length > 0) {
-      this.initInputs(this.features[0]);
+      this.setFlatStyle(styleToFlatStyle(this.features[0]));
     }
+  }
+
+
+  /**
+   * Initialise les valeurs des inputs à partir d'une feature
+   * @param {ol.Feature} feature - La feature dont on récupère le flat style
+   * /
+  initInputs(feature) {
+    console.log('Initialisation des inputs avec la feature:', feature);
+
+    this.setFlatStyle(styleToFlatStyle(feature));
+    console.log('Flat style extrait:', this.flatStyle);
+    console.log(feature?.getIgnStyle?.(true))
   }
 
   /**
    * Initialise les valeurs des inputs à partir d'une feature
    * @param {ol.Feature} feature - La feature dont on récupère le flat style
    */
-  initInputs(feature) {
-    console.log('Initialisation des inputs avec la feature:', feature);
-
-    this.flatStyle = styleToFlatStyle(feature);
-    console.log('Flat style extrait:', this.flatStyle);
-    console.log(feature?.getIgnStyle?.(true))
+  setFlatStyle(flatStyle) {
+    this.flatStyle = flatStyle;
 
     this.inputs.forEach((obj, key, map) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
       input.value = value===0 ? value : value || input.value;
+      // Prevenir que la valeur a changée
+      input.addEventListener('change', (e) => {
+        this.dispatchEvent({ type: 'style', property: key, value: e.target.value });
+        this.features.forEach(f => {
+          f.setIgnStyle(flatToIgnKey(key), e.target.value);
+          f.changed();
+          // const styles = new VectorLayer({style : this.flatStyle}).getStyleFunction()(f);
+          // f.setStyle(styles)
+        })
+      });
       // console.log(input, key, map);
       // console.log(flatStyle[key])
     })
-
-
-    // TODO: Remplir les inputs avec les valeurs du flatStyle
   }
 
   /**
