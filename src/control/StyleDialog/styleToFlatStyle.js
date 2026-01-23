@@ -174,6 +174,28 @@ function imageToFlat(image) {
   return flat;
 }
 
+const styleLut = {
+  'point-color': 'pointColor',
+  'point-form': 'pointForm',
+  'point-radius': 'pointRadius',
+  'point-glyph': 'pointGlyph',
+  'point-stroke-color': 'pointStrokeColor',
+  'point-stroke-width': 'pointStrokeWidth',
+  'point-symbol-color': 'symbolColor',
+  'stroke-color': 'strokeColor',
+  'stroke-width': 'strokeWidth',
+  'fill-color': 'fillColor'
+}
+
+function flatToIgnStyle(flatStyle) {
+  flatStyle = flatStyle || {};
+  const ignStyle = {};
+  Object.keys(flatStyle).forEach(key => {
+    ignStyle[styleLut[key] || key] = flatStyle[key];
+  });
+  return ignStyle;
+}
+
 /**
  * Convertit le style d'une feature OpenLayers en flat style
  * @param {ol.Feature} feature - La feature dont on extrait le style
@@ -181,6 +203,12 @@ function imageToFlat(image) {
  */
 function styleToFlatStyle(feature) {
   const flatStyle = createDefaultStyle() || {};
+  const st = feature.getIgnStyle(true);
+  Object.keys(styleLut).forEach(key => {
+    flatStyle[key] = st[styleLut[key]];
+  });
+  return flatStyle;
+
     console.log(feature)
   // Récupérer le style de la feature
   let style = feature.getStyle();
@@ -241,5 +269,6 @@ export {
   circleToFlat,
   iconToFlat,
   shapeToFlat,
-  imageToFlat
+  imageToFlat,
+  flatToIgnStyle
 };

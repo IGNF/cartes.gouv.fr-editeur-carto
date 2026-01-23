@@ -1,6 +1,6 @@
 import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control";
 import getUid from "../../utils/getUid";
-import { styleToFlatStyle } from "./styleToFlatStyle";
+import { flatToIgnStyle, styleToFlatStyle } from "./styleToFlatStyle";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
 import Feature from "ol/Feature";
@@ -38,9 +38,9 @@ class StyleForm extends ControlExtended {
 
     /**
      * Array des features à styliser
-     * @type {Map<Number, Feature>}
+     * @type {Array<ol.Feature>}
      */
-    this.features = new Map();
+    this.features = [];
 
     // Création de la structure du formulaire
     // Conteneur englobant qui contiendra la grille et le bouton
@@ -92,12 +92,14 @@ class StyleForm extends ControlExtended {
     console.log('Valeurs du formulaire:', values);
     console.log('Features à styliser:', this.features);
 
+    const st = flatToIgnStyle(this.flatStyle)
     this.features.forEach(f => {
-      Object.keys(this.flatStyle).forEach(key => {
-        f.setIgnStyle(key, this.flatStyle[key]);
-        f.changed();
-      // updateCurrentStyle(item);
+      Object.keys(st).forEach(key => {
+        f.setIgnStyle(key, st[key]);
+        console.log(key, st[key]);
+        // updateCurrentStyle(item);
       })
+      f.changed();
       console.log(f.getStyle());
       console.log(f.getStyleFunction());
       // const styles = new VectorLayer({style : this.flatStyle}).getStyleFunction()(f);
@@ -115,18 +117,11 @@ class StyleForm extends ControlExtended {
    * @param {Array<Feature>} selected - Array des features sélectionnées
    * @param {Array<Feature>} deselected - Array des features désélectionnées
    */
-  setFeatures(selected, deselected) {
-
-    deselected.forEach(f => {
-      this.features.delete(f.ol_uid);
-    });
-
-    selected.forEach(f => {
-      this.features.set(f.ol_uid, f);
-    });
+  setFeatures(features) {
+    this.features = features;
     // Si au moins une feature, initialiser les inputs avec le style de la première
-    if (this.features.size > 0) {
-      this.initInputs(this.features.entries().next().value[1]);
+    if (this.features.length > 0) {
+      this.initInputs(this.features[0]);
     }
   }
 
@@ -142,9 +137,9 @@ class StyleForm extends ControlExtended {
     console.log(feature?.getIgnStyle?.(true))
 
     this.inputs.forEach((obj, key, map) => {
-      const input = obj.input;
+      const input = obj.input || obj.select;
       const value = this.flatStyle[key];
-      input.value = value || input.value;
+      input.value = value===0 ? value : value || input.value;
       // console.log(input, key, map);
       // console.log(flatStyle[key])
     })
@@ -176,6 +171,7 @@ class StyleForm extends ControlExtended {
     // Créer le conteneur principal
     const container = document.createElement('div');
     container.className = 'fr-input-group';
+    container.dataset.property = property;
     container.id = groupId;
 
     // Créer le label
@@ -212,6 +208,19 @@ class StyleForm extends ControlExtended {
   }
 
   /**
+   * Ajoute une séparation visuelle (break) au formulaire
+   * @param {string} property - La propriété 
+   * @returns {Element}
+   */
+  addBreak(property) {
+    const br = document.createElement('hr');
+    br.className = 'style-form-break';
+    br.dataset.property = property;
+    this.element.appendChild(br);
+    return br;
+  }
+
+  /**
    * Ajoute un select au formulaire (méthode privée)
    * @param {string} label - Le libellé du select
    * @param {string} property - La propriété flat style correspondante
@@ -228,6 +237,7 @@ class StyleForm extends ControlExtended {
     // Créer le conteneur principal
     const container = document.createElement('div');
     container.className = 'fr-select-group';
+    container.dataset.property = property;
 
     // Créer le label
     const labelElement = document.createElement('label');
@@ -251,10 +261,10 @@ class StyleForm extends ControlExtended {
     select.appendChild(placeholderOption);
 
     // Ajouter les options
-    Object.entries(options).forEach(([value, text]) => {
+    Object.keys(options).forEach(value => {
       const option = document.createElement('option');
       option.value = value;
-      option.textContent = text;
+      option.textContent = options[value];
       select.appendChild(option);
     });
 

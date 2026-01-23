@@ -4,8 +4,40 @@ import StyleForm from './styleForm';
 
 // Création du formulaire de style
 const styleForm = new StyleForm();
-styleForm.addInput('Couleur', 'strokeColor', 'color');
-styleForm.addInput('Taille', 'strokeWidth', 'number');
+styleForm.addInput('Forme', 'point-form', 'select', {
+  marker: 'Marqueur',
+  circle: 'Cercle',
+  square: 'Carré',
+  triangle: 'Triangle',
+  blazon: 'Blason'
+});
+styleForm.addInput('Couleur', 'point-color', 'color');
+styleForm.addInput('Taille', 'point-radius', 'number');
+
+styleForm.addBreak('point-form');
+
+styleForm.addInput('Bordure', 'point-stroke-color', 'color');
+styleForm.addInput('Taille', 'point-stroke-width', 'number');
+
+styleForm.addBreak('point-stroke');
+
+styleForm.addInput('Symbole', 'point-glyph', 'select', {
+  'std-circle': 'cercle',
+  'ign-commerce-cafe': 'Café',
+  'ign-loisir-theatre': 'Théatre',
+  'ign-sport-marche': 'Marche',
+  'ign-service-handicap' : 'Handicape'
+});
+styleForm.addInput('Couleur', 'point-symbol-color', 'color');
+
+styleForm.addBreak('point-symbol');
+
+styleForm.addInput('Intérieur', 'fill-color', 'color');
+
+styleForm.addBreak('fill-style');
+
+styleForm.addInput('Ligne', 'stroke-color', 'color');
+styleForm.addInput('Taille', 'stroke-width', 'number');
 
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new Dialog({

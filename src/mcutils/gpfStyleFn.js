@@ -12,7 +12,7 @@ ol_style_FontSymbol.addDefs({
   "copyright":"SIL OFL 1.1",
   "prefix": "std"
 }, {
-  "std-circle": { char: "\u25cf", "font": "cursive", "theme": "standerd", name: "cercle", "search": "" },
+  "std-circle": { char: "\u25cf", "font": "Verdana, Helvetica, Arial, sans-serif", "theme": "standerd", name: "cercle", "search": "" },
 });
 window.defStyle = defaultIgnStyle;
 
@@ -20,10 +20,11 @@ window.defStyle = defaultIgnStyle;
 defaultIgnStyle.pointRadius = 19;
 defaultIgnStyle.pointGlyph = "std-circle";
 defaultIgnStyle.pointForm = "marker",
-defaultIgnStyle.symbolColor = "rgba(255, 255, 255, 0.95)";
-defaultIgnStyle.pointColor = "rgba(0, 0, 145, 1)";
-defaultIgnStyle.pointStrokeColor = "rgba(0, 0, 145, 1)";
+defaultIgnStyle.symbolColor = "#ffffff";
+defaultIgnStyle.pointColor = "#000091";
+defaultIgnStyle.pointStrokeColor = "#000091";
 defaultIgnStyle.pointStrokeWidth = 0;
+defaultIgnStyle.strokeColor = '#ff8800'
 
 const circle = new CircleStyle({
   stroke : new Stroke({ 
