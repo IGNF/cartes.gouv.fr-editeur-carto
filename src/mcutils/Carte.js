@@ -89,11 +89,6 @@ class GPPCarte extends Carte {
     } else {
       throw new Error('Un contrôle du même nom existe déjà');
     }
-
-    const layers = this.getMap().getAllLayers();
-    layers.forEach(l => {
-      console.log(l);
-    })
   }
 
   /**

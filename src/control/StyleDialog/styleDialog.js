@@ -5,6 +5,7 @@ import StyleForm from './styleForm';
 // Création du formulaire de style
 const styleForm = new StyleForm();
 styleForm.addInput('Forme', 'point-form', 'select', {
+  none: 'sans',
   marker: 'Marqueur',
   circle: 'Cercle',
   square: 'Carré',

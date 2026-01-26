@@ -42,22 +42,26 @@ class StyleForm extends ControlExtended {
     this.element = document.createElement('div');
     this.element.className = 'style-form';
 
-    // Bouton de validation
-    this.submitButton = document.createElement('button');
-    this.submitButton.className = 'fr-btn fr-btn--primary';
-    this.submitButton.textContent = 'Valider';
-    this.submitButton.type = 'button';
+    if (options.hasbutton) {
+      // Bouton de validation
+      this.submitButton = document.createElement('button');
+      this.submitButton.className = 'fr-btn fr-btn--primary';
+      this.submitButton.textContent = 'Valider';
+      this.submitButton.type = 'button';
 
-    // Ajouter l'événement de soumission
-    this.submitButton.addEventListener('click', () => {
-      this.onSubmit();
-    });
+      // Ajouter l'événement de soumission
+      this.submitButton.addEventListener('click', () => {
+        this.onSubmit();
+      });
+    }
 
     this.flatStyle = createDefaultStyle();
 
     // Assembler la structure
     this.container.appendChild(this.element);
-    this.container.appendChild(this.submitButton);
+    if (options.hasbutton) {
+      this.container.appendChild(this.submitButton);
+    }
   }
 
   /**

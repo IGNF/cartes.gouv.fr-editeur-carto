@@ -24,7 +24,8 @@ defaultIgnStyle.symbolColor = "#ffffff";
 defaultIgnStyle.pointColor = "#000091";
 defaultIgnStyle.pointStrokeColor = "#000091";
 defaultIgnStyle.pointStrokeWidth = 0;
-defaultIgnStyle.strokeColor = '#ff8800'
+defaultIgnStyle.strokeColor = '#ff8800';
+defaultIgnStyle.strokeWidth = 4;
 
 const circle = new CircleStyle({
   stroke : new Stroke({ 
