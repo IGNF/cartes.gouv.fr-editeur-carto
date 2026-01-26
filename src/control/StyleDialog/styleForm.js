@@ -1,10 +1,7 @@
 import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control";
 import getUid from "../../utils/getUid";
-import { flatToIgnKey, flatToIgnStyle, styleToFlatStyle } from "./styleToFlatStyle";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
-import Feature from "ol/Feature";
-import VectorLayer from "ol/layer/Vector";
 
 /**
  * @typedef {Object} InputConfig
@@ -35,12 +32,6 @@ class StyleForm extends ControlExtended {
      * @type {Map<string, InputConfig>}
      */
     this.inputs = new Map();
-
-    /**
-     * Array des features à styliser
-     * @type {Array<ol.Feature>}
-     */
-    this.features = [];
 
     // Création de la structure du formulaire
     // Conteneur englobant qui contiendra la grille et le bouton
@@ -90,58 +81,16 @@ class StyleForm extends ControlExtended {
     const flatStyle = Object.assign({}, this.flatStyle, values);
 
     console.log('Valeurs du formulaire:', values);
-    console.log('Features à styliser:', this.features);
 
-    const st = flatToIgnStyle(flatStyle)
-    this.features.forEach(f => {
-      Object.keys(st).forEach(key => {
-        f.setIgnStyle(key, st[key]);
-        console.log(key, st[key]);
-        // updateCurrentStyle(item);
-      })
-      f.changed();
-      console.log(f.getStyle());
-      console.log(f.getStyleFunction());
-      // const styles = new VectorLayer({style : this.flatStyle}).getStyleFunction()(f);
-      // f.setStyle(styles)
-    })
-
-
-    // Appliquer les styles 
+    // Prévenir que le style a changé
     this.dispatchEvent({ type: 'style', flatStyle: flatStyle });
 
     return values;
   }
 
   /**
-   * Définit les features à styliser
-   * @param {Array<Feature>} selected - Array des features sélectionnées
-   * @param {Array<Feature>} deselected - Array des features désélectionnées
-   */
-  setFeatures(features) {
-    this.features = features;
-    // Si au moins une feature, initialiser les inputs avec le style de la première
-    if (this.features.length > 0) {
-      this.setFlatStyle(styleToFlatStyle(this.features[0]));
-    }
-  }
-
-
-  /**
-   * Initialise les valeurs des inputs à partir d'une feature
-   * @param {ol.Feature} feature - La feature dont on récupère le flat style
-   * /
-  initInputs(feature) {
-    console.log('Initialisation des inputs avec la feature:', feature);
-
-    this.setFlatStyle(styleToFlatStyle(feature));
-    console.log('Flat style extrait:', this.flatStyle);
-    console.log(feature?.getIgnStyle?.(true))
-  }
-
-  /**
-   * Initialise les valeurs des inputs à partir d'une feature
-   * @param {ol.Feature} feature - La feature dont on récupère le flat style
+   * Initialise les valeurs des inputs à partir d'un style flat
+   * @param {Object} flatStyle - Le style flat utilisé pour initialiser les inputs  
    */
   setFlatStyle(flatStyle) {
     this.flatStyle = flatStyle;
@@ -153,15 +102,7 @@ class StyleForm extends ControlExtended {
       // Prevenir que la valeur a changée
       input.addEventListener('change', (e) => {
         this.dispatchEvent({ type: 'style', property: key, value: e.target.value });
-        this.features.forEach(f => {
-          f.setIgnStyle(flatToIgnKey(key), e.target.value);
-          f.changed();
-          // const styles = new VectorLayer({style : this.flatStyle}).getStyleFunction()(f);
-          // f.setStyle(styles)
-        })
       });
-      // console.log(input, key, map);
-      // console.log(flatStyle[key])
     })
   }
 

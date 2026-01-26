@@ -12,6 +12,7 @@ import notification from '../../control/Notification/notification.js';
 
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
+import { flatToIgnKey, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -162,9 +163,11 @@ Object.keys(typeObjects).forEach(k => {
 const onSelect = (e) => {
   // Selected features
   const features = e.target.getFeatures();
-  styleForm.setFeatures(features.getArray());
+  // styleForm.setFeatures(features.getArray());
   // At least one feature selected
   if (features.getLength()) {
+    // Update styleform
+    styleForm.setFlatStyle(styleToFlatStyle(features.item(0)));
     // Geometry lists
     const gTypes = {};
     features.forEach(f => {
@@ -185,12 +188,22 @@ const onSelect = (e) => {
 // drawToggle.getSelect().on("select", onSelect)
 carte.getSelect().on("select", onSelect)
 
-
+/* Listen style changes from style form */
 styleForm.on("style", (e) => {
-  /* TODO: Appliquer le style à la ou les features sélectionnées */
-  console.log('changer le style ici', e);
+  const features = carte.getSelect().getFeatures();
+  // Live change
+  if (e.property) {
+    features.forEach(f => {
+      f.setIgnStyle(flatToIgnKey(e.property), e.value);
+      f.changed()
+    });
+  } else {
+    /* TODO: Appliquer le style à la ou les features sélectionnées */
+    console.log('changer le style ?', e);
+  }
 })
 
+/* Update drawing interaction source on layer switch */
 switcher.on("layerswitcher:change:selected", (e) => {
   if (e.layer?.getSource() instanceof VectorSource) {
     drawToggle.toggleInteractions.forEach(toggle => {
