@@ -48,6 +48,8 @@ introDialog.setAction(connectActionTest);
 introDialog.open();
 
 /* DEBUG */
+document.addEventListener('keydown', console.log);
+
 window.carte = carte;
 window.api = api;
 /**/
