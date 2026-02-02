@@ -26,7 +26,7 @@ const carte = new Carte({
 carte.getSelect().multi_ = false;
 
 const modify = new ModifyingInteraction({
-  select : carte.getInteraction('select'),
+  select : carte.getSelect(),
 })
 carte.getMap().addInteraction(modify);
 
@@ -35,6 +35,7 @@ carte.getMap().addControl(notification);
 // Copy/paste feature with Ctrl+C / Ctrl+V
 modify.on(['cut', 'delete'], e => {
   const features = e.features || e.deleted;
+  // undo notification
   notification.info(features.length + (features.length > 1 ? ' objets supprimés.' : ' objet supprimé.'), () => {
     notification.hide();
     features.forEach(f => {
@@ -70,6 +71,7 @@ modify.on(['paste'], e => {
 // Duplicate feature
 modify.on(['duplicate'], e => {
   const features = e.features || [];
+  // undo notification
   notification.info(features.length + ' objet(s) ajouté(s).', () => {
     notification.hide();
     features.forEach(f => {
