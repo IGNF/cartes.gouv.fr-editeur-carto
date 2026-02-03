@@ -40,6 +40,9 @@ styleForm.addBreak('fill-style');
 styleForm.addInput('Ligne', 'stroke-color', 'color');
 styleForm.addInput('Taille', 'stroke-width', 'number');
 
+styleForm.addCustomInput({ label: 'Taille', property: 'stroke-width' });
+
+
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new Dialog({
   id: "style-dialog",

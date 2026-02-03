@@ -2,6 +2,7 @@ import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/C
 import getUid from "../../utils/getUid";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
+import InputStyleDefault from "./inputStyle";
 
 /**
  * @typedef {Object} InputConfig
@@ -248,6 +249,15 @@ class StyleForm extends ControlExtended {
     this.inputs.set(property, { select, label, property, options });
 
     return select;
+  }
+
+  /**
+   * 
+   * @param {import("./inputStyle").InputStyleConfig} options Options constructeur
+   */
+  addCustomInput(options) {
+    const input = new InputStyleDefault(options);
+    this.element.appendChild(input.getContainer());
   }
 
   /**
