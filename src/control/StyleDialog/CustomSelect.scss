@@ -1,0 +1,8 @@
+@use '../../css/mixins.scss' as mx;
+
+.input-style-select {
+  select {
+    visibility: hidden;
+    opacity: 1;
+  }
+}

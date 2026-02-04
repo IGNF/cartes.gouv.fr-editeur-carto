@@ -13,12 +13,19 @@ styleForm.addInput('Forme', 'point-form', 'select', {
   blazon: 'Blason'
 });
 styleForm.addInput('Couleur', 'point-color', 'color');
-styleForm.addInput('Taille', 'point-radius', 'number');
+
+styleForm.addCustomInput({
+  label: 'Taille',
+  property: 'point-radius',
+});
 
 styleForm.addBreak('point-form');
 
 styleForm.addInput('Bordure', 'point-stroke-color', 'color');
-styleForm.addInput('Taille', 'point-stroke-width', 'number');
+styleForm.addCustomInput({
+  label: 'Taille',
+  property: 'point-stroke-width',
+});
 
 styleForm.addBreak('point-stroke');
 
@@ -27,7 +34,7 @@ styleForm.addInput('Symbole', 'point-glyph', 'select', {
   'ign-commerce-cafe': 'Café',
   'ign-loisir-theatre': 'Théatre',
   'ign-sport-marche': 'Marche',
-  'ign-service-handicap' : 'Handicape'
+  'ign-service-handicap': 'Handicape'
 });
 styleForm.addInput('Couleur', 'point-symbol-color', 'color');
 
@@ -38,9 +45,34 @@ styleForm.addInput('Intérieur', 'fill-color', 'color');
 styleForm.addBreak('fill-style');
 
 styleForm.addInput('Ligne', 'stroke-color', 'color');
-styleForm.addInput('Taille', 'stroke-width', 'number');
+styleForm.addCustomInput({
+  label: 'Taille',
+  property: 'stroke-width',
+});
 
-styleForm.addCustomInput({ label: 'Taille', property: 'stroke-width' });
+styleForm.addDefaultInput({
+  label: 'Défaut',
+  property: 'point-test',
+});
+
+
+
+styleForm.addCustomSelect({
+  label: 'Sélection',
+  property: 'point-test-select',
+  options: {
+    2: "2",
+    4: "4",
+    6: "6",
+    8: "8",
+    10: "10",
+    12: "12",
+    14: "14",
+    16: "16",
+    18: "18",
+    20: "20",
+  }
+});
 
 
 // Création du Dialog avec navigation tertiaire

@@ -2,7 +2,9 @@ import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/C
 import getUid from "../../utils/getUid";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
-import InputStyleDefault from "./inputStyle";
+import InputNumber from "./InputNumber.js"
+import DefaultInputStyle from "./DefaultInputStyle.js";
+import CustomSelect from "./CustomSelect.js";
 
 /**
  * @typedef {Object} InputConfig
@@ -106,6 +108,7 @@ class StyleForm extends ControlExtended {
       input.value = value===0 ? value : value || input.value;
       // Prevenir que la valeur a changée
       input.addEventListener('change', (e) => {
+        console.log(e, key)
         this.dispatchEvent({ type: 'style', property: key, value: e.target.value });
       });
     })
@@ -253,11 +256,50 @@ class StyleForm extends ControlExtended {
 
   /**
    * 
-   * @param {import("./inputStyle").InputStyleConfig} options Options constructeur
+   * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
    */
   addCustomInput(options) {
-    const input = new InputStyleDefault(options);
-    this.element.appendChild(input.getContainer());
+    const inputNumber = new InputNumber(options);
+    this.element.appendChild(inputNumber.getElement());
+
+    const input = inputNumber.getInput()
+    const label = options.label;
+    const property = options.property;
+
+    // Stocker la configuration dans la Map
+    this.inputs.set(options.property, { input, label, property });
+  }
+  /**
+   * 
+   * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
+   */
+  addDefaultInput(options) {
+    const inputNumber = new DefaultInputStyle(options);
+    this.element.appendChild(inputNumber.getElement());
+
+    const input = inputNumber.getInput()
+    const label = options.label;
+    const property = options.property;
+
+    // Stocker la configuration dans la Map
+    this.inputs.set(options.property, { input, label, property });
+  }
+
+  /**
+   * 
+   * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
+   */
+  addCustomSelect(options) {
+    const inputNumber = new CustomSelect(options);
+    this.element.appendChild(inputNumber.getElement());
+
+    const input = inputNumber.getInput()
+    const label = options.label;
+    const property = options.property;
+    const opts = options.options;
+
+    // Stocker la configuration dans la Map
+    this.inputs.set(options.property, { input, label, property, opts });
   }
 
   /**
