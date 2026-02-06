@@ -114,7 +114,7 @@ class StyleForm extends ControlExtended {
    * Ajoute un input au formulaire
    * @param {string} label - Le libellé de l'input
    * @param {string} property - La propriété flat style correspondante
-   * @param {string|Object} type - Le type d'input (par défaut: 'text') ou objet d'options si type='select'
+   * @param {string|Object} type - Le type d'input (par défaut: 'text') ou objet avec une methode getInput()/getElement() pour les inputs personnalisés
    * @param {Object<string, string>} options - Les options du select (si type='select')
    * @param {string} placeholder - Le placeholder (si type='select')
    * @returns {HTMLInputElement|HTMLSelectElement} L'élément input ou select créé
