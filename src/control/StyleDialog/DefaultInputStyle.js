@@ -42,7 +42,13 @@ class DefaultInputStyle extends ControlExtended {
     this._initEvents(options);
   }
 
+  _initialize(options) {
+    super._initialize(options);
+    this.inputTag = "input";
+  }
+
   _initContainer(options) {
+    super._initContainer(options);
     // Création de la structure du formulaire
     // Conteneur englobant qui contiendra la grille et le bouton
     this.element = document.createElement('div');
@@ -50,7 +56,7 @@ class DefaultInputStyle extends ControlExtended {
     this.element.id = getUid("input-style");
     this.element.dataset.property = options.property;
 
-    const inputId = getUid("input-style--input")
+    const inputId = getUid("input-style--input");
 
     // Label
     this.label = document.createElement('label');
@@ -58,15 +64,14 @@ class DefaultInputStyle extends ControlExtended {
     this.label.textContent = options.label;
     this.label.htmlFor = inputId;
 
-    // Label
+    // Conteneur de l'input
     this.inputContainer = document.createElement('div');
     this.inputContainer.className = 'input-style--container';
 
     // Input
-    this.input = document.createElement('input');
+    this.input = document.createElement(this.inputTag);
     this.input.id = inputId;
     this.input.className = 'input-style--input';
-    this.input.type = "text";
 
     // Assembler la structure
     this.element.appendChild(this.label);
@@ -76,6 +81,7 @@ class DefaultInputStyle extends ControlExtended {
   }
 
   _initEvents(options) {
+    super._initEvents(options);
     this.input.addEventListener("change", (e) => this.dispatchEvent(e));
   }
 

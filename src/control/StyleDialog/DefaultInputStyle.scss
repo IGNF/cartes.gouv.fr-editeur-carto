@@ -1,8 +1,8 @@
 @use '../../css/mixins.scss' as mx;
 
 .input-style {
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   background-color: var(--background-default-grey);
 
   &--label {
@@ -17,7 +17,6 @@
   &--container {
     display: flex;
     flex-direction: row;
-    width: 100%;
     border: 1px solid var(--border-default-grey);
     border-radius: 0.25rem;
 
@@ -30,12 +29,9 @@
   }
 
   &--input {
-    width: 40px;
+    width: 2.5rem;
     height: 2.5rem;
-    flex: 1;
-
     font-size: 1rem;
-    line-height: 1.5rem;
 
     &:focus:focus-visible {
       outline-style: none;
