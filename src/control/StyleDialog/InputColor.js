@@ -27,8 +27,39 @@ class ColorInput extends Color {
     this.on('collapse', e => {
       this.element.ariaExpanded = e.visible;
     });
+
+    // Eyedropper accessibility
+    if (window.EyeDropper) {
+      const self = this
+      // Couleur sur le bouton pipette
+      async function pickColor() {
+        let eyeDropper = new EyeDropper();
+        try {
+          let pickedColor = await eyeDropper.open();
+          self.setColor(pickedColor.sRGBHex);
+          console.log(pickedColor.sRGBHex);
+        } catch (error) {
+          /* oops */
+        }
+      }
+      this.element.classList.add('eyedropper');
+      const eyedropperBtn = document.createElement('button');
+      eyedropperBtn.className = 'ol-eyedropper fr-btn fr-btn--tertiary fr-icon-sip-line';
+      eyedropperBtn.type = 'button';
+      eyedropperBtn.ariaLabel = 'Outil pipette';
+      eyedropperBtn.title = 'Outil pipette';
+      eyedropperBtn.addEventListener('click', pickColor);
+      this.element.querySelector('.ol-container').insertBefore(eyedropperBtn, this.element.querySelector('.ol-txt-color'));
+    }
   }
 
+  getInput() {
+    return this.input;
+  }
+
+  getElement() {
+    return this.element;
+  }
 }
 
 export default ColorInput;

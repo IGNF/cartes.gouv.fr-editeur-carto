@@ -145,9 +145,9 @@ class StyleForm extends ControlExtended {
 
     // Input specifique
     let input;
-    const userInput = (typeof type === 'object' && type.input);
+    const userInput = (typeof type === 'object' && type.getInput);
     if (userInput) {
-      input = type.input;
+      input = type.getInput();
     } else {
       // Créer un input standard
       input = document.createElement('input');
@@ -166,7 +166,7 @@ class StyleForm extends ControlExtended {
     // Assembler les éléments
     container.appendChild(labelElement);
     if (userInput) {
-      container.appendChild(type.element);
+      container.appendChild(type.getElement());
     } else {
       container.appendChild(input);
     }

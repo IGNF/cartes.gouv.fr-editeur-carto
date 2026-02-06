@@ -67,9 +67,35 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    box-shadow: 0 0 0 4px var(--text-action-high-blue-france);
+    box-shadow: 0 0 0 3px var(--text-action-high-blue-france), 
+      0 0 0 4px var(--border-default-grey), 
+      inset 0 0 0 1px var(--border-default-grey) ;
   }
   .ol-ext-colorpicker .ol-picker {
     background-color: currentColor!important;
+  }
+
+  .ol-ext-colorpicker.eyedropper {
+     input {
+      width: calc(100% - 2.5rem);
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transform: translateX(2.25rem);
+      height: 2rem;
+      border-color: var(--border-default-grey);
+    }
+    .ol-eyedropper {
+      position: absolute;
+      height: 2rem;
+      width: 2rem;
+      max-height: 2rem;
+      border-radius: 0.25rem 0 0 0.25rem;
+      border-color: var(--background-default-grey);
+      background-color: var(--background-open-blue-france);
+      box-sizing: border-box;
+      min-height: unset;
+      padding: 0.25rem;
+    }
   }
 }
