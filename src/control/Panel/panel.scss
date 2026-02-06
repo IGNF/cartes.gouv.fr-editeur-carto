@@ -1,4 +1,4 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../../css/mixins.scss' as mx;
 
 .ignf-panel {
   margin: 0;
@@ -10,7 +10,7 @@
 
   box-shadow: 0 2px 6px 0 var(--shadow-color);
 
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     border-radius: 0.25rem;
     width: 380px;
     top: 120px;
@@ -44,7 +44,7 @@
     color: var(--text-action-high-blue-france);
     background-color: var(--background-open-blue-france);
 
-    @include rf.respond-from('sm') {
+    @include mx.respond-from('sm') {
       border-radius: 0.25rem 0.25rem 0 0;
     }
 

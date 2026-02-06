@@ -1,4 +1,4 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../css/mixins.scss' as mx;
 
 /* HEADER */
 header.fr-header {
@@ -7,7 +7,7 @@ header.fr-header {
 
     &-tagline {
       display: none;
-      @include rf.respond-from('lg') {
+      @include mx.respond-from('lg') {
         display: block;
       }
     }
@@ -29,7 +29,7 @@ header.fr-header {
       margin: -1rem;
       padding: 1rem;
 
-      @include rf.respond-from('sm') {
+      @include mx.respond-from('sm') {
         font-size: 1.3125rem;
         margin: -1.25rem;
         padding: 1.25rem;
@@ -58,7 +58,7 @@ header.fr-header {
         display: none;
         margin-left: 0.625rem;
 
-        @include rf.respond-from('sm') {
+        @include mx.respond-from('sm') {
           display: inline-flex;
         }
       }

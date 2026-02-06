@@ -1,4 +1,4 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../../css/mixins.scss' as mx;
 
 .intro-dialog {
   padding: 1.5rem;
@@ -15,7 +15,7 @@
   height: auto;
   overflow: auto;
 
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     width: 30rem;
     max-height: 536px;
 
@@ -24,7 +24,7 @@
     padding: 2.5rem;
   }
 
-  @include rf.respond-from('md') {
+  @include mx.respond-from('md') {
     left: 7.5rem;
   }
 
@@ -72,10 +72,10 @@
 
     background: hsla(0, 0%, 9%, 0.64);
 
-    @include rf.respond-from('sm') {
+    @include mx.respond-from('sm') {
       background: linear-gradient(90deg, var(--background-alt-grey) 0 320px, hsla(0, 0%, 9%, 0.64) 320px 100%);
     }
-    @include rf.respond-from('lg') {
+    @include mx.respond-from('lg') {
       background: linear-gradient(90deg, var(--background-alt-grey) 0 480px, hsla(0, 0%, 9%, 0.64) 480px 100%);
     }
   }
@@ -94,7 +94,7 @@
     gap: 1.5rem;
     margin-bottom: 1.5rem;
 
-    @include rf.respond-from('sm') {
+    @include mx.respond-from('sm') {
       gap: 2.5rem;
       margin-bottom: 2.5rem;
     }

@@ -1,7 +1,7 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../css/mixins.scss' as mx;
 
 /* HEADER-FOOTER */
-@include rf.respond-from('lg') {
+@include mx.respond-from('lg') {
   .fr-header .fr-footer {
     display: none;
   }
@@ -23,7 +23,7 @@ footer.fr-footer {
     padding: 0 1rem 0 0.75rem;
     box-shadow: inset 0 2px 0 0 var(--border-plain-blue-france);
 
-    @include rf.respond-from('lg') {
+    @include mx.respond-from('lg') {
       display: flex;
       justify-content: space-between;
       align-items: center;

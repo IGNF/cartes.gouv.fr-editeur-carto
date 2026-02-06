@@ -1,5 +1,4 @@
-// @use 'dsfrign/dsfr/src/module/media-query/mixin/' as rf;
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use './mixins.scss' as mx;
 
 [data-role='map'] {
   flex: 1;
@@ -12,16 +11,16 @@
 // .fr-header__navbar,
 // .fr-header__tools {
 //   background-color: #e59dff;
-//   @include rf.respond-from('sm') {
+//   @include mx.respond-from('sm') {
 //     background-color: #92f4fb;
 //   }
-//   @include rf.respond-from('md') {
+//   @include mx.respond-from('md') {
 //     background-color: #aeff82;
 //   }
-//   @include rf.respond-from('lg') {
+//   @include mx.respond-from('lg') {
 //     background-color: #fbe05b;
 //   }
-//   @include rf.respond-from('xl') {
+//   @include mx.respond-from('xl') {
 //     background-color: #ffaaaa;
 //   }
 // }

@@ -1,5 +1,4 @@
-
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../css/mixins.scss' as mx;
 
 div:not(.position) > button[id^="GPshowLayersListPicto"][aria-pressed="true"] + dialog[id^="GPlayersList"] {
   width: 100vw;
@@ -10,7 +9,7 @@ div:not(.position) > button[id^="GPshowLayersListPicto"][aria-pressed="true"] + 
   border: none;
   bottom: 0;
 
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     // Aligne avec la barre d'outil
     width: 380px;
     transform: translateX(calc(-100% - 4px - 8px));

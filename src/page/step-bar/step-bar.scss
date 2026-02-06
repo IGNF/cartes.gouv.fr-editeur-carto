@@ -1,4 +1,4 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../../css/mixins.scss' as mx;
 
 .ol-control.ol-bar.step-bar.ol-bar--row .ol-toggle.action-button {
   > button {
@@ -13,7 +13,7 @@
       display: none;
     }
 
-    @include rf.respond-from('xl') {
+    @include mx.respond-from('xl') {
       height: unset;
       width: unset;
       font-size: unset;
@@ -30,18 +30,18 @@
 
 .ol-control.ol-bar.step-bar.ol-bar--row {
   &.ol-top .ol-button {
-    @include rf.respond-from('sm') {
+    @include mx.respond-from('sm') {
       &.share-button,
       &.save-button {
         display: none;
       }
     }
-    @include rf.respond-from('md') {
+    @include mx.respond-from('md') {
       &.share-button {
         display: unset;
       }
     }
-    @include rf.respond-from('lg') {
+    @include mx.respond-from('lg') {
       &.save-button {
         display: unset;
       }
@@ -71,7 +71,7 @@
   > .ol-bar:first-child {
     padding: 0;
 
-    @include rf.respond-from('md') {
+    @include mx.respond-from('md') {
       padding: 0 0.25rem 0 0;
     }
   }
@@ -97,7 +97,7 @@
     }
   }
 
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     display: flex;
     width: unset;
     top: 0.5rem;
