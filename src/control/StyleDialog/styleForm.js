@@ -106,11 +106,7 @@ class StyleForm extends ControlExtended {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
       input.value = value===0 ? value : value || input.value;
-      // Prevenir que la valeur a changée
-      input.addEventListener('change', (e) => {
-        console.log(e, key)
-        this.dispatchEvent({ type: 'style', property: key, value: e.target.value });
-      });
+      input.dispatchEvent(new Event('change', { bubbles: true })); // Pour déclencher les éventuels écouteurs de changement
     })
   }
 
@@ -146,12 +142,20 @@ class StyleForm extends ControlExtended {
     labelElement.htmlFor = inputId;
     labelElement.textContent = label;
 
-    // Créer l'input
-    const input = document.createElement('input');
-    input.className = 'fr-input';
-    input.id = inputId;
-    input.type = type;
-    input.setAttribute('aria-describedby', messagesId);
+
+    // Input specifique
+    let input;
+    const userInput = (typeof type === 'object' && type.input);
+    if (userInput) {
+      input = type.input;
+    } else {
+      // Créer un input standard
+      input = document.createElement('input');
+      input.className = 'fr-input';
+      input.id = inputId;
+      input.type = type;
+      input.setAttribute('aria-describedby', messagesId);
+    }
 
     // Créer le conteneur de messages
     const messagesContainer = document.createElement('div');
@@ -161,7 +165,11 @@ class StyleForm extends ControlExtended {
 
     // Assembler les éléments
     container.appendChild(labelElement);
-    container.appendChild(input);
+    if (userInput) {
+      container.appendChild(type.element);
+    } else {
+      container.appendChild(input);
+    }
     container.appendChild(messagesContainer);
 
     // Ajouter le conteneur au formulaire
@@ -169,6 +177,11 @@ class StyleForm extends ControlExtended {
 
     // Stocker la configuration dans la Map
     this.inputs.set(property, { input, label, property });
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
 
     return input;
   }

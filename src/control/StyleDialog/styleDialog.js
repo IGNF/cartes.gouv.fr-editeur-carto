@@ -1,6 +1,6 @@
 import { Dialog } from 'geopf-extensions-openlayers';
 import StyleForm from './styleForm';
-
+import InputColor from './InputColor.js';
 
 // Création du formulaire de style
 const styleForm = new StyleForm();
@@ -28,6 +28,7 @@ styleForm.addCustomSelect({
 });
 
 // styleForm.addInput('Couleur', 'point-color', 'color');
+/*
 styleForm.addCustomSelect({
   label: 'Sélection',
   property: 'point-color',
@@ -58,6 +59,8 @@ styleForm.addCustomSelect({
     "#00000000": "Sans couleur"
   }
 });
+*/
+styleForm.addInput('Couleur', 'point-color', new InputColor());
 
 styleForm.addCustomInput({
   label: 'Taille',

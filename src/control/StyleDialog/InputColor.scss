@@ -1,0 +1,42 @@
+.fr-input-group {
+  .ol-ext-colorpicker * {
+    z-index: 1;
+  }
+  .ol-ext-colorpicker .ol-popup,
+  .ol-ext-colorpicker .ol-container > div {
+    color: var(--text-default-grey);
+    background-color: var(--background-default-grey);
+    border-color: var(--background-default-grey);
+  }
+  .ol-ext-colorpicker .ol-vignet {
+  }
+  .ol-ext-colorpicker .ol-cursor {
+    border-color: var(--text-default-grey);
+  }
+  .ol-ext-colorpicker:has(.ol-visible) {
+    z-index: 2;
+  }
+  .ol-ext-colorpicker button {
+    color: var(--text-action-high-blue-france);
+    background-color: inherit;
+    border-color: inherit;
+    border: 0;
+  }
+  .ol-ext-colorpicker button:hover {
+    background-color: var(--hover-tint);
+  }
+  .ol-ext-colorpicker .ol-popup {
+    box-shadow: 0 2px 6px 0 var(--shadow-color);
+  }
+  .ol-ext-colorpicker .ol-palette > div.ol-select {
+    position: relative;
+    z-index: 2;
+  }
+  .ol-ext-colorpicker .ol-palette > div.ol-select:after {
+    transform: unset;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 4px var(--text-action-high-blue-france);
+  }
+}
