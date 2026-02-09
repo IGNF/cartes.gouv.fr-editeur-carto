@@ -74,7 +74,15 @@
   .ol-ext-colorpicker .ol-picker {
     background-color: currentColor!important;
   }
-
+  .ol-ext-colorpicker hr {
+    background-image: linear-gradient(0deg, var(--border-default-grey), var(--border-default-grey));
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+    margin: 0;
+    padding: 5px;
+    display: block;
+  }
   .ol-ext-colorpicker.eyedropper {
      input {
       width: calc(100% - 2.5rem);
