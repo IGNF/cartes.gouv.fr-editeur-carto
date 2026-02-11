@@ -1,8 +1,6 @@
-import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control";
-import getUid from "../../utils/getUid";
-// import { createDefaultStyle } from "ol/style/flat.js"
+import getUid from "../../utils/getUid.js";
 import "./CustomSelect.scss";
-import DefaultInputStyle from "./DefaultInputStyle";
+import DefaultInputStyle from "./DefaultInputStyle.js";
 import { isElementInView, isScrollable, maintainScrollVisibility } from "../../utils/utils.js";
 
 /**
@@ -153,14 +151,14 @@ class CustomSelect extends DefaultInputStyle {
   _initEvents(options) {
     super._initEvents(options);
 
-    this.label.addEventListener("click", (e) => {
+    this.label.addEventListener("click", () => {
       !this.get("disabled") && this.inputContainer.focus({ focusVisible: true });
     })
 
     this.inputContainer.addEventListener('blur', this.onComboBlur.bind(this));
     this.optionsContainer.addEventListener('focusout', this.onComboBlur.bind(this));
 
-    this.inputContainer.addEventListener("click", (e) => {
+    this.inputContainer.addEventListener("click", () => {
       !this.get("disabled") && this.collapse(this.inputContainer.ariaExpanded === "true");
     })
     this.optionsContainer.addEventListener('mousedown', this.onComboClick.bind(this));
@@ -218,7 +216,7 @@ class CustomSelect extends DefaultInputStyle {
    * Arrête de bouger la modale
    * @param {MouseEvent} e Événement à gérer
    */
-  stopDragging(e) {
+  stopDragging() {
     this.isDragging = false;
     document.removeEventListener("mousemove", this.dragFct);
     document.removeEventListener("mouseup", this.stopDraggingFct);
@@ -500,7 +498,7 @@ class CustomSelect extends DefaultInputStyle {
    * @param {KeyboardEvent} event Événement clavier à gérer
    */
   onComboType(event) {
-
+    console.log(event)
   }
   /**
    * Créé une option avec une valeur et un label

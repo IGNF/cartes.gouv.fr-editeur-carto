@@ -31,7 +31,7 @@ carte.once('read', () => {
     // console.log(carte.getSelect())
     // switcher._layers[1].layer.getLayer().setStyle(carte.getSelect().getStyle());
   } catch (error) {
-    console.warn("aucune couche sélectionnée");
+    console.warn("aucune couche sélectionnée", error);
   }
 })
 

@@ -1,7 +1,6 @@
 @use '../../css/mixins.scss' as mx;
 
 .input-style-select {
-
   .input-style {
     &__container {
       padding: 0;
@@ -36,8 +35,8 @@
         margin: 0.5rem 0.5rem 0.5rem 0;
         top: 4px;
 
-        -webkit-mask-image: url('icon/StyleDialog/arrow-s-line.svg');
-        mask-image: url('icon/StyleDialog/arrow-s-line.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/arrow-s-line.svg');
+        mask-image: url('/icon/StyleDialog/arrow-s-line.svg');
         -webkit-mask-size: 100% 100%;
         mask-size: 100% 100%;
       }
@@ -180,7 +179,7 @@
     &[data-value='#0000000'] {
       &[data-type] > span {
         background-color: var(--background-default-grey);
-        background-image: url('icon/StyleDialog/sans.svg');
+        background-image: url('/icon/StyleDialog/sans.svg');
         background-repeat:no-repeat;
         background-position:center center;
         background-size: 100% 100%, auto;
@@ -194,21 +193,21 @@
         background-color: var(--text-label-grey);
       }
       &[data-value=''] > span {
-        -webkit-mask-image: url('icon/StyleDialog/continue.svg');
-        mask-image: url('icon/StyleDialog/continue.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/continue.svg');
+        mask-image: url('/icon/StyleDialog/continue.svg');
       }
 
       &[data-value='5,5'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/tiret.svg');
-        mask-image: url('icon/StyleDialog/tiret.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/tiret.svg');
+        mask-image: url('/icon/StyleDialog/tiret.svg');
       }
       &[data-value='0,5'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/pointille.svg');
-        mask-image: url('icon/StyleDialog/pointille.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/pointille.svg');
+        mask-image: url('/icon/StyleDialog/pointille.svg');
       }
       &[data-value='10,5,0,5'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/tirets_irreguliers.svg');
-        mask-image: url('icon/StyleDialog/tirets_irreguliers.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/tirets_irreguliers.svg');
+        mask-image: url('/icon/StyleDialog/tirets_irreguliers.svg');
       }
     }
 
@@ -218,20 +217,20 @@
         background-color: var(--text-label-grey);
       }
       &[data-value=''] > span {
-        -webkit-mask-image: url('icon/StyleDialog/continue.svg');
-        mask-image: url('icon/StyleDialog/continue.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/continue.svg');
+        mask-image: url('/icon/StyleDialog/continue.svg');
       }
       &[data-value='triangle'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/fleche.svg');
-        mask-image: url('icon/StyleDialog/fleche.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/fleche.svg');
+        mask-image: url('/icon/StyleDialog/fleche.svg');
       }
       &[data-value='circle'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/rond.svg');
-        mask-image: url('icon/StyleDialog/rond.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/rond.svg');
+        mask-image: url('/icon/StyleDialog/rond.svg');
       }
       &[data-value='square'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/carre.svg');
-        mask-image: url('icon/StyleDialog/carre.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/carre.svg');
+        mask-image: url('/icon/StyleDialog/carre.svg');
       }
     }
 
@@ -241,20 +240,20 @@
         background-color: var(--text-label-grey);
       }
       &[data-value='marker'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/form-marker.svg');
-        mask-image: url('icon/StyleDialog/form-marker.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form-marker.svg');
+        mask-image: url('/icon/StyleDialog/form-marker.svg');
       }
       &[data-value='circle'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/form-circle.svg');
-        mask-image: url('icon/StyleDialog/form-circle.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form-circle.svg');
+        mask-image: url('/icon/StyleDialog/form-circle.svg');
       }
       &[data-value='square'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/form-square.svg');
-        mask-image: url('icon/StyleDialog/form-square.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form-square.svg');
+        mask-image: url('/icon/StyleDialog/form-square.svg');
       }
       &[data-value='triangle'] > span {
-        -webkit-mask-image: url('icon/StyleDialog/form-triangle.svg');
-        mask-image: url('icon/StyleDialog/form-triangle.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form-triangle.svg');
+        mask-image: url('/icon/StyleDialog/form-triangle.svg');
       }
     }
   }
