@@ -106,4 +106,7 @@ function removeMessage(input, closest = 'div') {
   msg.replaceChildren();
 }
 
-export default { addMessage, removeMessage };
+export {
+  addMessage,
+  removeMessage
+};

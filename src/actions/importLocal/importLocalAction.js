@@ -2,7 +2,7 @@ import Action from '../Action.js';
 import content from './importLocal.html?raw';
 import './importLocal.scss';
 import carte from '../../carte.js';
-import message from '../../utils/message.js';
+import {addMessage, removeMessage} from '../../utils/message.js';
 
 import * as importLocal from './importLocal.js';
 import * as errors from '../../utils/errors.js';
@@ -28,7 +28,7 @@ function onOpen(e) {
 
   let input = dialog.querySelector('input[type="file"]');
   input.accept = importLocal.accepted.join(',');
-  input.addEventListener('change', (e) => message.removeMessage(e.target))
+  input.addEventListener('change', (e) => removeMessage(e.target))
 }
 
 /**
@@ -47,13 +47,13 @@ async function submitForm(e) {
   try {
     if (importLocal.checkFile(inputFile)) {
 
-      message.addMessage(input, 'Chargement en cours', { type: 'info', append: false });
+      addMessage(input, 'Chargement en cours', { type: 'info', append: false });
       const submit = form.querySelector('[type="submit"]');
       submit.disabled = true;
 
       const promises = await importLocal.importFile(file);
 
-      message.removeMessage(input);
+      removeMessage(input);
       // setTimeout(() => form.querySelector('[type="submit"]').disabled = false, 500);
 
       promises.forEach(promise => {
@@ -61,9 +61,9 @@ async function submitForm(e) {
           const layer = promise.value
           if (layer.getSource().getFeatures().length) {
             carte.addLayer(layer);
-            message.addMessage(input, `La couche ${layer.get('title')} a été ajouté à votre carte.`, { type: 'valid', append: true });
+            addMessage(input, `La couche ${layer.get('title')} a été ajouté à votre carte.`, { type: 'valid', append: true });
           } else {
-            message.addMessage(input, `La couche ${layer.get('title')} ne contient pas de données.`, { type: 'warning', append: true });
+            addMessage(input, `La couche ${layer.get('title')} ne contient pas de données.`, { type: 'warning', append: true });
           }
         } else {
           handleError(promise.reason, form, file, true);
@@ -92,23 +92,23 @@ function handleError(err, form, file, append = false) {
   let input = form.querySelector('input');
   switch (true) {
     case err instanceof errors.MissingFileError:
-      message.addMessage(input, "Fichier manquant", options);
+      addMessage(input, "Fichier manquant", options);
       break;
 
     case err instanceof errors.UnsupportedExtensionError:
-      message.addMessage(input, `Format non supporté: ${err.message}`, options);
+      addMessage(input, `Format non supporté: ${err.message}`, options);
       break;
 
     case err instanceof errors.EmptyLayerError:
-      message.addMessage(input, `Le fichier ${err.message} ne contient aucun objet valide`, options);
+      addMessage(input, `Le fichier ${err.message} ne contient aucun objet valide`, options);
       break;
 
     case err instanceof errors.MissingFileInZipError:
-      message.addMessage(input, `Fichier manquant dans l'archive: ${err.message}`, options);
+      addMessage(input, `Fichier manquant dans l'archive: ${err.message}`, options);
       break;
 
     default:
-      message.addMessage(input, `Le fichier ${file.name} n'a pas pu être correctement importé.`, options);
+      addMessage(input, `Le fichier ${file.name} n'a pas pu être correctement importé.`, options);
       console.error(err);
       break;
   }

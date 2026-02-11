@@ -28,6 +28,39 @@ styleForm.addCustomSelect({
 });
 
 // styleForm.addInput('Couleur', 'point-color', 'color');
+/*
+styleForm.addCustomSelect({
+  label: 'Sélection',
+  property: 'point-color',
+  type: 'color',
+  options: {
+    "#ffcc33": "Jaune or",
+    "#ffb03b": "Jaune orangé",
+    "#ff7f00": "Orange",
+    "#ff0000": "Rouge",
+    "#ff8fc8": "Rose clair",
+    "#ff24ff": "Magenta",
+    "#2fde30": "Vert vif",
+    "#97c005": "Vert anis",
+    "#008900": "Vert foncé",
+    "#00ff9a": "Vert menthe",
+    "#12d8b6": "Turquoise",
+    "#00ae91": "Vert sarcelle",
+    "#00ffff": "Cyan",
+    "#0a76f6": "Bleu",
+    "#000091": "Bleu foncé",
+    "#cc8bf9": "Violet clair",
+    "#9a00ff": "Violet",
+    "#bc6630": "Marron",
+    "#ffffff": "Blanc",
+    "#cdcdcd": "Gris clair",
+    "#787878": "Gris",
+    "#424242": "Gris foncé",
+    "#000000": "Noir",
+    "#00000000": "Sans couleur"
+  }
+});
+*/
 styleForm.addInput('Couleur', 'point-color', new InputColor());
 
 styleForm.addCustomInput({
@@ -42,6 +75,7 @@ styleForm.addBreak('point-form');
 styleForm.addCustomSelect({
   label: 'Bordure',
   property: 'point-stroke-color',
+  type: 'color',
   options: {
     "#ffcc33": "Jaune or",
     "#ffb03b": "Jaune orangé",
@@ -86,8 +120,15 @@ styleForm.addBreak('point-stroke');
 styleForm.addCustomSelect({
   label: 'Symbole',
   property: 'point-glyph',
+  // options: {
+  // 'std-circle': 'cercle',
+  // 'ign-commerce-cafe': 'Café',
+  // 'ign-loisir-theatre': 'Théatre',
+  // 'ign-sport-marche': 'Marche',
+  // 'ign-service-handicap': 'Handicape'
+  // }
   options: {
-  'std-circle': 'cercle',
+  'fr-icon-archive-fill': 'Archive',
   'ign-commerce-cafe': 'Café',
   'ign-loisir-theatre': 'Théatre',
   'ign-sport-marche': 'Marche',
@@ -99,6 +140,7 @@ styleForm.addCustomSelect({
 styleForm.addCustomSelect({
   label: 'Couleur',
   property: 'point-symbol-color',
+  type: 'color',
   options: {
     "#ffcc33": "Jaune or",
     "#ffb03b": "Jaune orangé",
@@ -133,6 +175,7 @@ styleForm.addBreak('point-symbol');
 styleForm.addCustomSelect({
   label: 'Intérieur',
   property: 'fill-color',
+  type: 'color',
   options: {
     "#ffcc33": "Jaune or",
     "#ffb03b": "Jaune orangé",
@@ -168,6 +211,7 @@ styleForm.addBreak('fill-style');
 styleForm.addCustomSelect({
   label: 'Ligne',
   property: 'stroke-color',
+  type: 'color',
   options: {
     "#ffcc33": "Jaune or",
     "#ffb03b": "Jaune orangé",
@@ -198,6 +242,18 @@ styleForm.addCustomSelect({
 styleForm.addCustomInput({
   label: 'Taille',
   property: 'stroke-width',
+});
+
+styleForm.addCustomSelect({
+  label: 'Bordure',
+  property: 'stroke-line-dash',
+  options: {
+    "": "Continue",
+    "5,5": "Tiret",
+    "0,5": "Pointillé",
+    "10,5,0,5": "Tirets irréguliers",
+  },
+  type:"dash",
 });
 
 // styleForm.addDefaultInput({

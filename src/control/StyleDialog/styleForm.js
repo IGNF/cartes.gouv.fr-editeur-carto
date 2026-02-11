@@ -105,7 +105,8 @@ class StyleForm extends ControlExtended {
     this.inputs.forEach((obj, key, map) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
-      input.value = value===0 ? value : value || input.value;
+      // console.log(key, value)
+      input.value = value !== undefined ? value : input.value;
       input.dispatchEvent(new Event('change', { bubbles: true })); // Pour déclencher les éventuels écouteurs de changement
     })
   }
@@ -279,6 +280,11 @@ class StyleForm extends ControlExtended {
     const label = options.label;
     const property = options.property;
 
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
+
     // Stocker la configuration dans la Map
     this.inputs.set(options.property, { input, label, property });
   }
@@ -293,6 +299,11 @@ class StyleForm extends ControlExtended {
     const input = inputNumber.getInput()
     const label = options.label;
     const property = options.property;
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
 
     // Stocker la configuration dans la Map
     this.inputs.set(options.property, { input, label, property });
@@ -310,6 +321,11 @@ class StyleForm extends ControlExtended {
     const label = options.label;
     const property = options.property;
     const opts = options.options;
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
 
     // Stocker la configuration dans la Map
     this.inputs.set(options.property, { input, label, property, opts });
