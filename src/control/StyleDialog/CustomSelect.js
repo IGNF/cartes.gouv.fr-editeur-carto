@@ -156,10 +156,10 @@ class CustomSelect extends DefaultInputStyle {
     this.label.addEventListener("click", (e) => {
       !this.get("disabled") && this.inputContainer.focus({ focusVisible: true });
     })
-    
+
     this.inputContainer.addEventListener('blur', this.onComboBlur.bind(this));
     this.optionsContainer.addEventListener('focusout', this.onComboBlur.bind(this));
-    
+
     this.inputContainer.addEventListener("click", (e) => {
       !this.get("disabled") && this.collapse(this.inputContainer.ariaExpanded === "true");
     })
@@ -177,9 +177,6 @@ class CustomSelect extends DefaultInputStyle {
     })
 
     this.headerDiv.addEventListener("mousedown", this.startDragging.bind(this));
-    // closeBtn
-    //     .addEventListener("click", hideBottomSheet);
-
   }
 
   /**

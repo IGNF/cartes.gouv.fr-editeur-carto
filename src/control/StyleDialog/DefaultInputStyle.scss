@@ -6,7 +6,8 @@
     flex: 1;
 
     + .input-style__container {
-      margin-top: 0.5rem;
+      // TEMPORAIRE, POUR AJUSTER LA TAILLE AVEC CONTROLE DE COULEUR
+      margin-top: calc(0.5rem - 1px);
     }
   }
 

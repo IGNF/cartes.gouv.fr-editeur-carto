@@ -1,8 +1,6 @@
 @use '../../css/mixins.scss' as mx;
 
 .input-style-select {
-  min-width: 4.5rem;
-  max-width: 5.5rem;
 
   .input-style {
     &__container {
