@@ -1,4 +1,3 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 @use '../mixins.scss' as mx;
 
 .ol-button > button {
@@ -50,7 +49,7 @@
 }
 
 @include mx.hover-media-query {
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     .ol-button > button {
       &[aria-label]:hover::after {
         font-family: Marianne, arial, sans-serif;

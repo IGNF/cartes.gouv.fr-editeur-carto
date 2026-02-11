@@ -2,6 +2,9 @@ import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/C
 import getUid from "../../utils/getUid";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
+import InputNumber from "./InputNumber.js"
+import DefaultInputStyle from "./DefaultInputStyle.js";
+import CustomSelect from "./CustomSelect.js";
 
 /**
  * @typedef {Object} InputConfig
@@ -102,11 +105,9 @@ class StyleForm extends ControlExtended {
     this.inputs.forEach((obj, key, map) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
-      input.value = value===0 ? value : value || input.value;
-      // Prevenir que la valeur a changée
-      input.addEventListener('change', (e) => {
-        this.dispatchEvent({ type: 'style', property: key, value: e.target.value });
-      });
+      // console.log(key, value)
+      input.value = value !== undefined ? value : input.value;
+      input.dispatchEvent(new Event('change', { bubbles: true })); // Pour déclencher les éventuels écouteurs de changement
     })
   }
 
@@ -114,7 +115,7 @@ class StyleForm extends ControlExtended {
    * Ajoute un input au formulaire
    * @param {string} label - Le libellé de l'input
    * @param {string} property - La propriété flat style correspondante
-   * @param {string|Object} type - Le type d'input (par défaut: 'text') ou objet d'options si type='select'
+   * @param {string|Object} type - Le type d'input (par défaut: 'text') ou objet avec une methode getInput()/getElement() pour les inputs personnalisés
    * @param {Object<string, string>} options - Les options du select (si type='select')
    * @param {string} placeholder - Le placeholder (si type='select')
    * @returns {HTMLInputElement|HTMLSelectElement} L'élément input ou select créé
@@ -142,12 +143,26 @@ class StyleForm extends ControlExtended {
     labelElement.htmlFor = inputId;
     labelElement.textContent = label;
 
-    // Créer l'input
-    const input = document.createElement('input');
-    input.className = 'fr-input';
-    input.id = inputId;
-    input.type = type;
-    input.setAttribute('aria-describedby', messagesId);
+    // Input specifique
+    let input, element;
+    const userInput = (typeof type === 'object' && type.getInput);
+    if (userInput) {
+      input = type.getInput();
+      element = type.getElement();
+      const id = element.id;
+      labelElement.htmlFor = id;
+      // Ajoute un événement sur le label (pour bien focus sur l'input)
+      labelElement.addEventListener("click", () => {
+        element.focus({ focusVisible: true });
+      })
+    } else {
+      // Créer un input standard
+      input = document.createElement('input');
+      input.className = 'fr-input';
+      input.id = inputId;
+      input.type = type;
+      input.setAttribute('aria-describedby', messagesId);
+    }
 
     // Créer le conteneur de messages
     const messagesContainer = document.createElement('div');
@@ -157,7 +172,11 @@ class StyleForm extends ControlExtended {
 
     // Assembler les éléments
     container.appendChild(labelElement);
-    container.appendChild(input);
+    if (userInput) {
+      container.appendChild(element);
+    } else {
+      container.appendChild(input);
+    }
     container.appendChild(messagesContainer);
 
     // Ajouter le conteneur au formulaire
@@ -165,6 +184,11 @@ class StyleForm extends ControlExtended {
 
     // Stocker la configuration dans la Map
     this.inputs.set(property, { input, label, property });
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
 
     return input;
   }
@@ -248,6 +272,69 @@ class StyleForm extends ControlExtended {
     this.inputs.set(property, { select, label, property, options });
 
     return select;
+  }
+
+  /**
+   * 
+   * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
+   */
+  addCustomInput(options) {
+    const inputNumber = new InputNumber(options);
+    this.element.appendChild(inputNumber.getElement());
+
+    const input = inputNumber.getInput()
+    const label = options.label;
+    const property = options.property;
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
+
+    // Stocker la configuration dans la Map
+    this.inputs.set(options.property, { input, label, property });
+  }
+  /**
+   * 
+   * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
+   */
+  addDefaultInput(options) {
+    const inputNumber = new DefaultInputStyle(options);
+    this.element.appendChild(inputNumber.getElement());
+
+    const input = inputNumber.getInput()
+    const label = options.label;
+    const property = options.property;
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
+
+    // Stocker la configuration dans la Map
+    this.inputs.set(options.property, { input, label, property });
+  }
+
+  /**
+   * 
+   * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
+   */
+  addCustomSelect(options) {
+    const inputNumber = new CustomSelect(options);
+    this.element.appendChild(inputNumber.getElement());
+
+    const input = inputNumber.getInput()
+    const label = options.label;
+    const property = options.property;
+    const opts = options.options;
+
+    // Prevenir que la valeur a changée
+    input.addEventListener('change', (e) => {
+      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+    });
+
+    // Stocker la configuration dans la Map
+    this.inputs.set(options.property, { input, label, property, opts });
   }
 
   /**

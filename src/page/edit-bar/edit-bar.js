@@ -12,7 +12,7 @@ import notification from '../../control/Notification/notification.js';
 
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
-import { flatToIgnKey, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
+import { flatToIgnKey, flatToIGNKeyValue, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -194,7 +194,9 @@ styleForm.on("style", (e) => {
   // Live change
   if (e.property) {
     features.forEach(f => {
-      f.setIgnStyle(flatToIgnKey(e.property), e.value);
+      const { key, value } = flatToIGNKeyValue(e.property, e.value);
+      f.setIgnStyle(key, value);
+      // f.setIgnStyle(flatToIgnKey(e.property), e.value);
       f.changed()
     });
   } else {

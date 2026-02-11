@@ -1,7 +1,7 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../css/mixins.scss' as mx;
 
 dialog#right-panel-action {
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     // Aligne avec la barre d'outil
     top: calc(120px + 4.875rem);
   }

@@ -1,4 +1,3 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
 @use '../../css/mixins.scss' as mx;
 
 .ol-control.ol-bar .ol-button button.map-item {
@@ -24,7 +23,7 @@
 .ol-control.ol-top.ol-bar--separator.ol-bar.map-handle > .ol-button:first-child {
   padding: 0;
 
-  @include rf.respond-from('lg') {
+  @include mx.respond-from('lg') {
     padding: 0 0.25rem 0 0;
   }
 }
@@ -43,12 +42,12 @@
   overflow: hidden;
   // white-space: pre-wrap;
 
-  @include rf.respond-from('lg') {
+  @include mx.respond-from('lg') {
     display: block;
     width: 132px; // 8.25rem;
   }
 
-  @include rf.respond-from('xl') {
+  @include mx.respond-from('xl') {
     // display:block;
     width: 278px; // 17.375rem;
   }
@@ -73,7 +72,7 @@
     text-align: initial;
   }
   
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     display: flex;
     top: 0.5rem;
     left: 0.5rem;

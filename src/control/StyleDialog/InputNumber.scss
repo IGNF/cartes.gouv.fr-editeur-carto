@@ -1,0 +1,35 @@
+@use '../../css/mixins.scss' as mx;
+
+.input-style-number {
+  .input-style__container {
+    & > .input-style__buttons-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      > .input-style__button-up,
+      > .input-style__button-down {
+        height: 1rem;
+        min-height: 1rem;
+        max-height: 1rem;
+      }
+    }
+  }
+
+  .input-style__input {
+    text-align: center;
+
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    &[type='number'] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+  }
+}

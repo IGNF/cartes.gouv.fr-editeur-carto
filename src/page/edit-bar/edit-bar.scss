@@ -1,4 +1,4 @@
-@use 'dsfrign/src/module/media-query/mixin/respond-from' as rf;
+@use '../../css/mixins.scss' as mx;
 
 .ol-control.ol-bar.ol-right.edit-bar {
   transform: unset;
@@ -19,14 +19,14 @@
       }
     }
   }
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     // switcher + taille switcher + espace
     top: calc(6rem + 2.625rem + 0.5rem);
   }
 }
 
 .GPF-dialog {
-  @include rf.respond-from('sm') {
+  @include mx.respond-from('sm') {
     // switcher + taille switcher + espace
     top: calc(6rem + 2.625rem + 0.5rem);
   }

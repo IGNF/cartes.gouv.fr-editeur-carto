@@ -1,0 +1,60 @@
+@use '../../css/mixins.scss' as mx;
+
+.input-style {
+  &__label {
+    width: auto;
+    flex: 1;
+
+    + .input-style__container {
+      // TEMPORAIRE, POUR AJUSTER LA TAILLE AVEC CONTROLE DE COULEUR
+      margin-top: calc(0.5rem - 1px);
+    }
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+
+    &:has(input:focus:focus-visible) {
+      outline-color: #0a76f6;
+      outline-offset: 2px;
+      outline-style: solid;
+      outline-width: 2px;
+    }
+  }
+
+  &__input {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+
+    &:focus:focus-visible {
+      outline-style: none;
+    }
+  }
+
+  &--disabled {
+
+    > label {
+      color: var(--text-disabled-grey);
+    }
+
+    > div[aria-disabled='true'] {
+      background-color: var(--background-default-grey);
+
+      cursor:not-allowed;
+      --hover:null;
+      --active:null;
+
+      &::after {
+        background-color: var(--text-disabled-grey);
+      }
+
+      > span {
+        background-color: var(--text-disabled-grey) !important;
+      }
+    }
+  }
+}
