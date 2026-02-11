@@ -1,4 +1,4 @@
-import Notification from 'ol-ext/control/Notification'
+import Notification from 'ol-ext/control/Notification.js'
 import "./notification.css";
 
 class NotificationExtended extends Notification {

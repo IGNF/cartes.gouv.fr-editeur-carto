@@ -12,15 +12,10 @@ import notification from '../../control/Notification/notification.js';
 
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
-import { flatToIgnKey, flatToIGNKeyValue, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
+import { flatToIGNKeyValue, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
-
-/**
- * @type {Toggle}
- */
-let activeToggle;
 
 /**
  * @type {Toggle}
@@ -269,7 +264,7 @@ let editDataBar = new Bar({
 // })
 
 
-drawToggle.dialog.on("dialog:open", (e) => {
+drawToggle.dialog.on("dialog:open", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
     notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }

@@ -1,5 +1,5 @@
-import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control";
-import getUid from "../../utils/getUid";
+import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control.js";
+import getUid from "../../utils/getUid.js";
 import { createDefaultStyle } from "ol/style/flat.js"
 import "./styleForm.scss";
 import InputNumber from "./InputNumber.js"
@@ -102,7 +102,7 @@ class StyleForm extends ControlExtended {
   setFlatStyle(flatStyle) {
     this.flatStyle = flatStyle;
 
-    this.inputs.forEach((obj, key, map) => {
+    this.inputs.forEach((obj, key, _) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
       // console.log(key, value)

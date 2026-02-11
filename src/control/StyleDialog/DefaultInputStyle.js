@@ -1,5 +1,5 @@
-import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control";
-import getUid from "../../utils/getUid";
+import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control.js";
+import getUid from "../../utils/getUid.js";
 // import { createDefaultStyle } from "ol/style/flat.js"
 import "./DefaultInputStyle.scss";
 
