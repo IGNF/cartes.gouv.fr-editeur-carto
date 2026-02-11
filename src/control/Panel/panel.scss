@@ -9,6 +9,7 @@
   max-height: 80%;
 
   box-shadow: 0 2px 6px 0 var(--shadow-color);
+  // background-color: var(--background-contrast-grey);
 
   @include mx.respond-from('sm') {
     border-radius: 0.25rem;

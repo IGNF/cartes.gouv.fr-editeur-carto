@@ -143,12 +143,18 @@ class StyleForm extends ControlExtended {
     labelElement.htmlFor = inputId;
     labelElement.textContent = label;
 
-
     // Input specifique
-    let input;
+    let input, element;
     const userInput = (typeof type === 'object' && type.getInput);
     if (userInput) {
       input = type.getInput();
+      element = type.getElement();
+      const id = element.id;
+      labelElement.htmlFor = id;
+      // Ajoute un événement sur le label (pour bien focus sur l'input)
+      labelElement.addEventListener("click", () => {
+        element.focus({ focusVisible: true });
+      })
     } else {
       // Créer un input standard
       input = document.createElement('input');
@@ -167,7 +173,7 @@ class StyleForm extends ControlExtended {
     // Assembler les éléments
     container.appendChild(labelElement);
     if (userInput) {
-      container.appendChild(type.getElement());
+      container.appendChild(element);
     } else {
       container.appendChild(input);
     }

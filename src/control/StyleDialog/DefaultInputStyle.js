@@ -45,6 +45,7 @@ class DefaultInputStyle extends ControlExtended {
   _initialize(options) {
     super._initialize(options);
     this.inputTag = "input";
+    this.property = options.property
   }
 
   _initContainer(options) {
@@ -56,22 +57,26 @@ class DefaultInputStyle extends ControlExtended {
     this.element.id = getUid("input-style");
     this.element.dataset.property = options.property;
 
-    const inputId = getUid("input-style--input");
+    const inputId = getUid("input-style__input");
+    const labelId = getUid("input-style__label");
 
     // Label
     this.label = document.createElement('label');
-    this.label.className = 'input-style--label fr-label';
+    this.label.className = 'input-style__label fr-label';
+    this.label.id = labelId;
     this.label.textContent = options.label;
     this.label.htmlFor = inputId;
 
     // Conteneur de l'input
     this.inputContainer = document.createElement('div');
-    this.inputContainer.className = 'input-style--container';
+    this.inputContainer.className = 'input-style__container';
 
     // Input
     this.input = document.createElement(this.inputTag);
     this.input.id = inputId;
-    this.input.className = 'input-style--input';
+    this.input.className = 'input-style__input';
+
+    this.setDisabled(options.disabled);
 
     // Assembler la structure
     this.element.appendChild(this.label);
@@ -83,6 +88,21 @@ class DefaultInputStyle extends ControlExtended {
   _initEvents(options) {
     super._initEvents(options);
     this.input.addEventListener("change", (e) => this.dispatchEvent(e));
+  }
+
+  /**
+   * Désactive / active l'input.
+   * @param {Boolean} bool Vrai si l'input doit être désactivé
+   */
+  setDisabled(bool) {
+    this.set("disabled", !!bool);
+    if (bool) {
+      this.element.classList.add(`input-style--disabled`);
+      this.input.disabled = true;
+    } else {
+      this.element.classList.remove(`input-style--disabled`);
+      delete this.input.disabled;
+    }
   }
 
   getElement() {

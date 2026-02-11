@@ -41,19 +41,13 @@ class InputNumber extends DefaultInputStyle {
   }
 
   _initContainer(options) {
-    super._initContainer(options);
-    this.element.classList.add("input-style-number")
-    // Input
-    this.input.type = "number";
-    this.input.min = 0;
-
     // Conteneur boutons
     this.buttons = document.createElement('div');
-    this.buttons.className = 'input-style--buttons-container';
-    
+    this.buttons.className = 'input-style__buttons-container';
+
     // Bouton up
     this.up = document.createElement('button');
-    this.up.className = 'input-style--button-up fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-up-s-fill';
+    this.up.className = 'input-style__button-up fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-up-s-fill';
     this.up.tabIndex = -1;
     this.up.ariaHidden = true;
     this.up.addEventListener("click", () => {
@@ -65,7 +59,7 @@ class InputNumber extends DefaultInputStyle {
 
     // Bouton down
     this.down = document.createElement('button');
-    this.down.className = 'input-style--button-down fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-down-s-fill';
+    this.down.className = 'input-style__button-down fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-down-s-fill';
     this.down.tabIndex = -1;
     this.down.ariaHidden = true;
     this.down.addEventListener("click", () => {
@@ -74,6 +68,13 @@ class InputNumber extends DefaultInputStyle {
         this.input.dispatchEvent(new Event('change'));
       }
     });
+
+    // Évite conflit avec setDisabled
+    super._initContainer(options);
+    this.element.classList.add("input-style-number")
+    // Input
+    this.input.type = "number";
+    this.input.min = 0;
 
     this.buttons.appendChild(this.up);
     this.buttons.appendChild(this.down);
@@ -84,6 +85,17 @@ class InputNumber extends DefaultInputStyle {
   _initEvents(options) {
     super._initEvents(options);
     this.input.addEventListener("change", (e) => this.dispatchEvent(e));
+  }
+
+  setDisabled(bool) {
+    super.setDisabled(bool);
+    if (bool) {
+      this.up.disabled = true;
+      this.down.disabled = true;
+    } else {
+      delete this.up.disabled;
+      delete this.down.disabled;
+    }
   }
 }
 
