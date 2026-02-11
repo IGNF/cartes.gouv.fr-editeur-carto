@@ -1,5 +1,5 @@
 import { Dialog } from 'geopf-extensions-openlayers';
-import StyleForm from './styleForm';
+import StyleForm from './styleForm.js';
 import InputColor from './InputColor.js';
 
 // Création du formulaire de style

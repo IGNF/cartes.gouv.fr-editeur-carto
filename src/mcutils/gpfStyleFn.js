@@ -1,10 +1,10 @@
-import { getSelectStyleFn, getShownFeatureStyleFn } from 'mcutils/style/ignStyleFn';
-import CircleStyle from 'ol/style/Circle';
-import Stroke from 'ol/style/Stroke';
-import Fill from 'ol/style/Fill';
-import { defaultIgnStyle } from 'mcutils/style/ignStyleFn';
+import { getSelectStyleFn, getShownFeatureStyleFn } from 'mcutils/style/ignStyleFn.js';
+import CircleStyle from 'ol/style/Circle.js';
+import Stroke from 'ol/style/Stroke.js';
+import Fill from 'ol/style/Fill.js';
+import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
 
-import ol_style_FontSymbol from 'ol-ext/style/FontSymbol'
+import ol_style_FontSymbol from 'ol-ext/style/FontSymbol.js'
 
 ol_style_FontSymbol.addDefs({
   "font":"cursive",

@@ -1,5 +1,5 @@
 import Color from 'ol-ext/util/input/Color.js';
-import getUid from "../../utils/getUid";
+import getUid from "../../utils/getUid.js";
 
 import './InputColor.scss';
 
@@ -40,6 +40,7 @@ class ColorInput extends Color {
           console.log(pickedColor.sRGBHex);
         } catch (error) {
           /* oops */
+          console.warn(error);
         }
       }
       this.element.classList.add('eyedropper');
