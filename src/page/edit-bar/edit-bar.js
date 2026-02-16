@@ -166,7 +166,12 @@ const onSelect = (e) => {
   }
 }
 // drawToggle.getSelect().on("select", onSelect)
-carte.getSelect().on("select", onSelect)
+carte.getSelect().on("select", onSelect);
+
+// Enlève la sélection si l'on ferme le panneau
+styleDialog.on("dialog:close", (e) => {
+  carte.getSelect().getFeatures().clear();
+})
 
 /* Listen style changes from style form */
 styleForm.on("style", (e) => {
