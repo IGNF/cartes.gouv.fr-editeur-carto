@@ -62,6 +62,8 @@ class CustomSelect extends DefaultInputStyle {
       EndRow: 14,
     };
 
+    this.pageSize = 6;
+
     /**
      * @type {HTMLButtonElement}
      */
@@ -340,6 +342,8 @@ class CustomSelect extends DefaultInputStyle {
       case this.selectActions.Up:
       case this.selectActions.PageUp:
       case this.selectActions.PageDown:
+      case this.selectActions.Left:
+      case this.selectActions.Right:
         event.preventDefault();
         return this.onOptionChange(
           this.getUpdatedIndex(this.activeIndex, max, action)
@@ -386,15 +390,13 @@ class CustomSelect extends DefaultInputStyle {
   }
 
   /**
-   * 
+   * Change l'indice de sélection en fonction de l'action en cours
    * @param {Number} currentIndex Indice courrant
    * @param {Number} maxIndex Indice max
    * @param {Number} action Type d'action
-   * @returns 
+   * @returns {Number} nouvel indice
    */
   getUpdatedIndex(currentIndex, maxIndex, action) {
-    const pageSize = 5; // used for pageup/pagedown
-
     switch (action) {
       case this.selectActions.First:
       case this.selectActions.BeginRow:
@@ -407,9 +409,9 @@ class CustomSelect extends DefaultInputStyle {
       case this.selectActions.Down:
         return Math.min(maxIndex, currentIndex + 1);
       case this.selectActions.PageUp:
-        return Math.max(0, currentIndex - pageSize);
+        return Math.max(0, currentIndex - this.pageSize);
       case this.selectActions.PageDown:
-        return Math.min(maxIndex, currentIndex + pageSize);
+        return Math.min(maxIndex, currentIndex + this.pageSize);
       default:
         return currentIndex;
     }
@@ -433,7 +435,9 @@ class CustomSelect extends DefaultInputStyle {
     this.input.value = option[0];
     if (this.type === "icon") {
       this.choice.className = "input-style__option-value";
-      this.choice.classList.add(option[0]);
+      if (option[0].trim().length) {
+        this.choice.classList.add(option[0]);
+      }
     }
 
     if (!silent) {
@@ -528,7 +532,7 @@ class CustomSelect extends DefaultInputStyle {
     const choice = document.createElement('span');
     choice.className = 'input-style__option-value';
     choice.ariaHidden = true;
-    if (this.type === "icon") {
+    if (this.type === "icon" && value.trim().length) {
       choice.classList.add(value);
     }
 
