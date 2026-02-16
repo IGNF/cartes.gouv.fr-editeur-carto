@@ -179,7 +179,7 @@
     &[data-value='#0000000'],
     &[data-value=''],
     &[data-value=' '] {
-      &[data-type] > span {
+      &[data-type]:not([data-type='dash']):not([data-type='arrow']) > span {
         background-color: var(--background-default-grey);
         background-image: url('/icon/StyleDialog/sans.svg');
         background-repeat: no-repeat;

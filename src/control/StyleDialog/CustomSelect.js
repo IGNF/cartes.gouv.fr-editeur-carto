@@ -65,11 +65,6 @@ class CustomSelect extends DefaultInputStyle {
 
     this.pageSize = 6;
 
-    /**
-     * @type {HTMLButtonElement}
-     */
-    this.chosenOption;
-
     this.isDragging = false;
     this.startY;
     this.startBottom;
@@ -130,6 +125,7 @@ class CustomSelect extends DefaultInputStyle {
     this.optionsContainer.appendChild(this.headerDiv);
     this.optionsContent = document.createElement("div");
     this.optionsContent.className = "input-style__options-container-content";
+    this.optionsContent.tabIndex = -1;
     this.optionsContainer.appendChild(this.optionsContent);
 
     let i = 0;
@@ -522,11 +518,11 @@ class CustomSelect extends DefaultInputStyle {
   }
 
   /**
-   * Gère la réaction en cas d'écriture dans l'interface
-   * @param {KeyboardEvent} event Événement clavier à gérer
+   * Gère la réaction en cas d'écriture dans l'interface (pour l'instant ne fait rien)
+   * @param {String} key Touche clavier
    */
-  onComboType(event) {
-    console.log(event)
+  onComboType(key) {
+    console.log(key)
   }
   /**
    * Créé une option avec une valeur et un label
@@ -545,7 +541,6 @@ class CustomSelect extends DefaultInputStyle {
     option.style.setProperty("--bg-color", value);
 
     if (value === this.choice.dataset.value) {
-      this.chosenOption = option;
       option.ariaSelected = value === this.choice.dataset.value ? true : false;
       this.activeIndex = index;
     }

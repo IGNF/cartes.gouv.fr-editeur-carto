@@ -185,7 +185,7 @@ const styleLut = {
   'stroke-color': 'strokeColor',
   'stroke-width': 'strokeWidth',
   'stroke-line-dash': 'strokeDash',
-  'line-arrow-start': 'strokeArrow',
+  'line-arrow-start': 'strokeArrowStart',
   'line-arrow-end': 'strokeArrow',
   'fill-color': 'fillColor'
 }
@@ -194,9 +194,6 @@ function flatToIgnStyle(flatStyle) {
   flatStyle = flatStyle || {};
   const ignStyle = {};
   Object.keys(flatStyle).forEach(key => {
-    if (key === "stroke-line-dash") {
-      ignStyle[styleLut[key] || key] = strokeToIGNStyle(flatStyle[key]);
-    }
     ignStyle[styleLut[key] || key] = flatStyle[key];
   });
   return ignStyle;
@@ -215,15 +212,7 @@ function flatToIgnKey(key) {
 function flatToIGNKeyValue(key, value) {
   const k = flatToIgnKey(key);
   let v = value;
-  if (key === "stroke-line-dash") {
-    v = strokeToIGNStyle(value);
-  }
   return { key: k, value: v };
-}
-
-function strokeToIGNStyle(stroke) {
-  // console.log(stroke)
-  return stroke && stroke.split(',');
 }
 
 /**

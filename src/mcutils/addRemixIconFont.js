@@ -2,7 +2,7 @@ import ol_style_FontSymbol from 'ol-ext/style/FontSymbol.js';
 import rawFont from '/data/remix-icons-font.def.json?url&raw';
 
 const font = JSON.parse(rawFont);
-console.log(font)
+
 /* Copyright (c) 2014 by Jean-Marc.Viglino [at]ign.fr
 * Dual-licensed under the CeCILL-B Licence (http://www.cecill.info/)
 * and the Beerware license (http://en.wikipedia.org/wiki/Beerware),
@@ -16,5 +16,3 @@ ol_style_FontSymbol.addDefs ({
   'copyright': font.meta.copyright,
   'prefix': font.meta.prefix,
 }, font.icons);
-
-console.log(ol_style_FontSymbol.defs.glyphs["ri-earth-fill"])

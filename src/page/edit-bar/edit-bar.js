@@ -64,10 +64,6 @@ let selectToggle = new Toggle({
   onToggle: function (e) {
     if (e) {
       carte.getSelect().clear();
-      // if (activeToggle && activeToggle.getActive()) {
-      //   // Simule un click sur le toggle
-      //   activeToggle.button_? activeToggle.button_.click() : activeToggle.setActive(false)
-      // }
     }
   }
 });
@@ -102,17 +98,6 @@ let addDataBar = new Bar({
     file,
   ]
 });
-
-// let drawToggle = new Toggle({
-//   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-pen-nib-line',
-//   attributes: {
-//     'data-action': 'create-object',
-//     'aria-controls': rightPanel.getId(),
-//     title: "Annoter la carte",
-//     'aria-label': "Annoter la carte",
-//   },
-//   onToggle: onToggleAction
-// });
 
 let drawToggle = new Draw({
   position: "right",
@@ -181,7 +166,12 @@ const onSelect = (e) => {
   }
 }
 // drawToggle.getSelect().on("select", onSelect)
-carte.getSelect().on("select", onSelect)
+carte.getSelect().on("select", onSelect);
+
+// Enlève la sélection si l'on ferme le panneau
+styleDialog.on("dialog:close", (e) => {
+  carte.getSelect().getFeatures().clear();
+})
 
 /* Listen style changes from style form */
 styleForm.on("style", (e) => {
@@ -191,7 +181,6 @@ styleForm.on("style", (e) => {
     features.forEach(f => {
       const { key, value } = flatToIGNKeyValue(e.property, e.value);
       f.setIgnStyle(key, value);
-      // f.setIgnStyle(flatToIgnKey(e.property), e.value);
       f.changed()
     });
   } else {
@@ -221,21 +210,6 @@ let measureToggle = new Toggle({
   onToggle: onToggleAction
 });
 
-// // Gère l'activation du toggle de sélection
-// const interactionToggles = [drawToggle, measureToggle]
-// interactionToggles.forEach((toggle) => {
-//   toggle.on('change:active', (e) => {
-//     if (e.target.get(e.key) || e.active) {
-//       activeToggle = e.target;
-//       selectToggle.setActive(false);
-//     } else if (!(drawToggle.getActive() || measureToggle.getActive())) {
-//       // Les deux sont désactivés, on réactive la sélection
-//       selectToggle.setActive(true);
-//       activeToggle = null;
-//     }
-//   })
-// })
-
 // Barre d'interaction
 let interactionBar = new Bar({
   // toggleOne: true, // Ne fonctionne pas en liant les contrôles ol-ext et geopf 
@@ -251,18 +225,6 @@ let editDataBar = new Bar({
     interactionBar,
   ]
 })
-
-// drawToggle.on("change:active", (e) => {
-//   if (e.target.get(e.key)) {
-//     console.log(switcher.getSelectedLayer());
-//     selectToggle.getInteraction().getFeatures().clear();
-//     activeToggle = e.target;
-//     if (rightPanel.getDialog().open) {
-//       rightPanel.close();
-//     }
-//   }
-// })
-
 
 drawToggle.dialog.on("dialog:open", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
