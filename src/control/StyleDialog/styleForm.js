@@ -5,7 +5,6 @@ import "./styleForm.scss";
 import InputNumber from "./InputNumber.js"
 import DefaultInputStyle from "./DefaultInputStyle.js";
 import CustomSelect from "./CustomSelect.js";
-import CustomSelectGrid from "./CustomSelectGrid.js";
 import SelectIcons from "./SelectIcons.js";
 
 /**
