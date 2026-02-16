@@ -185,7 +185,7 @@ const styleLut = {
   'stroke-color': 'strokeColor',
   'stroke-width': 'strokeWidth',
   'stroke-line-dash': 'strokeDash',
-  'line-arrow-start': 'strokeArrow',
+  'line-arrow-start': 'strokeArrowStart',
   'line-arrow-end': 'strokeArrow',
   'fill-color': 'fillColor'
 }

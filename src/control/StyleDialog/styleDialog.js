@@ -99,7 +99,7 @@ styleForm.addCustomInput({
 styleForm.addBreak('line-arrow');
 styleForm.addCustomSelect({
   label: 'Début',
-  disabled: true,
+  // disabled: true,
   property: 'line-arrow-start',
   options: {
     "": "Simple",
