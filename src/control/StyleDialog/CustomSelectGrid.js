@@ -1,6 +1,4 @@
-import getUid from "../../utils/getUid.js";
 import "./CustomSelectGrid.scss";
-import { isElementInView, isScrollable, maintainScrollVisibility } from "../../utils/utils.js";
 import CustomSelect from "./CustomSelect.js";
 
 /**

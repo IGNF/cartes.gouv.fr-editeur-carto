@@ -1,5 +1,5 @@
-import ol_style_FontSymbol from 'ol-ext/style/FontSymbol'
-import rawFont from '/data/remix-icons-font.def.json?url&raw'
+import ol_style_FontSymbol from 'ol-ext/style/FontSymbol.js';
+import rawFont from '/data/remix-icons-font.def.json?url&raw';
 
 const font = JSON.parse(rawFont);
 console.log(font)

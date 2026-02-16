@@ -1,4 +1,4 @@
-import FontSymbol from 'ol-ext/style/FontSymbol'
+import FontSymbol from 'ol-ext/style/FontSymbol.js';
 import CustomSelectGrid from "./CustomSelectGrid.js";
 
 /**
