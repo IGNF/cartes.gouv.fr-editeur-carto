@@ -6,6 +6,7 @@ import InputNumber from "./InputNumber.js"
 import DefaultInputStyle from "./DefaultInputStyle.js";
 import CustomSelect from "./CustomSelect.js";
 import CustomSelectGrid from "./CustomSelectGrid.js";
+import SelectIcons from "./SelectIcons.js";
 
 /**
  * @typedef {Object} InputConfig
@@ -323,7 +324,7 @@ class StyleForm extends ControlExtended {
   addCustomSelect(options) {
     let inputNumber;
     if (options.type === "icon") {
-      inputNumber = new CustomSelectGrid(options);
+      inputNumber = new SelectIcons(options);
     } else {
       inputNumber = new CustomSelect(options);
     }

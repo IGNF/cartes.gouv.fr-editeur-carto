@@ -40,6 +40,7 @@ class CustomSelect extends DefaultInputStyle {
 
   _initialize(options) {
     super._initialize(options);
+    options.options ||= {};
     this.type = options.type || "";
     this.baseOptionId = getUid("input-style__option");
     this.open = false;
@@ -74,7 +75,10 @@ class CustomSelect extends DefaultInputStyle {
     this.startBottom;
 
     this.dragFct = this.drag.bind(this);
-    this.stopDraggingFct = this.stopDragging.bind(this)
+    this.stopDraggingFct = this.stopDragging.bind(this);
+
+    this.choices = Object.entries(options.options);
+    this.options = options.options;
   }
 
 
@@ -110,9 +114,6 @@ class CustomSelect extends DefaultInputStyle {
     this.choice = document.createElement('span');
     this.choice.className = 'input-style__option-value';
     this.inputContainer.appendChild(this.choice);
-
-    this.choices = Object.entries(options.options);
-    this.options = options.options;
 
     this.optionsContainer = document.createElement("div");
     this.optionsContainer.id = optionsContainerId;
@@ -177,21 +178,30 @@ class CustomSelect extends DefaultInputStyle {
     })
 
     this.headerDiv.addEventListener("mousedown", this.startDragging.bind(this));
+    // Pour le mobile
+    this.headerDiv.addEventListener("touchstart", this.startDragging.bind(this));
   }
 
   /**
    * Commence à dragger la modale
-   * @param {MouseEvent} e Événement à gérer
+   * @param {MouseEvent|TouchEvent} e Événement à gérer
    */
   startDragging(e) {
     e.preventDefault();
     this.isDragging = true;
-    this.startY = e.clientY;
+    if (e.type === "mousedown") {
+      this.startY = e.clientY;
+    } else if (e.type === "touchstart") {
+      // Pour le mobile
+      this.startY = e.touches[0].clientY;
+    }
 
     this.startHeight = parseInt(getComputedStyle(this.optionsContent).height);
 
     document.addEventListener("mousemove", this.dragFct);
     document.addEventListener("mouseup", this.stopDraggingFct);
+    document.addEventListener("touchmove", this.dragFct);
+    document.addEventListener("touchstop", this.stopDraggingFct);
   }
 
   /**
@@ -202,7 +212,14 @@ class CustomSelect extends DefaultInputStyle {
     if (!this.isDragging) {
       return
     };
-    const deltaY = e.clientY - this.startY;
+    let clientY;
+    if (e.type === "mousemove") {
+      clientY = e.clientY;
+    } else if (e.type === "touchmove") {
+      // Pour le mobile
+      clientY = e.touches[0].clientY;
+    }
+    const deltaY = clientY - this.startY;
     // Prends la plus petite valeur entre la valeur initiale et le delta actuel;
     const height = Math.min(this.initialHeight, Math.max(this.startHeight - deltaY, 0))
     if (height < 50) {
@@ -222,6 +239,9 @@ class CustomSelect extends DefaultInputStyle {
     this.isDragging = false;
     document.removeEventListener("mousemove", this.dragFct);
     document.removeEventListener("mouseup", this.stopDraggingFct);
+    // Pour le mobile
+    document.removeEventListener("touchmove", this.dragFct);
+    document.removeEventListener("touchstop", this.stopDraggingFct);
   }
 
   /**

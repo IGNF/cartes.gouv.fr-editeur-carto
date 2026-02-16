@@ -116,10 +116,11 @@
       width: 100%;
       overflow-y: auto;
       height: fit-content;
-      max-height: 300px;
+      max-height: 404px;
       transition: height 100ms;
 
       @include mx.respond-from('sm') {
+        max-height: 300px;
         border-radius: 0.25rem;
       }
 
