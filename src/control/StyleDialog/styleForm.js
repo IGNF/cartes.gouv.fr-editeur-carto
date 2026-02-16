@@ -102,7 +102,7 @@ class StyleForm extends ControlExtended {
   setFlatStyle(flatStyle) {
     this.flatStyle = flatStyle;
 
-    this.inputs.forEach((obj, key, _) => {
+    this.inputs.forEach((obj, key) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
       // console.log(key, value)

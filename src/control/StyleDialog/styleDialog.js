@@ -70,12 +70,14 @@ styleForm.addBreak('point-stroke');
 styleForm.addCustomSelect({
   label: 'Symbole',
   property: 'point-glyph',
+  type:'icon',
   options: {
-    'ign-commerce-cafe': 'Café',
-    'ign-loisir-theatre': 'Théatre',
-    'fr-icon-archive-fill': 'Archive',
+    'ri-home-4-fill': 'home-4-fill',
+    'ri-mail-add-fill': 'mail-add-fill',
+    'ri-award-fill': 'award-fill',
+    'ri-earth-fill': 'earth-fill',
     'ign-sport-marche': 'Marche',
-    'ign-service-handicap': 'Handicape'
+    'ign-service-handicap': 'Handicape',
   }
 });
 styleForm.addInput('Couleur', 'point-symbol-color', new InputColor());

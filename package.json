@@ -10,11 +10,14 @@
     "start": "vite --force",
     "dev": "vite",
     "lint": "eslint --fix \"src/**/*.js\" || exit 0",
-    "build": "npm run lint && vite build",
+    "build": "npm run init && npm run lint && vite build",
     "preview": "vite preview",
     "clean": "vite --force",
     "test": "npm run test:unit",
-    "test:unit": "vitest --reporter=verbose run"
+    "test:unit": "vitest --reporter=verbose run",
+    "init": "npm run extract",
+    "extract": "npm run extract:remix",
+    "extract:remix": "node scripts/extract-remix.cjs --output ./public/data"
   },
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",

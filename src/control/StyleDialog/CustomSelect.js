@@ -431,6 +431,10 @@ class CustomSelect extends DefaultInputStyle {
     this.inputContainer.style.setProperty("--bg-color", option[0]);
     this.inputContainer.ariaLabel = option[1];
     this.input.value = option[0];
+    if (this.type === "icon") {
+      this.choice.className = "input-style__option-value";
+      this.choice.classList.add(option[0]);
+    }
 
     if (!silent) {
       this.input.dispatchEvent(new Event("change"));
@@ -524,6 +528,9 @@ class CustomSelect extends DefaultInputStyle {
     const choice = document.createElement('span');
     choice.className = 'input-style__option-value';
     choice.ariaHidden = true;
+    if (this.type === "icon") {
+      choice.classList.add(value);
+    }
 
     const lab = document.createElement('label');
     lab.id = `${this.baseOptionId}-${index}__label`;
