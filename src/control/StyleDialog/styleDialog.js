@@ -70,13 +70,8 @@ styleForm.addBreak('point-stroke');
 styleForm.addCustomSelect({
   label: 'Symbole',
   property: 'point-glyph',
-  options: {
-    'ign-commerce-cafe': 'Café',
-    'ign-loisir-theatre': 'Théatre',
-    'fr-icon-archive-fill': 'Archive',
-    'ign-sport-marche': 'Marche',
-    'ign-service-handicap': 'Handicape'
-  }
+  type: 'icon',
+  fonts : ["remixicon"],
 });
 styleForm.addInput('Couleur', 'point-symbol-color', new InputColor());
 styleForm.addBreak('point-symbol');

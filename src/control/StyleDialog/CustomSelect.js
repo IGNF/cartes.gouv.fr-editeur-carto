@@ -40,6 +40,7 @@ class CustomSelect extends DefaultInputStyle {
 
   _initialize(options) {
     super._initialize(options);
+    options.options ||= {};
     this.type = options.type || "";
     this.baseOptionId = getUid("input-style__option");
     this.open = false;
@@ -62,6 +63,8 @@ class CustomSelect extends DefaultInputStyle {
       EndRow: 14,
     };
 
+    this.pageSize = 6;
+
     /**
      * @type {HTMLButtonElement}
      */
@@ -72,7 +75,10 @@ class CustomSelect extends DefaultInputStyle {
     this.startBottom;
 
     this.dragFct = this.drag.bind(this);
-    this.stopDraggingFct = this.stopDragging.bind(this)
+    this.stopDraggingFct = this.stopDragging.bind(this);
+
+    this.choices = Object.entries(options.options);
+    this.options = options.options;
   }
 
 
@@ -108,9 +114,6 @@ class CustomSelect extends DefaultInputStyle {
     this.choice = document.createElement('span');
     this.choice.className = 'input-style__option-value';
     this.inputContainer.appendChild(this.choice);
-
-    this.choices = Object.entries(options.options);
-    this.options = options.options;
 
     this.optionsContainer = document.createElement("div");
     this.optionsContainer.id = optionsContainerId;
@@ -175,21 +178,30 @@ class CustomSelect extends DefaultInputStyle {
     })
 
     this.headerDiv.addEventListener("mousedown", this.startDragging.bind(this));
+    // Pour le mobile
+    this.headerDiv.addEventListener("touchstart", this.startDragging.bind(this));
   }
 
   /**
    * Commence à dragger la modale
-   * @param {MouseEvent} e Événement à gérer
+   * @param {MouseEvent|TouchEvent} e Événement à gérer
    */
   startDragging(e) {
     e.preventDefault();
     this.isDragging = true;
-    this.startY = e.clientY;
+    if (e.type === "mousedown") {
+      this.startY = e.clientY;
+    } else if (e.type === "touchstart") {
+      // Pour le mobile
+      this.startY = e.touches[0].clientY;
+    }
 
     this.startHeight = parseInt(getComputedStyle(this.optionsContent).height);
 
     document.addEventListener("mousemove", this.dragFct);
     document.addEventListener("mouseup", this.stopDraggingFct);
+    document.addEventListener("touchmove", this.dragFct);
+    document.addEventListener("touchstop", this.stopDraggingFct);
   }
 
   /**
@@ -200,7 +212,14 @@ class CustomSelect extends DefaultInputStyle {
     if (!this.isDragging) {
       return
     };
-    const deltaY = e.clientY - this.startY;
+    let clientY;
+    if (e.type === "mousemove") {
+      clientY = e.clientY;
+    } else if (e.type === "touchmove") {
+      // Pour le mobile
+      clientY = e.touches[0].clientY;
+    }
+    const deltaY = clientY - this.startY;
     // Prends la plus petite valeur entre la valeur initiale et le delta actuel;
     const height = Math.min(this.initialHeight, Math.max(this.startHeight - deltaY, 0))
     if (height < 50) {
@@ -220,6 +239,9 @@ class CustomSelect extends DefaultInputStyle {
     this.isDragging = false;
     document.removeEventListener("mousemove", this.dragFct);
     document.removeEventListener("mouseup", this.stopDraggingFct);
+    // Pour le mobile
+    document.removeEventListener("touchmove", this.dragFct);
+    document.removeEventListener("touchstop", this.stopDraggingFct);
   }
 
   /**
@@ -340,6 +362,8 @@ class CustomSelect extends DefaultInputStyle {
       case this.selectActions.Up:
       case this.selectActions.PageUp:
       case this.selectActions.PageDown:
+      case this.selectActions.Left:
+      case this.selectActions.Right:
         event.preventDefault();
         return this.onOptionChange(
           this.getUpdatedIndex(this.activeIndex, max, action)
@@ -386,15 +410,13 @@ class CustomSelect extends DefaultInputStyle {
   }
 
   /**
-   * 
+   * Change l'indice de sélection en fonction de l'action en cours
    * @param {Number} currentIndex Indice courrant
    * @param {Number} maxIndex Indice max
    * @param {Number} action Type d'action
-   * @returns 
+   * @returns {Number} nouvel indice
    */
   getUpdatedIndex(currentIndex, maxIndex, action) {
-    const pageSize = 5; // used for pageup/pagedown
-
     switch (action) {
       case this.selectActions.First:
       case this.selectActions.BeginRow:
@@ -407,9 +429,9 @@ class CustomSelect extends DefaultInputStyle {
       case this.selectActions.Down:
         return Math.min(maxIndex, currentIndex + 1);
       case this.selectActions.PageUp:
-        return Math.max(0, currentIndex - pageSize);
+        return Math.max(0, currentIndex - this.pageSize);
       case this.selectActions.PageDown:
-        return Math.min(maxIndex, currentIndex + pageSize);
+        return Math.min(maxIndex, currentIndex + this.pageSize);
       default:
         return currentIndex;
     }
@@ -431,6 +453,12 @@ class CustomSelect extends DefaultInputStyle {
     this.inputContainer.style.setProperty("--bg-color", option[0]);
     this.inputContainer.ariaLabel = option[1];
     this.input.value = option[0];
+    if (this.type === "icon") {
+      this.choice.className = "input-style__option-value";
+      if (option[0].trim().length) {
+        this.choice.classList.add(option[0]);
+      }
+    }
 
     if (!silent) {
       this.input.dispatchEvent(new Event("change"));
@@ -524,6 +552,9 @@ class CustomSelect extends DefaultInputStyle {
     const choice = document.createElement('span');
     choice.className = 'input-style__option-value';
     choice.ariaHidden = true;
+    if (this.type === "icon" && value.trim().length) {
+      choice.classList.add(value);
+    }
 
     const lab = document.createElement('label');
     lab.id = `${this.baseOptionId}-${index}__label`;

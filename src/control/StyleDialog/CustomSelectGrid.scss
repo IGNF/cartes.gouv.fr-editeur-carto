@@ -1,0 +1,23 @@
+@use '../../css/mixins.scss' as mx;
+
+.input-style-select-grid {
+  .input-style {
+    &__options-container {
+      @include mx.respond-from('sm') {
+        width: 19rem;
+      }
+
+      &-content {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        grid-column-gap: 1rem;
+        grid-row-gap: 1rem; 
+
+        > *:not(.input-style__options-container-header) {
+          padding: 0.25rem;
+        }
+      }
+    }
+  }
+}
