@@ -65,11 +65,6 @@ class CustomSelect extends DefaultInputStyle {
 
     this.pageSize = 6;
 
-    /**
-     * @type {HTMLButtonElement}
-     */
-    this.chosenOption;
-
     this.isDragging = false;
     this.startY;
     this.startBottom;
@@ -545,7 +540,6 @@ class CustomSelect extends DefaultInputStyle {
     option.style.setProperty("--bg-color", value);
 
     if (value === this.choice.dataset.value) {
-      this.chosenOption = option;
       option.ariaSelected = value === this.choice.dataset.value ? true : false;
       this.activeIndex = index;
     }
