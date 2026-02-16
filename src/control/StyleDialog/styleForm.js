@@ -5,6 +5,8 @@ import "./styleForm.scss";
 import InputNumber from "./InputNumber.js"
 import DefaultInputStyle from "./DefaultInputStyle.js";
 import CustomSelect from "./CustomSelect.js";
+import CustomSelectGrid from "./CustomSelectGrid.js";
+import SelectIcons from "./SelectIcons.js";
 
 /**
  * @typedef {Object} InputConfig
@@ -102,7 +104,7 @@ class StyleForm extends ControlExtended {
   setFlatStyle(flatStyle) {
     this.flatStyle = flatStyle;
 
-    this.inputs.forEach((obj, key, _) => {
+    this.inputs.forEach((obj, key) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
       // console.log(key, value)
@@ -320,7 +322,12 @@ class StyleForm extends ControlExtended {
    * @param {import("./InputNumber").InputStyleConfig} options Options constructeur
    */
   addCustomSelect(options) {
-    const inputNumber = new CustomSelect(options);
+    let inputNumber;
+    if (options.type === "icon") {
+      inputNumber = new SelectIcons(options);
+    } else {
+      inputNumber = new CustomSelect(options);
+    }
     this.element.appendChild(inputNumber.getElement());
 
     const input = inputNumber.getInput()
