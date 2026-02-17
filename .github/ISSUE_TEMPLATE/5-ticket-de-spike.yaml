@@ -1,0 +1,54 @@
+---
+name: 🔬 Ticket de Spike
+description: Explorer des pistes techniques sur un sujet donné
+labels: ["question"]
+projects: ["IGNF/52"]
+type: "Task"
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: 🗺️ Contexte
+      description: |
+        Décrivez la raison et le contexte du spike.
+      placeholder: |
+        exemple : L'éditeur doit permettre à l'utilisateur de modifier l'apparence des objets, quelles solutions sont les plus pertinentes pour répondre à ce besoin ?
+  - type: textarea
+    id: manque
+    attributes:
+      label: 🔎 Ce qui nous manque
+      description: |
+        Décrivez en détail ce qui nous manque pour répondre à cette question.
+      placeholder: |
+        - Besoin de connaissance : ...
+        - Besoin de compétence : ...
+        - Besoin technologique : ...
+  - type: textarea
+    id: but
+    attributes:
+      label: 📦 Objectif et livrables
+      description: |
+        Décrivez quel est l'objectif à atteindre et les livrables à produire en fin de spike.
+      placeholder: |
+        exemple :
+        Objectifs :
+        - La symbologie doit pouvoir s'appliquer objet par objet et à l'ensemble de la couche
+        - Les nouveaux objets créés doivent reprendre la symbologie modifiée précédemment
+        Livrables :
+        - Un benchmark des solutions techniques pertinentes
+  - type: textarea
+    id: plan
+    attributes:
+      label: 📋 Plan
+      description: |
+        Décrivez les étapes à suivre
+      placeholder: |
+        - 
+  - type: textarea
+    id: autre
+    attributes:
+      label: 💬 Commentaires et autres informations
+      description: |
+        Autres informations utiles à mentionner
+      placeholder: |
+        - 
