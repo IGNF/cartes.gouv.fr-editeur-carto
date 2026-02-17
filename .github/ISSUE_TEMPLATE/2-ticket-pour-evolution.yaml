@@ -1,77 +1,54 @@
 ---
-name: 🚀 Spécifier une évolution
-description: Renseigner les informations nécessaires pour créer ou améliorer une fonctionnalité pour cartes.gouv.fr
-labels: ["enhancement"]
+name: 🔬 Ticket de Spike
+description: Explorer des pistes techniques sur un sujet donné
+labels: ["question"]
 projects: ["IGNF/52"]
-type: "Feature"
+type: "Task"
 body:
   - type: textarea
-    id: job-to-be-done
+    id: context
     attributes:
-      label: 📝 Job to be done (JTBD)
+      label: 🗺️ Contexte
       description: |
-        Décrivez la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
+        Décrivez la raison et le contexte du spike.
       placeholder: |
-        exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification
+        exemple : L'éditeur doit permettre à l'utilisateur de modifier l'apparence des objets, quelles solutions sont les plus pertinentes pour répondre à ce besoin ?
   - type: textarea
-    id: user-story
+    id: manque
     attributes:
-      label: 🎯 User Story
+      label: 🔎 Ce qui nous manque
       description: |
-        Décrivez précisément le comportement de la nouvelle fonctionnalité.
+        Décrivez en détail ce qui nous manque pour répondre à cette question.
       placeholder: |
-        - En tant que [type d'utilisateur / persona]
-        - Je veux [action concrète à réaliser]
-        - Afin de [valeur attendue / bénéfice]
-    validations:
-      required: true
+        - Besoin de connaissance : ...
+        - Besoin de compétence : ...
+        - Besoin technologique : ...
   - type: textarea
-    id: design
+    id: but
     attributes:
-      label: 🎨 Design
+      label: 📦 Objectif et livrables
       description: |
-        Décrivez les éléments de design nécéssaire au développement de la fonctionnalité.
+        Décrivez quel est l'objectif à atteindre et les livrables à produire en fin de spike.
       placeholder: |
-        - Composition
-        - Comportement
-        - Contenus
-        - Emplacement
-        - Points de rupture
+        exemple :
+        Objectifs :
+        - La symbologie doit pouvoir s'appliquer objet par objet et à l'ensemble de la couche
+        - Les nouveaux objets créés doivent reprendre la symbologie modifiée précédemment
+        Livrables :
+        - Un benchmark des solutions techniques pertinentes
   - type: textarea
-    id: criteres-d-acceptation
+    id: plan
     attributes:
-      label: ✅ Critères d'acceptation
-      description: >
-        Décrivez les conditions observables qui permettent d'identifier la bonne mise en place de l'US.
-      placeholder: |
-        - [ ] Exemple : Importe de fichiers CSV/Excel possible
-        - [ ] Exemple : Les points apparaissent correctement sur la carte
-        - [ ] Exemple : Le message d'erreur s'affiche si format non conforme
-    validations:
-      required: true
-  - type: textarea
-    id: liens
-    attributes:
-      label: 🔗 Liens
+      label: 📋 Plan
       description: |
-        Renseignez les liens utiles à l'évolution.
+        Décrivez les étapes à suivre
       placeholder: |
-        - Maquette figma : [lien]
-        - Données de test : [lien]
-        - Documentation annexe : [lien]
+        - 
   - type: textarea
-    id: impact-attendu
+    id: autre
     attributes:
-      label: 📊 impact attendu
-      description: >
-        Décrivez quelle valeur cela apporte-t-il à l'utilisateur, et
-        comment le mesurer.
-      placeholder: >
-        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses]
-        - Mesure : [Exemple : % d'imports réussis sans erreur, temps moyen de traitement gagné]
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: 🔧 Autres éléments de contexte
+      label: 💬 Commentaires et autres informations
       description: |
-        À remplir par l'équipe technique pour s'assurer que l'US est réalisable.
+        Autres informations utiles à mentionner
+      placeholder: |
+        - 
