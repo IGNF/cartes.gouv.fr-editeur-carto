@@ -51,10 +51,6 @@ class CustomSelectGrid extends CustomSelect {
     this.element.classList.add("input-style-select-grid");
   }
 
-  _initEvents(options) {
-    super._initEvents(options);
-  }
-
   /**
    * 
    * @param {Number} currentIndex Indice courrant

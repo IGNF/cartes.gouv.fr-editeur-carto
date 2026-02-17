@@ -19,6 +19,11 @@ body {
     height: calc(100vh - 3.5rem);
     min-height: 620px;
     overflow: hidden;
+    z-index: 1;
+  }
+
+  header, footer {
+    z-index: auto;
   }
 
   &.compact {

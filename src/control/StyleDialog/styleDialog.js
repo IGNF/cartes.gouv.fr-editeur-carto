@@ -131,7 +131,6 @@ const styleDialog = new Dialog({
     {
       label: "Style",
       content: styleForm.getContent(),
-      onOpen: (...args) => console.log(...args),
       title: "Configuration du style"
     },
     {
