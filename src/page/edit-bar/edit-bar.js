@@ -4,8 +4,6 @@ import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
 import { DrawingInteraction as Drawing, Draw } from 'geopf-extensions-openlayers';
 import styleDialog from '../../control/StyleDialog/styleDialog.js';
-import styleForm from '../../control/StyleDialog/styleForm.js';
-import labelForm from '../../control/StyleDialog/labelForm.js';
 import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 
@@ -14,7 +12,6 @@ import notification from '../../control/Notification/notification.js';
 
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
-import { flatToIGNKeyValue, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
 import { Snap } from 'ol/interaction.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure

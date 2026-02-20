@@ -1,4 +1,3 @@
-import Dialog from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js';
 import FlatStyleForm from './FlatStyleForm.js';
 import InputColor from './InputColor.js';
 
