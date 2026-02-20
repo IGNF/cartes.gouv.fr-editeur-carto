@@ -15,6 +15,7 @@ import notification from '../../control/Notification/notification.js';
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
 import { flatToIGNKeyValue, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
+import { Snap } from 'ol/interaction.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -171,11 +172,24 @@ const onSelect = (e) => {
 // À la sélection, ouvre ou ferme le dialog
 carte.getSelect().on("select", onSelect);
 
+// Interaction Snap
+let snap = new Snap({ source: switcher.getSelectedLayer()?.getSource() });
 /* Update drawing interaction source on layer switch */
 switcher.on("layerswitcher:change:selected", (e) => {
   if (e.layer?.getSource() instanceof VectorSource) {
     drawToggle.toggleInteractions.forEach(toggle => {
       toggle.getInteraction().setSource?.(e.layer?.getSource());
+    })
+
+    // Ajoute aussi une interaction de snap
+    snap && carte.getMap().removeInteraction(snap);
+    snap = new Snap({ source: e.layer.getSource() });
+    carte.getMap().addInteraction(snap);
+  } else {
+    // Enlève la source du dessin
+    drawToggle.toggleInteractions.forEach(toggle => {
+      snap && carte.getMap().removeInteraction(snap);
+      toggle.getInteraction().setSource?.();
     })
   }
 })
@@ -218,9 +232,10 @@ drawToggle.on("drawstart", (e) => {
     notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
 })
-drawToggle.on("drawend", () => {
+drawToggle.on("drawend", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
     notification.error("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+    e.preventDefault()
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   }
 })
