@@ -3,7 +3,9 @@ import carte from '../../carte.js';
 import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
 import { DrawingInteraction as Drawing, Draw } from 'geopf-extensions-openlayers';
-import styleDialog, { styleForm } from '../../control/StyleDialog/styleDialog.js';
+import styleDialog from '../../control/StyleDialog/styleDialog.js';
+import styleForm from '../../control/StyleDialog/styleForm.js';
+import labelForm from '../../control/StyleDialog/labelForm.js';
 import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 
@@ -13,6 +15,7 @@ import notification from '../../control/Notification/notification.js';
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
 import { flatToIGNKeyValue, styleToFlatStyle } from '../../control/StyleDialog/styleToFlatStyle.js';
+import { Snap } from 'ol/interaction.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -147,7 +150,7 @@ const onSelect = (e) => {
   // At least one feature selected
   if (features.getLength()) {
     // Update styleform
-    styleForm.setFlatStyle(styleToFlatStyle(features.item(0)));
+    // styleForm.setFlatStyle(styleToFlatStyle(features.item(0)));
     // Geometry lists
     const gTypes = {};
     features.forEach(f => {
@@ -165,35 +168,28 @@ const onSelect = (e) => {
     styleDialog.close();
   }
 }
-// drawToggle.getSelect().on("select", onSelect)
+
+// À la sélection, ouvre ou ferme le dialog
 carte.getSelect().on("select", onSelect);
 
-// Enlève la sélection si l'on ferme le panneau
-styleDialog.on("dialog:close", (e) => {
-  carte.getSelect().getFeatures().clear();
-})
-
-/* Listen style changes from style form */
-styleForm.on("style", (e) => {
-  const features = carte.getSelect().getFeatures();
-  // Live change
-  if (e.property) {
-    features.forEach(f => {
-      const { key, value } = flatToIGNKeyValue(e.property, e.value);
-      f.setIgnStyle(key, value);
-      f.changed()
-    });
-  } else {
-    /* TODO: Appliquer le style à la ou les features sélectionnées */
-    console.log('changer le style ?', e);
-  }
-})
-
+// Interaction Snap
+let snap = new Snap({ source: switcher.getSelectedLayer()?.getSource() });
 /* Update drawing interaction source on layer switch */
 switcher.on("layerswitcher:change:selected", (e) => {
   if (e.layer?.getSource() instanceof VectorSource) {
     drawToggle.toggleInteractions.forEach(toggle => {
       toggle.getInteraction().setSource?.(e.layer?.getSource());
+    })
+
+    // Ajoute aussi une interaction de snap
+    snap && carte.getMap().removeInteraction(snap);
+    snap = new Snap({ source: e.layer.getSource() });
+    carte.getMap().addInteraction(snap);
+  } else {
+    // Enlève la source du dessin
+    drawToggle.toggleInteractions.forEach(toggle => {
+      snap && carte.getMap().removeInteraction(snap);
+      toggle.getInteraction().setSource?.();
     })
   }
 })
@@ -236,9 +232,10 @@ drawToggle.on("drawstart", (e) => {
     notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
 })
-drawToggle.on("drawend", () => {
+drawToggle.on("drawend", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
     notification.error("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+    e.preventDefault()
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   }
 })

@@ -26,7 +26,7 @@ import DefaultInputStyle from "./DefaultInputStyle.js";
 class InputNumber extends DefaultInputStyle {
 
   /**
-   * Constructeur du contrôle StyleForm
+   * Constructeur du contrôle InputNumber
    * @param {InputStyleConfig} options Options du contrôle
    */
   constructor(options = {}) {

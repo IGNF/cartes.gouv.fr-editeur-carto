@@ -18,10 +18,8 @@ const libinfo = lib.map(l => l.name + ' - v.' + l.version)
 
 // Display project info
 console.log(
-  '%cCarte.gouv %cby IGN\n%c' + ver.name + '%c v.' + ver.version + '%c\n' + libinfo.join('\n'),
+  '%cCarte.gouv %cby IGN\n%c' + ver.name + ' v.' + ver.version + '%c\n' + libinfo.join('\n'),
   "font-size: 34px;",
-  "font-size: 24px; color: #333;",
+  "font-size: 24px;",
   "font-size: 24px; color: brown;",
-  "color: #333; font-weight: bold;",
-  "color: #333;"
 )

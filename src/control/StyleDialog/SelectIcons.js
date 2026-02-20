@@ -1,6 +1,9 @@
 import FontSymbol from 'ol-ext/style/FontSymbol.js';
 import CustomSelectGrid from "./CustomSelectGrid.js";
-
+import "./SelectIcons.scss";
+// import SearchEngineBase from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/SearchEngineBase.js";s
+// import DefaultSearchService from "geopf-extensions-openlayers/src/packages/Services/DefaultSearchService.js";
+// import getUid from '../../utils/getUid.js';
 /**
  * @typedef {Object} SelectIconsConfig
  * @property {String} label Le label de l'input
@@ -127,7 +130,7 @@ selectedIcons = selectedIcons.map(icon => icon.toLowerCase());
 class SelectIcons extends CustomSelectGrid {
 
   /**
-   * Constructeur du contrôle StyleForm
+   * Constructeur du contrôle SelectIcons
    * @param {SelectIconsConfig} options Options du contrôle
    */
   constructor(options = {}) {
@@ -150,7 +153,7 @@ class SelectIcons extends CustomSelectGrid {
     const fonts = FontSymbol.defs?.fonts;
     const glyphs = FontSymbol.defs?.glyphs;
     if (!fonts || !glyphs) {
-      console.warn("Aucune police n'est installée !");
+      console.debug("Aucune police n'est installée !");
       return;
     }
 
@@ -186,13 +189,7 @@ class SelectIcons extends CustomSelectGrid {
    */
   _initContainer(options) {
     super._initContainer(options);
-  }
-
-  /**
-   * @param {SelectIconsConfig} options Options du contrôle
-   */
-  _initEvents(options) {
-    super._initEvents(options);
+    this.element.classList.add("input-style--icon");
   }
 
   selectOption(index, silent = false) {

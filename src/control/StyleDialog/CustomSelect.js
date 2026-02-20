@@ -31,7 +31,7 @@ import { isElementInView, isScrollable, maintainScrollVisibility } from "../../u
 class CustomSelect extends DefaultInputStyle {
 
   /**
-   * Constructeur du contrôle StyleForm
+   * Constructeur du contrôle CustomSelect
    * @param {InputStyleConfig} options Options du contrôle
    */
   constructor(options = {}) {
@@ -108,6 +108,7 @@ class CustomSelect extends DefaultInputStyle {
 
     this.choice = document.createElement('span');
     this.choice.className = 'input-style__option-value';
+    this.choice.ariaHidden = true;
     this.inputContainer.appendChild(this.choice);
 
     this.optionsContainer = document.createElement("div");
@@ -117,12 +118,12 @@ class CustomSelect extends DefaultInputStyle {
     this.optionsContainer.className = "input-style__options-container";
     this.element.appendChild(this.optionsContainer);
 
-    this.headerDiv = document.createElement("div");
-    this.headerDiv.className = "input-style__options-container-header";
+    this.dragDiv = document.createElement("div");
+    this.dragDiv.className = "input-style__options-container-drag";
     this.dragHandle = document.createElement("div");
     this.dragHandle.className = "input-style__options-container-drag-handle"
-    this.headerDiv.appendChild(this.dragHandle);
-    this.optionsContainer.appendChild(this.headerDiv);
+    this.dragDiv.appendChild(this.dragHandle);
+    this.optionsContainer.appendChild(this.dragDiv);
     this.optionsContent = document.createElement("div");
     this.optionsContent.className = "input-style__options-container-content";
     this.optionsContent.tabIndex = -1;
@@ -173,9 +174,9 @@ class CustomSelect extends DefaultInputStyle {
       }
     })
 
-    this.headerDiv.addEventListener("mousedown", this.startDragging.bind(this));
+    this.dragDiv.addEventListener("mousedown", this.startDragging.bind(this));
     // Pour le mobile
-    this.headerDiv.addEventListener("touchstart", this.startDragging.bind(this));
+    this.dragDiv.addEventListener("touchstart", this.startDragging.bind(this));
   }
 
   /**
@@ -322,8 +323,8 @@ class CustomSelect extends DefaultInputStyle {
    * @param {FocusEvent} event Événement à gérer
    */
   onComboBlur(event) {
-    // Pas d'action si relatedTarget est dans la liste des options
-    if (this.optionsContainer.contains(event.relatedTarget)) {
+    // Pas d'action si relatedTarget est dans la liste des options ou sur le bouton
+    if (this.optionsContainer.contains(event.relatedTarget) || this.inputContainer.contains(event.relatedTarget)) {
       return;
     }
 

@@ -1,0 +1,46 @@
+@use '../../css/mixins.scss' as mx;
+
+.input-style--icon {
+  .input-style {
+    &__options-container {
+      // display: flex;
+      &-header {
+        background-color: var(--background-overlap-grey);
+        padding: 1rem 1rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        p {
+          margin: 0;
+        }
+
+        > .recent-icons {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          > .input-style__options-container-content {
+            padding: 0;
+          }
+        }
+      }
+      &.input--searching {
+        > .input-style__options-container-content {
+          > button {
+            display: none;
+
+            &.match {
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Pour icônes remix-icon
+[class^="ri-"][class^="fi-"]::before, [class*="ri-"][class*="fi-"]::before {
+  font-family: 'remixicon' !important;
+}

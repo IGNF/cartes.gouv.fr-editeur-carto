@@ -33,5 +33,10 @@
 
   &#style-dialog {
     min-height: 300px;
+
+    @include mx.respond-from('sm') {
+    // barre du haut + espace
+    top: calc(3.5rem + 0.5rem);
+  }
   }
 }
