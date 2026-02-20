@@ -3,7 +3,9 @@ import carte from '../../carte.js';
 import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
 import { DrawingInteraction as Drawing, Draw } from 'geopf-extensions-openlayers';
-import styleDialog, { styleForm } from '../../control/StyleDialog/styleDialog.js';
+import styleDialog from '../../control/StyleDialog/styleDialog.js';
+import styleForm from '../../control/StyleDialog/styleForm.js';
+import labelForm from '../../control/StyleDialog/labelForm.js';
 import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 
@@ -147,7 +149,7 @@ const onSelect = (e) => {
   // At least one feature selected
   if (features.getLength()) {
     // Update styleform
-    styleForm.setFlatStyle(styleToFlatStyle(features.item(0)));
+    // styleForm.setFlatStyle(styleToFlatStyle(features.item(0)));
     // Geometry lists
     const gTypes = {};
     features.forEach(f => {
@@ -165,29 +167,9 @@ const onSelect = (e) => {
     styleDialog.close();
   }
 }
-// drawToggle.getSelect().on("select", onSelect)
+
+// À la sélection, ouvre ou ferme le dialog
 carte.getSelect().on("select", onSelect);
-
-// Enlève la sélection si l'on ferme le panneau
-styleDialog.on("dialog:close", (e) => {
-  carte.getSelect().getFeatures().clear();
-})
-
-/* Listen style changes from style form */
-styleForm.on("style", (e) => {
-  const features = carte.getSelect().getFeatures();
-  // Live change
-  if (e.property) {
-    features.forEach(f => {
-      const { key, value } = flatToIGNKeyValue(e.property, e.value);
-      f.setIgnStyle(key, value);
-      f.changed()
-    });
-  } else {
-    /* TODO: Appliquer le style à la ou les features sélectionnées */
-    console.log('changer le style ?', e);
-  }
-})
 
 /* Update drawing interaction source on layer switch */
 switcher.on("layerswitcher:change:selected", (e) => {

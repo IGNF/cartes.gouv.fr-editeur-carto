@@ -29,7 +29,7 @@ import CustomSelect from "./CustomSelect.js";
 class CustomSelectGrid extends CustomSelect {
 
   /**
-   * Constructeur du contrôle StyleForm
+   * Constructeur du contrôle CustomSelectGrid
    * @param {InputStyleConfig} options Options du contrôle
    */
   constructor(options = {}) {

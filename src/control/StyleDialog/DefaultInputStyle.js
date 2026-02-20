@@ -22,6 +22,7 @@ import "./DefaultInputStyle.scss";
  * @typedef {Object} InputStyleConfig
  * @property {string} label Le label de l'input
  * @property {string} property La propriété flat style correspondante
+ * @property {string} type Type de l'input
  * @property {Object<string, string>} options Les options de la sélection (valeur: libellé)
  */
 
@@ -31,7 +32,7 @@ import "./DefaultInputStyle.scss";
 class DefaultInputStyle extends ControlExtended {
 
   /**
-   * Constructeur du contrôle StyleForm
+   * Constructeur du contrôle DefaultInputStyle
    * @param {InputStyleConfig} options Options du contrôle
    */
   constructor(options = {}) {
@@ -44,8 +45,13 @@ class DefaultInputStyle extends ControlExtended {
 
   _initialize(options) {
     super._initialize(options);
-    this.inputTag = "input";
-    this.property = options.property
+    this.inputTag = options.inputTag || "input";
+    this.property = options.property;
+    if (this.inputTag !== "input") {
+      this.type = null;
+    } else {
+      this.type = options.type;
+    }
   }
 
   _initContainer(options) {
@@ -75,6 +81,9 @@ class DefaultInputStyle extends ControlExtended {
     this.input = document.createElement(this.inputTag);
     this.input.id = inputId;
     this.input.className = 'input-style__input';
+    if (this.type) {
+      this.input.type = options.type;
+    }
 
     this.setDisabled(options.disabled);
 

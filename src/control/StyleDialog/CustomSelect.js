@@ -31,7 +31,7 @@ import { isElementInView, isScrollable, maintainScrollVisibility } from "../../u
 class CustomSelect extends DefaultInputStyle {
 
   /**
-   * Constructeur du contrôle StyleForm
+   * Constructeur du contrôle CustomSelect
    * @param {InputStyleConfig} options Options du contrôle
    */
   constructor(options = {}) {

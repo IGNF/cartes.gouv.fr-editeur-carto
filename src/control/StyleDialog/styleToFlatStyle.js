@@ -187,7 +187,10 @@ const styleLut = {
   'stroke-line-dash': 'strokeDash',
   'line-arrow-start': 'strokeArrowStart',
   'line-arrow-end': 'strokeArrow',
-  'fill-color': 'fillColor'
+  'fill-color': 'fillColor',
+  'text-value': 'labelAttribute',
+  'text-fill-color': 'textColor',
+  'text-size': 'textSize',
 }
 
 function flatToIgnStyle(flatStyle) {
@@ -212,6 +215,9 @@ function flatToIgnKey(key) {
 function flatToIGNKeyValue(key, value) {
   const k = flatToIgnKey(key);
   let v = value;
+  if (k === "labelAttribute") {
+    v = v.replace(/\n{1,}$/g, '');
+  }
   return { key: k, value: v };
 }
 
