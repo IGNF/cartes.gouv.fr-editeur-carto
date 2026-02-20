@@ -108,6 +108,7 @@ class CustomSelect extends DefaultInputStyle {
 
     this.choice = document.createElement('span');
     this.choice.className = 'input-style__option-value';
+    this.choice.ariaHidden = true;
     this.inputContainer.appendChild(this.choice);
 
     this.optionsContainer = document.createElement("div");

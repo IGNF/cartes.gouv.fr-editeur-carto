@@ -39,3 +39,8 @@
     }
   }
 }
+
+// Pour icônes remix-icon
+[class^="ri-"][class^="fi-"]::before, [class*="ri-"][class*="fi-"]::before {
+  font-family: 'remixicon' !important;
+}
