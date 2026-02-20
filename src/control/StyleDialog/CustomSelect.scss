@@ -78,18 +78,17 @@
     @include mx.respond-from('sm') {
       width: 12.75rem;
       border-radius: 0.25rem;
-      position: absolute;
       bottom: unset;
       height: fit-content;
       max-height: 404px;
-      background-color: unset;
+      background-color: var(--background-overlap-grey);
 
       justify-content: normal;
       left: unset;
     }
 
-    // Header en mobile
-    & > &-header {
+    // Drag en mobile
+    & > &-drag {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -124,7 +123,7 @@
         border-radius: 0.25rem;
       }
 
-      > *:not(.input-style__options-container-header) {
+      > *:not(.input-style__options-container-drag) {
         display: flex;
         flex-direction: row;
         align-items: center;

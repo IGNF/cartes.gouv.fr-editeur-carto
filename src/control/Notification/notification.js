@@ -7,6 +7,13 @@ class NotificationExtended extends Notification {
     options.className = (options.className ? options.className + ' ' : '') + 'gpf-notification';
     super(options);
     this.element.classList.remove('ol-control');
+
+    this.element.addEventListener("mouseover", () => {
+      if (this._listener) {
+        clearTimeout(this._listener);
+        this._listener = null;
+      }
+    })
   }
 
   _show(type, what, cancelFn, duration) {

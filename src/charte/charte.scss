@@ -1,5 +1,6 @@
 @use './header.scss';
 @use './footer.scss';
+@use '../css/mixins.scss' as mx;
 
 html,
 body {
@@ -19,12 +20,21 @@ body {
     height: calc(100vh - 3.5rem);
     min-height: 620px;
     overflow: hidden;
+    z-index: 1;
+  }
+
+  header, footer {
+    z-index: auto;
   }
 
   &.compact {
     main {
-      flex: 0 1 auto;
+      flex: 1 0 auto;
       min-height: calc(100vh - 8.125rem);
+
+      @include mx.respond-from("lg") {
+        flex: 0 1 auto;
+      }
     }
   }
 }

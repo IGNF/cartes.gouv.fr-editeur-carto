@@ -32,6 +32,8 @@ carte.getMap().addInteraction(modify);
 
 carte.getMap().addControl(notification);
 
+const duration = 10000;
+
 // Copy/paste feature with Ctrl+C / Ctrl+V
 modify.on(['cut', 'delete'], e => {
   const features = e.features || e.deleted;
@@ -41,7 +43,7 @@ modify.on(['cut', 'delete'], e => {
     features.forEach(f => {
       f.layer.getSource().addFeature(f.feature);
     });
-  });
+  }, duration);
 });
 
 // Paste feature with Ctrl+V
@@ -50,7 +52,7 @@ modify.on(['paste'], e => {
   const layer = switcher.getSelectedLayer();
   // Check layer
   if (!layer || layer.get('type') !== 'Vector') {
-    notification.warning('La couche sélectionnée ne permet pas l\'ajout d\'objets.');
+    notification.warning('La couche sélectionnée ne permet pas l\'ajout d\'objets.', () => { }, duration);
     return;
   }
   // copy features
@@ -65,7 +67,7 @@ modify.on(['paste'], e => {
     features.forEach(f => {
       f.layer.getSource().removeFeature(f.feature);
     });
-  });
+  }, duration);
 });
 
 // Duplicate feature
@@ -77,7 +79,7 @@ modify.on(['duplicate'], e => {
     features.forEach(f => {
       f.layer.getSource().removeFeature(f.feature);
     });
-  });
+  }, duration);
 });
 
 export { notification}
