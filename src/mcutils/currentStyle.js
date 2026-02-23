@@ -77,7 +77,7 @@ function getCurrentStyle(f) {
 function updateCurrentStyle(f) {
   const type = f.getGeometry().getType();
   // Modifie seulement ce qui doit l'être
-  currentStyle[typeGeom[type]] = Object.assign(currentStyle[typeGeom[type]], f.getIgnStyle(true));
+  currentStyle[typeGeom[type]] = Object.assign(currentStyle[typeGeom[type]], f.getIgnStyle());
 }
 
 export { getCurrentStyle, updateCurrentStyle };
