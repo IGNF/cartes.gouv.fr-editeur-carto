@@ -4,6 +4,8 @@ import InputColor from './InputColor.js';
 // Création du formulaire de style
 const styleForm = new FlatStyleForm();
 
+// POINT //
+
 styleForm.addCustomSelect({
   label: 'Forme',
   property: 'point-form',
@@ -25,7 +27,7 @@ styleForm.addCustomInput({
 });
 
 styleForm.addBreak('point-form');
-styleForm.addInput('Couleur', 'point-stroke-color', new InputColor());
+styleForm.addInput('Bordure', 'point-stroke-color', new InputColor());
 
 styleForm.addCustomInput({
   label: 'Taille',
@@ -43,8 +45,12 @@ styleForm.addCustomSelect({
 styleForm.addInput('Couleur', 'point-symbol-color', new InputColor());
 styleForm.addBreak('point-symbol');
 
+// POLYGONE //
+
 styleForm.addInput('Intérieur', 'fill-color', new InputColor());
 styleForm.addBreak('fill-style');
+
+// LIGNE / POLYGONE //
 
 styleForm.addInput('Ligne', 'stroke-color', new InputColor());
 styleForm.addCustomSelect({
@@ -62,6 +68,8 @@ styleForm.addCustomInput({
   label: 'Taille',
   property: 'stroke-width',
 });
+
+// LIGNE //
 
 styleForm.addBreak('line-arrow');
 styleForm.addCustomSelect({
