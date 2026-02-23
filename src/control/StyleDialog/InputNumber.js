@@ -157,9 +157,8 @@ class InputNumber extends DefaultInputStyle {
 
   /**
    * Gère l'événement mouseleave sur les boutons haut et bas
-   * @param {MouseEvent} e Événement de souris
    */
-  onButtonMouseLeave(e) {
+  onButtonMouseLeave() {
     this.press = false;
     clearInterval(this.addValue);
     clearInterval(this.timeout);
@@ -169,9 +168,8 @@ class InputNumber extends DefaultInputStyle {
 
   /**
    * Gère l'événement mouseenter sur les boutons haut et bas
-   * @param {MouseEvent} e Événement de souris
    */
-  onButtonMouseEnter(e) {
+  onButtonMouseEnter() {
     this.press = true;
     clearInterval(this.addValue);
     clearInterval(this.timeout);
@@ -181,15 +179,13 @@ class InputNumber extends DefaultInputStyle {
 
   /**
    * Gère l'événement mouseup sur les boutons haut et bas
-   * @param {MouseEvent} e Événement de souris
    */
-  onButtonMouseUp(e) {
+  onButtonMouseUp() {
     this.press = true;
     clearInterval(this.addValue);
     clearInterval(this.timeout);
     this.addValue = null;
     this.timeout = null;
-
   }
 
   setDisabled(bool) {

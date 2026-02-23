@@ -19,7 +19,7 @@ const styleDialog = new Dialog({
     });
   },
   onClose: function () {
-    // Désl
+    // Déselectionne la sélection courante
     carte.getSelect().getFeatures().clear();
     carte.getSelect().dispatchEvent("select");
   },
@@ -55,10 +55,10 @@ forms.forEach(form => {
     const features = carte.getSelect().getFeatures();
     // Live change
     if (e.property) {
+      const { key, value } = flatToIGNKeyValue(e.property, e.value);
       features.forEach(f => {
-        const { key, value } = flatToIGNKeyValue(e.property, e.value);
         f.setIgnStyle(key, value);
-        f.changed()
+        f.changed();
       });
     } else {
       /* TODO: Appliquer le style à la ou les features sélectionnées */
