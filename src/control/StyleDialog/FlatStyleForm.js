@@ -106,9 +106,10 @@ class FlatStyleForm extends ControlExtended {
     this.inputs.forEach((obj, key) => {
       const input = obj.input || obj.select;
       const value = this.flatStyle[key];
-      // console.log(key, value)
       input.value = value !== undefined ? value : input.value;
-      input.dispatchEvent(new Event('change', { bubbles: true })); // Pour déclencher les éventuels écouteurs de changement
+      // cancelable:true pour ne pas envoyer d'événement "style"
+      input.dispatchEvent(new Event('change', { bubbles: true, cancelable:true }));
+      // Pour déclencher les éventuels écouteurs de changement
     })
   }
 
@@ -145,7 +146,15 @@ class FlatStyleForm extends ControlExtended {
     labelElement.textContent = label;
 
     // Input specifique
-    let input, element;
+
+    /**
+     * @type {HTMLInputElement|HTMLTextAreaElement}
+     */
+    let input;
+    /**
+     * @type {HTMLElement}
+     */
+    let element;
     const userInput = (typeof type === 'object' && type.getInput);
     if (userInput) {
       input = type.getInput();
@@ -192,7 +201,7 @@ class FlatStyleForm extends ControlExtended {
 
     // Prevenir que la valeur a changée
     input.addEventListener('change', (e) => {
-      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+      !e.cancelable && this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
     });
 
     return input;
@@ -293,7 +302,7 @@ class FlatStyleForm extends ControlExtended {
 
     // Prevenir que la valeur a changée
     input.addEventListener('change', (e) => {
-      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+      !e.cancelable && this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
     });
 
     // Stocker la configuration dans la Map
@@ -313,7 +322,7 @@ class FlatStyleForm extends ControlExtended {
 
     // Prevenir que la valeur a changée
     input.addEventListener('change', (e) => {
-      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+      !e.cancelable && this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
     });
 
     // Stocker la configuration dans la Map
@@ -340,7 +349,7 @@ class FlatStyleForm extends ControlExtended {
 
     // Prevenir que la valeur a changée
     input.addEventListener('change', (e) => {
-      this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
+      !e.cancelable && this.dispatchEvent({ type: 'style', property: property, value: e.target.value });
     });
 
     // Stocker la configuration dans la Map

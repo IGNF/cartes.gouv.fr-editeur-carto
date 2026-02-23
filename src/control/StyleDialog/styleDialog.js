@@ -3,6 +3,7 @@ import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
 import carte from "../../carte.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
+import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 
 const forms = [styleForm, labelForm];
 
@@ -58,6 +59,8 @@ forms.forEach(form => {
       const { key, value } = flatToIGNKeyValue(e.property, e.value);
       features.forEach(f => {
         f.setIgnStyle(key, value);
+        // Met à jour le style courant
+        updateCurrentStyle(f);
         f.changed();
       });
     } else {

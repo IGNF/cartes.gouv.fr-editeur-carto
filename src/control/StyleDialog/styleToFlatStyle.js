@@ -1,5 +1,5 @@
 import { createDefaultStyle } from "ol/style/flat.js";
-import getCurrentStyle from "../../mcutils/currentStyle.js";
+import { getCurrentStyle } from "../../mcutils/currentStyle.js";
 
 /**
  * Objet propriété / valeur pour une propriété dans le style IGN (mcutils).
@@ -77,12 +77,10 @@ function flatToIGNKeyValue(key, value) {
 function styleToFlatStyle(feature) {
   const flatStyle = createDefaultStyle() || {};
   // Extraction du style de la feature, parmi ce qui est modifié
-  const st = feature?.getIgnStyle?.();
-  // Mix entre style courant et style de la feature
-  const style = Object.assign(getCurrentStyle(), st)
+  const st = getCurrentStyle(feature);
   // Création du flatStyle openlayer
   Object.keys(styleLut).forEach(key => {
-    flatStyle[key] = style[styleLut[key]];
+    flatStyle[key] = st[styleLut[key]];
   });
   return flatStyle;
 }

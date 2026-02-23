@@ -13,7 +13,7 @@ import notification from '../../control/Notification/notification.js';
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
 import { Snap } from 'ol/interaction.js';
-import getCurrentStyle from '../../mcutils/currentStyle.js';
+import { getCurrentStyle } from "../../mcutils/currentStyle.js";
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -167,7 +167,7 @@ drawToggle.on("drawend", (e) => {
     e.preventDefault();
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   } else {
-    e.feature?.setIgnStyle(getCurrentStyle());
+    e.feature?.setIgnStyle(getCurrentStyle(e.feature));
   }
 })
 
