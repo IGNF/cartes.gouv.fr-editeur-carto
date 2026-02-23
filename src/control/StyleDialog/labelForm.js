@@ -4,7 +4,9 @@ import InputColor from './InputColor.js';
 // Création du formulaire de style
 const labelForm = new FlatStyleForm();
 
-labelForm.addInput("Texte", "text-value", "textarea")
+labelForm.addInput("Texte", "text-value", "textarea");
+
+labelForm.addBreak("text");
 
 labelForm.addInput('Couleur', 'text-fill-color', new InputColor());
 
