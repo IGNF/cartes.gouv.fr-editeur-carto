@@ -18,7 +18,7 @@ window.defStyle = defaultIgnStyle;
 
 /* Overwrite defaultIgnStyle for GPF */
 defaultIgnStyle.pointRadius = 19;
-defaultIgnStyle.pointGlyph = "std-circle";
+defaultIgnStyle.pointGlyph = " ";
 defaultIgnStyle.pointForm = "marker",
 defaultIgnStyle.symbolColor = "#ffffff";
 defaultIgnStyle.pointColor = "#000091";

@@ -3,6 +3,7 @@ import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
 import carte from "../../carte.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
+import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 
 const forms = [styleForm, labelForm];
 
@@ -19,7 +20,7 @@ const styleDialog = new Dialog({
     });
   },
   onClose: function () {
-    // Désl
+    // Déselectionne la sélection courante
     carte.getSelect().getFeatures().clear();
     carte.getSelect().dispatchEvent("select");
   },
@@ -55,10 +56,12 @@ forms.forEach(form => {
     const features = carte.getSelect().getFeatures();
     // Live change
     if (e.property) {
+      const { key, value } = flatToIGNKeyValue(e.property, e.value);
       features.forEach(f => {
-        const { key, value } = flatToIGNKeyValue(e.property, e.value);
         f.setIgnStyle(key, value);
-        f.changed()
+        // Met à jour le style courant
+        updateCurrentStyle(f);
+        f.changed();
       });
     } else {
       /* TODO: Appliquer le style à la ou les features sélectionnées */

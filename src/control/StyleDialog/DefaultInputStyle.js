@@ -43,17 +43,20 @@ class DefaultInputStyle extends ControlExtended {
     this._initEvents(options);
   }
 
+  /**
+   * @param {InputStyleConfig} options Options du contrôle
+   * @override
+   */
   _initialize(options) {
     super._initialize(options);
-    this.inputTag = options.inputTag || "input";
     this.property = options.property;
-    if (this.inputTag !== "input") {
-      this.type = null;
-    } else {
-      this.type = options.type;
-    }
+    this.type = options.type;
   }
 
+  /**
+   * @param {InputStyleConfig} options Options du contrôle
+   * @override
+   */
   _initContainer(options) {
     super._initContainer(options);
     // Création de la structure du formulaire
@@ -78,7 +81,7 @@ class DefaultInputStyle extends ControlExtended {
     this.inputContainer.className = 'input-style__container';
 
     // Input
-    this.input = document.createElement(this.inputTag);
+    this.input = document.createElement("input");
     this.input.id = inputId;
     this.input.className = 'input-style__input';
     if (this.type) {
@@ -94,6 +97,10 @@ class DefaultInputStyle extends ControlExtended {
     this.inputContainer.appendChild(this.input);
   }
 
+  /**
+   * @param {InputStyleConfig} options Options du contrôle
+   * @override
+   */
   _initEvents(options) {
     super._initEvents(options);
     this.input.addEventListener("change", (e) => this.dispatchEvent(e));
@@ -114,10 +121,18 @@ class DefaultInputStyle extends ControlExtended {
     }
   }
 
+  /**
+   * Retourne l'élément
+   * @returns {HTMLElement} Élément principal
+   */
   getElement() {
     return this.element;
   }
 
+  /**
+   * Retourne l'input
+   * @returns {HTMLInputElement} Input du contrôle
+   */
   getInput() {
     return this.input;
   }
