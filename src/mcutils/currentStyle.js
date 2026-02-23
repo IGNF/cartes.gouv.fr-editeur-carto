@@ -1,8 +1,4 @@
-import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
 import carte from "../carte.js";
-import labelForm from '../control/StyleDialog/labelForm.js';
-import styleForm from '../control/StyleDialog/styleForm.js';
-import { flatToIGNKeyValue } from '../control/StyleDialog/styleToFlatStyle.js';
 import Feature from 'ol/Feature.js';
 import { LineString, Point, Polygon } from 'ol/geom.js';
 
@@ -39,7 +35,7 @@ function initCurrentStyle(defaultStyle) {
 
   Object.entries(styles).forEach(([type, style] )=> {
     Object.entries(style).forEach(([key, value]) => {
-      if (!defaultStyle[type].hasOwnProperty(key)) {
+      if (!defaultStyle[type][key]) {
         // Ajoute le style par défaut si n'est pas encore ajouté
         defaultStyle[type][key] = value;
       }
