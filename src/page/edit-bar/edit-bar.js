@@ -221,17 +221,17 @@ let editDataBar = new Bar({
 
 drawToggle.dialog.on("dialog:open", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
-    notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
 })
 drawToggle.on("drawstart", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource) && e.target.type_ !== "Point") {
-    notification.error("La couche sélectionné n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
 })
 drawToggle.on("drawend", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
-    notification.error("La couche sélectionné n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+    notification.error("La couche sélectionnée n'est pas éditable. Le dessin n'est pas ajouté à la couche");
     e.preventDefault()
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   }

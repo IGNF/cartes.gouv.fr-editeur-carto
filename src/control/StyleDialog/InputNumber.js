@@ -129,7 +129,7 @@ class InputNumber extends DefaultInputStyle {
     const input = e.target.ariaControlsElements?.[0];
     if (input) {
       const up = e.target.dataset.up;
-      // Augmente / diminue la valeur 
+      // Augmente / diminue la valeur
       this.changeValue(up, input)
     }
     // Ajoute un timeout pour recréer l'effet input number
@@ -138,7 +138,7 @@ class InputNumber extends DefaultInputStyle {
         const input = e.target.ariaControlsElements?.[0];
         if (input) {
           const up = e.target.dataset.up;
-          // Augmente / diminue la valeur 
+          // Augmente / diminue la valeur
           this.addValue = setInterval(this.changeValue, 40, up, input);
         }
       }
@@ -147,7 +147,7 @@ class InputNumber extends DefaultInputStyle {
 
   /**
    * Change la valeur de l'input, en l'augmentant ou diminuant;
-   * @param {String} up Si vrai, augmente la valeur. Sinon la décroit 
+   * @param {String} up Si vrai, augmente la valeur. Sinon la décroit
    * @param {HTMLInputElement} input Input du contrôle
    */
   changeValue(up, input) {
