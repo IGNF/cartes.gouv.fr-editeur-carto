@@ -396,6 +396,28 @@ class CustomSelect extends DefaultInputStyle {
 
     // Mets l'option en état "current"
     activeID && this.optionsContent.querySelector(activeID)?.setAttribute("aria-selected", true);
+    this.setVisible();
+  }
+
+  /**
+   * Vérifie si l'élément est visible et si ce n'est pas
+   * ajuste sa position
+   */
+  setVisible() {
+    this.optionsContainer.style.removeProperty("top");
+    this.optionsContainer.style.removeProperty("left");
+    if (this.open) {
+      const { height, top, bottom, left } = this.optionsContainer.getBoundingClientRect();
+      const btnPos = this.inputContainer.getBoundingClientRect();
+
+      console.log(bottom, document.documentElement.clientHeight)
+      // Vérifie la hauteur de l'élément
+      if (bottom > document.documentElement.clientHeight) {
+        // Ne se voit pas, place l'élément au dessus du bouton
+        this.optionsContainer.style.top = Math.max(top - height - btnPos.height, 0) + 'px';
+        this.optionsContainer.style.left = Math.max(left + (btnPos.width / 2), 0) + 'px';
+      }
+    }
   }
 
   /**
