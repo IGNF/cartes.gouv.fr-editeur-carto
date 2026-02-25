@@ -165,12 +165,6 @@
       }
     }
 
-    // Temporaire, pour les tests seulement
-    &[data-type='color'] > span {
-      background-color: var(--bg-color);
-      border: 1px solid var(--border-default-grey);
-    }
-
     // Cas du "sans" (couleur, bordure etc.)
     &[data-value='none'],
     &[data-value='null'],
@@ -178,7 +172,7 @@
     &[data-value='#0000000'],
     &[data-value=''],
     &[data-value=' '] {
-      &[data-type]:not([data-type='dash']):not([data-type='arrow']) > span {
+       > span {
         background-color: var(--background-default-grey);
         background-image: url('/icon/StyleDialog/sans.svg');
         background-repeat: no-repeat;
@@ -191,26 +185,27 @@
     }
 
     // Bordures
-    &[data-type='dash'] {
+    &[data-type='stroke'] {
       > span {
         background-color: var(--text-label-grey);
       }
       &[data-value=''] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/continue.svg');
-        mask-image: url('/icon/StyleDialog/continue.svg');
+        background-image: unset;
+        -webkit-mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
+        mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
       }
 
       &[data-value='5,5'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/tiret.svg');
-        mask-image: url('/icon/StyleDialog/tiret.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/stroke/dash.svg');
+        mask-image: url('/icon/StyleDialog/stroke/dash.svg');
       }
       &[data-value='0,5'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/pointille.svg');
-        mask-image: url('/icon/StyleDialog/pointille.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/stroke/dot.svg');
+        mask-image: url('/icon/StyleDialog/stroke/dot.svg');
       }
       &[data-value='10,5,0,5'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/tirets_irreguliers.svg');
-        mask-image: url('/icon/StyleDialog/tirets_irreguliers.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/stroke/irregular-dash.svg');
+        mask-image: url('/icon/StyleDialog/stroke/irregular-dash.svg');
       }
     }
 
@@ -220,47 +215,65 @@
         background-color: var(--text-label-grey);
       }
       &[data-value=''] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/continue.svg');
-        mask-image: url('/icon/StyleDialog/continue.svg');
+        background-image: unset;
+        -webkit-mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
+        mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
       }
       &[data-value='triangle'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/fleche.svg');
-        mask-image: url('/icon/StyleDialog/fleche.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/arrow/arrow.svg');
+        mask-image: url('/icon/StyleDialog/arrow/arrow.svg');
       }
       &[data-value='circle'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/rond.svg');
-        mask-image: url('/icon/StyleDialog/rond.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/arrow/circle.svg');
+        mask-image: url('/icon/StyleDialog/arrow/circle.svg');
       }
       &[data-value='square'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/carre.svg');
-        mask-image: url('/icon/StyleDialog/carre.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/arrow/square.svg');
+        mask-image: url('/icon/StyleDialog/arrow/square.svg');
       }
     }
 
     // Terminaison
     &[data-type='form'] {
-      > span {
+      &:not([data-value=none]) > span {
         background-color: var(--text-label-grey);
       }
       &[data-value='marker'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/form-marker.svg');
-        mask-image: url('/icon/StyleDialog/form-marker.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form/form-marker.svg');
+        mask-image: url('/icon/StyleDialog/form/form-marker.svg');
       }
       &[data-value='circle'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/form-circle.svg');
-        mask-image: url('/icon/StyleDialog/form-circle.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form/form-circle.svg');
+        mask-image: url('/icon/StyleDialog/form/form-circle.svg');
       }
       &[data-value='square'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/form-square.svg');
-        mask-image: url('/icon/StyleDialog/form-square.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form/form-square.svg');
+        mask-image: url('/icon/StyleDialog/form/form-square.svg');
       }
       &[data-value='triangle'] > span {
-        -webkit-mask-image: url('/icon/StyleDialog/form-triangle.svg');
-        mask-image: url('/icon/StyleDialog/form-triangle.svg');
+        -webkit-mask-image: url('/icon/StyleDialog/form/form-triangle.svg');
+        mask-image: url('/icon/StyleDialog/form/form-triangle.svg');
       }
     }
 
-    // Terminaison
+    // Motif
+    &[data-type='pattern'] {
+      > span {
+        mask-size: auto;
+        mask-repeat: repeat;
+        mask-position: unset;
+        box-shadow: 1px solid var(--border-default-grey);
+        background-color:var(--text-label-grey);
+      }
+      &[data-value=''] > span {
+        // background-color: var(--background-default-grey);
+        background-image: unset;
+        mask-image: unset;
+        border:0;
+      }
+    }
+
+    // Icônes
     &[data-type='icon'] {
       > span::before {
         font-size: 1.5rem;

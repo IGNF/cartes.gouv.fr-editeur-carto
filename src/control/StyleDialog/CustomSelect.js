@@ -410,12 +410,10 @@ class CustomSelect extends DefaultInputStyle {
       const { height, top, bottom, left } = this.optionsContainer.getBoundingClientRect();
       const btnPos = this.inputContainer.getBoundingClientRect();
 
-      console.log(bottom, document.documentElement.clientHeight)
       // Vérifie la hauteur de l'élément
       if (bottom > document.documentElement.clientHeight) {
         // Ne se voit pas, place l'élément au dessus du bouton
         this.optionsContainer.style.top = Math.max(top - height - btnPos.height, 0) + 'px';
-        this.optionsContainer.style.left = Math.max(left + (btnPos.width / 2), 0) + 'px';
       }
     }
   }
@@ -456,6 +454,11 @@ class CustomSelect extends DefaultInputStyle {
     }
   }
 
+  /**
+   * Sélectionne une option et envoi un événement `change` sur l'input.
+   * @param {Number} index Indice de l'élément à sélectionner
+   * @param {Boolean} silent Si vrai, n'envoie pas d'événement change
+   */
   selectOption(index, silent = false) {
     this.activeIndex = index;
 

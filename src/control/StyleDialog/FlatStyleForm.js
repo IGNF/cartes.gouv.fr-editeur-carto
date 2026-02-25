@@ -6,6 +6,8 @@ import InputNumber from "./InputNumber.js"
 import DefaultInputStyle from "./DefaultInputStyle.js";
 import CustomSelect from "./CustomSelect.js";
 import SelectIcons from "./SelectIcons.js";
+import CustomSelectGrid from "./CustomSelectGrid.js";
+import SelectPattern from "./SelectPattern.js";
 
 /**
  * @typedef {Object} InputConfig
@@ -307,6 +309,8 @@ class FlatStyleForm extends ControlExtended {
 
     // Stocker la configuration dans la Map
     this.inputs.set(options.property, { input, label, property });
+
+    return inputNumber;
   }
   /**
    * 
@@ -327,6 +331,7 @@ class FlatStyleForm extends ControlExtended {
 
     // Stocker la configuration dans la Map
     this.inputs.set(options.property, { input, label, property });
+    return inputNumber;
   }
 
   /**
@@ -337,7 +342,11 @@ class FlatStyleForm extends ControlExtended {
     let inputNumber;
     if (options.type === "icon") {
       inputNumber = new SelectIcons(options);
-    } else {
+    }
+    else if (options.type === "pattern") {
+      inputNumber = new SelectPattern(options);
+    }
+    else {
       inputNumber = new CustomSelect(options);
     }
     this.element.appendChild(inputNumber.getElement());
@@ -354,6 +363,7 @@ class FlatStyleForm extends ControlExtended {
 
     // Stocker la configuration dans la Map
     this.inputs.set(options.property, { input, label, property, opts });
+    return inputNumber;
   }
 
   /**

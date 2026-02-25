@@ -6,7 +6,7 @@ import './InputColor.scss';
 /**
  * Input de type couleur pour le formulaire de style
  */
-class ColorInput extends Color {
+class InputColor extends Color {
   constructor(options) {
     options = options || {};
     options.position = options.position || 'fixed';
@@ -63,4 +63,4 @@ class ColorInput extends Color {
   }
 }
 
-export default ColorInput;
+export default InputColor;

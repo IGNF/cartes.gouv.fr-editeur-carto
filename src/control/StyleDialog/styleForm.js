@@ -40,19 +40,47 @@ styleForm.addCustomSelect({
   label: 'Symbole',
   property: 'point-glyph',
   type: 'icon',
-  fonts : ["remixicon"],
+  fonts: ["remixicon"],
 });
 styleForm.addInput('Couleur', 'point-symbol-color', new InputColor());
 styleForm.addBreak('point-symbol');
 
 // POLYGONE //
 
-styleForm.addInput('Intérieur', 'fill-color', new InputColor());
+styleForm.addInput('Couleur', 'fill-color', new InputColor());
 styleForm.addBreak('fill-style');
+
+// const patternObject = new SelectPattern();
+// patternObject.setFlatStyleForm(styleForm);
+
+styleForm.addCustomSelect({
+  label: 'Motif',
+  property: 'fill-pattern-config',
+  options: {
+    "": "Rempli",
+    "hatch;0": "Lignes verticales",
+    "hatch;90": "Lignes horizontales",
+    "hatch;45": "Diagonales (droite)",
+    "hatch;135": "Diagonales (gauche)",
+    "cross;1": "Quadrillage",
+    "dot;1": "Points",
+    "tile;1": "Carrés",
+    "caps": "Triangles",
+    "crosses": "Croix",
+    "wave": "Vagues",
+    "forest2": "Arbres",
+  },
+  type: "pattern"
+});
+styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
+styleForm.addCustomInput({
+  label: 'Taille',
+  property: 'fill-pattern-scale',
+});
+styleForm.addBreak('fill-patern');
 
 // LIGNE / POLYGONE //
 
-styleForm.addInput('Ligne', 'stroke-color', new InputColor());
 styleForm.addCustomSelect({
   label: 'Bordure',
   property: 'stroke-line-dash',
@@ -62,8 +90,9 @@ styleForm.addCustomSelect({
     "0,5": "Pointillé",
     "10,5,0,5": "Tirets irréguliers",
   },
-  type: "dash",
+  type: "stroke",
 });
+styleForm.addInput('Couleur', 'stroke-color', new InputColor());
 styleForm.addCustomInput({
   label: 'Taille',
   property: 'stroke-width',
