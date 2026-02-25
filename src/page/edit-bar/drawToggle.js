@@ -27,6 +27,16 @@ const typeObjects = {
     icon: "fr-icon-ign-shape-3-fill",
     label: "Surface",
   }
+  ,
+  "Circle": {
+    icon: "fr-icon-circle-line",
+    label: "Cercle",
+  }
+  ,
+  "Box": {
+    icon: "fr-icon-rectangle-line",
+    label: "Rectangle",
+  }
 }
 
 Object.keys(typeObjects).forEach(k => {
