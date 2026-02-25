@@ -12,7 +12,7 @@ import notification from '../../control/Notification/notification.js';
 
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
-import { Snap } from 'ol/interaction.js';
+import Snap from '../../mcutils/interaction/Snap.js';
 import { getCurrentStyle } from "../../mcutils/currentStyle.js";
 
 // TODO : mieux gérer les toggle d'édition / mesure
@@ -103,6 +103,7 @@ let addDataBar = new Bar({
 
 // Interaction Snap
 let snap = new Snap({ source: switcher.getSelectedLayer()?.getSource() });
+
 /* Update drawing interaction source on layer switch */
 switcher.on("layerswitcher:change:selected", (e) => {
   if (e.layer?.getSource() instanceof VectorSource) {
