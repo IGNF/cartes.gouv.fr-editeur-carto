@@ -12,6 +12,7 @@ labelForm.addInput('Couleur', 'text-fill-color', new InputColor());
 
 labelForm.addCustomInput({
   label: 'Taille',
+  labelInfo: '(pt)',
   property: 'text-size',
 });
 

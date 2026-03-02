@@ -23,6 +23,7 @@ styleForm.addInput('Couleur', 'point-color', new InputColor());
 
 styleForm.addCustomInput({
   label: 'Taille',
+  labelInfo: '(pt)',
   property: 'point-radius',
 });
 
@@ -31,6 +32,7 @@ styleForm.addInput('Bordure', 'point-stroke-color', new InputColor());
 
 styleForm.addCustomInput({
   label: 'Taille',
+  labelInfo: '(pt)',
   property: 'point-stroke-width',
 });
 
@@ -75,6 +77,7 @@ styleForm.addCustomSelect({
 styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
 styleForm.addCustomInput({
   label: 'Taille',
+  labelInfo: '(pt)',
   property: 'fill-pattern-scale',
 });
 styleForm.addBreak('fill-patern');
@@ -95,6 +98,7 @@ styleForm.addCustomSelect({
 styleForm.addInput('Couleur', 'stroke-color', new InputColor());
 styleForm.addCustomInput({
   label: 'Taille',
+  labelInfo: '(pt)',
   property: 'stroke-width',
 });
 
