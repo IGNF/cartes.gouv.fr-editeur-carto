@@ -77,7 +77,6 @@ styleForm.addCustomSelect({
 styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
 styleForm.addCustomInput({
   label: 'Taille',
-  labelInfo: '(pt)',
   property: 'fill-pattern-scale',
 });
 styleForm.addBreak('fill-patern');
