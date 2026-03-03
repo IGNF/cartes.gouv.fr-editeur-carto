@@ -124,8 +124,6 @@
       }
 
       > *:not(.input-style__options-container-drag) {
-        display: flex;
-        flex-direction: row;
         align-items: center;
         padding: 0.25rem 0.5rem;
         border-radius: 0.25rem;
@@ -181,6 +179,8 @@
           100% 100%,
           auto;
         border: 1px solid var(--border-default-grey);
+        display: inline-block;
+        vertical-align: middle;
       }
     }
 
