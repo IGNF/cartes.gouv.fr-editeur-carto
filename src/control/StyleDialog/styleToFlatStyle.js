@@ -96,8 +96,7 @@ function styleToFlatStyle(feature) {
       // Motif : modification à faire
       const pattern = st["fillPattern"];
       const angle = st["anglePattern"];
-      let name = pattern;
-      name = name + angle !== undefined ? `;${angle}` : "";
+      let name = pattern + (angle !== undefined ? `;${angle}` : "");
       flatStyle[key] = name;
     } else {
       flatStyle[key] = st[styleLut[key]];

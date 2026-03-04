@@ -15,9 +15,12 @@ const styleDialog = new Dialog({
   onOpen: function () {
     // Initialise les formulaires
     const feature = carte.getSelect().getFeatures().item(0);
-    const flatStyle = styleToFlatStyle(feature);
-    forms.forEach(form => {
-      form.setFlatStyle(flatStyle);
+    // Attendre que la feature soit prête pour récupérer son style
+    setTimeout(() => {
+      const flatStyle = styleToFlatStyle(feature);
+      forms.forEach(form => {
+        form.setFlatStyle(flatStyle);
+      });
     });
   },
   onClose: function () {
