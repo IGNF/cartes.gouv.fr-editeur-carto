@@ -6,7 +6,6 @@ import InputNumber from "./InputNumber.js"
 import DefaultInputStyle from "./DefaultInputStyle.js";
 import CustomSelect from "./CustomSelect.js";
 import SelectIcons from "./SelectIcons.js";
-import CustomSelectGrid from "./CustomSelectGrid.js";
 import SelectPattern from "./SelectPattern.js";
 
 /**

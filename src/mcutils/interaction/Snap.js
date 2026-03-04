@@ -1,13 +1,13 @@
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
-import Snap from 'ol/interaction/Snap';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import CircleStyle from "ol/style/Circle";
-import Style from "ol/style/Style";
-import Stroke from "ol/style/Stroke";
-import Fill from "ol/style/Fill";
-import carte from '../../carte';
+import Feature from 'ol/Feature.js';
+import Point from 'ol/geom/Point.js';
+import Snap from 'ol/interaction/Snap.js';
+import VectorLayer from 'ol/layer/Vector.js';
+import VectorSource from 'ol/source/Vector.js';
+import CircleStyle from "ol/style/Circle.js";
+import Style from "ol/style/Style.js";
+import Stroke from "ol/style/Stroke.js";
+import Fill from "ol/style/Fill.js";
+import carte from '../../carte.js';
 
 const circle = [
  
