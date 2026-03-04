@@ -59,7 +59,7 @@ class SnapInteraction extends Snap {
       // Sauf si objet en cours de sélection
       if (carte.getSelect().getActive() && !carte.getSelect().getLayer(e.feature)) {
         this.showOverlay(false);
-      } else if (e.vertex) {
+      } else if (carte.getSelect().getActive() && e.vertex) {
         snapFeatures.getGeometry().setCoordinates(e.vertex);
         this.showOverlay(true);
       } else {

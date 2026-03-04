@@ -32,8 +32,6 @@ carte.getMap().addInteraction(modify);
 
 carte.getMap().addControl(notification);
 
-const duration = 10000;
-
 // Copy/paste feature with Ctrl+C / Ctrl+V
 modify.on(['cut', 'delete'], e => {
   const features = e.features || e.deleted;
@@ -43,7 +41,7 @@ modify.on(['cut', 'delete'], e => {
     features.forEach(f => {
       f.layer.getSource().addFeature(f.feature);
     });
-  }, duration);
+  });
 });
 
 // Paste feature with Ctrl+V
@@ -52,7 +50,7 @@ modify.on(['paste'], e => {
   const layer = switcher.getSelectedLayer();
   // Check layer
   if (!layer || layer.get('type') !== 'Vector') {
-    notification.warning('La couche sélectionnée ne permet pas l\'ajout d\'objets.', () => { }, duration);
+    notification.warning('La couche sélectionnée ne permet pas l\'ajout d\'objets.', () => { });
     return;
   }
   // copy features
@@ -62,24 +60,26 @@ modify.on(['paste'], e => {
     layer.getSource().addFeature(feature);
   });
   // undo notification
-  notification.info(features.length + ' objet(s) ajouté(s).', () => {
+  const info = features.length + (features.length > 1 ? ' objets ajoutés.' : ' objet ajouté.');
+  notification.info(info, () => {
     notification.hide();
     features.forEach(f => {
       f.layer.getSource().removeFeature(f.feature);
     });
-  }, duration);
+  });
 });
 
 // Duplicate feature
 modify.on(['duplicate'], e => {
   const features = e.features || [];
   // undo notification
-  notification.info(features.length + ' objet(s) ajouté(s).', () => {
+  const info = features.length + (features.length > 1 ? ' objets ajoutés.' : ' objet ajouté.');
+  notification.info(info, () => {
     notification.hide();
     features.forEach(f => {
       f.layer.getSource().removeFeature(f.feature);
     });
-  }, duration);
+  });
 });
 
 export { notification}
