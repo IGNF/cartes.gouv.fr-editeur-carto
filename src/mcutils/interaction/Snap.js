@@ -56,8 +56,12 @@ class SnapInteraction extends Snap {
 
     // Check modification is on to snap 
     let modifying = false;
-    carte._interactions.modify.on('modifystart', () => modifying = true);
-    carte._interactions.modify.on('modifyend', () => modifying = false);
+    carte._interactions.modify.on('modifystart', () => {
+      modifying = true;
+    });
+    carte._interactions.modify.on('modifyend', () => {
+      modifying = false;
+    });
     // Afficher un point bleu lors du snap 
     this.on('snap', (e) => {
       // Ne pas afficher le point bleu si en cours de sélection d'un objet
