@@ -54,12 +54,20 @@ class SnapInteraction extends Snap {
     const snapFeatures = new Feature(new Point([0, 0]));
     this.overlay_.getSource().addFeature(snapFeatures);
 
+    // Check modification is on to snap 
+    let modifying = false;
+    carte._interactions.modify.on('modifystart', (e) => {
+      modifying = true;
+    });
+    carte._interactions.modify.on('modifyend', (e) => {
+      modifying = false;
+    });
     // Afficher un point bleu lors du snap 
     this.on('snap', (e) => {
-      // Sauf si objet en cours de sélection
-      if (carte.getSelect().getActive() && !carte.getSelect().getLayer(e.feature)) {
+      // Ne pas afficher le point bleu si en cours de sélection d'un objet
+      if (!modifying && carte.getSelect().getActive() && !carte.getSelect().getLayer(e.feature)) {
         this.showOverlay(false);
-      } else if (carte.getSelect().getActive() && e.vertex) {
+      } else if (e.vertex) {
         snapFeatures.getGeometry().setCoordinates(e.vertex);
         this.showOverlay(true);
       } else {

@@ -29,6 +29,7 @@ const modify = new ModifyingInteraction({
   select : carte.getSelect(),
 })
 carte.getMap().addInteraction(modify);
+carte._interactions.modify = modify;
 
 carte.getMap().addControl(notification);
 
