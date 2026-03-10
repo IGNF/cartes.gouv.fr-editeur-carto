@@ -21,6 +21,7 @@ import "./DefaultInputStyle.scss";
 /**
  * @typedef {Object} InputStyleConfig
  * @property {string} label Le label de l'input
+ * @property {string} labelInfo Info supplémentaire du label (ex: unité)
  * @property {string} property La propriété flat style correspondante
  * @property {string} type Type de l'input
  * @property {Object<string, string>} options Les options de la sélection (valeur: libellé)
@@ -74,6 +75,12 @@ class DefaultInputStyle extends ControlExtended {
     this.label.className = 'input-style__label fr-label';
     this.label.id = labelId;
     this.label.textContent = options.label;
+    if (options.labelInfo) {
+      const labelInfo = document.createElement('span');
+      labelInfo.className = 'fr-hint-text';
+      labelInfo.textContent = options.labelInfo;
+      this.label.appendChild(labelInfo);
+    }
     this.label.htmlFor = inputId;
 
     // Conteneur de l'input

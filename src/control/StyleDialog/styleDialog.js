@@ -14,9 +14,13 @@ const styleDialog = new Dialog({
   position: "left",
   onOpen: function () {
     // Initialise les formulaires
-    const features = carte.getSelect().getFeatures();
-    forms.forEach(form => {
-      form.setFlatStyle(styleToFlatStyle(features.item(0)));
+    const feature = carte.getSelect().getFeatures().item(0);
+    // Attendre que la feature soit prête pour récupérer son style
+    setTimeout(() => {
+      const flatStyle = styleToFlatStyle(feature);
+      forms.forEach(form => {
+        form.setFlatStyle(flatStyle);
+      });
     });
   },
   onClose: function () {
@@ -51,14 +55,17 @@ const styleDialog = new Dialog({
 
 // Écouteurs d'événements "style" pour chaque formulaire
 forms.forEach(form => {
-  /* Listen style changes from style form */
   form.on("style", (e) => {
     const features = carte.getSelect().getFeatures();
-    // Live change
     if (e.property) {
-      const { key, value } = flatToIGNKeyValue(e.property, e.value);
+      // Récupère les résultats
+      const results = flatToIGNKeyValue(e.property, e.value);
       features.forEach(f => {
-        f.setIgnStyle(key, value);
+        // Une clé peut correspondre à plusieurs clé IGN
+        // D'où le fait d'avoir un
+        results.forEach(({ key, value }) => {
+          f.setIgnStyle(key, value);
+        })
         // Met à jour le style courant
         updateCurrentStyle(f);
         f.changed();

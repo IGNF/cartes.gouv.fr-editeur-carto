@@ -99,6 +99,7 @@ class CustomSelectGrid extends CustomSelect {
     // Retire le label
     option.removeAttribute("aria-labelled-by");
     option.ariaLabel = label;
+    option.title = label;
     option.lastChild.remove();
     return option;
   }

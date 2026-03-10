@@ -25,6 +25,9 @@ const styleLut = {
   'line-arrow-start': 'strokeArrowStart',
   'line-arrow-end': 'strokeArrow',
   'fill-color': 'fillColor',
+  'fill-pattern-config': 'fillPatternConfig',
+  'fill-pattern-color': 'fillColorPattern',
+  'fill-pattern-scale': 'scalePattern',
   'text-value': 'labelAttribute',
   'text-fill-color': 'textColor',
   'text-size': 'textSize',
@@ -58,15 +61,24 @@ function flatToIgnKey(key) {
  * propriété et valeurs IGN (mcutils)
  * @param {String} key Propriété du flatStyle openlayer
  * @param {String} value Valeur associée
- * @returns {IGNKeyValue} Propriété et valeur associée pour le style IGN
+ * @returns {Array<IGNKeyValue>} Propriété et valeur associée pour le style IGN
  */
 function flatToIGNKeyValue(key, value) {
+  let result = [];
   const k = flatToIgnKey(key);
-  let v = value;
   if (k === "labelAttribute") {
-    v = v.replace(/\n{1,}$/g, '');
+    value = value.replace(/\n{1,}$/g, '');
+    result.push({ key: k, value: value });
+  } else if (k === "fillPatternConfig") {
+    const values = value.split(";");
+    result.push({ key: "fillPattern", value: values.shift() });
+    if (values.length) {
+      result.push({ key: "anglePattern", value: values.shift() });
+    }
+  } else {
+    result.push({ key: k, value: value });
   }
-  return { key: k, value: v };
+  return result;
 }
 
 /**
@@ -80,7 +92,15 @@ function styleToFlatStyle(feature) {
   const st = getCurrentStyle(feature);
   // Création du flatStyle openlayer
   Object.keys(styleLut).forEach(key => {
-    flatStyle[key] = st[styleLut[key]];
+    if (key === "fill-pattern-config") {
+      // Motif : modification à faire
+      const pattern = st["fillPattern"];
+      const angle = st["anglePattern"];
+      let name = pattern + (angle !== undefined ? `;${angle}` : "");
+      flatStyle[key] = name;
+    } else {
+      flatStyle[key] = st[styleLut[key]];
+    }
   });
   return flatStyle;
 }

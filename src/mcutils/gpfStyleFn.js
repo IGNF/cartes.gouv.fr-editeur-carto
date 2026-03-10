@@ -22,10 +22,11 @@ defaultIgnStyle.pointGlyph = " ";
 defaultIgnStyle.pointForm = "marker",
 defaultIgnStyle.symbolColor = "#ffffff";
 defaultIgnStyle.pointColor = "#000091";
-defaultIgnStyle.pointStrokeColor = "#000091";
-defaultIgnStyle.pointStrokeWidth = 0;
-defaultIgnStyle.strokeColor = '#ff8800';
+defaultIgnStyle.pointStrokeColor = "#ffffff";
+defaultIgnStyle.pointStrokeWidth = 2;
+defaultIgnStyle.strokeColor = '#33B1FF';
 defaultIgnStyle.strokeWidth = 4;
+defaultIgnStyle.fillColor = "rgba(51, 177, 255, .5)";
 
 const circle = new CircleStyle({
   stroke : new Stroke({ 
