@@ -18,6 +18,9 @@ class InputColor extends Color {
     // Style des boutons
     this.element.querySelectorAll('button').forEach(btn => {
       btn.className = 'fr-btn fr-btn--tertiary';
+      if (btn.innerText === 'OK') {
+        btn.textContent = 'Valider';
+      }
     });
     // Popup accessibility
     this._elt.popup.id = getUid('color-picker-popup');
@@ -140,9 +143,13 @@ class InputColor extends Color {
     }
     return true;
   }
+  /** Add a custom color to the palette + limit to 6 last used colors
+   * @private
+   * @param {string} color 
+   */
   _addCustomColor(color) {
     super._addCustomColor(color);
-    while (Color.customColorList.getLength() > 18) {
+    while (Color.customColorList.getLength() > 6) {
       Color.customColorList.removeAt(0);
     }
   }

@@ -7,7 +7,7 @@ import loadFonts from './mcutils/loadFonts.js'
 import carte from './carte.js'
 import api from './mcutils/api.js'
 import introDialog from './dialogs/introDialog.js'
-// import connectAction from './actions/connect/connectAction.js'
+import connectAction from './actions/connect/connectAction.js'
 import connectActionTest from './actions/alreadyConnected/connectAction.js'
 
 import switcher from './mcutils/layerSwitcher.js';
@@ -46,8 +46,8 @@ switcher.on(switcher.ADD_LAYER_EVENT, (e) => {
 /**
  * UNIQUEMENT EN TEST, SI LOGIN NON SOUHAITÉ
 */
-introDialog.setAction(connectActionTest);
-// introDialog.setAction(connectAction);
+// introDialog.setAction(connectActionTest);
+introDialog.setAction(connectAction);
 introDialog.open();
 
 /* DEBUG */

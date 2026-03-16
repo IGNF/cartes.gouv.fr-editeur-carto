@@ -26,6 +26,9 @@
       transform: unset;
     }
 
+    .ol-clear {
+      display: none;
+    }
 
     .ol-popup {
       z-index: 1;
@@ -84,7 +87,9 @@
     }
 
     .ol-palette {
-      width: 16rem;
+      width: 15rem;
+      margin: 0;
+      padding: 0;
     }
 
     .ol-palette > div {
