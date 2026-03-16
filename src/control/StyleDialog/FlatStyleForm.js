@@ -189,9 +189,8 @@ class FlatStyleForm extends ControlExtended {
     container.appendChild(labelElement);
     if (userInput) {
       container.appendChild(element);
-    } else {
-      container.appendChild(input);
-    }
+    } 
+    container.appendChild(input);
     container.appendChild(messagesContainer);
 
     // Ajouter le conteneur au formulaire

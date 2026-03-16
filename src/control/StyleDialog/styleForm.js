@@ -54,7 +54,7 @@ styleForm.addInput('Couleur', 'fill-color', new InputColor());
 // const patternObject = new SelectPattern();
 // patternObject.setFlatStyleForm(styleForm);
 
-styleForm.addCustomSelect({
+const inputPattern = styleForm.addCustomSelect({
   label: 'Motif',
   property: 'fill-pattern-config',
   options: {
@@ -74,14 +74,27 @@ styleForm.addCustomSelect({
   type: "pattern"
 });
 
-styleForm.addCustomInput({
+const inputFillSize = styleForm.addCustomInput({
   label: 'Taille',
   property: 'fill-pattern-scale',
 });
 
 styleForm.addBreak('fill-style');
-styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
+const inputFillColor = new InputColor();
+styleForm.addInput('Fond', 'fill-pattern-color', inputFillColor);
 styleForm.addBreak('fill-patern');
+
+/* Disable pattern options when no patter */
+inputPattern.input.addEventListener('change', e => {
+  if (e.target.value) {
+    inputFillColor.disable(false);  
+    inputFillSize.input.disabled = false;
+  } else {
+    inputFillColor.disable(true);  
+    inputFillSize.input.disabled = true;
+  }
+});
+
 
 // LIGNE / POLYGONE //
 

@@ -82,6 +82,14 @@ class InputColor extends Color {
     }  
   }
 
+  /** Enable or disable the color input
+   * @param {boolean} disabled
+   */
+  disable(disabled = true) {
+    this.element.setAttribute('aria-disabled', !!disabled);
+    this.element.tabIndex = disabled ? -1 : 0;
+  }
+    
   /**
    * Get the color input element
    * @returns {Element}

@@ -5,6 +5,12 @@
   width: 100%;
   flex-wrap: wrap;
 
+  [data-property]:has(input.input-style__input:disabled),
+  [data-property]:has([aria-disabled="true"]) {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   &-container {
     display: flex;
     flex-direction: column;
@@ -51,6 +57,7 @@
         padding-right: 0.5em;
         text-align: right;
       }
+
       > input[type="color"] {
         padding: 0.1em 1.5em 0.1em 1.5em;
       }
