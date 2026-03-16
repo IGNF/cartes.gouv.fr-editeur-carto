@@ -50,7 +50,6 @@ styleForm.addBreak('point-symbol');
 // POLYGONE //
 
 styleForm.addInput('Couleur', 'fill-color', new InputColor());
-styleForm.addBreak('fill-style');
 
 // const patternObject = new SelectPattern();
 // patternObject.setFlatStyleForm(styleForm);
@@ -59,7 +58,7 @@ styleForm.addCustomSelect({
   label: 'Motif',
   property: 'fill-pattern-config',
   options: {
-    "": "Rempli",
+    "": "Plein",
     "hatch;0": "Lignes verticales",
     "hatch;90": "Lignes horizontales",
     "hatch;45": "Diagonales (droite)",
@@ -74,11 +73,14 @@ styleForm.addCustomSelect({
   },
   type: "pattern"
 });
-styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
+
 styleForm.addCustomInput({
   label: 'Taille',
   property: 'fill-pattern-scale',
 });
+
+styleForm.addBreak('fill-style');
+styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
 styleForm.addBreak('fill-patern');
 
 // LIGNE / POLYGONE //
