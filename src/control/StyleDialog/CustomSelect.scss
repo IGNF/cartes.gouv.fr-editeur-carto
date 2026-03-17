@@ -264,14 +264,14 @@
         mask-size: auto;
         mask-repeat: repeat;
         mask-position: unset;
-        box-shadow: 1px solid var(--border-default-grey);
-        background-color:var(--text-label-grey);
+        border: 1px solid var(--border-default-grey);
+        // background-color:var(--text-label-grey);
+        position: relative;
       }
-      &[data-value=''] > span {
-        // background-color: var(--background-default-grey);
+      &[data-value=""] > span {
         background-image: unset;
         mask-image: unset;
-        border:0;
+        background: unset;
       }
     }
 

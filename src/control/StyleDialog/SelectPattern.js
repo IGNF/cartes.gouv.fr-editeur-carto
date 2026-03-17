@@ -40,7 +40,8 @@ class SelectPattern extends CustomSelectGrid {
 
     const chosenOption = this.optionsContent.querySelector("[role=option][aria-selected='true'] > span");
     if (chosenOption) {
-      this.choice.style.maskImage = chosenOption.style.maskImage
+      this.choice.style.maskImage = chosenOption.style.maskImage;
+      this.choice.style.backgroundImage = chosenOption.style.backgroundImage;
     }
   }
 
@@ -72,8 +73,8 @@ class SelectPattern extends CustomSelectGrid {
     const choice = option.querySelector("span");
     const patternOption = this.getPatternValue(value);
     const pattern = new ol_style_FillPattern(patternOption);
-
-    choice.style.maskImage = patternOption.pattern ? 'url("' + pattern.getImage().toDataURL()+'")' : ''
+console.log(label, pattern.getImage(), patternOption)
+    choice.style.backgroundImage = patternOption.pattern ? 'url("' + pattern.getImage().toDataURL()+'")' : ''
 
     return option
   }

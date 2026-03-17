@@ -49,7 +49,6 @@ styleForm.addBreak('point-symbol');
 
 // POLYGONE //
 
-styleForm.addInput('Couleur', 'fill-color', new InputColor());
 
 // const patternObject = new SelectPattern();
 // patternObject.setFlatStyleForm(styleForm);
@@ -73,6 +72,8 @@ const inputPattern = styleForm.addCustomSelect({
   },
   type: "pattern"
 });
+
+styleForm.addInput('Couleur', 'fill-color', new InputColor());
 
 const inputFillSize = styleForm.addCustomInput({
   label: 'Taille',
