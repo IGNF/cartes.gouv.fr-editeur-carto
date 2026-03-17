@@ -1,5 +1,5 @@
 import CustomSelectGrid from "./CustomSelectGrid.js";
-import ol_style_FillPattern from "ol-ext/style/FillPattern";
+import ol_style_FillPattern from "ol-ext/style/FillPattern.js";
 
 /**
  * @typedef {Object} SelectPatternConfig Option du constructeur SelectPattern
