@@ -1,11 +1,24 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect x="0.5" y="0.5" width="23" height="23" rx="1.5" fill="white"/>
-<rect x="0.5" y="0.5" width="23" height="23" rx="1.5" fill="url(#pattern0_6049_31066)"/>
-<rect x="0.5" y="0.5" width="23" height="23" rx="1.5" stroke="#353535"/>
+<rect width="24" height="24" rx="2" fill="url(#pattern0_6060_12677)"/>
 <defs>
-<pattern id="pattern0_6049_31066" patternContentUnits="objectBoundingBox" width="0.3" height="0.3">
-<use xlink:href="#image0_6049_31066" transform="scale(0.0075)"/>
-</pattern>
-<image id="image0_6049_31066" width="40" height="40" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAEESURBVHgB7ZfRDYJAEETniAVYAiXYgdoJFYhUAlgBnagdUAIl2IDgHockfogYd1dN9iUECPPxgLuDcRjJl8AiBbpN2HpqwJXArsKXcGGXx0B0pIP4Sa4B2i2QNVAmGnZTcgjXfMY/ZV1I8JBgWu4OZaI9lCHBLp0fd2so41/xan58nDxqRPhxSNCd3sjXUMaPwfP8eFtCGRJsC/Tr3Esok1VQhgSzS1iEJyWbIaOOezzNE3L2y84ws/34vPohUIQbMQzDMLRxEIOn4wgJ8nUcof9Bvo4jIMjbcQQEeTuOxCtm7Tj/0Em44e04EmOQteMICPJ2HAFB3o4j+KnzWMcxDMP4lBv/q04rAtVrhwAAAABJRU5ErkJggg=="/>
-</defs>
+<pattern id="pattern0_6060_12677" patternUnits="userSpaceOnUse" patternTransform="matrix(28 0 0 28 -2 -2)" preserveAspectRatio="none" viewBox="0 0 28 28" width="1" height="1">
+<g id="pattern0_6060_12677_inner">
+<circle cx="2" cy="2" r="2" fill="#161616"/>
+<circle cx="10" cy="2" r="2" fill="#161616"/>
+<circle cx="18" cy="2" r="2" fill="#161616"/>
+<circle cx="26" cy="2" r="2" fill="#161616"/>
+<circle cx="2" cy="10" r="2" fill="#161616"/>
+<circle cx="10" cy="10" r="2" fill="#161616"/>
+<circle cx="18" cy="10" r="2" fill="#161616"/>
+<circle cx="26" cy="10" r="2" fill="#161616"/>
+<circle cx="2" cy="18" r="2" fill="#161616"/>
+<circle cx="10" cy="18" r="2" fill="#161616"/>
+<circle cx="18" cy="18" r="2" fill="#161616"/>
+<circle cx="26" cy="18" r="2" fill="#161616"/>
+<circle cx="2" cy="26" r="2" fill="#161616"/>
+<circle cx="10" cy="26" r="2" fill="#161616"/>
+<circle cx="18" cy="26" r="2" fill="#161616"/>
+<circle cx="26" cy="26" r="2" fill="#161616"/>
+</g>
+</pattern></defs>
 </svg>
