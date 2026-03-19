@@ -38,7 +38,11 @@ header.fr-header {
   }
 
   .fr-header__tools-links {
-    gap:1rem
+    gap:1rem;
+
+    a[target="_blank"]::after {
+      margin-left:auto;
+    }
   }
 
   &--compact {

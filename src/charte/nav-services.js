@@ -12,27 +12,27 @@ service.addMenu([
     type: 'link',
     label: 'Explorer les cartes',
     icon: 'fr-icon-road-map-line',
-    href: '/cartes',
+    href: '/explorer-les-cartes',
   },{
     type: 'link',
     label: 'Rechercher une donnée',
     icon: 'fr-icon-search-line',
-    href: '/catalogue/search',
+    href: '/rechercher-une-donnee/search',
   },{
     type: 'link',
     label: 'Publier une donnée',
     icon: 'fr-icon-database-line',
-    href: '/tableau-de-bord',
+    href: '/publier-une-donnee',
   },{
     type: 'link',
     label: 'Créer une carte',
     icon: 'fr-icon-brush-line',
-    href: '/editeur/cartes',
+    href: '/editeur',
   },{
     type: 'option',
     label: 'Découvrir cartes.gouv.fr',
     title: 'Découvrir cartes.gouv.fr',
-    href: '/accueil',
+    href: '/decouvrir',
     icon : 'fr-icon-external-link-line fr-btn--icon-right'
   }
 ])

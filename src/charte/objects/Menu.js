@@ -184,7 +184,7 @@ class Menu extends BaseObject {
         break;
       }
       case 'link': {
-        ol_ext_element.create('A', {
+        let a = ol_ext_element.create('A', {
           id: getUid('access__link'),
           className: (options.icon || '') + ' fr-link--icon-left fr-access__link fr-nav__link fr-access__link fr-nav__link',
           title: options.title || '',
@@ -192,6 +192,10 @@ class Menu extends BaseObject {
           href: options.href,
           parent: li
         })
+        if (options.external) {
+          a.target = "_blank";
+          a.rel = "noopener external";
+        }
         break;
       }
       case 'option': {
