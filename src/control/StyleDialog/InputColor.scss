@@ -8,6 +8,10 @@
     border-width: 0.5rem 2.5rem 0.5rem 0.5rem;
     box-shadow: 0 0 0 1px var(--border-default-grey);
     
+    &[aria-disabled="true"] {
+      pointer-events: none;
+    }
+
     &:hover {
       border-color: var(--border-default-grey);
     }
@@ -26,6 +30,9 @@
       transform: unset;
     }
 
+    .ol-clear {
+      display: none;
+    }
 
     .ol-popup {
       z-index: 1;
@@ -84,7 +91,9 @@
     }
 
     .ol-palette {
-      width: 16rem;
+      width: 15rem;
+      margin: 0;
+      padding: 0;
     }
 
     .ol-palette > div {

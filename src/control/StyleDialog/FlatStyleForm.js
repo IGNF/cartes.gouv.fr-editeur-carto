@@ -6,35 +6,57 @@ import InputNumber from "./InputNumber.js"
 import DefaultInputStyle from "./DefaultInputStyle.js";
 import CustomSelect from "./CustomSelect.js";
 import SelectIcons from "./SelectIcons.js";
-import SelectPattern from "./SelectPattern.js";
+import CustomSelectGrid from "./CustomSelectGrid.js";
 
 /**
- * @typedef {Object} InputConfig
- * @property {HTMLElement} input - L'élément input HTML
- * @property {string} label - Le label de l'input
- * @property {string} property - La propriété flat style correspondante
+ * @typedef {Object} InputConfig Configuration pour un type input
+ * @property {String} label Le label de l'input
+ * @property {String} property La propriété flat style correspondante
+ * @property {String|Object} type Le type de l'input. Peut aussi être un type `select`, auquel cas l'élément ajouté est un élément select.
+ * Peut être un objet avec une methode getInput()/getElement() pour les inputs personnalisés
+ * @property {Object<String, String>} options Les options du select (valeur: libellé)
+ * @property {String} label Le label de l'input
  */
 
 /**
  * @typedef {Object} SelectConfig
- * @property {HTMLSelectElement} select - L'élément select HTML
- * @property {string} label - Le label du select
- * @property {string} property - La propriété flat style correspondante
- * @property {Object<string, string>} options - Les options du select (valeur: libellé)
+ * @property {HTMLSelectElement} select L'élément select HTML
+ * @property {String} label Le label du select
+ * @property {String} property La propriété flat style correspondante
+ * @property {Object<String, String>} options Les options du select (valeur: libellé)
  */
 
+/**
+ * @typedef {Object} FlatStyleFormConfig Configuration d'un formulaire de style.
+ * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
+ */
+
+/**
+ * Classe représentant un formulaire de style.
+ * Les inputs correspondant sont ajoutés via les méthodes suivantes :
+ * 
+ * - `addInput` : ajoute un élément input
+ * - `addSelect` : ajoute un élément select
+ * - `addCustomInput` : ajoute un input de type InputNumber (@see {@link InputNumber})
+ * - `addDefaultInput` : ajoute un input de type DefaultInputStyle (@see {@link DefaultInputStyle})
+ * - `addCustomSelect` : ajoute un input d'un type différent en fonction du paramètre type :
+ *   - Pour un type `icon`, ajoute un input de type SelectIcons (@see {@link SelectIcons})
+ *   - Sinon, ajoute un input de type CustomSelect (@see {@link CustomSelect})
+ * 
+ * @extends ControlExtended
+ */
 class FlatStyleForm extends ControlExtended {
 
   /**
    * Constructeur du contrôle FlatStyleForm
-   * @param {Object} options - Options du contrôle
+   * @param {FlatStyleFormConfig} options - Options du contrôle
    */
   constructor(options = {}) {
     super(options);
 
     /**
      * Collection des inputs indexés par leur propriété
-     * @type {Map<string, InputConfig>}
+     * @type {Map<String, InputConfig>}
      */
     this.inputs = new Map();
 
@@ -70,8 +92,8 @@ class FlatStyleForm extends ControlExtended {
   }
 
   /**
-   * Gestionnaire de soumission du formulaire
-   * Récupère les valeurs de tous les inputs et leurs propriétés associées
+   * Gestionnaire de soumission du formulaire.
+   * Récupère les valeurs de tous les inputs et leurs propriétés associées.
    */
   onSubmit() {
     const values = {};
@@ -116,11 +138,11 @@ class FlatStyleForm extends ControlExtended {
 
   /**
    * Ajoute un input au formulaire
-   * @param {string} label - Le libellé de l'input
-   * @param {string} property - La propriété flat style correspondante
-   * @param {string|Object} type - Le type d'input (par défaut: 'text') ou objet avec une methode getInput()/getElement() pour les inputs personnalisés
-   * @param {Object<string, string>} options - Les options du select (si type='select')
-   * @param {string} placeholder - Le placeholder (si type='select')
+   * @param {String} label - Le libellé de l'input
+   * @param {String} property - La propriété flat style correspondante
+   * @param {String|Object} type - Le type d'input (par défaut: 'text') ou objet avec une methode getInput()/getElement() pour les inputs personnalisés
+   * @param {Object<String, String>} options - Les options du select (si type='select')
+   * @param {String} placeholder - Le placeholder (si type='select')
    * @returns {HTMLInputElement|HTMLSelectElement} L'élément input ou select créé
    */
   addInput(label, property, type = 'text', options = {}, placeholder) {
@@ -189,9 +211,8 @@ class FlatStyleForm extends ControlExtended {
     container.appendChild(labelElement);
     if (userInput) {
       container.appendChild(element);
-    } else {
-      container.appendChild(input);
-    }
+    } 
+    container.appendChild(input);
     container.appendChild(messagesContainer);
 
     // Ajouter le conteneur au formulaire
@@ -210,7 +231,7 @@ class FlatStyleForm extends ControlExtended {
 
   /**
    * Ajoute une séparation visuelle (break) au formulaire
-   * @param {string} property - La propriété 
+   * @param {String} property - La propriété 
    * @returns {Element}
    */
   addBreak(property) {
@@ -223,10 +244,10 @@ class FlatStyleForm extends ControlExtended {
 
   /**
    * Ajoute un select au formulaire (méthode privée)
-   * @param {string} label - Le libellé du select
-   * @param {string} property - La propriété flat style correspondante
-   * @param {Object<string, string>} options - Les options du select (valeur: libellé)
-   * @param {string} placeholder - Le texte du placeholder (par défaut: 'Sélectionnez une option')
+   * @param {String} label - Le libellé du select
+   * @param {String} property - La propriété flat style correspondante
+   * @param {Object<String, String>} options - Les options du select (valeur: libellé)
+   * @param {String} placeholder - Le texte du placeholder (par défaut: 'Sélectionnez une option')
    * @returns {HTMLSelectElement} L'élément select créé
    * @private
    */
@@ -343,7 +364,7 @@ class FlatStyleForm extends ControlExtended {
       inputNumber = new SelectIcons(options);
     }
     else if (options.type === "pattern") {
-      inputNumber = new SelectPattern(options);
+      inputNumber = new CustomSelectGrid(options);
     }
     else {
       inputNumber = new CustomSelect(options);
@@ -367,7 +388,7 @@ class FlatStyleForm extends ControlExtended {
 
   /**
    * Récupère un input par sa propriété
-   * @param {string} property - Le nom de la propriété
+   * @param {String} property - Le nom de la propriété
    * @returns {InputConfig|undefined} La configuration de l'input ou undefined si non trouvé
    */
   getInput(property) {

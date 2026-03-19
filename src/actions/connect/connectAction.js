@@ -99,6 +99,12 @@ const connectAction = new Action({
     'aria-controls': introDialog.getId(),
     callback: onConnect
   }, {
+    label: 'Accéder au service (provisoire)',
+    className: 'disconnected',
+    kind: 1,
+    close: true,
+    callback: closeDialog
+  },{
     label: 'Voir mes cartes',
     className: 'view connected',
     kind: 1,

@@ -49,17 +49,15 @@ styleForm.addBreak('point-symbol');
 
 // POLYGONE //
 
-styleForm.addInput('Couleur', 'fill-color', new InputColor());
-styleForm.addBreak('fill-style');
 
 // const patternObject = new SelectPattern();
 // patternObject.setFlatStyleForm(styleForm);
 
-styleForm.addCustomSelect({
+const inputPattern = styleForm.addCustomSelect({
   label: 'Motif',
   property: 'fill-pattern-config',
   options: {
-    "": "Rempli",
+    "": "Plein",
     "hatch;0": "Lignes verticales",
     "hatch;90": "Lignes horizontales",
     "hatch;45": "Diagonales (droite)",
@@ -74,12 +72,30 @@ styleForm.addCustomSelect({
   },
   type: "pattern"
 });
-styleForm.addInput('Fond', 'fill-pattern-color', new InputColor());
-styleForm.addCustomInput({
+
+styleForm.addInput('Couleur', 'fill-color', new InputColor());
+
+const inputFillSize = styleForm.addCustomInput({
   label: 'Taille',
   property: 'fill-pattern-scale',
 });
+
+styleForm.addBreak('fill-style');
+const inputFillColor = new InputColor();
+styleForm.addInput('Fond', 'fill-pattern-color', inputFillColor);
 styleForm.addBreak('fill-patern');
+
+/* Disable pattern options when no patter */
+inputPattern.input.addEventListener('change', e => {
+  if (e.target.value) {
+    inputFillColor.disable(false);  
+    inputFillSize.input.disabled = false;
+  } else {
+    inputFillColor.disable(true);  
+    inputFillSize.input.disabled = true;
+  }
+});
+
 
 // LIGNE / POLYGONE //
 

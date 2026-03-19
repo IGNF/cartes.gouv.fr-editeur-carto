@@ -407,7 +407,7 @@ class CustomSelect extends DefaultInputStyle {
     this.optionsContainer.style.removeProperty("top");
     this.optionsContainer.style.removeProperty("left");
     if (this.open) {
-      const { height, top, bottom, left } = this.optionsContainer.getBoundingClientRect();
+      const { height, top, bottom } = this.optionsContainer.getBoundingClientRect();
       const btnPos = this.inputContainer.getBoundingClientRect();
 
       // Vérifie la hauteur de l'élément
