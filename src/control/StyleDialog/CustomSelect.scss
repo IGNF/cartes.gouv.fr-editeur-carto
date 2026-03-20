@@ -172,7 +172,7 @@
     &[data-value='#0000000'],
     &[data-value=''],
     &[data-value=' '] {
-       > span {
+      > span {
         background-color: var(--background-default-grey);
         background-image: url('/icon/StyleDialog/sans.svg');
         background-repeat: no-repeat;
@@ -193,6 +193,7 @@
       }
       &[data-value=''] > span {
         background-image: unset;
+        border: unset;
         -webkit-mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
         mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
       }
@@ -218,6 +219,7 @@
       }
       &[data-value=''] > span {
         background-image: unset;
+        border: unset;
         -webkit-mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
         mask-image: url('/icon/StyleDialog/arrow/continuous.svg');
       }
@@ -237,8 +239,9 @@
 
     // Terminaison
     &[data-type='form'] {
-      &:not([data-value=none]) > span {
+      &:not([data-value='none']) > span {
         background-color: var(--text-label-grey);
+        border-radius: unset;
       }
       &[data-value='marker'] > span {
         -webkit-mask-image: url('/icon/StyleDialog/form/form-marker.svg');
@@ -260,8 +263,27 @@
 
     // Motif
     &[data-type='pattern'] {
-      > span {
-        border: 1px solid var(--border-default-grey);
+      &:not([data-value='']) > span {
+        // On utilise before et after pour afficher le masque en premier lieu
+        &::before {
+          background-color: var(--text-label-grey);
+          content: '';
+          display: block;
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          border-radius: 0.25rem;
+        }
+        // Et une bordure dessus (border et mask ne fonctionnent pas ensemble)
+        &::after {
+          content: '';
+          display: block;
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border: 1px solid var(--border-default-grey);
+          border-radius: 0.25rem;
+        }
       }
       &[data-value=''] > span {
         background-color: var(--text-label-grey);
@@ -272,47 +294,48 @@
         background-size: unset;
         // Hack des border de 1px pour ne pas voir de couleur sur les angles
         border: unset;
-        box-shadow: inset 1px 0 var(--border-default-grey),
-         inset 0 1px var(--border-default-grey),
-         inset -1px 0 var(--border-default-grey),
-         inset 0 -1px var(--border-default-grey),
-         inset 3px 0 var(--background-default-grey),
-         inset 0 3px var(--background-default-grey),
-         inset -3px 0 var(--background-default-grey),
-         inset 0 -3px var(--background-default-grey);
+        box-shadow:
+          inset 1px 0 var(--border-default-grey),
+          inset 0 1px var(--border-default-grey),
+          inset -1px 0 var(--border-default-grey),
+          inset 0 -1px var(--border-default-grey),
+          inset 3px 0 var(--background-default-grey),
+          inset 0 3px var(--background-default-grey),
+          inset -3px 0 var(--background-default-grey),
+          inset 0 -3px var(--background-default-grey);
       }
-      &[data-value='hatch;0'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/vertical.svg');
+      &[data-value='hatch;0'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/vertical.svg');
       }
-      &[data-value='hatch;90'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/horizontal.svg');
+      &[data-value='hatch;90'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/horizontal.svg');
       }
-      &[data-value='hatch;45'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/right.svg');
+      &[data-value='hatch;45'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/right.svg');
       }
-      &[data-value='hatch;135'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/left.svg');
+      &[data-value='hatch;135'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/left.svg');
       }
-      &[data-value='cross;1'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/cross.svg');
+      &[data-value='cross;1'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/cross.svg');
       }
-      &[data-value='dot;1'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/dot.svg');
+      &[data-value='dot;1'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/dot.svg');
       }
-      &[data-value='tile;1'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/tile.svg');
+      &[data-value='tile;1'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/tile.svg');
       }
-      &[data-value='caps'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/caps.svg');
+      &[data-value='caps'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/caps.svg');
       }
-      &[data-value='crosses'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/crosses.svg');
+      &[data-value='crosses'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/crosses.svg');
       }
-      &[data-value='wave'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/wave.svg');
+      &[data-value='wave'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/wave.svg');
       }
-      &[data-value='forest2'] > span  {
-        background-image: url('/icon/StyleDialog/pattern/forest2.svg');
+      &[data-value='forest2'] > span::before {
+        mask-image: url('/icon/StyleDialog/pattern/forest2.svg');
       }
     }
 
