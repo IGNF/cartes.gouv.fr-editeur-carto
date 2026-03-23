@@ -1,0 +1,9 @@
+[data-role="map"][data-drop]:after {
+  content: "";
+  inset: 0;
+  border: 0.5rem dashed var(--background-active-blue-france-active);
+  position: absolute;
+  box-sizing: border-box;
+  z-index: 9999;
+  pointer-events: none;
+}
