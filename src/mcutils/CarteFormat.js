@@ -30,7 +30,6 @@ class CarteFormat extends BaseFormat {
    */
   read(carte, options) {
     const v4 =  (options.version > 3);
-    console.log('version', options.version, v4)
     // upgradeCarte(options);
     super.read(carte, options);
     // Update layer styles to V4 format
