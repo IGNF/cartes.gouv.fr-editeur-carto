@@ -7,7 +7,7 @@ import api from 'mcutils/api/api.js';
 import { isInertAvailable, setUser } from '../../charte/utils.js';
 import carte from '../../carte.js';
 import charte from '../../charte/charte.js';
-
+import modal from '../../dialogs/modal.js';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -110,7 +110,10 @@ const connectAction = new Action({
     kind: 1,
     markup: 'a',
     href: '#',
-    callback: closeDialog
+    callback: e => {
+      closeDialog(e);
+      Action.open(modal.getId(), 'open-map');
+    }
   }, {
     label: 'Créer une carte',
     className: 'create connected fr-icon-arrow-right-s-line fr-btn--icon-right',

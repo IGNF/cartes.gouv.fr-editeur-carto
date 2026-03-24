@@ -69,24 +69,32 @@ class Action {
   }
 
   /** Open 
-   * @package {Event} e - Événement du clic
+   * @param {Event || string} e - Événement du clic ou dialog id
+   * @param {Action} action - Action à ouvrir
+   * @param {boolean} pressed - Si l'action est un toggle, indique si le toggle est activé ou non
    * @static
    */
-  static open(e) {
+  static open(e, action, open = null) {
+    let dialogId;
     // Pour gérer le cas du toggle
-    const target = e.target || e.detail.target;
+    if (e.target) {
+      const target = e.target || e.detail.target;
+      dialogId = target.getAttribute('aria-controls');
+      action = Action.getAction(target.dataset.action);
+      open = target.ariaPressed;
+    } else {
+      // Cas d'une ouverture classique
+      dialogId = e;
+      action = Action.getAction(action);
+    }
 
-    const dialogId = target.getAttribute('aria-controls');
-    const pressed = target.ariaPressed;
-
-    const action = Action.getAction(target.dataset.action);
     const dialog = Dialog.getDialog(dialogId);
     if (!dialog || !action) return;
 
-    if (pressed === false || pressed === 'false') {
+    if (open === false || open === 'false') {
       dialog.close();
     } else {
-      dialog.setAction(action);
+      dialog.setAction(action, !e.target);
     }
   }
 

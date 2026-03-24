@@ -5,7 +5,6 @@ import content from './saveMap.html?raw';
 import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj'
 
-
 let GPFThemes = [];
 
 /**
@@ -173,5 +172,7 @@ const saveMapAction = new Action({
   ],
   onOpen: onOpen
 });
+
+console.log('saveMapAction', saveMapAction);
 
 export default saveMapAction;
