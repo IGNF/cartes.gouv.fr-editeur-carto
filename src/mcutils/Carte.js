@@ -81,6 +81,21 @@ class GPPCarte extends Carte {
     });
   }
 
+  /**
+   * Get Carte title
+   * @param {boolean} noTitle if true, return empty string if no title is set (instead of "Carte sans titre")
+   * @returns {string}
+   */
+  getTitle(noTitle=false) {
+    let title = '';
+    if (this.get('atlas')) {
+      title = this.get('atlas').title;
+    } else {
+      title = this.get('title')
+    }
+    return title || (noTitle ? '' : 'Carte sans titre');
+  }
+
   /** Add a new control
    * @param {string} name
    */

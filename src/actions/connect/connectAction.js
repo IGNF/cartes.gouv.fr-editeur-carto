@@ -112,7 +112,7 @@ const connectAction = new Action({
     href: '#',
     callback: e => {
       closeDialog(e);
-      Action.open(modal.getId(), 'open-map');
+      Action.open(modal, 'open-map');
     }
   }, {
     label: 'Créer une carte',

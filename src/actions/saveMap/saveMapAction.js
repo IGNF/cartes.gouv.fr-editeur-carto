@@ -4,6 +4,8 @@ import api from 'mcutils/api/api.js';
 import content from './saveMap.html?raw';
 import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj'
+import notification from '../../control/Notification/notification.js';
+import { addMessage } from '../../utils/message.js';
 
 let GPFThemes = [];
 
@@ -62,6 +64,20 @@ function addThemes(themes, select) {
 
 /** Save current Carte to server */
 function saveMap() {
+  // Input values
+  const inputName = dialog.querySelector('[data-field="title"]');
+  const select = dialog.querySelector('[data-field="theme"]');
+  const inputDescription = dialog.querySelector('[data-field="description"]');
+  // Check mandatory
+  if (!inputName.value) {
+    addMessage(inputName, 'Le nom de la carte est obligatoire...', { type: 'error' });
+    return;
+  }
+  if (!select.value) {
+    addMessage(select, 'Le thème est obligatoire...', { type: 'error' });
+    return;
+  }
+
   let metadata = carte.get('atlas');
   metadata.type = 'macarte';
   metadata.active = true;
@@ -72,9 +88,6 @@ function saveMap() {
     carte.getMap().getView().getProjection(), 
     'EPSG:4326'
   );
-  const inputName = dialog.querySelector('[data-field="title"]');
-  const select = dialog.querySelector('[data-field="theme"]');
-  const inputDescription = dialog.querySelector('[data-field="description"]');
   const toUpdate = {};
   if (metadata.title !== inputName.value) {
     toUpdate.title = inputName.value;
@@ -104,11 +117,15 @@ function saveMap() {
     function onpost(response) {
       if (response.status == 401) {
         // Connect and iterate
-        connectDialog(postMap);
+        // connectAction().then(postMap);
+        console.error('Unauthorized, please login to save the map');
+        notification.error('Vous devez être connecté pour enregistrer une carte...');
       } else if (response.status == 418) {
         console.error('Map size limit exceeded');
+        notification.error('La taille de la carte dépasse la limite autorisée par le serveur...');
       } else if (response.status) {
         console.error('Error saving map', response);
+        notification.error('Une erreur est survenue lors de l\'enregistrement de la carte...' + (response.message ? ` (${response.message})` : ''));
       } else {
         // Update id
         if (response.view_id) {
@@ -118,9 +135,11 @@ function saveMap() {
         if (!metadata.edit_id) {
           carte.set('atlas', response);
         }
-        console.log('La carte a bien été enregistrée...')
+        notification.info('La carte a bien été enregistrée...')
         carte.dispatchEvent({ type: 'save' })
       }
+      // Close dialog
+      dialog.close();
     }
     function post() {
       console.log('Posting map...', metadata, data);
@@ -138,8 +157,7 @@ function saveMap() {
       }
     }
     // Test size
-    post();
-    /*
+    /** test size before sending to server, if size is too big, ask user to confirm 
     const size = api.testMapSize(data);
     if (size === true) {
       post();
@@ -148,9 +166,11 @@ function saveMap() {
       console.warn('Map size (' + size + ' bytes) exceeds the limit allowed by the server');
       post();
     }
-    */
+    /*/
+    post();
+    /**/
   }
-  // Try post the map
+  // Try to post the map
   postMap();
 }
 
@@ -172,7 +192,5 @@ const saveMapAction = new Action({
   ],
   onOpen: onOpen
 });
-
-console.log('saveMapAction', saveMapAction);
 
 export default saveMapAction;
