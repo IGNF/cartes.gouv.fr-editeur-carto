@@ -1,6 +1,7 @@
 import Action from '../Action.js';
 import content from './openMap.html?raw';
 import connectContent from './askConnect.html?raw';
+import loadingContent from './loading.html?raw';
 import loginDialog from '../../dialogs/loginDialog.js';
 import cardTemplate from './cardMapTemplate.html?raw';
 import api from 'mcutils/api/api.js';
@@ -8,6 +9,7 @@ import carte from '../../carte.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import './openMap.scss';
 import htmlToNode from '../../utils/htmlToNode.js';
+import modal from '../../dialogs/modal.js';
 
 const defaultImagePath = 'img/alt-image.png';
 
@@ -28,11 +30,19 @@ const buttons = [
 
 const buttonConnect = [
   {
-    label: "Se connecter",
-    kind: 1,
-    close: false,
-    'aria-controls': loginDialog.getId(),
-    'data-fr-opened': false,
+   label: 'Se connecter',
+   kind: 1,
+   close: true,
+   'data-action': 'login',
+   'aria-controls': loginDialog.getId(),
+   'data-fr-opened': false,
+    callback: (e) => {
+      Action.open(e);
+      console.log(loginDialog)
+      loginDialog.once(loginDialog.selectors.CLOSE_EVENT, () => {
+        Action.open(modal, 'open-map');
+      })
+    }
   }
 ];
 
@@ -50,14 +60,34 @@ let dialog;
  * Dialog utilisé par l'action
  */
 function onOpen(e) {
-  dialog = e.target
+  dialog = e.target;
 
-  if (api.isConnected) {
-    api.getMaps({}, (e) => getUserMaps(e, dialog));
+  const load = () => {
+    dialog.setDialogContent(loadingContent);
+    dialog.setButtons();
+    if (api.isConnected()) {
+      api.getMaps({}, (e) => getUserMaps(e, dialog));
+    } else {
+      dialog.setDialogContent(connectContent);
+      dialog.setButtons(buttonConnect);
+    }
+  }
 
+  // Check if map has changed
+  if (carte.hasChanged()) {
+    dialog.setDialogContent('<p>La carte a été modifiée. Voulez-vous continuer sans enregistrer ?</p>');
+    dialog.setButtons([{
+      label: 'Annuler',
+      kind: 0,
+      close: true
+    }, {
+      label: 'Continuer',
+      kind: 1,
+      close: false,
+      callback: load
+    }]);
   } else {
-    dialog.setDialogContent(connectContent);
-    dialog.setButtons(buttonConnect);
+    load();
   }
 }
 
@@ -68,10 +98,64 @@ function onOpen(e) {
 function getUserMaps(e) {
   const maps = e.maps;
 
-  if (maps && maps.length) {
-    let list = ol_ext_element.create('div', {
+  if (e.error) {
+    if (e.status === 401) {
+      dialog.setDialogContent('<p class="fr-message fr-message--error">Vous devez être connecté pour accéder à vos cartes</p>')
+    } else {
+      dialog.setDialogContent('<p class="fr-message fr-message--error">Impossible de charger les cartes</p>')
+    }
+  } else if (maps && maps.length) {
+    const content = ol_ext_element.create('div', {
       className: 'map-list'
     })
+
+/*
+TODO: ajouter un champ de recherche et
+ outil de filtrage
+*/
+    // Filter liste des cartes en fonction du champ de recherche
+    const filtermap = function() {
+      list.querySelectorAll('.ol-map-card').forEach(card => {
+        const title = card.querySelector('.ol-map-card__title').textContent;
+        const rex = new RegExp(filterInput.value, 'i');
+        if (rex.test(title)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    let tout
+    const filterInput = ol_ext_element.create('input', {
+      className: 'fr-input fr-icon-search-line',
+      id: 'map-filter',
+      placeholder: 'Filtrer les cartes',
+      parent: content,
+      'aria-controls': 'openmap-list',
+      on: {
+        // Filter ono keyup
+        keyup: () => {
+          if (tout) clearTimeout(tout);
+          tout = setTimeout(filtermap, 300);
+        }
+      }
+    })
+    // Icon de recherche dans le champ de recherche
+    ol_ext_element.create('div', {
+      className: 'fr-icon-search-line',
+      role: 'listbox',
+      parent: content,
+    })
+
+
+    const list = ol_ext_element.create('div', {
+      className: 'map-list__list',
+      id: 'openmap',
+      parent: content
+    });
+
+
 
     maps.forEach(map => {
       if (map.type === 'macarte') {
@@ -86,7 +170,7 @@ function getUserMaps(e) {
       }
     });
 
-    dialog.setDialogContent(list)
+    dialog.setDialogContent(content)
 
     dialog.setButtons(buttons)
   } else {

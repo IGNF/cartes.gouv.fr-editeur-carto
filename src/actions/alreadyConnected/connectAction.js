@@ -81,13 +81,20 @@ const connectActionTest = new Action({
     kind: 1,
     markup: 'a',
     href: '#',
-    callback: closeDialog
+    callback: e => {
+      closeDialog(e);
+      carte.dispatchEvent('read');
+      Action.open(modal, 'open-map');
+    }
   }, {
     label: 'Créer une carte',
     className: 'create fr-icon-arrow-right-s-line fr-btn--icon-right',
     kind: 0,
     close: true,
-    callback: closeDialog
+    callback: e => {
+      closeDialog(e);
+      carte.dispatchEvent('read');
+    }
   }],
   onOpen: onOpen
 });

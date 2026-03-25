@@ -6,6 +6,8 @@ import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj'
 import notification from '../../control/Notification/notification.js';
 import { addMessage } from '../../utils/message.js';
+import savingContent from './saving.html?raw';
+
 
 let GPFThemes = [];
 
@@ -63,7 +65,7 @@ function addThemes(themes, select) {
 }
 
 /** Save current Carte to server */
-function saveMap() {
+function saveMap(e) {
   // Input values
   const inputName = dialog.querySelector('[data-field="title"]');
   const select = dialog.querySelector('[data-field="theme"]');
@@ -71,10 +73,12 @@ function saveMap() {
   // Check mandatory
   if (!inputName.value) {
     addMessage(inputName, 'Le nom de la carte est obligatoire...', { type: 'error' });
+    inputName.focus();
     return;
   }
   if (!select.value) {
     addMessage(select, 'Le thème est obligatoire...', { type: 'error' });
+    select.focus();
     return;
   }
 
@@ -143,6 +147,8 @@ function saveMap() {
     }
     function post() {
       console.log('Posting map...', metadata, data);
+      dialog.setDialogContent(savingContent);
+      dialog.setButtons();
       // Post or update
       if (metadata.edit_id) {
         if (Object.keys(toUpdate).length) {

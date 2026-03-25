@@ -1,3 +1,4 @@
+import carte from '../../carte';
 import './dropMap.css'
 
 // Drop zone
@@ -50,7 +51,6 @@ function loadFiles(files) {
     // Load carte
     reader.onload = function (e) {
       const json = JSON.parse(reader.result);
-      console.log(json)
       carte.read(json);
     }
     // Error handler : corrupted file content, etc ... : do not add it to the map

@@ -112,6 +112,7 @@ const connectAction = new Action({
     href: '#',
     callback: e => {
       closeDialog(e);
+      carte.dispatchEvent('read');
       Action.open(modal, 'open-map');
     }
   }, {
@@ -119,7 +120,10 @@ const connectAction = new Action({
     className: 'create connected fr-icon-arrow-right-s-line fr-btn--icon-right',
     kind: 0,
     close: true,
-    callback: closeDialog
+    callback: e => {
+      closeDialog(e);
+      carte.dispatchEvent('read');
+    }
   }],
   onOpen: onOpen
 });

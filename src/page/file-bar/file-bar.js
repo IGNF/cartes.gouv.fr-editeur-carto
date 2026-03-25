@@ -27,6 +27,7 @@ let previewMap = function () {
 
 let exportMap = function (e) {
   const data = carte.write(e.shiftKey);
+  data.param.titre = data.param.titre || carte.getTitle();
 
   const blob = new Blob([JSON.stringify(data, null, e.ctrlKey ? undefined : ' ')], { type: "text/plain;charset=utf-8" });
   FileSaver.saveAs(blob, "carte.carte");
