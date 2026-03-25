@@ -5,6 +5,7 @@ import {
 } from 'geopf-extensions-openlayers/src/index.js';
 import SelectMultiple from 'mcutils/ol/SelectMultiple.js';
 import {gpfStyleFn, gpfShownStyleFn} from './gpfStyleFn.js';
+import './gpfStyleFn.js';
 
 import CarteFormat from './CarteFormat.js';
 

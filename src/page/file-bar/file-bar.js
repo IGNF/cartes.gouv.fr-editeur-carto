@@ -193,6 +193,7 @@ function setTile() {
 }
 carte.on('change:title', setTile)
 carte.on('read', setTile);
+carte.on('save', setTile);
 
 // Barre principale
 let filebar = new Bar({
