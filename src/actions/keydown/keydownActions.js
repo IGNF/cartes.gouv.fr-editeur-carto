@@ -6,9 +6,11 @@ import modal from '../../dialogs/modal.js';
  */
 document.addEventListener('keydown', evt => {
   // Ignore if focused on input or modal is open
+  /*
   const isInput = evt.target.tagName === "INPUT" 
     || evt.target.tagName === "TEXTAREA" 
     || evt.target.isContentEditable;
+  */
   const isModalOpen = document.querySelector('[data-fr-js-modal="true"]:open') !== null
     || document.querySelector("dialog:modal") !== null;
 

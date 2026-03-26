@@ -3,7 +3,7 @@ import carte from '../../carte.js';
 import api from 'mcutils/api/api.js';
 import content from './saveMap.html?raw';
 import ol_ext_element from 'ol-ext/util/element.js';
-import { transformExtent } from 'ol/proj'
+import { transformExtent } from 'ol/proj.js'
 import notification from '../../control/Notification/notification.js';
 import { addMessage } from '../../utils/message.js';
 import savingContent from './saving.html?raw';
@@ -65,7 +65,7 @@ function addThemes(themes, select) {
 }
 
 /** Save current Carte to server */
-function saveMap(e) {
+function saveMap() {
   // Input values
   const inputName = dialog.querySelector('[data-field="title"]');
   const select = dialog.querySelector('[data-field="theme"]');
@@ -152,7 +152,7 @@ function saveMap(e) {
       // Post or update
       if (metadata.edit_id) {
         if (Object.keys(toUpdate).length) {
-          api.updateMap(metadata.edit_id, toUpdate, e => {
+          api.updateMap(metadata.edit_id, toUpdate, () => {
             api.updateMapFile(metadata.edit_id, data, onpost);
           });
         } else {

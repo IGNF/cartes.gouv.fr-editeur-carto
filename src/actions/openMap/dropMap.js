@@ -1,4 +1,4 @@
-import carte from '../../carte';
+import carte from '../../carte.js';
 import './dropMap.css'
 
 // Drop zone
@@ -7,7 +7,7 @@ const dropZone = document.body.querySelector('[data-role="map"]');
 
 // Show drop zone on file drag
 ['dragenter', 'dragover'].forEach(evt => {
-  dropZone.addEventListener(evt, e => {
+  dropZone.addEventListener(evt, () => {
     clearTimeout(dragtout);
     dropZone.dataset.drop = '';
   })
@@ -49,7 +49,7 @@ function loadFiles(files) {
   if (file.name.endsWith('.carte')) {
     const reader = new FileReader();
     // Load carte
-    reader.onload = function (e) {
+    reader.onload = function () {
       const json = JSON.parse(reader.result);
       carte.read(json);
     }

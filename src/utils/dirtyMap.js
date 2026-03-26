@@ -1,4 +1,4 @@
-import carte from "../carte";
+import carte from "../carte.js";
 
 // Prevent unload
 let dirty = false;

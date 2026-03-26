@@ -5,6 +5,7 @@ import '../connect/connect.scss';
 import { isInertAvailable } from '../../charte/utils.js';
 import carte from '../../carte.js';
 import charte from '../../charte/charte.js';
+import modal from '../../dialogs/modal.js';
 
 
 /**
