@@ -5,6 +5,9 @@ import {
 } from 'geopf-extensions-openlayers/src/index.js';
 import SelectMultiple from 'mcutils/ol/SelectMultiple.js';
 import {gpfStyleFn, gpfShownStyleFn} from './gpfStyleFn.js';
+import './gpfStyleFn.js';
+
+import CarteFormat from './CarteFormat.js';
 
 /** GPP Carte overwrite Carte options / controls
  */
@@ -79,6 +82,21 @@ class GPPCarte extends Carte {
     });
   }
 
+  /**
+   * Get Carte title
+   * @param {boolean} noTitle if true, return empty string if no title is set (instead of "Carte sans titre")
+   * @returns {string}
+   */
+  getTitle(noTitle=false) {
+    let title = '';
+    if (this.get('atlas')) {
+      title = this.get('atlas').title;
+    } else {
+      title = this.get('title')
+    }
+    return title || (noTitle ? '' : 'Carte sans titre');
+  }
+
   /** Add a new control
    * @param {string} name
    */
@@ -145,6 +163,54 @@ class GPPCarte extends Carte {
       }
     }
   }
+
+  /** Write
+   * @param {boolean} uncompressed
+   * @returns {Object} json object
+   */
+  write(uncompressed) {
+    const format = new CarteFormat;
+    return format.write(this, uncompressed);
+  }
+
+  /** Read the carte (using CarteFormat)
+   * @param {string|*} options carte url or carte options object
+   * @param {AtlasDef} [atlas={}]
+   */
+  read(options, atlas) {
+    if (typeof(options) === 'string') {
+      fetch(options)
+        .then(resp => {
+          return resp.json();
+        })
+        .then(json => {
+          this.read(json, atlas);
+        })
+        .catch(e => {
+          this.dispatchEvent(e);
+        });
+
+      return;
+    }
+
+    // Start reading
+    this.dispatchEvent({ type: 'read:start' });
+
+    // set atlas definition
+    this.set('atlas', atlas || {});
+    
+    // Read carte
+    const format = new CarteFormat;
+    format.read(this, options);
+    // The title
+    this._controls.title.setTitle(this.map.get('title'));
+
+    // Ready
+    this.setReady();
+    this.dispatchEvent({
+      type: 'read'
+    });
+  };
 }
 
 export default GPPCarte

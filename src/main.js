@@ -5,6 +5,8 @@ import './actions/actions.js'
 import loadFonts from './mcutils/loadFonts.js'
 
 import carte from './carte.js'
+import './utils/dirtyMap.js';
+
 import api from './mcutils/api.js'
 import introDialog from './dialogs/introDialog.js'
 import connectAction from './actions/connect/connectAction.js'

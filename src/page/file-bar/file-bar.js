@@ -1,8 +1,8 @@
 import carte from '../../carte.js';
-
 import modal from '../../dialogs/modal.js';
 
 import './file-bar.scss';
+
 // Download
 import FileSaver from 'file-saver';
 
@@ -27,6 +27,7 @@ let previewMap = function () {
 
 let exportMap = function (e) {
   const data = carte.write(e.shiftKey);
+  data.param.titre = data.param.titre || carte.getTitle();
 
   const blob = new Blob([JSON.stringify(data, null, e.ctrlKey ? undefined : ' ')], { type: "text/plain;charset=utf-8" });
   FileSaver.saveAs(blob, "carte.carte");
@@ -183,22 +184,16 @@ let mapTitle = new TextButton({
 });
 
 // Mise à jour du titre
-carte.on('change:title', (e) => {
-  mapTitle.setHtml(e.target.get(e.key))
-  mapTitle.setTitle(e.target.get(e.key))
-})
-
-carte.on('read', (e) => {
-  let title;
-  if (Object.keys(e.target.get('atlas')).length === 0) {
-    title = e.target.get('title') || 'Carte sans titre';
-  } else {
-    title = e.target.getTitle();
-  }
-  carte.set('title', title)
+function setTile() {
+  let title = carte.getTitle();
   mapTitle.setHtml(title)
   mapTitle.setTitle(title)
-})
+  fileName.setHtml(title)
+  fileName.setTitle(title)
+}
+carte.on('change:title', setTile)
+carte.on('read', setTile);
+carte.on('save', setTile);
 
 // Barre principale
 let filebar = new Bar({

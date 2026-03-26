@@ -66,8 +66,9 @@ class Modal extends Dialog {
    * du dialog.
    * 
    * @param {function(Modal)} onOpen Fonction à l'ouverture du dialog.
+   * @param {boolean} force Force l'ouverture de la modale même si l'action est déjà liée à un evenement
    */
-  setOnOpen(onOpen) {
+  setOnOpen(onOpen, force = false) {
     super.setOnOpen(onOpen);
 
     // Vérifie si la modale était ouverte (elle s'ouvre avant
@@ -75,7 +76,10 @@ class Modal extends Dialog {
     // Sinon elle s'ouvre après)
     let dsfr = window.dsfr;
     if (typeof dsfr === 'function') {
-      let modal = dsfr(this.getDialog()).modal
+      let modal = dsfr(this.getDialog()).modal;
+      if (force) {
+        modal.disclose();
+      }
       if (modal && modal.isDisclosed) {
         // Envoie un événement pour l'ouverture du dialog
         this.dispatchEvent({

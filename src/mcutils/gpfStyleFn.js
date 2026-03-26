@@ -2,7 +2,7 @@ import { getSelectStyleFn, getShownFeatureStyleFn } from 'mcutils/style/ignStyle
 import CircleStyle from 'ol/style/Circle.js';
 import Stroke from 'ol/style/Stroke.js';
 import Fill from 'ol/style/Fill.js';
-import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
+import { defaultIgnStyle, ignStyleDef } from 'mcutils/style/ignStyleFn.js';
 
 import ol_style_FontSymbol from 'ol-ext/style/FontSymbol.js'
 
@@ -14,19 +14,27 @@ ol_style_FontSymbol.addDefs({
 }, {
   "std-circle": { char: "\u25cf", "font": "Verdana, Helvetica, Arial, sans-serif", "theme": "standerd", name: "cercle", "search": "" },
 });
-window.defStyle = defaultIgnStyle;
 
 /* Overwrite defaultIgnStyle for GPF */
 defaultIgnStyle.pointRadius = 19;
 defaultIgnStyle.pointGlyph = " ";
 defaultIgnStyle.pointForm = "marker",
-defaultIgnStyle.symbolColor = "#ffffff";
-defaultIgnStyle.pointColor = "#000091";
-defaultIgnStyle.pointStrokeColor = "#ffffff";
+defaultIgnStyle.symbolColor = "rgba(255, 255, 255, 1)"; // "#ffffff";
+defaultIgnStyle.pointColor = "rgba(0, 0, 145, 1)"; // "#000091";
+defaultIgnStyle.pointStrokeColor = "rgba(255, 255, 255, 1)"; // "#ffffff";
 defaultIgnStyle.pointStrokeWidth = 2;
-defaultIgnStyle.strokeColor = '#33B1FF';
+defaultIgnStyle.strokeColor = "rgba(51, 177, 255, 1)"; // '#33B1FF';
 defaultIgnStyle.strokeWidth = 4;
-defaultIgnStyle.fillColor = "rgba(51, 177, 255, .5)";
+defaultIgnStyle.fillColor = "rgba(51, 177, 255, 0.5)"; // "rgba(51, 177, 255, .5)";
+defaultIgnStyle.textColor = "rgba(0, 0, 0, 1)"; 
+defaultIgnStyle.fillColorPattern = "rgba(0, 0, 0, 0)";
+
+// Update default style for GPF
+for (let k in defaultIgnStyle) {
+  //Old version
+  ignStyleDef[k].defaultV4 = ignStyleDef[k].defaultValue;
+  ignStyleDef[k].defaultValue = defaultIgnStyle[k];
+}
 
 const circle = new CircleStyle({
   stroke : new Stroke({ 

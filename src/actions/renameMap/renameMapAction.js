@@ -18,8 +18,7 @@ let dialog;
 function onOpen(e) {
   dialog = e.target
   let input = dialog.querySelector('[data-field="title"]');
-  let title = carte.get('title') || carte.getMap().get('title');
-  input.value = title ? title : '';
+  input.value = carte.getTitle(true);
 }
 
 function renameMap() {

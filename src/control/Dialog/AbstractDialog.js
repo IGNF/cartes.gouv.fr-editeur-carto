@@ -539,8 +539,9 @@ class AbstractDialog extends BaseObject {
    * du dialog.
    * 
    * @param {Fonction} onOpen Fonction à l'ouverture du dialog.
+   * @param {boolean} force Force l'ouverture de la modale même si l'action est déjà liée à un evenement (pour DSFR)
    */
-  setOnOpen(onOpen) {
+  setOnOpen(onOpen, force = false) {
     this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
     if (typeof onOpen === 'function') {
       this.onOpenFn = onOpen;
@@ -581,8 +582,9 @@ class AbstractDialog extends BaseObject {
 
   /** Lie une action à une modale
    * @param {import('../../actions/Action').default} action
+   * @param {boolean} force Force l'ouverture de la modale même si l'action est déjà liée à un evenement
    */
-  setAction(action) {
+  setAction(action, force) {
     if (this.action && action) {
       this.dispatchEvent({
         type: this.selectors.CHANGE_CONTENT
@@ -603,7 +605,7 @@ class AbstractDialog extends BaseObject {
         buttons: action.buttons,
         items: action.items
       });
-      this.setOnOpen(action.onOpen);
+      this.setOnOpen(action.onOpen, force);
       this.setOnClose(action.onClose);
       this.open();
     }

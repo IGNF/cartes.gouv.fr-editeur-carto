@@ -1,6 +1,25 @@
 .map-list {
   width:100%;
+  position: relative;
 
+  input {
+    padding-right: 2.5rem;
+  }
+  input + div {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .map-list__list {
+    padding: .3rem;
+    max-height: calc(100vh - 30rem);
+    max-height: calc(100svh - 30rem);
+    overflow: auto;
+
+  }
   .ol-map-card {
 
     cursor: pointer;
@@ -12,8 +31,18 @@
     color: var(--text-default-grey);
     --active-tint: var(--active);
 
-    // &__image {
-    // }
+    &__image {
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      border-radius: 0.25rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
 
     &__info {
       display: flex;

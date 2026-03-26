@@ -10,3 +10,6 @@ import './editLayerStyle/editLayerStyleAction.js';
 import './createObject/createObjectAction.js';
 import './measure/measureAction.js';
 import './login/loginAction.js';
+
+import './keydown/keydownActions.js';
+import './openMap/dropMap.js';
