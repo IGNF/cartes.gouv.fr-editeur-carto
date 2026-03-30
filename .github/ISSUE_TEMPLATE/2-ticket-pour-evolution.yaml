@@ -28,8 +28,8 @@ body:
         - En tant que [type d'utilisateur / persona]
         - Je veux [action concrète à réaliser]
         - Afin de [valeur attendue / bénéfice]
-    validations:
-      required: true
+      validations:
+        required: true
   - type: textarea
     id: parcours-recette
     attributes:
