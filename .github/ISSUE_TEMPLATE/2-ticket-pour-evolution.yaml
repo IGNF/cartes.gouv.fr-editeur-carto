@@ -25,11 +25,11 @@ body:
       description: |
         Décrivez précisément le comportement de la nouvelle fonctionnalité.
       placeholder: |
-        - En tant que [type d'utilisateur / persona]
-        - Je veux [action concrète à réaliser]
-        - Afin de [valeur attendue / bénéfice]
-      validations:
-        required: true
+        - En tant que [type d'utilisateur / persona] |
+        - Je veux [action concrète à réaliser] |
+        - Afin de [valeur attendue / bénéfice] |
+    validations:
+      required: true
   - type: textarea
     id: parcours-recette
     attributes:
@@ -37,13 +37,13 @@ body:
       description: |
         Décrivez tous les éléments fonctionnels que l'outil doit apporter pour considérer le ticket comme terminé.
       placeholder: |
-        - [ ] L'utilisateur clique sur "Enregistrer" : une modale s'ouvre
-        - [ ] L'utilisateur saisit un nom (obligatoire), une thématique (obligatoire) et une description (optionnelle)
-        - ...
-        - [ ] L'enregistrement est immédiat
+        - [ ] L'utilisateur clique sur "Enregistrer" : une modale s'ouvre |
+        - [ ] L'utilisateur saisit un nom (obligatoire), une thématique (obligatoire) et une description (optionnelle) |
+        - ... |
+        - [ ] L'enregistrement est immédiat |
         - [ ] L'utilisateur comprend grâce à l'interface si sa carte a bien été enregistrée
-      validations:
-        required: true
+    validations:
+      required: true
   - type: textarea
     id: design
     attributes:
@@ -51,12 +51,12 @@ body:
       description: |
         Décrivez les éléments de design nécéssaire au développement de la fonctionnalité.
       placeholder: |
-        - Composition
-        - Comportement
-        - Contenus
-        - Emplacement
-        - Points de rupture
-        - Raccourcis clavier
+        - Composition |
+        - Comportement |
+        - Contenus |
+        - Emplacement |
+        - Points de rupture |
+        - Raccourcis clavier |
         - Lien Figma
   - type: textarea
     id: solution-technique
@@ -71,7 +71,7 @@ body:
       description: |
         Décrivez quelle valeur cela apporte-t-il à l'utilisateur, et comment le mesurer.
       placeholder: |
-        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses]
+        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses] |
         - Mesure : [Exemple : % d'imports réussis sans erreur, temps moyen de traitement gagné]
   - type: textarea
     id: liens
@@ -80,7 +80,7 @@ body:
       description: |
         Renseignez les liens utiles à l'évolution ou toute autre information utile ne pouvant pas être renseignée dans une autre catégorie.
       placeholder: |
-        - Données de test : [lien]
+        - Données de test : [lien] |
         - Documentation annexe : [lien]
   - type: textarea
     id: historique
