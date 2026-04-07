@@ -1,8 +1,11 @@
 import Action from '../Action.js';
-import content from './shareMap.html?raw';
-import './shareMap.scss';
 import carte from '../../carte.js';
 import config from 'mcutils/config/config.js';
+import modal from '../../dialogs/modal.js';
+
+import content from './shareMap.html?raw';
+import './shareMap.scss';
+
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
@@ -18,11 +21,21 @@ let dialog;
  */
 function onOpen(e) {
   dialog = e.target
+  // Existing carte ?
+  const id = carte.get('id');
+  if (!id) {
+    dialog.querySelector('[data-action="share"]').classList.add('fr-hidden');
+    dialog.querySelector('#share-save-map').addEventListener('click', () => {
+      Action.open(modal, 'save-map');
+    });
+    return;
+  }
+  dialog.querySelector('[data-action="nomap"]').classList.add('fr-hidden');
+  // Add copy event to buttons
   let copyBtns = dialog.querySelectorAll('button.copy');
   copyBtns.forEach(btn => {
     btn.addEventListener('click', copy)
   });
-  console.log('share map opened');
   // Enter map info in the dialog
   const url = config.server + 'carte/' + carte.get('id') + '/' + carte.getTitle();
   dialog.querySelector('#share-link').value = url;
