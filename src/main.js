@@ -2,7 +2,7 @@ import './version.js'
 import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
-import loadFonts from './mcutils/loadFonts.js'
+import loadFonts from 'mcutils/cgouv/loadFonts.js'
 
 import carte from './carte.js'
 import './utils/dirtyMap.js';

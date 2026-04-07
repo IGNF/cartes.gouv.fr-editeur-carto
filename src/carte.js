@@ -5,7 +5,7 @@ import 'geopf-extensions-openlayers/src/packages/CSS/DSFRgeneralWidget.css';
 import 'geopf-extensions-openlayers/css/Dsfr.css';
 
 // Ma Carte
-import Carte from './mcutils/Carte.js';
+import Carte from 'mcutils/cgouv/Carte.js';
 
 import charte from './charte/charte.js';
 
