@@ -6,72 +6,85 @@ projects: ["IGNF/52"]
 type: "Feature"
 body:
   - type: textarea
-    id: job-to-be-done
+    id: context
     attributes:
-      label: 📝 Job to be done (JTBD)
+      label: 📣 1. Contexte produit
       description: |
-        Décrivez la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
+        Décrivez le parcours de base de la fonctionnalité et la tâche générique que l'utilisateur cherche à accomplir, indépendamment de l'outil.
       placeholder: |
-        exemple : Représenter mes données publiques sur une carte pour identifier des zones sous-dotées et ajuster la planification
+        exemple : |
+        ### Parcours concerné |
+        Éditeur -> Barre de gestion -> Enregistrer |
+        Éditeur -> Barre d'étape -> Enregistrer |
+        ### Situation d'usage (JTBD) |
+        L'agent souhaite enregistrer la carte qu'il est en train de créer pour pouvoir l'utiliser ou la modifier plus tard.
   - type: textarea
     id: user-story
     attributes:
-      label: 🎯 User Story
+      label: 🎯 2. User Story
       description: |
         Décrivez précisément le comportement de la nouvelle fonctionnalité.
       placeholder: |
-        - En tant que [type d'utilisateur / persona]
-        - Je veux [action concrète à réaliser]
-        - Afin de [valeur attendue / bénéfice]
+        - En tant que [type d'utilisateur / persona] |
+        - Je veux [action concrète à réaliser] |
+        - Afin de [valeur attendue / bénéfice] |
+    validations:
+      required: true
+  - type: textarea
+    id: parcours-recette
+    attributes:
+      label: ✅ 3. Parcours utilisateur et critères d'acceptation (ce qu'il faut vérifier lors de la recette fonctionnelle)
+      description: |
+        Décrivez tous les éléments fonctionnels que l'outil doit apporter pour considérer le ticket comme terminé.
+      placeholder: |
+        - [ ] L'utilisateur clique sur "Enregistrer" : une modale s'ouvre |
+        - [ ] L'utilisateur saisit un nom (obligatoire), une thématique (obligatoire) et une description (optionnelle) |
+        - ... |
+        - [ ] L'enregistrement est immédiat |
+        - [ ] L'utilisateur comprend grâce à l'interface si sa carte a bien été enregistrée
     validations:
       required: true
   - type: textarea
     id: design
     attributes:
-      label: 🎨 Design
+      label: 🎨 4. Design
       description: |
         Décrivez les éléments de design nécéssaire au développement de la fonctionnalité.
       placeholder: |
-        - Composition
-        - Comportement
-        - Contenus
-        - Emplacement
-        - Points de rupture
+        - Composition |
+        - Comportement |
+        - Contenus |
+        - Emplacement |
+        - Points de rupture |
+        - Raccourcis clavier |
+        - Lien Figma
   - type: textarea
-    id: criteres-d-acceptation
+    id: solution-technique
     attributes:
-      label: ✅ Critères d'acceptation
-      description: >
-        Décrivez les conditions observables qui permettent d'identifier la bonne mise en place de l'US.
-      placeholder: |
-        - [ ] Exemple : Importe de fichiers CSV/Excel possible
-        - [ ] Exemple : Les points apparaissent correctement sur la carte
-        - [ ] Exemple : Le message d'erreur s'affiche si format non conforme
-    validations:
-      required: true
-  - type: textarea
-    id: liens
-    attributes:
-      label: 🔗 Liens
+      label: ⚙️ 5. Solution proposée et contraintes techniques
       description: |
-        Renseignez les liens utiles à l'évolution.
-      placeholder: |
-        - Maquette figma : [lien]
-        - Données de test : [lien]
-        - Documentation annexe : [lien]
+        Décrivez ici la solution technique proposée pour répondre au fonctionnel et/ou les contraintes techniques à prendre en compte
   - type: textarea
     id: impact-attendu
     attributes:
-      label: 📊 impact attendu
-      description: >
-        Décrivez quelle valeur cela apporte-t-il à l'utilisateur, et
-        comment le mesurer.
-      placeholder: >
-        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses]
+      label: 📊 6. impact attendu
+      description: |
+        Décrivez quelle valeur cela apporte-t-il à l'utilisateur, et comment le mesurer.
+      placeholder: |
+        - Valeur utilisateur : [Exemple : Faciliter la décision => l'agent gagne du temps et fiabilise ses analyses] |
         - Mesure : [Exemple : % d'imports réussis sans erreur, temps moyen de traitement gagné]
   - type: textarea
-    id: additional-context
+    id: liens
     attributes:
-      label: 🔧 Autres éléments de contexte
+      label: 🔗 7. Liens et informations supplémentaires
       description: |
-        À remplir par l'équipe technique pour s'assurer que l'US est réalisable.
+        Renseignez les liens utiles à l'évolution ou toute autre information utile ne pouvant pas être renseignée dans une autre catégorie.
+      placeholder: |
+        - Données de test : [lien] |
+        - Documentation annexe : [lien]
+  - type: textarea
+    id: historique
+    attributes:
+      label: 🎥 8. Historique et décisions produit
+      description: |
+        Partie à remplir avant la clôture du ticket. Renseignez ici la synthèse des décisions et informations importantes concernant l'évolution du ticket
