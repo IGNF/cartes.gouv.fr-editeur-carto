@@ -6,3 +6,14 @@
   align-self: stretch;
   margin-bottom: 0.5rem;
 }
+
+[data-action="nomap"] .fr-btns-group {
+  text-align: right;
+  position: relative;
+  top: 2rem;
+  display: block;
+}
+[data-action="nomap"] .fr-btns-group  button {
+  display: inline-block;
+  margin-bottom: 0;
+}

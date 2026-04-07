@@ -25,7 +25,8 @@ function onOpen(e) {
   const id = carte.get('id');
   if (!id) {
     dialog.querySelector('[data-action="share"]').classList.add('fr-hidden');
-    dialog.querySelector('#share-save-map').addEventListener('click', () => {
+    const btn = dialog.querySelector('#share-save-map')
+    btn.addEventListener('click', () => {
       Action.open(modal, 'save-map');
     });
     return;
