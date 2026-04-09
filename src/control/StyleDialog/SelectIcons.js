@@ -1,9 +1,7 @@
 import FontSymbol from 'ol-ext/style/FontSymbol.js';
-import CustomSelectGrid from "./CustomSelectGrid.js";
+import CustomSelectGrid from 'geopf-extensions-openlayers/src/packages/Controls/Input/CustomSelectGrid.js'
 import "./SelectIcons.scss";
-// import SearchEngineBase from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/SearchEngineBase.js";s
-// import DefaultSearchService from "geopf-extensions-openlayers/src/packages/Services/DefaultSearchService.js";
-// import getUid from '../../utils/getUid.js';
+
 /**
  * @typedef {Object} SelectIconsConfig
  * @property {String} label Le label de l'input

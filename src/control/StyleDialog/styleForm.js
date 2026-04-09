@@ -1,12 +1,16 @@
-import FlatStyleForm from './FlatStyleForm.js';
+/**
+ * @file Formulaire pour le style d'un objet
+ */
+
+import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import InputColor from './InputColor.js';
+import SelectIcons from './SelectIcons.js';
 
 // Création du formulaire de style
 const styleForm = new FlatStyleForm();
 
 // POINT //
-
-styleForm.addCustomSelect({
+styleForm.addInput({
   label: 'Forme',
   property: 'point-form',
   type: "form",
@@ -19,32 +23,50 @@ styleForm.addCustomSelect({
   }
 });
 
-styleForm.addInput('Couleur', 'point-color', new InputColor());
+styleForm.addInput({
+  label: 'Couleur',
+  property: 'point-color',
+  input: new InputColor(),
+});
 
-styleForm.addCustomInput({
+styleForm.addInput({
   label: 'Taille',
   labelInfo: '(pt)',
   property: 'point-radius',
+  type: "number",
 });
 
 styleForm.addBreak('point-form');
-styleForm.addInput('Bordure', 'point-stroke-color', new InputColor());
+styleForm.addInput({
+  label: 'Bordure',
+  property: 'point-stroke-color',
+  input: new InputColor()
+});
 
-styleForm.addCustomInput({
+styleForm.addInput({
   label: 'Taille',
   labelInfo: '(pt)',
   property: 'point-stroke-width',
+  type: "number",
 });
 
 styleForm.addBreak('point-stroke');
 
-styleForm.addCustomSelect({
+const inputIcons = new SelectIcons({
   label: 'Symbole',
   property: 'point-glyph',
   type: 'icon',
   fonts: ["remixicon"],
+})
+styleForm.addInput({
+  property: 'point-glyph',
+  input: inputIcons,
 });
-styleForm.addInput('Couleur', 'point-symbol-color', new InputColor());
+styleForm.addInput({
+  label: 'Couleur',
+  property: 'point-symbol-color',
+  input: new InputColor()
+});
 styleForm.addBreak('point-symbol');
 
 // POLYGONE //
@@ -53,7 +75,7 @@ styleForm.addBreak('point-symbol');
 // const patternObject = new SelectPattern();
 // patternObject.setFlatStyleForm(styleForm);
 
-const inputPattern = styleForm.addCustomSelect({
+const inputPattern = styleForm.addInput({
   label: 'Motif',
   property: 'fill-pattern-config',
   options: {
@@ -73,25 +95,34 @@ const inputPattern = styleForm.addCustomSelect({
   type: "pattern"
 });
 
-styleForm.addInput('Couleur', 'fill-color', new InputColor());
+styleForm.addInput({
+  label: 'Couleur',
+  property: 'fill-color',
+  input: new InputColor()
+});
 
-const inputFillSize = styleForm.addCustomInput({
+const inputFillSize = styleForm.addInput({
   label: 'Taille',
   property: 'fill-pattern-scale',
+  type: "number",
 });
 
 styleForm.addBreak('fill-style');
 const inputFillColor = new InputColor();
-styleForm.addInput('Fond', 'fill-pattern-color', inputFillColor);
+styleForm.addInput({
+  label: 'Fond',
+  property: 'fill-pattern-color',
+  input: inputFillColor
+});
 styleForm.addBreak('fill-patern');
 
 /* Disable pattern options when no patter */
 inputPattern.input.addEventListener('change', e => {
   if (e.target.value) {
-    inputFillColor.disable(false);  
+    inputFillColor.disable(false);
     inputFillSize.input.disabled = false;
   } else {
-    inputFillColor.disable(true);  
+    inputFillColor.disable(true);
     inputFillSize.input.disabled = true;
   }
 });
@@ -99,7 +130,7 @@ inputPattern.input.addEventListener('change', e => {
 
 // LIGNE / POLYGONE //
 
-styleForm.addCustomSelect({
+styleForm.addInput({
   label: 'Bordure',
   property: 'stroke-line-dash',
   options: {
@@ -110,17 +141,22 @@ styleForm.addCustomSelect({
   },
   type: "stroke",
 });
-styleForm.addInput('Couleur', 'stroke-color', new InputColor());
-styleForm.addCustomInput({
+styleForm.addInput({
+  label: 'Couleur',
+  property: 'stroke-color',
+  input: new InputColor()
+});
+styleForm.addInput({
   label: 'Taille',
   labelInfo: '(pt)',
   property: 'stroke-width',
+  type: "number",
 });
 
 // LIGNE //
 
 styleForm.addBreak('line-arrow');
-styleForm.addCustomSelect({
+styleForm.addInput({
   label: 'Début',
   // disabled: true,
   property: 'line-arrow-start',
@@ -133,7 +169,7 @@ styleForm.addCustomSelect({
   type: "arrow",
 });
 
-styleForm.addCustomSelect({
+styleForm.addInput({
   label: 'Fin',
   property: 'line-arrow-end',
   options: {
