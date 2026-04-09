@@ -39,7 +39,7 @@ labelForm.addInput({
 
 labelForm.addInput({
   label: 'Taille',
-  labelInfo: '(pt)',
+  labelInfo: '(px)',
   property: 'text-size',
   type: 'number',
 });

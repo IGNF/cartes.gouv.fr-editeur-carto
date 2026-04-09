@@ -31,7 +31,7 @@ styleForm.addInput({
 
 styleForm.addInput({
   label: 'Taille',
-  labelInfo: '(pt)',
+  labelInfo: '(px)',
   property: 'point-radius',
   type: "number",
 });
@@ -45,7 +45,7 @@ styleForm.addInput({
 
 styleForm.addInput({
   label: 'Taille',
-  labelInfo: '(pt)',
+  labelInfo: '(px)',
   property: 'point-stroke-width',
   type: "number",
 });
@@ -148,7 +148,7 @@ styleForm.addInput({
 });
 styleForm.addInput({
   label: 'Taille',
-  labelInfo: '(pt)',
+  labelInfo: '(px)',
   property: 'stroke-width',
   type: "number",
 });
