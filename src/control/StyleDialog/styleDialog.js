@@ -1,17 +1,22 @@
-import Dialog from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js';
+/**
+ * @file Dialogue de style utilisé notamment par le contrôle de dessin
+ */
+
 import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
 import carte from "../../carte.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
+import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
 
 const forms = [styleForm, labelForm];
 
 // Création du Dialog avec navigation tertiaire
-const styleDialog = new Dialog({
+const styleDialog = new StyleDialog({
   id: "style-dialog",
   title: "Dialog",
   position: "left",
+  select: carte.getSelect(),
   onOpen: function () {
     // Initialise les formulaires
     const feature = carte.getSelect().getFeatures().item(0);
@@ -28,33 +33,23 @@ const styleDialog = new Dialog({
     carte.getSelect().getFeatures().clear();
     carte.getSelect().dispatchEvent("select");
   },
-  items: [
+  forms: [
     {
+      form: styleForm,
       label: "Style",
-      content: styleForm.getContent(),
       title: "Configuration du style"
     },
     {
+      form: labelForm,
       label: "Texte",
-      content: labelForm.getContent(),
       title: "Configuration du texte"
     },
-    {
-      label: "Infobulle",
-      content: "<p>Onglet Infobulle</p>",
-      title: "Configuration de l'infobulle"
-    },
-    {
-      label: "Attributs",
-      content: "<p>Onglet Attributs</p>",
-      title: "Configuration des attributs"
-    }
   ],
   labelTabNav: "Navigation de configuration",
 });
 
 // Écouteurs d'événements "style" pour chaque formulaire
-forms.forEach(form => {
+styleDialog.getForms().forEach(form => {
   form.on("style", (e) => {
     const features = carte.getSelect().getFeatures();
     if (e.property) {
