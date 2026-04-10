@@ -1,18 +1,15 @@
-@use '../css/mixins.scss' as mx;
+@use '../css/mixins.scss' as mix;
 
 div:not(.position) > button[id^="GPshowLayersListPicto"][aria-pressed="true"] + dialog[id^="GPlayersList"] {
-  width: 100vw;
-  transform: translateX(calc(-100% + 46px));
-  display: block;
-  bottom: 0;
-  padding: 0;
-  border: none;
-  bottom: 0;
+  width: 100%;
+  margin-top: unset;
+  transform: translateX(calc(-100% + 3.5rem)) ;
+  // translateY(calc(var(--map-height) - 100%));
 
-  @include mx.respond-from('sm') {
+  @include mix.respond-from('sm') {
     // Aligne avec la barre d'outil
     width: 380px;
-    transform: translateX(calc(-100% - 4px - 8px));
+    transform: translateX(calc(-100% - 0.5rem)) translateY(-48px);;
 
     .gpf-panel__header_ls {
       border-top-left-radius: 4px;
