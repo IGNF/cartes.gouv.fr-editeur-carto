@@ -1,6 +1,8 @@
 @use '../mixins.scss' as mx;
 
 .ol-control.ol-bar {
+  margin:0.5rem;
+
   &,
   & .ol-control.ol-option-bar {
     background-color: var(--background-default-grey);
@@ -61,6 +63,19 @@
     display: flex;
     flex-direction: column;
   }
+
+  &.ol-right {
+    right:0rem;
+  }
+  &.ol-left {
+    left:0rem;
+  }
+  &.ol-top {
+    top:0rem;
+  }
+  &.ol-bottom {
+    bottom:0rem;
+  }
 }
 
 // Bar en haut à droite
@@ -72,7 +87,6 @@
 
   &.ol-left,
   &.ol-right {
-    top: 0.5rem;
 
     .ol-control {
       margin: unset;

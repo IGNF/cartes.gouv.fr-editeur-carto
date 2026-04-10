@@ -14,6 +14,7 @@ const switcher = new LayerSwitcher({
     panel: true,
     counter: true,
     allowEdit: true,
+    label: "Couches",
     headerButtons: [
       {
         id: "add-layer-layerswitcher",
@@ -60,6 +61,7 @@ const switcher = new LayerSwitcher({
 
 // Passe le bouton en primary
 let switcherBtn = switcher.container.querySelector("[id^=GPshowLayersListPicto]");
+switcherBtn.ariaLabel = "Couches";
 switcherBtn.classList.remove('fr-btn--tertiary', 'gpf-btn--tertiary');
 switcherBtn.classList.add('gpf-btn--primary');
 

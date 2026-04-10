@@ -1,0 +1,54 @@
+@use '../mixins.scss' as mix;
+
+.ol-ext-print-dialog {
+  margin: 0;
+  box-sizing: content-box;
+
+  &.ol-visible {
+    font-size: 1em;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 1em;
+    appearance: auto;
+    border: 1px solid #666;
+    padding: 0.5em;
+  }
+}
+
+// Hide permalink control
+.ol-permalink {
+  display: none !important;
+}
+
+.ol-scale-line {
+  right: 4rem;
+  bottom: 0.5rem;
+  // margin: 0.5rem;
+}
+
+// Temporaire, position de la barre full screen
+.ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
+  bottom: 6.5rem;
+}
+
+// Mode mobile
+@media not (pointer: fine) {
+  .ol-scale-line {
+    display: none;
+  }
+
+  div[id^='GPzoom-'] {
+    display: none;
+  }
+
+  .ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
+    display: none;
+  }
+}
+
+.ol-viewport .ol-control.gpf-simple-menu {
+  background-color: var(--background-default-grey);
+  border-radius: 0;
+}
