@@ -56,6 +56,8 @@
    "name": "",
    "title": "Dessin",
    "visibility": true,
+   "thumbnail": "personal-drawing",
+   "logo": "personal-drawing",
    "opacity": 1,
    "copyright": "",
    "selectable": true,
