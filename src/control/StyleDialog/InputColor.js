@@ -50,15 +50,15 @@ class InputColor extends Color {
       this._addCustomColor(this.getColorFromID(c));
     }.bind(this));
 
-
-    const eyedropperBtn = this.element.querySelector('.ol-txtcolor button');
-    // Eyedropper accessibility
-    eyedropperBtn.classList.add('ol-eyedropper', 'fr-btn--tertiary', 'fr-icon-sip-line');
-    eyedropperBtn.className = 'ol-eyedropper fr-btn fr-btn--tertiary fr-icon-sip-line';
-    eyedropperBtn.type = 'button';
-    eyedropperBtn.ariaLabel = 'Outil pipette';
-    eyedropperBtn.title = 'Outil pipette';
-
+    if (window.EyeDropper) {
+      const eyedropperBtn = this.element.querySelector('.ol-txtcolor button');
+      // Eyedropper accessibility
+      eyedropperBtn.classList.add('ol-eyedropper', 'fr-btn--tertiary', 'fr-icon-sip-line');
+      eyedropperBtn.className = 'ol-eyedropper fr-btn fr-btn--tertiary fr-icon-sip-line';
+      eyedropperBtn.type = 'button';
+      eyedropperBtn.ariaLabel = 'Outil pipette';
+      eyedropperBtn.title = 'Outil pipette';
+    }
   }
 
   /** Enable or disable the color input
