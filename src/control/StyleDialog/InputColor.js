@@ -51,35 +51,14 @@ class InputColor extends Color {
     }.bind(this));
 
 
+    const eyedropperBtn = this.element.querySelector('.ol-txtcolor button');
     // Eyedropper accessibility
-    if (window.EyeDropper) {
-      const self = this
-      // Couleur sur le bouton pipette
-      async function pickColor() {
-        let eyeDropper = new EyeDropper();
-        try {
-          eyedropperBtn.classList.add('ol-active');
-          eyedropperBtn.setAttribute('aria-pressed', 'true');
-          let pickedColor = await eyeDropper.open();
-          self.setColor(pickedColor.sRGBHex);
-          eyedropperBtn.classList.remove('ol-active');
-          eyedropperBtn.setAttribute('aria-pressed', 'false');
-        } catch (error) {
-          /* oops */
-          console.warn(error);
-          eyedropperBtn.classList.remove('ol-active');
-          eyedropperBtn.setAttribute('aria-pressed', 'false');
-        }
-      }
-      this.element.classList.add('eyedropper');
-      const eyedropperBtn = document.createElement('button');
-      eyedropperBtn.className = 'ol-eyedropper fr-btn fr-btn--tertiary fr-icon-sip-line';
-      eyedropperBtn.type = 'button';
-      eyedropperBtn.ariaLabel = 'Outil pipette';
-      eyedropperBtn.title = 'Outil pipette';
-      eyedropperBtn.addEventListener('click', pickColor);
-      this.element.querySelector('.ol-container').insertBefore(eyedropperBtn, this.element.querySelector('.ol-txt-color'));
-    }  
+    eyedropperBtn.classList.add('ol-eyedropper', 'fr-btn--tertiary', 'fr-icon-sip-line');
+    eyedropperBtn.className = 'ol-eyedropper fr-btn fr-btn--tertiary fr-icon-sip-line';
+    eyedropperBtn.type = 'button';
+    eyedropperBtn.ariaLabel = 'Outil pipette';
+    eyedropperBtn.title = 'Outil pipette';
+
   }
 
   /** Enable or disable the color input

@@ -153,12 +153,11 @@
     }
 
     &.eyedropper {
-      input {
-        width: calc(100% - 3rem);
-        margin: 0 0 0 0.5rem;
+      input.ol-txt-color {
+        width: calc(100% - 2.5rem);
+        margin: 0.25rem 0 0.5rem 2.5rem!important;
         padding: 0;
         box-sizing: border-box;
-        transform: translateX(2.25rem);
         height: 2rem;
         border-color: var(--border-default-grey);
       }
