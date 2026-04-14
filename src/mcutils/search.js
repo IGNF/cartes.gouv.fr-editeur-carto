@@ -50,6 +50,7 @@ function addFeatureToLayer(feature) {
 let search = new SearchEngineAdvanced({
   advancedSearch: [insee, location, coordinates, parcel],
   returnTrueGeometry: true,
+  placeholder: "Rechercher",
   popupButtons : [{
     label : "Ajouter l'objet à la couche",
     className : "custom-button",
