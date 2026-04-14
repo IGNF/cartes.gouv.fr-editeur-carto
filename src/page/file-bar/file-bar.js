@@ -16,11 +16,6 @@ import Action from '../../actions/Action.js';
 // Variables utiles
 let title = carte.get('title');
 
-// Actions
-let createNewMap = function () {
-  window.open(import.meta.env.BASE_URL, '_blank').focus();
-}
-
 let exportMap = function (e) {
   const data = carte.write(e.shiftKey);
   data.param.titre = data.param.titre || carte.getTitle();
