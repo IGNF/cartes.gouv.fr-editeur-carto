@@ -16,15 +16,6 @@ import Action from '../../actions/Action.js';
 // Variables utiles
 let title = carte.get('title');
 
-// Actions
-let createNewMap = function () {
-  window.open(import.meta.env.BASE_URL, '_blank').focus();
-}
-
-let previewMap = function () {
-  console.log("ouvre la visualisation");
-}
-
 let exportMap = function (e) {
   const data = carte.write(e.shiftKey);
   data.param.titre = data.param.titre || carte.getTitle();
@@ -46,15 +37,15 @@ carte.getControl('printDlg')._printDialog.on('hide', () => {
   carte.getMap().render();
 })
 
-// Nom du fichier
+// Nom du fichier (dans le menu ouvert)
 let fileName = new TextButton({
-  className: 'file-name fr-px-2w fr-py-1w fr-text--sm fr-m-0',
+  className: 'file-name fr-p-2w fr-text--sm fr-m-0',
   html: 'Nom du fichier',
 });
 
-// --- Première barre (Ouvrir / Créer) ---
+// Ouvrir une carte existante
 let openMapBtn = new Button({
-  classButton: 'map-item fr-icon-dashboard-3-line fr-link--icon-left',
+  classButton: 'map-item fr-icon-upload-line fr-link--icon-left',
   attributes: {
     'data-action': 'open-map',
     type: 'button',
@@ -65,23 +56,7 @@ let openMapBtn = new Button({
   handleClick: Action.open
 });
 
-let createMapBtn = new Button({
-  classButton: 'map-item fr-icon-external-link-line fr-link--icon-left',
-  attributes: {
-    'data-action': 'create-map',
-    type: 'button'
-  },
-  html: 'Créer une nouvelle carte',
-  handleClick: createNewMap,
-});
-
-let bar1 = new Bar({
-  className: 'ol-bar--column',
-  controls: [openMapBtn, createMapBtn]
-});
-
-
-// --- Deuxième barre (Enregistrer / Renommer) ---
+// Enregistrer une carte
 let saveMapBtn = new Button({
   classButton: 'map-item fr-icon-save-line fr-link--icon-left',
   attributes: {
@@ -94,6 +69,7 @@ let saveMapBtn = new Button({
   handleClick: Action.open,
 });
 
+// Renommer la carte
 let renameMapBtn = new Button({
   classButton: 'map-item fr-icon-edit-line fr-link--icon-left',
   attributes: {
@@ -106,24 +82,9 @@ let renameMapBtn = new Button({
   handleClick: Action.open,
 });
 
-let bar2 = new Bar({
-  className: 'ol-bar--column',
-  controls: [saveMapBtn, renameMapBtn]
-});
-
-// --- Troisième barre (Prévisualiser / Partager / Exporter / Imprimer) ---
-let previewMapBtn = new Button({
-  classButton: 'map-item fr-icon-play-line fr-link--icon-left',
-  attributes: {
-    'data-action': 'preview-map',
-    type: 'button'
-  },
-  html: 'Prévisualiser',
-  handleClick: previewMap,
-});
-
+// Partager la carte
 let shareMapBtn = new Button({
-  classButton: 'map-item fr-icon-send-plane-line fr-link--icon-left',
+  classButton: 'map-item fr-icon-share-2-line fr-link--icon-left',
   attributes: {
     'data-action': 'share-map',
     type: 'button',
@@ -134,6 +95,7 @@ let shareMapBtn = new Button({
   handleClick: Action.open,
 });
 
+// Exporter la carte en fichier .carte
 let exportMapBtn = new Button({
   classButton: 'map-item fr-icon-download-line fr-link--icon-left',
   attributes: {
@@ -144,6 +106,7 @@ let exportMapBtn = new Button({
   handleClick: exportMap,
 });
 
+// Imprimer la carte
 let printMapBtn = new Button({
   classButton: 'map-item fr-icon-printer-line fr-link--icon-left',
   attributes: {
@@ -154,17 +117,19 @@ let printMapBtn = new Button({
   handleClick: printMap,
 });
 
-let bar3 = new Bar({
-  className: 'ol-bar--column',
-  controls: [previewMapBtn, shareMapBtn, exportMapBtn, printMapBtn]
+// Barre regroupant les actions (boutons)
+let actionBar = new Bar({
+  className: 'ol-bar--column action-bar',
+  controls: [openMapBtn, saveMapBtn, renameMapBtn, shareMapBtn, exportMapBtn, printMapBtn]
 });
 
-// --- Barre principale regroupant les autres ---
+// Barre correspondant au menu ouvert (nom fichier + boutons d'actions)
 let btnBar = new Bar({
-  className: 'ol-bar--separator ol-bar--column fr-p-2w map-file-actions',
-  controls: [fileName, bar1, bar2, bar3]
+  className: 'ol-bar--separator ol-bar--column fr-px-2w fr-pb-2w map-file-actions',
+  controls: [fileName, actionBar]
 });
 
+// Toggle permettant d'ouvrir / fermer le menu
 let fileToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-ign-add-data',
   attributes: {
@@ -174,7 +139,7 @@ let fileToggle = new Toggle({
   bar: btnBar
 });
 
-// Titre de la carte
+// Titre de la carte (affiché en permanence sur la carte)
 let mapTitle = new TextButton({
   html: title || 'Carte sans titre',
   attributes: {
@@ -183,19 +148,22 @@ let mapTitle = new TextButton({
   className: 'fr-px-2w fr-py-1w fr-text map-title'
 });
 
-// Mise à jour du titre
-function setTile() {
+// Fonction pour mettrre à jour le titre
+function setTitle(e) {
   let title = carte.getTitle();
+  if (e.key === "title") {
+    title = carte.get("title");
+  }
   mapTitle.setHtml(title)
   mapTitle.setTitle(title)
   fileName.setHtml(title)
   fileName.setTitle(title)
 }
-carte.on('change:title', setTile)
-carte.on('read', setTile);
-carte.on('save', setTile);
+carte.on('change:title', setTitle)
+carte.on('read', setTitle);
+carte.on('save', setTitle);
 
-// Barre principale
+// Barre principale (menu permanent + menu ouvert)
 let filebar = new Bar({
   className: 'ol-bar--separator ol-bar--row map-handle',
   controls: [fileToggle, mapTitle]

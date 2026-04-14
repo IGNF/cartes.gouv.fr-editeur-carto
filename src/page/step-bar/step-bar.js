@@ -69,7 +69,7 @@ let save = new Button({
 
 let share = new Button({
   className: 'share-button',
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-send-plane-line',
+  classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-share-2-line',
   attributes: {
     type: 'button',
     title: "Partager la carte",

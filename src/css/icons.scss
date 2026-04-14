@@ -1,5 +1,11 @@
 .fr-icon-ign-shape-3-fill::before,
 .fr-icon-ign-shape-3-fill::after {
-  -webkit-mask-image: url("./ign-shape-3-fill.svg");
-  mask-image: url("./ign-shape-3-fill.svg");
+  -webkit-mask-image: url('./icons/ign-shape-3-fill.svg');
+  mask-image: url('./icons/ign-shape-3-fill.svg');
+}
+
+.fr-icon-share-2-line::before,
+.fr-icon-share-2-line::after {
+  -webkit-mask-image: url('./icons/share-2-line.svg');
+  mask-image: url('./icons/share-2-line.svg');
 }
