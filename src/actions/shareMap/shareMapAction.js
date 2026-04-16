@@ -38,7 +38,8 @@ function onOpen(e) {
     btn.addEventListener('click', copy)
   });
   // Enter map info in the dialog
-  const url = config.server + 'carte/' + carte.get('id') + '/' + carte.getTitle();
+  const url = new URL(config.viewer.replace("$ID", carte.get("id")), window.location.href);
+  // const url = config.server + 'carte/' + carte.get('id') + '/' + carte.getTitle();
   dialog.querySelector('#share-link').value = url;
   dialog.querySelector('#share-iframe').value = `<iframe
   width="600" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
@@ -59,6 +60,9 @@ function copy(e) {
     // Change l'icône et le texte affiché
     let copied = 'Copié <span class="fr-ml-1w ri-check-line"></span>'
     e.target.innerHTML = copied;
+
+    // Remet le bouton à son état initial après 3 secondes
+    setTimeout(() => e.target.innerHTML = 'Copier <span class="fr-ml-1w ri-file-copy-line"></span>', 3000);
   }
 }
 

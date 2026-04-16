@@ -1,4 +1,0 @@
-{
-  "server": "https://qlf-macarte.ign.fr/",
-  "viewer": "https://qlf-macarte.ign.fr/carte/$ID/$TITLE?$NOTITLE"
-}
