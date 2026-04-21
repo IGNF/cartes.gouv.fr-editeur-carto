@@ -63,7 +63,7 @@ let selectToggle = new Button({
   },
   // interaction: carte.getSelect(),
   active: true,
-  handleClick: function (e) {
+  handleClick: function () {
     // Ferme les panneaux au click
     rightPanel.close();
     drawToggle.getActive() && drawToggle.setActive(false);
@@ -196,7 +196,7 @@ drawToggle.getDialog().on("dialog:open", () => {
   !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
 })
 
-switcher.on("change:collapsed", (e) => {
+switcher.on("change:collapsed", () => {
   if (switcher.getCollapsed() === false) {
     // On ouvre le layerswitcher donc on ferme les autres
     rightPanel.close();
