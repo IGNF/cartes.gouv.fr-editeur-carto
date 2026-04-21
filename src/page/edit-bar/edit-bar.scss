@@ -2,9 +2,8 @@
 
 .ol-control.ol-bar.ol-right.edit-bar {
   transform: unset;
-  // top: calc(6.5rem + 2.625rem);
-  // switcher + taille switcher + espace
-  top: calc(7.25rem + 2.625rem + 0.5rem);
+  // top switcher + espace
+  top: calc(8rem + 3rem + 0.5rem);
 
   .gpf-widget {
     position: unset;
@@ -13,7 +12,7 @@
       color: var(--text-action-high-blue-france);
 
       &:not([aria-extended='true']):not([aria-pressed='true']) {
-        &:not(:hover):not(:active) { 
+        &:not(:hover):not(:active) {
           background-color: var(--background-default-grey);
         }
       }
@@ -21,7 +20,7 @@
   }
   @include mx.respond-from('sm') {
     // switcher + taille switcher + espace
-    top: calc(6rem + 2.625rem + 0.5rem);
+    top: calc(6rem + 2.625rem);
   }
 }
 
@@ -35,8 +34,8 @@
     min-height: 300px;
 
     @include mx.respond-from('sm') {
-    // barre du haut + espace
-    top: calc(3.5rem + 0.5rem);
-  }
+      // barre du haut + espace
+      top: calc(3.5rem + 0.5rem);
+    }
   }
 }

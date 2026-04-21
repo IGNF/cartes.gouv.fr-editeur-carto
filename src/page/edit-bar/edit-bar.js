@@ -14,6 +14,7 @@ import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
 import Snap from '../../mcutils/interaction/Snap.js';
 import { getCurrentStyle } from "../../mcutils/currentStyle.js";
+import Button from 'ol-ext/control/Button.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -48,24 +49,29 @@ rightPanel.onClose(() => {
  * @param {Toggle} toggle 
  */
 function closeToggle(toggle) {
-  if (toggle.getActive()) {
+  if (toggle?.getActive()) {
     toggle.setActive(false)
   }
 }
 
-// Interaction de select
-let selectToggle = new Toggle({
+// Interaction de select (revient à un état de base)
+let selectToggle = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line',
   attributes: {
     title: "Sélecteur",
     'aria-label': "Sélecteur",
   },
-  interaction: carte.getSelect(),
+  // interaction: carte.getSelect(),
   active: true,
-  onToggle: function (e) {
-    if (e) {
-      carte.getSelect().clear();
-    }
+  handleClick: function () {
+    // Ferme les panneaux au click
+    rightPanel.close();
+    drawToggle.getActive() && drawToggle.setActive(false);
+    !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
+
+    // Réactive l'intéraction de sélection si elle est désactivée
+    carte.getSelect().clear?.();
+    carte.getSelect().setActive(true);
   }
 });
 
@@ -152,7 +158,7 @@ let editDataBar = new Bar({
   ]
 })
 
-drawToggle.dialog.on("dialog:open", () => {
+drawToggle.getDialog().on("dialog:open", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
     notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
   }
@@ -177,8 +183,25 @@ drawToggle.on("drawend", (e) => {
   }
 })
 
+// Gère les intéractions entre les deux dialogues
 rightPanel.on("dialog:open", () => {
   drawToggle.getActive() && drawToggle.setActive(false);
+  // switcher.setCollapsed(true); // Ne fonctionne pas
+  !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
+})
+
+drawToggle.getDialog().on("dialog:open", () => {
+  rightPanel.close();
+  // switcher.setCollapsed(true); // Ne fonctionne pas
+  !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
+})
+
+switcher.on("change:collapsed", () => {
+  if (switcher.getCollapsed() === false) {
+    // On ouvre le layerswitcher donc on ferme les autres
+    rightPanel.close();
+    drawToggle.getActive() && drawToggle.setActive(false);
+  }
 })
 
 // Barre principale

@@ -9,7 +9,7 @@
   bottom: 0;
   padding: 0.5rem;
 
-  // > .fr-badge {
-  //   padding: 0.25rem 0.75rem;
-  // }
+  > .fr-badge {
+    filter: drop-shadow(var(--raised-shadow));
+  }
 }
