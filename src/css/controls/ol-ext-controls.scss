@@ -17,6 +17,10 @@
   }
 }
 
+.ol-ctrlbar {
+  box-shadow: none !important;
+}
+
 // Hide permalink control
 .ol-permalink {
   display: none !important;
@@ -25,6 +29,7 @@
 .ol-scale-line {
   right: 4rem;
   bottom: 0.5rem;
+  filter: drop-shadow(var(--raised-shadow));
   // margin: 0.5rem;
 }
 

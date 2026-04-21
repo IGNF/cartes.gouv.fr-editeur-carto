@@ -23,7 +23,7 @@
 .ol-control.ol-top.ol-bar--separator.ol-bar.map-handle > .ol-button:first-child {
   padding: 0;
 
-  @include mx.respond-from('lg') {
+  @include mx.respond-from('md') {
     padding: 0 0.25rem 0 0;
   }
 }
@@ -62,8 +62,21 @@
 }
 
 .ol-control.ol-bar.map-handle .ol-control.ol-bar.map-file-actions {
-  width: 330px;
-  padding: 0;
+  padding: 0 1rem 1rem;
+  border-radius: 0;
+  width: 100vw;
+  left: 0;
+  position: fixed;
+  top: 7rem;
+  filter: drop-shadow(var(--raised-shadow));
+
+  @include mx.respond-from('sm') {
+    width: 330px;
+    border-radius: inherit;
+    left: -0.25rem;
+    position: absolute;
+    top: calc(100% + 0.5rem + 0.25rem);
+  }
 
   > .action-bar {
     padding: 0;
@@ -77,6 +90,8 @@
   left: 0;
   padding: 0.5rem;
   margin: 0;
+  filter: none;
+  box-shadow: inset 0 -1px var(--border-default-grey);
 
   > div:first-child {
     margin: auto;
@@ -87,10 +102,11 @@
   }
 
   @include mx.respond-from('sm') {
+    box-shadow: inherit;
+    filter: drop-shadow(var(--raised-shadow));
+    border-bottom: none;
     display: flex;
     margin: 0.5rem;
-    // top: 0.5rem;
-    // left: 0.5rem;
     width: unset;
     padding: 0.25rem;
   }

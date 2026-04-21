@@ -46,6 +46,10 @@ header.fr-header {
   }
 
   &--compact {
+
+    .fr-header__body-row {
+      height:3.5rem
+    }
     footer {
       display: flex;
       box-shadow: none;

@@ -3,6 +3,8 @@
 .ol-button > button {
   line-height: unset;
   font-weight: 500;
+  // Transition pour l'état hover / actif
+  transition: background-color 0.3s;
 
   &,
   &:hover,

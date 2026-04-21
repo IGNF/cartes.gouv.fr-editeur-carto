@@ -56,10 +56,12 @@
   grid-template-columns: 2fr 1fr 1fr;
   gap: 0;
   top: 0;
-  margin:0;
+  margin: 0;
   right: 0;
   padding: 0.5rem;
   border-radius: 0;
+  filter: none;
+  box-shadow: inset 0 -1px var(--border-default-grey);
 
   > div {
     text-align: center;
@@ -99,11 +101,12 @@
   }
 
   @include mx.respond-from('sm') {
+    filter: drop-shadow(var(--raised-shadow));
+    box-shadow: none;
+    border-bottom: none;
     display: flex;
     width: unset;
     margin: 0.5rem;
-    // top: 0.5rem;
-    // right: 0.5rem;
     padding: 0.25rem;
     border-radius: 0.25rem;
 

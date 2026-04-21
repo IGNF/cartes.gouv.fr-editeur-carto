@@ -3,6 +3,6 @@
 dialog#right-panel-action {
   @include mx.respond-from('sm') {
     // Aligne avec la barre d'outil
-    top: calc(120px + 4.875rem);
+    top: calc(120px + 1.625rem);
   }
 }

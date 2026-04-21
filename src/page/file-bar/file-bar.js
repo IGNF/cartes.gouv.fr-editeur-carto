@@ -125,7 +125,7 @@ let actionBar = new Bar({
 
 // Barre correspondant au menu ouvert (nom fichier + boutons d'actions)
 let btnBar = new Bar({
-  className: 'ol-bar--separator ol-bar--column fr-px-2w fr-pb-2w map-file-actions',
+  className: 'ol-bar--separator ol-bar--column map-file-actions',
   controls: [fileName, actionBar]
 });
 

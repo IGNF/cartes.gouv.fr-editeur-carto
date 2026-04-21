@@ -4,6 +4,7 @@ div[id^='GPzoom-'] {
   top: auto;
   left: auto;
   right: 0.375rem;
+  filter: drop-shadow(var(--raised-shadow));
 }
 
 .ol-custom-zoom-in::before,
@@ -30,12 +31,16 @@ div > .gpf-widget-button > .gpf-btn-icon[aria-pressed='true']:hover::before {
   content: none;
 }
 
+dialog.GPF-dialog {
+  z-index: 1;
+}
+
 div[id^='GPlayerSwitcher-'] {
   // mobile bar + research + gap
   right: 0rem;
   margin: 0.5rem;
 
-  top: calc(2.125rem + 4rem + 1.125rem);
+  top: calc(2.125rem + 4rem + 1.375rem);
 
   // Pas de recherche en mobile
   @include mix.respond-from('sm') {
@@ -43,16 +48,28 @@ div[id^='GPlayerSwitcher-'] {
   }
 }
 
-[id^='GPsearchEngine-Advanced-'] {
-  top: 3.75rem;
+div[id^='GPsearchEngine-Advanced-'] {
+  top: 4rem;
   width: 100%;
-  left: 0;
+  left: 0.5rem;
+  padding: 0.5rem;
+  margin: -0.5rem;
 
   @include mix.respond-from('sm') {
-    top: 0.625rem;
-    width: 360px;
+    top: 0.5rem;
+    // +1rem pour prendre en compte le padding
+    // width: calc(360px);
+    width: calc(360px + 1rem);
     left: calc(50% - 180px);
   }
+
+  div[id^='GPsearchEngine-'] {
+    margin: 0 0.25rem 0 0;
+  }
+}
+
+[id^='GPsearchEngine-AdvancedContainer'] {
+  filter: drop-shadow(var(--raised-shadow));
 }
 
 // LayerSwitcher
@@ -63,6 +80,7 @@ div[id^='GPlayerSwitcher-'] {
   &[id^='GPlayerSwitcher-'] {
     height: 48px;
     padding: 0;
+    filter: drop-shadow(var(--raised-shadow));
   }
 
   > .gpf-btn-icon {
