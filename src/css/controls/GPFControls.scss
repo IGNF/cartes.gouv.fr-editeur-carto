@@ -39,7 +39,7 @@ div[id^='GPlayerSwitcher-'] {
   // mobile bar + research + gap
   right: 0rem;
   margin: 0.5rem;
-
+  z-index: 1;
   top: calc(2.125rem + 4rem + 1.375rem);
 
   // Pas de recherche en mobile
