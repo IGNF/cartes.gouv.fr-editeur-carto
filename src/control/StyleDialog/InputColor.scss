@@ -192,7 +192,7 @@
     padding: 2rem 0 1rem;
     border-radius: 1.5rem 1.5rem 0 0;
     box-sizing: border-box;
-    box-shadow: var(--overlap-shadow);
+    filter: drop-shadow(var(--raised-shadow));
 
     &:before {
       content: '';
