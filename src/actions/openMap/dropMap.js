@@ -3,7 +3,7 @@ import './dropMap.css'
 
 // Drop zone
 let dragtout;
-const dropZone = document.body.querySelector('[data-role="map"]');
+const dropZone = document.body.querySelector('[data-role="map"]') || document.body.querySelector('[data-role="storymap"]');
 
 // Show drop zone on file drag
 ['dragenter', 'dragover'].forEach(evt => {

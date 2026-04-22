@@ -4,6 +4,7 @@ import './charte/navigation.js'
 import './actions/actions.js'
 import loadFonts from 'mcutils/cgouv/loadFonts.js'
 
+import story from './story.js'
 import carte from './carte.js'
 import './utils/dirtyMap.js';
 
@@ -53,6 +54,7 @@ introDialog.setAction(connectAction);
 introDialog.open();
 
 /* DEBUG */
+window.story = story;
 window.carte = carte;
 window.api = api;
 /**/

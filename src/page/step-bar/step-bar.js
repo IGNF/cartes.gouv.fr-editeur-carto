@@ -7,9 +7,10 @@ import Button from 'ol-ext/control/Button.js';
 import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
 
-import './step-bar.scss'
 import Action from '../../actions/Action.js'
+import story from '../../story.js';
 
+import './step-bar.scss'
 
 let onToggleMode = function () {
   let toggle = this;
@@ -37,7 +38,10 @@ let createmap = new Toggle({
     'aria-label': "Gérer le contenu de la carte",
     'data-action': Charte.modes.EDITOR,
   },
-  onToggle: onToggleMode
+  toggleFn: function(e) {
+    onToggleMode.call(this, e);
+    story.showTitle(false);
+  },
 });
 
 let storymap = new Toggle({
@@ -50,7 +54,12 @@ let storymap = new Toggle({
     'aria-label': "Gérer la mise en page de la carte",
     'data-action': Charte.modes.STORYMAP,
   },
-  onToggle: onToggleMode
+  toggleFn: function(e) {
+    onToggleMode.call(this, e);
+    // update title of the storymap with the carte title
+    story.setTitle({ title: carte.getTitle() });
+    story.showTitle(true);
+  },
 });
 
 let save = new Button({
