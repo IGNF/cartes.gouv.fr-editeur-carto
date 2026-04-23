@@ -1,5 +1,6 @@
-import './edit-bar/edit-bar.js'
-import './file-bar/file-bar.js'
-import './step-bar/step-bar.js'
-import './beta/beta.js'
-import './fullScreen/fullScreen.js'
+import './edit-bar/edit-bar.js';
+import './file-bar/file-bar.js';
+import './step-bar/step-bar.js';
+import './beta/beta.js';
+import './fullScreen/fullScreen.js';
+import './layout/layout.js';

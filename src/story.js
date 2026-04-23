@@ -27,7 +27,7 @@ const carte = new Carte({
 })
 story.setCarte(carte);
 story.setTitle("Titre de la StoryMap");
-story.setLogo("https://upload.wikimedia.org/wikipedia/commons/a/a0/IGN_logo_2012.svg");
+story.setLogo("");
 
 export default story;
 // Export de la carte pour certains fichiers (avant appel de carte.js)
