@@ -1,4 +1,4 @@
-@use '../mixins.scss' as mx;
+@use '../mixins.scss' as mix;
 
 // Filter drop-shadow pour les barres sur la carte
 .ol-overlaycontainer-stopevent > .ol-control.ol-bar {
@@ -7,6 +7,11 @@
 
 .ol-control.ol-bar {
   margin: 0.5rem;
+
+  // Position à choisir en fonction de la barre
+  &.ol-bar--fixed {
+    position: fixed;
+  }
 
   &,
   & .ol-control.ol-option-bar {
@@ -86,7 +91,7 @@
 // Bar en haut à droite
 .ol-control.ol-bar.ol-top {
   border-radius: 0;
-  @include mx.respond-from('sm') {
+  @include mix.respond-from('sm') {
     border-radius: 0.25rem;
   }
 
@@ -194,8 +199,9 @@
   left: unset;
   transform: unset;
 
-  .ol-toggle.ol-active button,
-  .ol-button button {
-    @include mx.button-state();
+  .ol-control.ol-toggle.ol-active > button {
+    --hover: var(--background-open-blue-france-hover);
+    --active: var(--background-open-blue-france-active);
+    @include mix.button-state($background: var(--background-open-blue-france));
   }
 }

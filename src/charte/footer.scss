@@ -1,7 +1,7 @@
-@use '../css/mixins.scss' as mx;
+@use '../css/mixins.scss' as mix;
 
 /* HEADER-FOOTER */
-@include mx.respond-from('lg') {
+@include mix.respond-from('lg') {
   .fr-header .fr-footer {
     display: none;
   }
@@ -23,7 +23,7 @@ footer.fr-footer {
     padding: 0 1rem 0 0.75rem;
     box-shadow: inset 0 2px 0 0 var(--border-plain-blue-france);
 
-    @include mx.respond-from('lg') {
+    @include mix.respond-from('lg') {
       display: flex;
       justify-content: space-between;
       align-items: center;

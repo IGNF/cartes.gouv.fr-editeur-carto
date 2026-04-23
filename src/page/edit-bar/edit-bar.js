@@ -6,6 +6,7 @@ import styleDialog from '../../control/StyleDialog/styleDialog.js';
 import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 import drawToggle from "./drawToggle.js";
+import charte from '../../charte/charte.js';
 
 import Action from '../../actions/Action.js';
 import notification from '../../control/Notification/notification.js';
@@ -15,6 +16,7 @@ import rightPanel from '../../dialogs/rightPanel.js';
 import Snap from '../../mcutils/interaction/Snap.js';
 import { getCurrentStyle } from "../../mcutils/currentStyle.js";
 import Button from 'ol-ext/control/Button.js';
+import Charte from '../../charte/objects/Charte.js';
 
 // TODO : mieux gérer les toggle d'édition / mesure
 // et leur lien avec l'interaction de sélection
@@ -209,6 +211,15 @@ let mainbar = new Bar({
   className: 'ol-bar--separator edit-bar',
   toggleOne: true,
   controls: [selectToggle, addDataBar, editDataBar]
+})
+
+// Passage en mode mise en page : retourne à l'état initial
+charte.on("change:mode", (e) => {
+  const mode = e.target.get(e.key);
+  if (mode === Charte.modes.STORYMAP) {
+    // Passage en mode mise en page : simule un clic sur l'outil "sélection"
+    selectToggle.button_.click();
+  }
 })
 
 carte.addControl('mainBar', mainbar)

@@ -98,7 +98,7 @@ let modeBar = new Bar({
 
 // Barre principale
 let mainbar = new Bar({
-  className: 'ol-bar--separator ol-bar--row step-bar',
+  className: 'ol-bar--fixed ol-bar--separator ol-bar--row step-bar',
   controls: [modeBar, save, share]
 })
 

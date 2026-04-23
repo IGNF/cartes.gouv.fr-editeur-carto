@@ -1,19 +1,16 @@
 
 // Ma Carte
-import story from './story.js';
+import { carte } from './story.js';
 
 import ModifyingInteraction from 'geopf-extensions-openlayers/src/packages/Interactions/Modifying.js';
 import switcher from './mcutils/layerSwitcher.js';
 import notification from './control/Notification/notification.js';
 
-// The Carte
-const carte = story.getCarte();
-
 // Only one selction when editing features
 carte.getSelect().multi_ = false;
 
 const modify = new ModifyingInteraction({
-  select : carte.getSelect(),
+  select: carte.getSelect(),
 })
 carte.getMap().addInteraction(modify);
 carte._interactions.modify = modify;
@@ -70,5 +67,5 @@ modify.on(['duplicate'], e => {
   });
 });
 
-export { notification}
+export { notification }
 export default carte

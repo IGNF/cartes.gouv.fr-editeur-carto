@@ -1,4 +1,4 @@
-@use '../../css/mixins.scss' as mx;
+@use '../../css/mixins.scss' as mix;
 
 .ol-control.ol-bar.step-bar.ol-bar--row .ol-toggle.action-button {
   > button {
@@ -13,7 +13,7 @@
       display: none;
     }
 
-    @include mx.respond-from('xl') {
+    @include mix.respond-from('xl') {
       height: unset;
       width: unset;
       font-size: unset;
@@ -30,18 +30,18 @@
 
 .ol-control.ol-bar.step-bar.ol-bar--row {
   &.ol-top .ol-button {
-    @include mx.respond-from('sm') {
+    @include mix.respond-from('sm') {
       &.share-button,
       &.save-button {
         display: none;
       }
     }
-    @include mx.respond-from('md') {
+    @include mix.respond-from('md') {
       &.share-button {
         display: unset;
       }
     }
-    @include mx.respond-from('lg') {
+    @include mix.respond-from('lg') {
       &.save-button {
         display: unset;
       }
@@ -64,6 +64,19 @@
   box-shadow: inset 0 -1px var(--border-default-grey);
   z-index: 3;
 
+  &.ol-bar--fixed {
+    position: absolute;
+
+    @include mix.respond-from('sm') {
+      top: calc(3rem + 0.5rem);
+      position: fixed;
+
+      @media (display-mode: fullscreen) {
+        top: 0;
+      }
+    }
+  }
+
   > div {
     text-align: center;
     background-color: transparent;
@@ -75,7 +88,7 @@
   > .ol-bar:first-child {
     padding: 0;
 
-    @include mx.respond-from('md') {
+    @include mix.respond-from('md') {
       padding: 0 0.25rem 0 0;
     }
   }
@@ -101,7 +114,7 @@
     }
   }
 
-  @include mx.respond-from('sm') {
+  @include mix.respond-from('sm') {
     filter: drop-shadow(var(--raised-shadow));
     box-shadow: none;
     border-bottom: none;

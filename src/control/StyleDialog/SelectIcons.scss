@@ -1,4 +1,4 @@
-@use '../../css/mixins.scss' as mx;
+@use '../../css/mixins.scss' as mix;
 
 .input-style--icon {
   .input-style {
@@ -41,6 +41,7 @@
 }
 
 // Pour icônes remix-icon
-[class^="ri-"][class^="fi-"]::before, [class*="ri-"][class*="fi-"]::before {
+[class^='ri-'][class^='fi-']::before,
+[class*='ri-'][class*='fi-']::before {
   font-family: 'remixicon' !important;
 }

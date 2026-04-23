@@ -1,4 +1,4 @@
-@use '../mixins.scss' as mx;
+@use '../mixins.scss' as mix;
 
 .ol-button > button {
   line-height: unset;
@@ -50,7 +50,7 @@
   }
 }
 
-@include mx.hover-media-query {
+@include mix.hover-media-query {
   .ol-button > button {
     &[aria-label]:hover::after {
       font-family: Marianne, arial, sans-serif;
@@ -180,6 +180,6 @@
 
 .ol-control.ol-button {
   > button {
-    @include mx.button-state();
+    @include mix.button-state();
   }
 }

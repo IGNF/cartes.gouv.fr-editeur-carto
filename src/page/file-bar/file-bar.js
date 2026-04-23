@@ -165,9 +165,49 @@ carte.on('save', setTitle);
 
 // Barre principale (menu permanent + menu ouvert)
 let filebar = new Bar({
-  className: 'ol-bar--separator ol-bar--row map-handle',
-  controls: [fileToggle, mapTitle]
+  className: 'ol-bar--fixed ol-bar--separator ol-bar--row map-handle',
+  controls: [fileToggle, mapTitle],
 });
+
+/**
+ * Ferme le menu si le focus quitte la barre (navigation clavier)
+ */
+const handleFocusOut = () => {
+  // setTimeout 0 pour laisser le navigateur mettre à jour document.activeElement
+  setTimeout(() => {
+    const focused = document.activeElement;
+    if (!btnBar.element.contains(focused) && !fileToggle.element.contains(focused)) {
+      fileToggle.setActive(false);
+      btnBar.element.removeEventListener("focusout", handleFocusOut);
+    }
+  }, 0);
+};
+
+/**
+ * Ferme le menu si on clique en dehors (souris)
+ * @param {MouseEvent} e Événement mouseDown
+ */
+const closeOnOutsideClick = (e) => {
+  if (!btnBar.element.contains(e.target) && !fileToggle.element.contains(e.target)) {
+    fileToggle.setActive(false);
+    document.removeEventListener("mousedown", closeOnOutsideClick);
+  }
+};
+
+// Ajoute un écouteur d'événement pour fermer la barre automatiquement si on clique ailleurs
+fileToggle.on("change:active", (e) => {
+  if (e.target.getActive()) {
+    // Met le focus sur le premier élément
+    openMapBtn.button_.focus();
+    // Clavier : focusout sur la barre
+    btnBar.element.addEventListener("focusout", handleFocusOut);
+    // Souris : mousedown sur le document
+    document.addEventListener("mousedown", closeOnOutsideClick);
+  } else {
+    btnBar.element.removeEventListener("focusout", handleFocusOut);
+    document.removeEventListener("mousedown", closeOnOutsideClick);
+  }
+})
 
 carte.addControl('filebar', filebar);
 filebar.setPosition('top-left');
