@@ -1,6 +1,7 @@
 import 'geoportal-access-lib/dist/GpServices.js';
 import 'geopf-extensions-openlayers/src/packages/CSS/DSFRgeneralWidget.css';
 import 'geopf-extensions-openlayers/css/Dsfr.css';
+import loadFonts from 'mcutils/cgouv/loadFonts.js'
 
 import StoryMap from 'mcutils/StoryMap.js';
 import Carte from 'mcutils/cgouv/Carte.js';
@@ -10,7 +11,10 @@ import charte from './charte/charte.js';
 // Extensions géoplateforme
 import 'ol-ext/dist/ol-ext.css'
 import 'mcutils/Carte.css';
-import './story.scss';
+import './css/story.scss';
+
+
+loadFonts()
 
 const story = new StoryMap({
   target: charte.getElement('map'),

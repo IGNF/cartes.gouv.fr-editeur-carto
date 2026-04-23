@@ -3,6 +3,13 @@
 .input-style--icon {
   .input-style {
     &__options-container {
+      &-content {
+        > button[data-type='icon'] {
+          --hover: inherit;
+          --active: inherit;
+          @include mix.button-state($text-color: var(--text-label-grey), $background: transparent);
+        }
+      }
       // display: flex;
       &-header {
         background-color: var(--background-overlap-grey);

@@ -38,12 +38,12 @@
     }
     @include mix.respond-from('md') {
       &.share-button {
-        display: unset;
+        display: flex;
       }
     }
     @include mix.respond-from('lg') {
       &.save-button {
-        display: unset;
+        display: flex;
       }
     }
   }
@@ -80,9 +80,15 @@
   > div {
     text-align: center;
     background-color: transparent;
-  }
-  > div button {
-    display: inline-block;
+
+    button {
+      display: inline-block;
+    }
+
+    &.ol-button {
+      display: flex;
+      justify-content: center;
+    }
   }
 
   > .ol-bar:first-child {

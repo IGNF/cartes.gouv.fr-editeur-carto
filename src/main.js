@@ -2,7 +2,6 @@ import './version.js'
 import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
-import loadFonts from 'mcutils/cgouv/loadFonts.js'
 
 import story from './story.js'
 import carte from './carte.js'
@@ -21,8 +20,6 @@ import './page/page.js'
 // Custom CSS
 import 'remixicon/fonts/remixicon.css'
 import './css/index.scss';
-
-loadFonts()
 
 // Ajout des contrôles
 carte.once('read', () => {
