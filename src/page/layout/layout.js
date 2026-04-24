@@ -1,7 +1,7 @@
-import story from "../../story";
-import Layout from "../../control/Layout/Layout";
-import charte from "../../charte/charte";
-import Charte from "../../charte/objects/Charte";
+import story from "../../story.js";
+import Layout from "../../control/Layout/Layout.js";
+import charte from "../../charte/charte.js";
+import Charte from "../../charte/objects/Charte.js";
 
 const layout = new Layout(story, {
   id: "layout-dialog",

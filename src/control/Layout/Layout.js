@@ -1,7 +1,7 @@
 
 import Dialog from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js';
 import TabNav from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNav.js';
-import StoryMap from 'mcutils/StoryMap';
+import StoryMap from 'mcutils/StoryMap.js';
 import legendTabNavItem from './legend.js';
 import titleTabNavItem from './title.js';
 import styleTabNavItem from './style.js';

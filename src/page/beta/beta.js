@@ -17,8 +17,11 @@ charte.on("change:mode", (e) => {
     carte.removeControl('betaMap');
     carte.addControl('betaLayout', betaLayout);
   } else {
-    carte.removeControl('betaLayout');
-    carte.addControl('betaMap', betaMap);
+    // setTimeout pour empêcher d'avoir le badge qui bouge
+    setTimeout(() => {
+      carte.removeControl('betaLayout');
+      carte.addControl('betaMap', betaMap);
+    }, 300);
   }
 })
 

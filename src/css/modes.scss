@@ -1,4 +1,18 @@
+///
+/// Fichier permettant d'afficher ou non certains éléments
+/// en fonction du mode choisi
+///
+
 @use './mixins.scss' as mix;
+
+[data-mode='editor'] {
+  [data-role='storymap'] {
+    // Pas d'affichage du titre en mode édition
+    > .title {
+      display: none;
+    }
+  }
+}
 
 // Mode mise en page (affichage ou non de div sur la carte)
 [data-mode='storymap'] {
@@ -12,9 +26,42 @@
     // Pas d'affichage du titre en mobile
     > .title {
       display: none;
+      padding: 0.75rem;
+      overflow: visible;
+      height:auto;
+      min-height: 4.75rem;
 
-      @include mix.respond-from('sm') {
-        display: block;
+      > * {
+        white-space: unset;
+      }
+
+      // Titre
+      > h1 {
+        overflow: visible;
+        font-size: 1.25rem;
+        font-style: normal;
+        line-height: 2rem;
+        color: var(--text-title-grey);
+      }
+
+      // Description
+      > h2 {
+        overflow: visible;
+        font-size: 0.75rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
+        color: var(--text-mention-grey);
+      }
+    }
+
+    &:not([data-title='hidden']) {
+      > .title {
+        display: none;
+
+        @include mix.respond-from('sm') {
+          display: block;
+        }
       }
     }
 
