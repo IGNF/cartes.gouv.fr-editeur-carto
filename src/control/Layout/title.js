@@ -1,6 +1,5 @@
 import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js';
 import story, { carte } from '../../story.js';
-import StoryMap from 'mcutils/StoryMap.js';
 import { addMessage, removeMessage, setDisabled } from '../../utils/utils.js';
 
 
@@ -60,7 +59,7 @@ const getInstances = (element) => {
  * Permet de changer le logo d'une storymap.
  * Ne passe pas par `StoryMap.setLogo`, puisque cette fonction change aussi
  * le iconrel du site.
- * @param {StoryMap} story Storymap sur laquelle il faut changer le logo
+ * @param {import("mcutils/StoryMap.js").default} story Storymap sur laquelle il faut changer le logo
  * @param {String} [src] Source de l'image à modifier.
  */
 const setLogo = (story, src) => {
@@ -71,7 +70,7 @@ const setLogo = (story, src) => {
 /**
  * Fonction utilitaire.
  * Réinitialise le logo utilisé, en modifiant la storymap et l'input
- * @param {StoryMap} story Storymap de l'application
+ * @param {import("mcutils/StoryMap.js").default} story Storymap de l'application
  * @param {HTMLInputElement} input Input à réinitialiser
  */
 const resetLogo = (story, input) => {
@@ -93,7 +92,7 @@ const resetLogo = (story, input) => {
  * Fonction utilitaire.
  * Modifie le titre d'une storymap sans impacter `document.title`.
  * Ne passe pas par `StoryMap.setTitle` pour éviter cet effet de bord.
- * @param {StoryMap} story Storymap à modifier
+ * @param {import("mcutils/StoryMap.js").default} story Storymap à modifier
  * @param {TitleOptions} options Propriétés à mettre à jour
  */
 const setTitle = (story, options) => {
@@ -306,7 +305,7 @@ function initContent() {
  * Lie les controles du formulaire aux propriétés de la StoryMap.
  * 
  * @param {HTMLElement} container Conteneur du formulaire
- * @param {StoryMap} story StoryMap à lier au formulaire
+ * @param {import("mcutils/StoryMap.js").default} story StoryMap à lier au formulaire
  */
 function addEvents(container, story) {
   const refs = getInstances(container);
@@ -405,7 +404,7 @@ function addEvents(container, story) {
 
 /**
  * Initialise les valeurs du formulaire depuis l'etat courant de la story.
- * @param {StoryMap} story StoryMap à utiliser
+ * @param {import("mcutils/StoryMap.js").default} story StoryMap à utiliser
  */
 function initForm(story) {
   const refs = getInstances(titleTabNavItem.getContent());

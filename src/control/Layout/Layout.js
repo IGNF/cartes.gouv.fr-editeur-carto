@@ -1,12 +1,10 @@
 
 import Dialog from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js';
 import TabNav from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNav.js';
-import StoryMap from 'mcutils/StoryMap.js';
 import legendTabNavItem from './legend.js';
 import titleTabNavItem from './title.js';
 import styleTabNavItem from './style.js';
 import './layout.scss';
-import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js';
 
 /**
  * @typedef {Object} LayoutTabNavItemOptions
@@ -27,7 +25,7 @@ import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle
  * @property {String} [position="right"] - Position du panneau (left ou right).
  * @property {String} [size="md"] - Taille du panneau (sm ou md).
  * @property {String} [className] - Classe CSS additionnelle.
- * @property {Array<LayoutTabNavItemOptions|TabNavItem>} [items] - Liste des onglets à créer.
+ * @property {Array<LayoutTabNavItemOptions|import("geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js").default>} [items] - Liste des onglets à créer.
  * @property {String} [labelTabNav] - Label ARIA de la navigation.
  * @property {Function} [onOpen] - Callback à l'ouverture du panneau.
  * @property {Function} [onClose] - Callback à la fermeture du panneau.
@@ -39,7 +37,7 @@ import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle
 class Layout extends Dialog {
 
   /**
-   * @param {StoryMap} storymap Instance storymap utilisée par les onglets.
+   * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap utilisée par les onglets.
    * @param {LayoutOptions} [options] Options de construction.
    */
   constructor(storymap, options) {
@@ -74,7 +72,7 @@ class Layout extends Dialog {
 
   /**
    * Retourne l'instance storymap liée au layout.
-   * @returns {StoryMap}
+   * @returns {import("mcutils/StoryMap.js").default}
    */
   getStorymap() {
     return this.storymap;
@@ -82,7 +80,7 @@ class Layout extends Dialog {
 
   /**
    * Met à jour la storymap utilisée par le layout.
-   * @param {StoryMap} storymap Instance storymap.
+   * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap.
    */
   setStorymap(storymap) {
     this.storymap && this.storymap.getCarte()?.getMap()?.removeControl(this);

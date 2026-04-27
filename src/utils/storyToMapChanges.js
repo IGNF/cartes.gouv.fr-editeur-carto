@@ -5,7 +5,7 @@
  * Fonctionne via des écouteurs d'événements génériques openlayers.
  */
 
-import story, { carte } from "../story";
+import story, { carte } from "../story.js";
 
 // Paramètre de la story map, utilisé aussi pour le format et le 
 let storyParam = carte.get("story");
