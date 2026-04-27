@@ -5,6 +5,7 @@ import './actions/actions.js'
 
 import story from './story.js'
 import carte from './carte.js'
+import './utils/storyToMapChanges.js'
 import './utils/dirtyMap.js';
 
 import api from './mcutils/api.js'

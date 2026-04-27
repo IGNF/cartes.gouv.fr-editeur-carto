@@ -3,6 +3,9 @@ import story, { carte } from '../../story.js';
 import StoryMap from 'mcutils/StoryMap.js';
 import { addMessage, removeMessage, setDisabled } from '../../utils/utils.js';
 
+
+///// VALEURS PAR DÉFAUTS /////
+
 /**
  * Ids utilisés pour la navigation tertiaire title
  */
@@ -29,10 +32,18 @@ const defaultValues = {
 };
 
 /**
- * Récupère les instances des éléments
+ * Valeur du fichier image, pour l'utiliser plus facilement après
+ */
+let imgPath = "";
+
+
+///// FONCTIONS UTILITAIRES /////
+
+/**
+ * Récupère les instances d'un élément
  * @param {HTMLElement} element Élément depuis lequel récupérer les instances.
  */
-function getInstances(element) {
+const getInstances = (element) => {
   return {
     titleFieldset: element.querySelector(`#${IDS.TITLE_FIELDSET}`),
     titleToggle: element.querySelector(`#${IDS.TITLE_TOGGLE}`),
@@ -57,9 +68,6 @@ const setLogo = (story, src) => {
   story.element.logo.src = src || '';
 }
 
-// Valeur du fichier image, pour l'utiliser plus facilement après
-let imgPath = "";
-
 /**
  * Fonction utilitaire.
  * Réinitialise le logo utilisé, en modifiant la storymap et l'input
@@ -72,6 +80,46 @@ const resetLogo = (story, input) => {
   imgPath = "";
 }
 
+
+/**
+ * @typedef {Object} TitleOptions Propritétés pour la fonction setTitle
+ * @property {string} [title] Titre principal
+ * @property {string} [subTitle] Sous-titre
+ * @property {string} [title1] Titre de panneau 1
+ * @property {string} [title2] Titre de panneau 2
+ */
+
+/**
+ * Fonction utilitaire.
+ * Modifie le titre d'une storymap sans impacter `document.title`.
+ * Ne passe pas par `StoryMap.setTitle` pour éviter cet effet de bord.
+ * @param {StoryMap} story Storymap à modifier
+ * @param {TitleOptions} options Propriétés à mettre à jour
+ */
+const setTitle = (story, options) => {
+  /**
+   * Modifie un élément HTML selon une fonction render.
+   * Permet d'éviter une suite de `if` par la suite;
+   * @param {string} key Clé correspondant à l'élément dans `StoryMap.element`
+   * @param {string|undefined} value Valeur correspondante
+   * @param {(el: HTMLElement, val: string) => void} render Fonction de transformation
+   */
+  const setField = (key, value, render) => {
+    if (value === undefined) return;
+    story.set(key, value);
+    render(story.element[key], value);
+  };
+
+  setField('title', options.title, (el, val) => {
+    el.innerHTML = val ? val : '<i>sans titre</i>';
+  });
+  setField('subTitle', options.subTitle, (el, val) => { el.innerText = val; });
+  setField('title1', options.title1, (el, val) => { el.innerText = val; });
+  setField('title2', options.title2, (el, val) => { el.innerText = val; });
+
+  story.changed();
+};
+
 /**
  * Retourne le titre de la storymap ou de la carte si non défini
  * @returns {String} Titre de la storymap
@@ -79,6 +127,9 @@ const resetLogo = (story, input) => {
 function getTitle() {
   return story.get("title") || carte.getTitle(true);
 }
+
+
+///// FONCTION POUR LE TABNAV ITEM /////
 
 /**
  * Initialise le contenu de la navigation tertiaire
@@ -273,17 +324,19 @@ function addEvents(container, story) {
       refs.titleInput.dispatchEvent(new Event('input'));
       refs.subtitleInput.value = defaultValues.SUBTITLE;
       refs.subtitleInput.dispatchEvent(new Event('input'));
+    } else {
+      setTitle(story, { title: refs.titleInput.value, subTitle: refs.subtitleInput.value });
     }
   });
 
   // Titre
   refs.titleInput.addEventListener('input', () => {
-    story.setTitle({ title: refs.titleInput.value });
+    setTitle(story, { title: refs.titleInput.value });
   });
 
   // Sous-titre
   refs.subtitleInput.addEventListener('input', () => {
-    story.setTitle({ subTitle: refs.subtitleInput.value });
+    setTitle(story, { subTitle: refs.subtitleInput.value });
   });
 
   refs.imageToggle.addEventListener('change', () => {
@@ -381,6 +434,16 @@ function initForm(story) {
   story.target.dataset.logo = hasLogo ? "" : "none";
 }
 
+
+/**
+ * Initialise l'etat UI et les liaisons a l'ouverture de l'onglet.
+ */
+function onOpen() {
+  initForm(story);
+}
+
+///// INSTANCE TABNAV ITEM POUR LE CHANGEMENT DU TITRE /////
+
 const titleTabNavItem = new TabNavItem({
   label: 'Titre',
   title: 'Ouvrir l\'onglet Titre',
@@ -388,12 +451,5 @@ const titleTabNavItem = new TabNavItem({
   onOpen: onOpen,
 });
 
-/**
- * 
- * Initialise l'etat UI et les liaisons a l'ouverture de l'onglet.
- */
-function onOpen() {
-  initForm(story);
-}
 
 export default titleTabNavItem;
