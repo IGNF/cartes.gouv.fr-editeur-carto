@@ -11,6 +11,10 @@
     > .title {
       display: none;
     }
+
+    > .map {
+      top: 0;
+    }
   }
 }
 
@@ -23,16 +27,59 @@
     flex-direction: column;
     padding: 0 0.5rem 0.5rem;
 
+    // Mode sm : affichage du titre + petit panneau latéral
+    @include mix.respond-from('sm') {
+      margin-top: 4rem;
+      margin-left: 16.5rem;
+      width: calc(100% - 16.5rem);
+      height: calc(100% - 4rem);
+    }
+
+    // Mode >= md : affichage du titre + grand panneau latéral
+    @include mix.respond-from('md') {
+      margin-left: 21.125rem;
+      width: calc(100% - 21.125rem);
+    }
+
+    &[data-logo='none'] {
+      > .title {
+        > img {
+          display: none;
+          &:not([src]),
+          &[src=''] {
+            display: none;
+          }
+        }
+      }
+    }
+
     // Pas d'affichage du titre en mobile
     > .title {
       display: none;
       padding: 0.75rem;
       overflow: visible;
-      height:auto;
-      min-height: 4.75rem;
+      height: auto;
 
       > * {
         white-space: unset;
+      }
+
+      // Modifie la taille maximale de l'image
+      > img {
+        max-height: 3rem;
+        width: auto;
+        max-width: 5rem;
+        padding: 0;
+        box-shadow: none;
+
+        // Image par défaut en cas d'erreur / initialement
+        &:not([src]),
+        &[src=''] {
+          display: unset;
+          width: 3rem;
+          height: 3rem;
+          content: url('img/alt-image.svg');
+        }
       }
 
       // Titre
@@ -68,20 +115,6 @@
     // Place la carte en haut
     .map {
       top: 0;
-    }
-
-    // Mode sm : affichage du titre + petit panneau latéral
-    @include mix.respond-from('sm') {
-      margin-top: 4rem;
-      margin-left: 16.5rem;
-      width: calc(100% - 16.5rem);
-      height: calc(100% - 4rem);
-    }
-
-    // Mode >= md : affichage du titre + grand panneau latéral
-    @include mix.respond-from('md') {
-      margin-left: 21.625rem;
-      width: calc(100% - 21.625rem);
     }
   }
 

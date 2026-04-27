@@ -13,7 +13,6 @@ import 'ol-ext/dist/ol-ext.css'
 import 'mcutils/Carte.css';
 import './css/modes.scss';
 
-
 loadFonts()
 
 const story = new StoryMap({
@@ -25,12 +24,8 @@ const carte = new Carte({
   // Default Carte
   url: import.meta.env.BASE_URL + 'carte/template.carte'
 })
-console.log(carte.title, carte.get("title"), carte.getTitle(), carte.getTitle(true))
-carte.on("change:title", (e) => console.log(e))
+
 story.setCarte(carte);
-console.log(story, story.getTitle());
-story.setTitle("Titre de la StoryMap");
-// story.setLogo("");
 
 export default story;
 // Export de la carte pour certains fichiers (avant appel de carte.js)

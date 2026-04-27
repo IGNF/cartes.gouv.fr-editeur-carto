@@ -11,7 +11,7 @@ import './openMap.scss';
 import htmlToNode from '../../utils/htmlToNode.js';
 import modal from '../../dialogs/modal.js';
 
-const defaultImagePath = 'img/alt-image.png';
+const defaultImagePath = 'img/alt-image.svg';
 
 const buttons = [
   {

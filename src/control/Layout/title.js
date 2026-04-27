@@ -45,6 +45,34 @@ function getInstances(element) {
 }
 
 /**
+ * Fonction utilitaire.
+ * Permet de changer le logo d'une storymap.
+ * Ne passe pas par `StoryMap.setLogo`, puisque cette fonction change aussi
+ * le iconrel du site.
+ * @param {StoryMap} story Storymap sur laquelle il faut changer le logo
+ * @param {String} [src] Source de l'image à modifier.
+ */
+const setLogo = (story, src) => {
+  story.set('logo', src || '');
+  story.element.logo.src = src || '';
+}
+
+// Valeur du fichier image, pour l'utiliser plus facilement après
+let imgPath = "";
+
+/**
+ * Fonction utilitaire.
+ * Réinitialise le logo utilisé, en modifiant la storymap et l'input
+ * @param {StoryMap} story Storymap de l'application
+ * @param {HTMLInputElement} input Input à réinitialiser
+ */
+const resetLogo = (story, input) => {
+  setLogo(story);
+  input.value = "";
+  imgPath = "";
+}
+
+/**
  * Retourne le titre de la storymap ou de la carte si non défini
  * @returns {String} Titre de la storymap
  */
@@ -240,7 +268,6 @@ function addEvents(container, story) {
     story.showTitle(enabled);
 
     // Modifie la valeur du titre et sous-titre si aucun des deux n'est défini
-    console.log(enabled, getTitle(), story.get('subTitle'))
     if (enabled && getTitle() === "" && story.get('subTitle') === undefined) {
       refs.titleInput.value = defaultValues.TITLE;
       refs.titleInput.dispatchEvent(new Event('input'));
@@ -265,7 +292,13 @@ function addEvents(container, story) {
 
     // N'enlève pas le logo de l'input
     if (!enabled) {
-      story.setLogo();
+      // Indique que l'image ne doit pas être affichée
+      story.target.dataset.logo = "none";
+      setLogo(story);
+    } else {
+      // Met l'image pré-enregistré en logo
+      delete story.target.dataset.logo;
+      imgPath && setLogo(story, imgPath);
     }
   });
 
@@ -279,27 +312,20 @@ function addEvents(container, story) {
 
     // Max size : 2Mo
     const maxSize = 2 * 1024 * 1024;
-
     if (file.size > maxSize) {
       addMessage(refs.imageInput, 'La taille du fichier est supérieur à 2Mo');
-      story.setLogo();
-      refs.imageInput.value = '';
+      resetLogo(story, refs.imageInput);
       return;
     }
 
     // Format
-
-
-    const acceptedFormat = refs.imageInput.accept?.split(",") || []
-
+    const acceptedFormat = refs.imageInput.accept?.split(",") || [];
     const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
     const isAcceptedFormat = acceptedFormat.includes(ext);
 
-
     if (!isAcceptedFormat) {
       addMessage(refs.imageInput, 'Le format du fichier n\'est pas accepté');
-      story.setLogo();
-      refs.imageInput.value = '';
+      resetLogo(story, refs.imageInput);
       return;
     }
 
@@ -307,18 +333,18 @@ function addEvents(container, story) {
     reader.onload = () => {
       if (typeof reader.result === 'string') {
         removeMessage(refs.imageInput);
-        story.setLogo(reader.result);
+        // Enregistre le résultat pour le réutiliser après
+        imgPath = reader.result;
+        setLogo(story, reader.result);
         return;
       }
 
       addMessage(refs.imageInput, `Le fichier ${file.name} n'a pas pu être correctement importé.`);
-      story.setLogo();
-      refs.imageInput.value = '';
+      resetLogo(story, refs.imageInput);
     };
     reader.onerror = () => {
       addMessage(refs.imageInput, `Le fichier ${file.name} n'a pas pu être correctement importé.`);
-      story.setLogo();
-      refs.imageInput.value = '';
+      resetLogo(story, refs.imageInput);
     };
     reader.readAsDataURL(file);
   });
@@ -350,7 +376,9 @@ function initForm(story) {
   // Valeurs du logo
   refs.imageToggle.checked = hasLogo;
   setDisabled(refs.imageInput, !showTitle || !hasLogo);
-  refs.imageInput.value = hasLogo ? story.getLogo() : defaultValues.LOGO
+  removeMessage(refs.imageInput);
+  // Affiche une image ou non
+  story.target.dataset.logo = hasLogo ? "" : "none";
 }
 
 const titleTabNavItem = new TabNavItem({
