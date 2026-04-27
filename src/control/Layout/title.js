@@ -1,6 +1,7 @@
 import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js';
-import story, { carte } from '../../story.js';
+import story from '../../story.js';
 import { addMessage, removeMessage, setDisabled } from '../../utils/utils.js';
+import { getTitle, setLogo, setTitle } from '../../utils/story.js';
 
 
 ///// VALEURS PAR DÉFAUTS /////
@@ -56,19 +57,6 @@ const getInstances = (element) => {
 
 /**
  * Fonction utilitaire.
- * Permet de changer le logo d'une storymap.
- * Ne passe pas par `StoryMap.setLogo`, puisque cette fonction change aussi
- * le iconrel du site.
- * @param {import("mcutils/StoryMap.js").default} story Storymap sur laquelle il faut changer le logo
- * @param {String} [src] Source de l'image à modifier.
- */
-const setLogo = (story, src) => {
-  story.set('logo', src || '');
-  story.element.logo.src = src || '';
-}
-
-/**
- * Fonction utilitaire.
  * Réinitialise le logo utilisé, en modifiant la storymap et l'input
  * @param {import("mcutils/StoryMap.js").default} story Storymap de l'application
  * @param {HTMLInputElement} input Input à réinitialiser
@@ -77,54 +65,6 @@ const resetLogo = (story, input) => {
   setLogo(story);
   input.value = "";
   imgPath = "";
-}
-
-
-/**
- * @typedef {Object} TitleOptions Propritétés pour la fonction setTitle
- * @property {string} [title] Titre principal
- * @property {string} [subTitle] Sous-titre
- * @property {string} [title1] Titre de panneau 1
- * @property {string} [title2] Titre de panneau 2
- */
-
-/**
- * Fonction utilitaire.
- * Modifie le titre d'une storymap sans impacter `document.title`.
- * Ne passe pas par `StoryMap.setTitle` pour éviter cet effet de bord.
- * @param {import("mcutils/StoryMap.js").default} story Storymap à modifier
- * @param {TitleOptions} options Propriétés à mettre à jour
- */
-const setTitle = (story, options) => {
-  /**
-   * Modifie un élément HTML selon une fonction render.
-   * Permet d'éviter une suite de `if` par la suite;
-   * @param {string} key Clé correspondant à l'élément dans `StoryMap.element`
-   * @param {string|undefined} value Valeur correspondante
-   * @param {(el: HTMLElement, val: string) => void} render Fonction de transformation
-   */
-  const setField = (key, value, render) => {
-    if (value === undefined) return;
-    story.set(key, value);
-    render(story.element[key], value);
-  };
-
-  setField('title', options.title, (el, val) => {
-    el.innerHTML = val ? val : '<i>sans titre</i>';
-  });
-  setField('subTitle', options.subTitle, (el, val) => { el.innerText = val; });
-  setField('title1', options.title1, (el, val) => { el.innerText = val; });
-  setField('title2', options.title2, (el, val) => { el.innerText = val; });
-
-  story.changed();
-};
-
-/**
- * Retourne le titre de la storymap ou de la carte si non défini
- * @returns {String} Titre de la storymap
- */
-function getTitle() {
-  return story.get("title") || carte.getTitle(true);
 }
 
 
@@ -316,9 +256,10 @@ function addEvents(container, story) {
     refs.titleFieldset.disabled = !enabled;
     refs.imageFieldset.disabled = !enabled;
     story.showTitle(enabled);
+    story.set("showTitle", enabled);
 
     // Modifie la valeur du titre et sous-titre si aucun des deux n'est défini
-    if (enabled && getTitle() === "" && story.get('subTitle') === undefined) {
+    if (enabled && getTitle(story) === "" && story.get('subTitle') === undefined) {
       refs.titleInput.value = defaultValues.TITLE;
       refs.titleInput.dispatchEvent(new Event('input'));
       refs.subtitleInput.value = defaultValues.SUBTITLE;
@@ -430,7 +371,12 @@ function initForm(story) {
   setDisabled(refs.imageInput, !showTitle || !hasLogo);
   removeMessage(refs.imageInput);
   // Affiche une image ou non
-  story.target.dataset.logo = hasLogo ? "" : "none";
+  if (hasLogo) {
+    setLogo(story, story.get('logo'));
+    delete story.target.dataset.logo;
+  } else {
+    story.target.dataset.logo = "none";
+  }
 }
 
 

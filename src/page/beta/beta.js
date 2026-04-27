@@ -2,10 +2,13 @@ import carte from "../../carte.js";
 import Beta from "../../control/Beta/Beta.js";
 import charte from "../../charte/charte.js";
 import Charte from "../../charte/objects/Charte.js";
+import "./beta.scss";
 
 
 // Deux badges pour éviter qu'ils changent de place
-const betaMap = new Beta({ });
+const betaMap = new Beta({
+  className : "beta-map"
+});
 
 const betaLayout = new Beta({
   target: document.body.querySelector("main"),

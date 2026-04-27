@@ -30,7 +30,11 @@
   right: 4rem;
   bottom: 0.5rem;
   filter: drop-shadow(var(--raised-shadow));
-  // margin: 0.5rem;
+
+  // Modifie la position en mobile
+  @media not (pointer: fine) {
+    right: 0.5rem;
+  }
 }
 
 // Temporaire, position de la barre full screen

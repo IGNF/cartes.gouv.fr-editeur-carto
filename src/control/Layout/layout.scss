@@ -6,9 +6,9 @@
 dialog.GPF-dialog.layout-dialog {
   background-color: var(--background-raised-grey);
   height: 20rem;
-  z-index: -1;
 
   @include mix.respond-from('sm') {
+    z-index: -1;
     top: 3.5rem;
     margin: 0.5rem;
     max-height: unset;
@@ -30,7 +30,7 @@ dialog.GPF-dialog.layout-dialog {
 
     .fr-toggle__label {
       flex-direction: row-reverse;
-      width:auto;
+      width: auto;
 
       &::before {
         margin-right: unset;
