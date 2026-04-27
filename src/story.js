@@ -28,7 +28,7 @@ const carte = new Carte({
 
 
 // Ajoute les options de la storymap dans la storymap après lecture de la carte
-carte.on("read", (e) => {
+carte.on("read", () => {
   console.info("read")
   const storyParam = carte.get("story");
   if (storyParam) {
@@ -43,7 +43,7 @@ carte.on("read", (e) => {
   }
 
   // N'affiche pas le logo  s'il n'y en a pas
-  story.target.dataset.logo = !!story.get("logo") ? "" : "none";
+  story.target.dataset.logo = story.get("logo") ? "" : "none";
   setLogo(story, story.get("logo"));
 
   console.info(story.get("showTitle"))

@@ -1,5 +1,5 @@
 import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js';
-import story, { carte } from '../../story.js';
+import story from '../../story.js';
 import { addMessage, removeMessage, setDisabled } from '../../utils/utils.js';
 import { getTitle, setLogo, setTitle } from '../../utils/story.js';
 
@@ -259,7 +259,7 @@ function addEvents(container, story) {
     story.set("showTitle", enabled);
 
     // Modifie la valeur du titre et sous-titre si aucun des deux n'est défini
-    if (enabled && getTitle() === "" && story.get('subTitle') === undefined) {
+    if (enabled && getTitle(story) === "" && story.get('subTitle') === undefined) {
       refs.titleInput.value = defaultValues.TITLE;
       refs.titleInput.dispatchEvent(new Event('input'));
       refs.subtitleInput.value = defaultValues.SUBTITLE;

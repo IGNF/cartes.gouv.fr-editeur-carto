@@ -5,7 +5,6 @@
  * modifier ou d'accéder aux valeurs d'une storymap.
  */
 
-
 /**
  * @typedef {Object} TitleOptions Propritétés pour la fonction setTitle
  * @property {string} [title] Titre principal
@@ -25,7 +24,6 @@
 const setLogo = (story, src) => {
   story.set('logo', src || '');
   story.element.logo.src = src || '';
-  console.log(story.element.logo, story.element.logo.src)
 }
 
 /**
@@ -61,10 +59,11 @@ const setTitle = (story, options) => {
 
 /**
  * Retourne le titre de la storymap ou de la carte si non défini
+ * @param {import("mcutils/StoryMap.js").default} story Storymap sur laquelle récupérer le titre
  * @returns {String} Titre de la storymap
  */
-const getTitle = () => {
-  return story.get("title") || carte.getTitle(true);
+const getTitle = (story) => {
+  return story.get("title") || story.getCarte()?.getTitle(true);
 }
 
 export {
