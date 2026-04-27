@@ -1,4 +1,4 @@
-@use '../../css/mixins.scss' as mx;
+@use '../../css/mixins.scss' as mix;
 
 .ol-control.ol-bar.ol-right.edit-bar {
   transform: unset;
@@ -18,14 +18,14 @@
       }
     }
   }
-  @include mx.respond-from('sm') {
+  @include mix.respond-from('sm') {
     // switcher + taille switcher + espace
     top: calc(6rem + 2.625rem);
   }
 }
 
 .GPF-dialog {
-  @include mx.respond-from('sm') {
+  @include mix.respond-from('sm') {
     // switcher + taille switcher + espace
     top: calc(6rem + 2.625rem + 0.5rem);
   }
@@ -33,7 +33,7 @@
   &#style-dialog {
     min-height: 300px;
 
-    @include mx.respond-from('sm') {
+    @include mix.respond-from('sm') {
       // barre du haut + espace
       top: calc(3.5rem + 0.5rem);
     }

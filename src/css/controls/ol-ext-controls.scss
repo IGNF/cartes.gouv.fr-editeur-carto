@@ -40,9 +40,9 @@
 
 // Mode mobile
 @media not (pointer: fine) {
-  .ol-scale-line {
-    display: none;
-  }
+  // .ol-scale-line {
+  //   display: none;
+  // }
 
   div[id^='GPzoom-'] {
     display: none;

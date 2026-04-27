@@ -8,7 +8,6 @@ import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
 
 import Action from '../../actions/Action.js'
-import story from '../../story.js';
 
 import './step-bar.scss'
 
@@ -38,10 +37,11 @@ let createmap = new Toggle({
     'aria-label': "Gérer le contenu de la carte",
     'data-action': Charte.modes.EDITOR,
   },
-  toggleFn: function(e) {
-    onToggleMode.call(this, e);
-    story.showTitle(false);
-  },
+  onToggle : onToggleMode,
+  // toggleFn: function(e) {
+    // onToggleMode.call(this, e);
+    // story.showTitle(false);
+  // },
 });
 
 let storymap = new Toggle({
@@ -54,12 +54,13 @@ let storymap = new Toggle({
     'aria-label': "Gérer la mise en page de la carte",
     'data-action': Charte.modes.STORYMAP,
   },
-  toggleFn: function(e) {
-    onToggleMode.call(this, e);
+  onToggle : onToggleMode,
+  // toggleFn: function(e) {
+  //   onToggleMode.call(this, e);
     // update title of the storymap with the carte title
-    story.setTitle({ title: carte.getTitle() });
-    story.showTitle(true);
-  },
+    // story.setTitle({ title: carte.getTitle(true) });
+    // story.showTitle(true);
+  // },
 });
 
 let save = new Button({
@@ -98,7 +99,7 @@ let modeBar = new Bar({
 
 // Barre principale
 let mainbar = new Bar({
-  className: 'ol-bar--separator ol-bar--row step-bar',
+  className: 'ol-bar--fixed ol-bar--separator ol-bar--row step-bar',
   controls: [modeBar, save, share]
 })
 

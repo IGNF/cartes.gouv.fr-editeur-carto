@@ -1,0 +1,273 @@
+///
+/// Fichier permettant d'afficher ou non certains éléments
+/// en fonction du mode choisi
+///
+
+@use './mixins.scss' as mix;
+
+[data-mode='editor'] {
+  [data-role='storymap'] {
+    // Pas d'affichage du titre en mode édition
+    > .title {
+      display: none;
+    }
+
+    > .map {
+      top: 0;
+    }
+  }
+}
+
+// Mode mise en page (affichage ou non de div sur la carte)
+[data-mode='storymap'] {
+  [data-role='storymap'] {
+    background-color: unset;
+    color: unset;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5rem 0.5rem;
+
+    // Mode sm : affichage du titre + petit panneau latéral
+    @include mix.respond-from('sm') {
+      margin-top: 4rem;
+      margin-left: 16.5rem;
+      width: calc(100% - 16.5rem);
+      height: calc(100% - 4rem);
+    }
+
+    // Mode >= md : affichage du titre + grand panneau latéral
+    @include mix.respond-from('md') {
+      margin-left: 21.125rem;
+      width: calc(100% - 21.125rem);
+    }
+
+    &[data-logo='none'] {
+      > .title {
+        > img {
+          display: none;
+          &:not([src]),
+          &[src=''] {
+            display: none;
+          }
+        }
+      }
+    }
+
+    // Pas d'affichage du titre en mobile
+    > .title {
+      display: none;
+      padding: 0.75rem;
+      overflow: visible;
+      height: auto;
+
+      > * {
+        white-space: unset;
+      }
+
+      // Modifie la taille maximale de l'image
+      > img {
+        max-height: 3rem;
+        width: auto;
+        max-width: 5rem;
+        padding: 0;
+        box-shadow: none;
+
+        // Image par défaut en cas d'erreur / initialement
+        &:not([src]),
+        &[src=''] {
+          display: unset;
+          width: 3rem;
+          height: 3rem;
+          content: url('/img/alt-image.svg');
+        }
+      }
+
+      // Titre
+      > h1 {
+        overflow: visible;
+        font-size: 1.25rem;
+        font-style: normal;
+        line-height: 2rem;
+        color: var(--text-title-grey);
+      }
+
+      // Description
+      > h2 {
+        overflow: visible;
+        font-size: 0.75rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
+        color: var(--text-mention-grey);
+      }
+    }
+
+    &:not([data-title='hidden']) {
+      > .title {
+        display: none;
+
+        @include mix.respond-from('sm') {
+          display: block;
+        }
+      }
+    }
+
+    // Place la carte en haut
+    .map {
+      top: 0;
+    }
+  }
+
+  // Place la barre de recherche en haut à gauche
+  div[id^='GPsearchEngine-Advanced-'] {
+    left: 0.5rem;
+    width: 100%;
+    @include mix.respond-from('md') {
+      width: calc(360px + 1rem);
+    }
+  }
+
+  // Replace le layerswitcher en fonction du breakpoint
+  div[id^='GPlayerSwitcher-'] {
+    top: 7.5rem;
+    @include mix.respond-from('sm') {
+      top: 3.5rem;
+    }
+    @include mix.respond-from('md') {
+      top: 0;
+    }
+  }
+
+  // N'affiche pas la barre d'édition en mode mise en page
+  div.ol-bar.edit-bar {
+    display: none;
+  }
+}
+
+// Carte (commun au mode édition / mise en page)
+[data-role='storymap'] {
+  width: 100%;
+  height: 100%;
+
+  // Titre
+  > :nth-child(1) {
+    position: relative;
+    background-color: var(--background-raised-grey);
+  }
+  > :nth-child(2) {
+    position: relative;
+    height: 100%;
+  }
+
+  transition:
+    width 0.2s ease-in-out,
+    margin-left 0.2s ease-in-out,
+    height 0.2s ease-in-out,
+    margin-top 0.2s ease-in-out;
+
+  .ol-control.ol-bar .ol-control.ol-text-button > div:hover,
+  .ol-control.ol-bar .ol-control.ol-text-button > div {
+    @include mix.button-state($text-color: var(--text-default-grey), $background: transparent);
+  }
+
+  // Surcharge des différents états / couleurs en mode storymap
+  .map.map2,
+  .map.map1 {
+    // Bouton : état initial
+    button {
+      @include mix.button-state();
+    }
+
+    // Navigation tertiaire
+    .fr-tabnav__link {
+      @include mix.button-state($text-color: var(--text-action-high-grey));
+    }
+
+    // Surcharge des boutons DSFR
+    .fr-btn {
+      &:not(.fr-btn--secondary):not(.fr-btn--tertiary):not(.fr-btn--tertiary-no-outline) {
+        --hover: var(--background-action-high-blue-france-hover);
+        --active: var(--background-action-high-blue-france-active);
+        @include mix.button-state(
+          $text-color: var(--text-inverted-blue-france),
+          $background: var(--background-action-high-blue-france)
+        );
+      }
+    }
+
+    // Bouton DSFR non-primaire (surcharge)
+    .fr-btn--account,
+    .fr-btn--sort,
+    .fr-btn--briefcase,
+    .fr-btn--close,
+    .fr-btn--display,
+    .fr-btn--fullscreen,
+    .fr-btn--team,
+    .fr-btn--secondary,
+    .fr-btn--tertiary,
+    .fr-btn--tertiary-no-outline,
+    .fr-btn--tooltip {
+      --hover: inherit;
+      --active: inherit;
+      @include mix.button-state($text-color: var(--text-action-high-blue-france), $background: transparent);
+    }
+
+    // Boutons extensions gpf (zoom etc.)
+    .gpf-btn-icon.gpf-btn--secondary,
+    .gpf-btn-icon.gpf-btn--tertiary {
+      background-color: var(--background-default-grey);
+    }
+
+    // Bouton dans une barre (surcharge)
+    .ol-control.ol-bar .ol-button button {
+      --hover: inherit;
+      --active: inherit;
+      @include mix.button-state(
+        // $text-color: var(--text-inverted-blue-france),
+        $background: transparent
+      );
+    }
+
+    // Toggle actif dans une barre (surcharge)
+    .ol-control.ol-bar .ol-toggle.ol-active button,
+    .ol-control.ol-bar .ol-toggle.ol-active > button {
+      --hover: var(--background-open-blue-france-hover);
+      --active: var(--background-open-blue-france-active);
+      @include mix.button-state(
+        // $text-color: var(--text-action-high-blue-france),
+        $background: var(--background-open-blue-france)
+      );
+    }
+
+    // Bouton barre gestion fichier (surcharge)
+    .ol-control.ol-bar .ol-button button.map-item:not(:disabled) {
+      --hover: inherit;
+      --active: inherit;
+      @include mix.button-state($text-color: var(--text-action-high-grey), $background: transparent);
+    }
+
+    // Bouton Toggle ext-gpf (surcharge)
+    .GPToggleControl > button {
+      &[aria-extended='true'],
+      &[aria-pressed='true'] {
+        --hover: var(--background-open-blue-france-hover);
+        --active: var(--background-open-blue-france-active);
+        @include mix.button-state($background: var(--background-open-blue-france));
+      }
+    }
+
+    // Zoom (surcharge)
+    .ol-custom-zoom {
+      background-color: transparent;
+      border: unset;
+      & > button {
+        border: unset;
+      }
+    }
+
+    // Box-shadow bouton tertiaire ext-gpf (surcharge)
+    .gpf-widget .gpf-btn-icon.gpf-btn--tertiary {
+      box-shadow: inset 0 0 0 4px var(--background-default-grey);
+    }
+  }
+}

@@ -1,7 +1,8 @@
 
 import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
-import carte from '../carte.js';
-import leftPanel from '../dialogs/leftPanel.js';
+// import carte from '../carte.js';
+import { carte } from '../story.js';
+import styleDialog from '../control/StyleDialog/styleDialog.js';
 import addLayer from './addLayer.js';
 import Action from '../actions/Action.js';
 import modal from '../dialogs/modal.js';
@@ -30,10 +31,6 @@ const switcher = new LayerSwitcher({
       {
         label: 'Style',
         icon: 'fr-icon-brush-line',
-        attributes: {
-          'data-action': "edit-layer-style",
-          "aria-controls": leftPanel.getId(),
-        },
         cb: (e, instance, layer, options) => {
           carte.selectedLayer = layer;
           carte.dispatchEvent({
@@ -41,8 +38,7 @@ const switcher = new LayerSwitcher({
             layer: layer,
             options: options,
           })
-          Action.open(e);
-          // open(e, instance, layer, options);
+          styleDialog.show();
         }
       },
       {
@@ -58,6 +54,9 @@ const switcher = new LayerSwitcher({
     ]
   }
 });
+
+// Enlève la classe gpf-mobile-fullscreen
+switcher.container.classList.remove("gpf-mobile-fullscreen")
 
 // Passe le bouton en primary
 let switcherBtn = switcher.container.querySelector("[id^=GPshowLayersListPicto]");
