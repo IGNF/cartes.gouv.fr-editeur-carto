@@ -12,6 +12,7 @@ import charte from './charte/charte.js';
 import 'ol-ext/dist/ol-ext.css'
 import 'mcutils/Carte.css';
 import './css/modes.scss';
+import { setLogo, setTitle } from './utils/story.js';
 
 loadFonts()
 
@@ -25,6 +26,30 @@ const carte = new Carte({
   url: import.meta.env.BASE_URL + 'carte/template.carte'
 })
 
+
+// Ajoute les options de la storymap dans la storymap après lecture de la carte
+carte.on("read", (e) => {
+  console.info("read")
+  const storyParam = carte.get("story");
+  if (storyParam) {
+    Object.entries(storyParam).forEach(([key, value]) => {
+      story.set(key, value)
+    })
+  }
+
+  // Modifie le DOM de la storymap pour afficher le titre / sous-titre
+  if (story.get("title") || story.get("subTitle")) {
+    setTitle(story, { title: story.get("title"), subTitle: story.get("subTitle") })
+  }
+
+  // N'affiche pas le logo  s'il n'y en a pas
+  story.target.dataset.logo = !!story.get("logo") ? "" : "none";
+  setLogo(story, story.get("logo"));
+
+  console.info(story.get("showTitle"))
+  // Affiche le titre s'il y'en a un
+  story.get("showTitle") ? story.showTitle(true) : story.showTitle(false);
+})
 story.setCarte(carte);
 
 export default story;

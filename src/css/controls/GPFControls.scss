@@ -63,8 +63,8 @@ div[id^='GPsearchEngine-Advanced-'] {
   margin: -0.625rem -0.5rem -0.625rem;
 
   @include mix.respond-from('sm') {
-    top: 0.5rem;
-    // +1rem pour prendre en compte le padding
+    // Pour aligner avec les autres barres
+    top: 0.625rem;
     // width: calc(360px);
     width: calc(360px + 1rem);
     left: calc(50% - 180px);

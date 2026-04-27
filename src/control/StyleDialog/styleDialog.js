@@ -9,6 +9,7 @@ import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
 import { SelectEvent } from "ol/interaction/Select.js";
+import charte from '../../charte/charte.js';
 
 const forms = [styleForm, labelForm];
 
@@ -19,7 +20,12 @@ const styleDialog = new StyleDialog({
   title: "Dialog",
   position: "left",
   select: carte.getSelect(),
-  onOpen: () => {
+  onOpen: function () {
+    if (charte.getMode() !== "editor") {
+      // Empêche la modale de s'ouvrir si on n'est pas en mode édition
+      this.close();
+      return;
+    }
     // Initialise les formulaires
     const feature = carte.getSelect().getFeatures().item(0);
     // Attendre que la feature soit prête pour récupérer son style
