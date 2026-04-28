@@ -31,11 +31,6 @@ const defaultValues = {
   LOGO: '',
 };
 
-/**
- * Valeur du fichier image, pour l'utiliser plus facilement après
- */
-let imgPath = "";
-
 
 ///// FONCTIONS UTILITAIRES /////
 
@@ -54,19 +49,6 @@ const getInstances = (element) => {
     /** @type {HTMLInputElement} */ imageInput: element.querySelector(`#${IDS.IMAGE_INPUT}`),
   };
 }
-
-/**
- * Fonction utilitaire.
- * Réinitialise le logo utilisé, en modifiant la storymap et l'input
- * @param {import("mcutils/StoryMap.js").default} story Storymap de l'application
- * @param {HTMLInputElement} input Input à réinitialiser
- */
-const resetLogo = (story, input) => {
-  setLogo(story);
-  input.value = "";
-  imgPath = "";
-}
-
 
 ///// FONCTION POUR LE TABNAV ITEM /////
 
@@ -297,13 +279,12 @@ function addEvents(container, story) {
     } else {
       // Met l'image pré-enregistré en logo
       delete story.target.dataset.logo;
-      imgPath && setLogo(story, imgPath);
     }
   });
 
   // TODO : importer fichier (si espace utilisateur) (voir commit https://github.com/IGNF/cartes.gouv.fr-editeur-carto/commit/e70e31ee177da48ae2228f4f1bea0b2dd20df3ac#diff-39137574315fd05a545088f4d8b92a1901d50289d5ff97ba14377ed306145706L273)
   // Passe pour le moment par un lien
-  refs.imageInput.addEventListener('change', (e) => {
+  refs.imageInput.addEventListener('change', () => {
     if (!refs.imageInput.validity.valid) {
       // Invalide, on envoie un message d'erreur
       addMessage(refs.imageInput, `L’URL doit avoir pour en-tête le protocole “https”.`);
