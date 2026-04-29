@@ -145,7 +145,7 @@ let mapTitle = new TextButton({
   attributes: {
     title: title || 'Carte sans titre',
   },
-  className: 'fr-px-2w fr-py-1w fr-text map-title'
+  className: 'fr-text map-title'
 });
 
 // Fonction pour mettrre à jour le titre

@@ -2,10 +2,12 @@
 
 .ol-control.ol-top.ol-bar--separator.ol-bar.map-handle {
   display: flex;
-  width: calc(25% - 1rem);
+  // width: calc(25% - 1rem);
+  --map-handle-container-width: calc(25% - 1rem);
+  width: var(--map-handle-container-width);
   top: 0;
   left: 0;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   margin: 0;
   filter: none;
   z-index: 3;
@@ -25,8 +27,20 @@
     border-bottom: none;
     display: flex;
     margin: 0.5rem;
-    width: unset;
+    --map-handle-container-width: unset;
     padding: 0.25rem;
+
+    > div:first-child {
+      margin: unset;
+    }
+  }
+
+  @include mix.respond-from('md') {
+    --map-handle-container-width: 12.125rem;
+  }
+
+  @include mix.respond-from('xl') {
+    --map-handle-container-width: 21.625rem;
   }
 
   &.ol-bar--fixed {
@@ -76,16 +90,16 @@
 .ol-control.ol-bar .ol-control.ol-text-button {
   &.map-title {
     display: none;
+    padding: 0.5rem 1rem 0.5rem 1.25rem !important;
 
     @include mix.respond-from('md') {
       display: block;
-      width: 132px; // 8.25rem;
+      width: calc(var(--map-handle-container-width) - 3.25rem);
     }
-
-    @include mix.respond-from('xl') {
-      // display:block;
-      width: 278px; // 17.375rem;
-    }
+    // @include mix.respond-from('md') {
+    //   display: block;
+    //   width: calc(var(--map-handle-container-width) - );
+    // }
   }
 
   &.map-title,

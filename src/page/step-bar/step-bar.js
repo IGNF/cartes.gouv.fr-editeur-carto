@@ -11,25 +11,38 @@ import Action from '../../actions/Action.js'
 
 import './step-bar.scss'
 
-let onToggleMode = function () {
+let onToggleMode = function (e) {
+  console.log(e)
   let toggle = this;
+  console.log(toggle);
+  const currentMode = charte.getMode();
   const action = this.button_.getAttribute('data-action');
-  charte.setMode(action);
-  let mode = charte.getMode();
-  // Active ou non le toggle en fonction du mode
-  if (mode === action) {
+  console.log(currentMode, action, currentToggle);
+  if (currentMode === action) {
+    // On a appuyé sur le même bouton : on laisse le toggle actif
     toggle.setActive(true);
-    toggle.set('autoActivate', true);
   } else {
-    toggle.setActive(false);
-    toggle.set('autoActivate', false);
+    // Désactive l'autre toggle (le mode change)
+    currentToggle?.setActive(false);
+    // Change le mode de l'appli
+    charte.setMode(action);
+    toggle.setActive(true)
   }
+  currentToggle = toggle;
+  // Active ou non le toggle en fonction du mode
+  // if (mode === action) {
+  //   toggle.setActive(true);
+  //   toggle.set('autoActivate', true);
+  // } else {
+  //   toggle.setActive(false);
+  //   toggle.set('autoActivate', false);
+  // }
 }
 
 // Barre ajout de donnée
 let createmap = new Toggle({
   html: '<i class="ri-pencil-line"></i><span>Création</span>',
-  autoActivate: true,
+  active: true,
   className: 'action-button',
   classButton: 'fr-btn fr-btn--tertiary-no-outline',
   attributes: {
@@ -44,10 +57,15 @@ let createmap = new Toggle({
   // },
 });
 
+/**
+ * @type {import("ol-ext/control/Toggle.js").default} Toggle actif
+ */
+let currentToggle = createmap;
+
 let storymap = new Toggle({
   html: '<i class="ri-collage-line"></i><span>Mise en page</span>',
   className: 'action-button',
-  autoActivate: true,
+  // autoActivate: true,
   classButton: 'fr-btn fr-btn--tertiary-no-outline',
   attributes: {
     title: "Gérer la mise en page de la carte",
@@ -91,16 +109,19 @@ let share = new Button({
   handleClick: Action.open
 });
 
-let modeBar = new Bar({
-  toggleOne: true,
-  autoActivate: true,
-  controls: [createmap, storymap]
-})
+// let modeBar = new Bar({
+//   className: 'ol-bar--separator ol-bar--row',
+//   toggleOne: true,
+//   autoActivate: true,
+//   controls: [createmap, storymap]
+// })
+
+// modeBar.setPosition('top-right')
 
 // Barre principale
 let mainbar = new Bar({
   className: 'ol-bar--fixed ol-bar--separator ol-bar--row step-bar',
-  controls: [modeBar, save, share]
+  controls: [createmap, storymap, save, share]
 })
 
 carte.addControl('stepBar', mainbar);

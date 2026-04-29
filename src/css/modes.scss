@@ -37,8 +37,8 @@
 
     // Mode >= md : affichage du titre + grand panneau latéral
     @include mix.respond-from('md') {
-      margin-left: 21.125rem;
-      width: calc(100% - 21.125rem);
+      margin-left: 22.125rem;
+      width: calc(100% - 22.125rem);
     }
 
     &[data-logo='none'] {
@@ -181,6 +181,10 @@
     // Navigation tertiaire
     .fr-tabnav__link {
       @include mix.button-state($text-color: var(--text-action-high-grey));
+
+      &[aria-selected='true'] {
+        @include mix.button-state($text-color: var(--text-active-blue-france));
+      }
     }
 
     // Surcharge des boutons DSFR
@@ -215,17 +219,14 @@
     // Boutons extensions gpf (zoom etc.)
     .gpf-btn-icon.gpf-btn--secondary,
     .gpf-btn-icon.gpf-btn--tertiary {
-      background-color: var(--background-default-grey);
+      @include mix.button-state($background: var(--background-default-grey));
     }
 
     // Bouton dans une barre (surcharge)
     .ol-control.ol-bar .ol-button button {
       --hover: inherit;
       --active: inherit;
-      @include mix.button-state(
-        // $text-color: var(--text-inverted-blue-france),
-        $background: transparent
-      );
+      @include mix.button-state($background: transparent);
     }
 
     // Toggle actif dans une barre (surcharge)
@@ -233,10 +234,7 @@
     .ol-control.ol-bar .ol-toggle.ol-active > button {
       --hover: var(--background-open-blue-france-hover);
       --active: var(--background-open-blue-france-active);
-      @include mix.button-state(
-        // $text-color: var(--text-action-high-blue-france),
-        $background: var(--background-open-blue-france)
-      );
+      @include mix.button-state($background: var(--background-open-blue-france));
     }
 
     // Bouton barre gestion fichier (surcharge)
