@@ -31,11 +31,6 @@ const defaultValues = {
   LOGO: '',
 };
 
-/**
- * Valeur du fichier image, pour l'utiliser plus facilement après
- */
-let imgPath = "";
-
 
 ///// FONCTIONS UTILITAIRES /////
 
@@ -45,28 +40,15 @@ let imgPath = "";
  */
 const getInstances = (element) => {
   return {
-    titleFieldset: element.querySelector(`#${IDS.TITLE_FIELDSET}`),
-    titleToggle: element.querySelector(`#${IDS.TITLE_TOGGLE}`),
-    titleInput: element.querySelector(`#${IDS.TITLE_INPUT}`),
-    subtitleInput: element.querySelector(`#${IDS.SUBTITLE_INPUT}`),
-    imageFieldset: element.querySelector(`#${IDS.IMAGE_FIELDSET}`),
-    imageToggle: element.querySelector(`#${IDS.IMAGE_TOGGLE}`),
-    imageInput: element.querySelector(`#${IDS.IMAGE_INPUT}`),
+    /** @type {HTMLFieldSetElement} */ titleFieldset: element.querySelector(`#${IDS.TITLE_FIELDSET}`),
+    /** @type {HTMLInputElement} */ titleToggle: element.querySelector(`#${IDS.TITLE_TOGGLE}`),
+    /** @type {HTMLInputElement} */ titleInput: element.querySelector(`#${IDS.TITLE_INPUT}`),
+    /** @type {HTMLInputElement} */ subtitleInput: element.querySelector(`#${IDS.SUBTITLE_INPUT}`),
+    /** @type {HTMLFieldSetElement} */ imageFieldset: element.querySelector(`#${IDS.IMAGE_FIELDSET}`),
+    /** @type {HTMLInputElement} */ imageToggle: element.querySelector(`#${IDS.IMAGE_TOGGLE}`),
+    /** @type {HTMLInputElement} */ imageInput: element.querySelector(`#${IDS.IMAGE_INPUT}`),
   };
 }
-
-/**
- * Fonction utilitaire.
- * Réinitialise le logo utilisé, en modifiant la storymap et l'input
- * @param {import("mcutils/StoryMap.js").default} story Storymap de l'application
- * @param {HTMLInputElement} input Input à réinitialiser
- */
-const resetLogo = (story, input) => {
-  setLogo(story);
-  input.value = "";
-  imgPath = "";
-}
-
 
 ///// FONCTION POUR LE TABNAV ITEM /////
 
@@ -194,18 +176,24 @@ function initContent() {
   const imageUploadLabel = document.createElement('label');
   imageUploadLabel.className = 'fr-label';
   imageUploadLabel.setAttribute('for', IDS.IMAGE_INPUT);
-  imageUploadLabel.textContent = 'Fichier image';
+  imageUploadLabel.textContent = 'URL de l\'image';
 
   const imageUploadHint = document.createElement('span');
   imageUploadHint.className = 'fr-hint-text';
-  imageUploadHint.textContent = 'Taille maximale : 2 Mo. Formats supportés : jpg, png et svg.';
+  imageUploadHint.textContent = 'Lien https uniquement.';
 
   const imageUploadInput = document.createElement('input');
-  imageUploadInput.className = 'fr-upload';
-  imageUploadInput.type = 'file';
+  imageUploadInput.className = 'fr-input';
   imageUploadInput.id = IDS.IMAGE_INPUT;
-  imageUploadInput.accept = 'image/jpeg,image/png,image/svg+xml,.jpg,.jpeg,.png,.svg';
   imageUploadInput.setAttribute('aria-describedby', `${IDS.IMAGE_INPUT}-messages`);
+  imageUploadInput.pattern = "https://.+";
+  imageUploadInput.placeholder = "https://example.com/image.png";
+  imageUploadInput.type = 'url';
+
+  // TODO : proposer aussi un input de type fichier
+  // Mais nécessite d'avoir un espace utilisateur
+  // imageUploadInput.type = 'file';
+  // imageUploadInput.accept = 'image/jpeg,image/png,image/svg+xml,.jpg,.jpeg,.png,.svg';
 
   imageUploadLabel.appendChild(imageUploadHint);
   imageUploadGroup.appendChild(imageUploadLabel);
@@ -291,55 +279,34 @@ function addEvents(container, story) {
     } else {
       // Met l'image pré-enregistré en logo
       delete story.target.dataset.logo;
-      imgPath && setLogo(story, imgPath);
     }
   });
 
-  // Temporaire, car impossible de stocker l'info
+  // TODO : importer fichier (si espace utilisateur) (voir commit https://github.com/IGNF/cartes.gouv.fr-editeur-carto/commit/e70e31ee177da48ae2228f4f1bea0b2dd20df3ac#diff-39137574315fd05a545088f4d8b92a1901d50289d5ff97ba14377ed306145706L273)
+  // Passe pour le moment par un lien
   refs.imageInput.addEventListener('change', () => {
-    const file = refs.imageInput.files && refs.imageInput.files[0];
-    if (!file) {
+    if (!refs.imageInput.validity.valid) {
+      // Invalide, on envoie un message d'erreur
+      addMessage(refs.imageInput, `L’URL doit avoir pour en-tête le protocole “https”.`);
+      setLogo(story);
+    } else {
       removeMessage(refs.imageInput);
-      return;
+      setLogo(story, refs.imageInput.value);
     }
+  });
 
-    // Max size : 2Mo
-    const maxSize = 2 * 1024 * 1024;
-    if (file.size > maxSize) {
-      addMessage(refs.imageInput, 'La taille du fichier est supérieur à 2Mo');
-      resetLogo(story, refs.imageInput);
+  // Message d'erreur si le logo n'a pas pu se télécharger
+  story?.element?.logo?.addEventListener("error", (e) => {
+    const src = e.target.src;
+    console.log(import.meta)
+    if (src === window.location.href) {
+      // Correspond à la balise <img src>, donc pas de logo
       return;
+    } else {
+      // Erreur de chargement
+      addMessage(refs.imageInput, `L'image n'a pas pu être intégrée correctement`);
+      setLogo(story);
     }
-
-    // Format
-    const acceptedFormat = refs.imageInput.accept?.split(",") || [];
-    const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
-    const isAcceptedFormat = acceptedFormat.includes(ext);
-
-    if (!isAcceptedFormat) {
-      addMessage(refs.imageInput, 'Le format du fichier n\'est pas accepté');
-      resetLogo(story, refs.imageInput);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        removeMessage(refs.imageInput);
-        // Enregistre le résultat pour le réutiliser après
-        imgPath = reader.result;
-        setLogo(story, reader.result);
-        return;
-      }
-
-      addMessage(refs.imageInput, `Le fichier ${file.name} n'a pas pu être correctement importé.`);
-      resetLogo(story, refs.imageInput);
-    };
-    reader.onerror = () => {
-      addMessage(refs.imageInput, `Le fichier ${file.name} n'a pas pu être correctement importé.`);
-      resetLogo(story, refs.imageInput);
-    };
-    reader.readAsDataURL(file);
   });
 }
 
@@ -378,7 +345,6 @@ function initForm(story) {
     story.target.dataset.logo = "none";
   }
 }
-
 
 /**
  * Initialise l'etat UI et les liaisons a l'ouverture de l'onglet.
