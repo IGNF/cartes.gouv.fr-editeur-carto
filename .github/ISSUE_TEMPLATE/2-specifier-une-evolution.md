@@ -2,7 +2,8 @@
 name: "\U0001F680 Spécifier une évolution"
 about: Renseigner les informations nécessaires pour créer ou améliorer une fonctionnalité pour cartes.gouv.fr
 title: ''
-labels: ''
+labels: ['amélioration']
+projects: ["IGNF/52"]
 assignees: MatRouillard, Viglino
 type: Feature
 

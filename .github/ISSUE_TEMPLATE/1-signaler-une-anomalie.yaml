@@ -1,6 +1,9 @@
 name: 🐛 Signaler une anomalie
 description: Aidez nous à améliorer cartes.gouv.fr en complétant ce rapport d'anomalie
-labels: ["bug"]
+labels: ["anomalie"]
+projects: ["IGNF/52"]
+assignees: MatRouillard, Viglino, AHeurion
+type: "Bug"
 body:
   - type: textarea
     id: description
