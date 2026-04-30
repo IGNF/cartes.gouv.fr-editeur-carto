@@ -2,14 +2,17 @@
 
 .ol-control.ol-top.ol-bar--separator.ol-bar.map-handle {
   display: flex;
-  width: calc(25% - 1rem);
+  // width: calc(25% - 1rem);
+  --map-handle-container-width: calc(25% - 1rem);
+  width: var(--map-handle-container-width);
   top: 0;
   left: 0;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   margin: 0;
-  filter: none;
   z-index: 3;
-  box-shadow: inset 0 -1px var(--border-default-grey);
+  filter:none;
+  box-shadow: 0 4px 3px -3px var(--shadow-color) ;
+  border-bottom: 1px solid var(--border-default-grey);
 
   > div:first-child {
     margin: auto;
@@ -25,8 +28,20 @@
     border-bottom: none;
     display: flex;
     margin: 0.5rem;
-    width: unset;
+    --map-handle-container-width: unset;
     padding: 0.25rem;
+
+    > div:first-child {
+      margin: unset;
+    }
+  }
+
+  @include mix.respond-from('md') {
+    --map-handle-container-width: 12.125rem;
+  }
+
+  @include mix.respond-from('xl') {
+    --map-handle-container-width: 21.625rem;
   }
 
   &.ol-bar--fixed {
@@ -60,7 +75,7 @@
     filter: drop-shadow(var(--raised-shadow));
 
     @include mix.respond-from('sm') {
-      width: 330px;
+      width: 21.625rem;
       border-radius: inherit;
       left: -0.25rem;
       position: absolute;
@@ -76,16 +91,16 @@
 .ol-control.ol-bar .ol-control.ol-text-button {
   &.map-title {
     display: none;
+    padding: 0.5rem 1rem 0.5rem 1.25rem !important;
 
     @include mix.respond-from('md') {
       display: block;
-      width: 132px; // 8.25rem;
+      width: calc(var(--map-handle-container-width) - 3.25rem);
     }
-
-    @include mix.respond-from('xl') {
-      // display:block;
-      width: 278px; // 17.375rem;
-    }
+    // @include mix.respond-from('md') {
+    //   display: block;
+    //   width: calc(var(--map-handle-container-width) - );
+    // }
   }
 
   &.map-title,
@@ -104,7 +119,7 @@
   }
 }
 
-// Boution d'actions
+// Boutons d'action
 .ol-control.ol-bar .ol-button button.map-item {
   display: flex;
   flex-direction: row;
@@ -118,7 +133,6 @@
   padding: 0.5rem 1rem;
   height: auto;
   min-height: auto;
-  border-radius: 0.25rem;
 
   &:not(:disabled) {
     @include mix.button-state($text-color: var(--text-action-high-grey));

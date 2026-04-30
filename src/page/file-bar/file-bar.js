@@ -133,8 +133,8 @@ let btnBar = new Bar({
 let fileToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-ign-add-data',
   attributes: {
-    title: "Gestion ma carte",
-    'aria-label': "Gestion ma carte",
+    title: "Gérer ma carte",
+    'aria-label': "Gérer ma carte",
   },
   bar: btnBar
 });
@@ -145,7 +145,7 @@ let mapTitle = new TextButton({
   attributes: {
     title: title || 'Carte sans titre',
   },
-  className: 'fr-px-2w fr-py-1w fr-text map-title'
+  className: 'fr-text map-title'
 });
 
 // Fonction pour mettrre à jour le titre
