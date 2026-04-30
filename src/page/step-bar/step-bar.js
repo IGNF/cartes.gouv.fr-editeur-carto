@@ -11,13 +11,10 @@ import Action from '../../actions/Action.js'
 
 import './step-bar.scss'
 
-let onToggleMode = function (e) {
-  console.log(e)
+let onToggleMode = function () {
   let toggle = this;
-  console.log(toggle);
   const currentMode = charte.getMode();
   const action = this.button_.getAttribute('data-action');
-  console.log(currentMode, action, currentToggle);
   if (currentMode === action) {
     // On a appuyé sur le même bouton : on laisse le toggle actif
     toggle.setActive(true);
@@ -29,14 +26,6 @@ let onToggleMode = function (e) {
     toggle.setActive(true)
   }
   currentToggle = toggle;
-  // Active ou non le toggle en fonction du mode
-  // if (mode === action) {
-  //   toggle.setActive(true);
-  //   toggle.set('autoActivate', true);
-  // } else {
-  //   toggle.setActive(false);
-  //   toggle.set('autoActivate', false);
-  // }
 }
 
 // Barre ajout de donnée
@@ -51,10 +40,6 @@ let createmap = new Toggle({
     'data-action': Charte.modes.EDITOR,
   },
   onToggle: onToggleMode,
-  // toggleFn: function(e) {
-  // onToggleMode.call(this, e);
-  // story.showTitle(false);
-  // },
 });
 
 /**
@@ -73,12 +58,6 @@ let storymap = new Toggle({
     'data-action': Charte.modes.STORYMAP,
   },
   onToggle: onToggleMode,
-  // toggleFn: function(e) {
-  //   onToggleMode.call(this, e);
-  // update title of the storymap with the carte title
-  // story.setTitle({ title: carte.getTitle(true) });
-  // story.showTitle(true);
-  // },
 });
 
 let save = new Button({
