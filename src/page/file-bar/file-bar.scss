@@ -74,7 +74,7 @@
     filter: drop-shadow(var(--raised-shadow));
 
     @include mix.respond-from('sm') {
-      width: 330px;
+      width: 21.625rem;
       border-radius: inherit;
       left: -0.25rem;
       position: absolute;
@@ -118,7 +118,7 @@
   }
 }
 
-// Boution d'actions
+// Boutons d'action
 .ol-control.ol-bar .ol-button button.map-item {
   display: flex;
   flex-direction: row;
@@ -132,7 +132,6 @@
   padding: 0.5rem 1rem;
   height: auto;
   min-height: auto;
-  border-radius: 0.25rem;
 
   &:not(:disabled) {
     @include mix.button-state($text-color: var(--text-action-high-grey));

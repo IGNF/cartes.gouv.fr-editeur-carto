@@ -1,3 +1,10 @@
+@use '../../css/mixins.scss' as mix;
+
+// Margin label
+.input-style__label + .ol-popup {
+  margin-top: 0.5rem;
+}
+
 .fr-input-group {
   .ol-ext-colorpicker {
     // margin-top: 0.5rem;
@@ -12,10 +19,19 @@
       pointer-events: none;
     }
 
-    &:hover {
-      border-color: var(--border-default-grey);
+    @include mix.hover-media-query() {
+      &:hover {
+        border-color: var(--background-default-grey-hover);
+      }
+      &:active {
+        border-color: var(--background-default-grey-active);
+      }
     }
-    &:after {
+
+    &[aria-expanded='true'] {
+      border-color: var(--background-default-grey-active);
+    }
+    &::after {
       mask-image: url("data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12%2013.172L16.95%208.22198L18.364%209.63598L12%2016L5.63599%209.63598L7.04999%208.22198L12%2013.172Z'%20fill='%23000091'/%3e%3c/svg%3e");
       mask-size: 100% 100%;
       height: 1.5rem;
@@ -36,11 +52,13 @@
 
     .ol-popup {
       z-index: 1;
-      box-shadow: 0 2px 6px 0 var(--shadow-color);
+      box-shadow: none;
+      filter: drop-shadow(var(--overlap-shadow));
       max-height: calc(100% - 5rem);
       overflow: auto;
       width: auto;
       padding: 0.25rem;
+      border-radius: 0.25rem;
     }
 
     .ol-container,
@@ -160,7 +178,7 @@
     &.eyedropper {
       input.ol-txt-color {
         width: calc(100% - 2.5rem);
-        margin: 0.25rem 0 0.5rem 2.5rem!important;
+        margin: 0.25rem 0 0.5rem 2.5rem !important;
         height: 2rem;
       }
       .ol-eyedropper {

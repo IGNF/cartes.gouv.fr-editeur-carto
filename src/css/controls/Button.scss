@@ -25,6 +25,8 @@
 }
 
 .ol-control.ol-control button {
+  border-radius: 0;
+
   &:focus {
     outline-color: #0a76f6;
     outline-offset: -2px;
