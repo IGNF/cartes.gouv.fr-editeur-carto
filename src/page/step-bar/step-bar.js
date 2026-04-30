@@ -50,10 +50,10 @@ let createmap = new Toggle({
     'aria-label': "Gérer le contenu de la carte",
     'data-action': Charte.modes.EDITOR,
   },
-  onToggle : onToggleMode,
+  onToggle: onToggleMode,
   // toggleFn: function(e) {
-    // onToggleMode.call(this, e);
-    // story.showTitle(false);
+  // onToggleMode.call(this, e);
+  // story.showTitle(false);
   // },
 });
 
@@ -72,12 +72,12 @@ let storymap = new Toggle({
     'aria-label': "Gérer la mise en page de la carte",
     'data-action': Charte.modes.STORYMAP,
   },
-  onToggle : onToggleMode,
+  onToggle: onToggleMode,
   // toggleFn: function(e) {
   //   onToggleMode.call(this, e);
-    // update title of the storymap with the carte title
-    // story.setTitle({ title: carte.getTitle(true) });
-    // story.showTitle(true);
+  // update title of the storymap with the carte title
+  // story.setTitle({ title: carte.getTitle(true) });
+  // story.showTitle(true);
   // },
 });
 
@@ -86,8 +86,8 @@ let save = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-save-line',
   attributes: {
     type: 'button',
-    title: "Enregistrer la carte",
-    'aria-label': "Enregistrer la carte",
+    title: "Enregistrer",
+    'aria-label': "Enregistrer",
     'data-action': 'save-map',
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
@@ -100,23 +100,32 @@ let share = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-share-2-line',
   attributes: {
     type: 'button',
-    title: "Partager la carte",
-    'aria-label': "Partager la carte",
+    title: "Partager",
+    'aria-label': "Partager",
     'data-action': 'share-map',
     'aria-controls': modal.getId(),
-    'data-fr-opened': 'false'
+    'data-fr-opened': 'false',
   },
   handleClick: Action.open
 });
 
-// let modeBar = new Bar({
-//   className: 'ol-bar--separator ol-bar--row',
-//   toggleOne: true,
-//   autoActivate: true,
-//   controls: [createmap, storymap]
-// })
+carte.on("read", () => {
+  if (!carte.get("id")) {
+    share.setDisable(true);
+    share.button_.setAttribute("title", "Enregistrez avant de partager");
+    share.button_.setAttribute("aria-label", "Enregistrez avant de partager");
+  } else {
+    share.setDisable(false);
+    share.button_.setAttribute("title", "Partager");
+    share.button_.setAttribute("aria-label", "Partager");
+  }
+})
 
-// modeBar.setPosition('top-right')
+carte.on("save", () => {
+  share.setDisable(false);
+  share.button_.setAttribute("title", "Partager");
+  share.button_.setAttribute("aria-label", "Partager");
+})
 
 // Barre principale
 let mainbar = new Bar({

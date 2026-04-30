@@ -165,8 +165,7 @@
     height 0.2s ease-in-out,
     margin-top 0.2s ease-in-out;
 
-  .ol-control.ol-bar .ol-control.ol-text-button > div:hover,
-  .ol-control.ol-bar .ol-control.ol-text-button > div {
+  .ol-control.ol-bar .ol-control.ol-text-button > div:not(:disabled) {
     @include mix.button-state($text-color: var(--text-default-grey), $background: transparent);
   }
 
@@ -174,12 +173,18 @@
   .map.map2,
   .map.map1 {
     // Bouton : état initial
-    button {
+    button:not(:disabled) {
       @include mix.button-state();
+    }
+    // Bouton : état initial
+    button:disabled {
+      --hover: var(--background-disabled-grey);
+      --active: var(--background-disabled-grey);
+      @include mix.button-state($text-color: var(--text-disabled-grey), $background: var(--background-disabled-grey));
     }
 
     // Navigation tertiaire
-    .fr-tabnav__link {
+    .fr-tabnav__link:not(:disabled) {
       @include mix.button-state($text-color: var(--text-action-high-grey));
 
       &[aria-selected='true'] {
@@ -188,7 +193,7 @@
     }
 
     // Surcharge des boutons DSFR
-    .fr-btn {
+    .fr-btn:not(:disabled) {
       &:not(.fr-btn--secondary):not(.fr-btn--tertiary):not(.fr-btn--tertiary-no-outline) {
         --hover: var(--background-action-high-blue-france-hover);
         --active: var(--background-action-high-blue-france-active);
@@ -211,27 +216,29 @@
     .fr-btn--tertiary,
     .fr-btn--tertiary-no-outline,
     .fr-btn--tooltip {
-      --hover: inherit;
-      --active: inherit;
-      @include mix.button-state($text-color: var(--text-action-high-blue-france), $background: transparent);
+      &:not(:disabled) {
+        --hover: inherit;
+        --active: inherit;
+        @include mix.button-state($text-color: var(--text-action-high-blue-france), $background: transparent);
+      }
     }
 
     // Boutons extensions gpf (zoom etc.)
-    .gpf-btn-icon.gpf-btn--secondary,
-    .gpf-btn-icon.gpf-btn--tertiary {
+    .gpf-btn-icon.gpf-btn--secondary:not(:disabled),
+    .gpf-btn-icon.gpf-btn--tertiary:not(:disabled) {
       @include mix.button-state($background: var(--background-default-grey));
     }
 
     // Bouton dans une barre (surcharge)
-    .ol-control.ol-bar .ol-button button {
+    .ol-control.ol-bar .ol-button button:not(:disabled) {
       --hover: inherit;
       --active: inherit;
       @include mix.button-state($background: transparent);
     }
 
     // Toggle actif dans une barre (surcharge)
-    .ol-control.ol-bar .ol-toggle.ol-active button,
-    .ol-control.ol-bar .ol-toggle.ol-active > button {
+    .ol-control.ol-bar .ol-toggle.ol-active button:not(:disabled),
+    .ol-control.ol-bar .ol-toggle.ol-active > button:not(:disabled) {
       --hover: var(--background-open-blue-france-hover);
       --active: var(--background-open-blue-france-active);
       @include mix.button-state($background: var(--background-open-blue-france));

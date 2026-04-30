@@ -133,8 +133,8 @@ let btnBar = new Bar({
 let fileToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-ign-add-data',
   attributes: {
-    title: "Gestion ma carte",
-    'aria-label': "Gestion ma carte",
+    title: "Gérer ma carte",
+    'aria-label': "Gérer ma carte",
   },
   bar: btnBar
 });
