@@ -279,6 +279,7 @@ function addEvents(container, story) {
     } else {
       // Met l'image pré-enregistré en logo
       delete story.target.dataset.logo;
+      refs.imageInput.dispatchEvent(new Event("change"));
     }
   });
 
