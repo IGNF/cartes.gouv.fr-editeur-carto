@@ -11,8 +11,8 @@ document.addEventListener('keydown', evt => {
     || evt.target.tagName === "TEXTAREA" 
     || evt.target.isContentEditable;
   */
-  const isModalOpen = document.querySelector('[data-fr-js-modal="true"]:open') !== null
-    || document.querySelector("dialog:modal") !== null;
+  // const isModalOpen = document.querySelector('[data-fr-js-modal="true"]:open') !== null || document.querySelector("dialog:modal") !== null;
+  const isModalOpen = false;
 
   console.log(evt.key, evt.code, `ctrl : ${evt.ctrlKey}`, `meta key : ${evt.metaKey}`);
 
