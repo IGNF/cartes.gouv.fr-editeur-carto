@@ -60,9 +60,13 @@ let storymap = new Toggle({
   onToggle: onToggleMode,
 });
 
+// Pour changer l'icône après
+const saveIcon = "fr-icon-save-line";
+const savedIcon = "fr-icon-check-line";
+
 let save = new Button({
   className: 'save-button',
-  classButton: 'fr-btn fr-btn--tertiary-no-outline ri-save-line',
+  classButton: `fr-btn fr-btn--tertiary-no-outline ${saveIcon}`,
   attributes: {
     type: 'button',
     title: "Enregistrer",
@@ -88,6 +92,7 @@ let share = new Button({
   handleClick: Action.open
 });
 
+// Active / désactive le bouton de partage
 carte.on("read", () => {
   if (!carte.get("id")) {
     share.setDisable(true);
@@ -100,10 +105,18 @@ carte.on("read", () => {
   }
 })
 
+// À l'enregistrement, active le bouton de partage
 carte.on("save", () => {
   share.setDisable(false);
   share.button_.setAttribute("title", "Partager");
   share.button_.setAttribute("aria-label", "Partager");
+
+  // Change l'icône de sauvegarde vers `success` pendant 5 secondes
+  save.button_.classList.remove(saveIcon)
+  save.button_.classList.add(savedIcon)
+
+  // Remet le bouton à son état initial après 3 secondes
+  setTimeout(() => save.button_.classList.replace(savedIcon, saveIcon), 5000);
 })
 
 // Barre principale

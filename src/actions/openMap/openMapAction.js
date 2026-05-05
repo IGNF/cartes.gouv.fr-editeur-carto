@@ -30,12 +30,12 @@ const buttons = [
 
 const buttonConnect = [
   {
-   label: 'Se connecter',
-   kind: 1,
-   close: true,
-   'data-action': 'login',
-   'aria-controls': loginDialog.getId(),
-   'data-fr-opened': false,
+    label: 'Se connecter',
+    kind: 1,
+    close: true,
+    'data-action': 'login',
+    'aria-controls': loginDialog.getId(),
+    'data-fr-opened': false,
     callback: (e) => {
       Action.open(e);
       console.log(loginDialog)
@@ -109,12 +109,12 @@ function getUserMaps(e) {
       className: 'map-list'
     })
 
-/*
-TODO: ajouter un champ de recherche et
- outil de filtrage
-*/
+    /*
+    TODO: ajouter un champ de recherche et
+     outil de filtrage
+    */
     // Filter liste des cartes en fonction du champ de recherche
-    const filtermap = function() {
+    const filtermap = function () {
       list.querySelectorAll('.ol-map-card').forEach(card => {
         const title = card.querySelector('.ol-map-card__title').textContent;
         const rex = new RegExp(filterInput.value, 'i');
@@ -130,21 +130,21 @@ TODO: ajouter un champ de recherche et
     const filterInput = ol_ext_element.create('input', {
       className: 'fr-input fr-icon-search-line',
       id: 'map-filter',
-      placeholder: 'Filtrer les cartes',
+      placeholder: 'Rechercher',
       parent: content,
       'aria-controls': 'openmap-list',
       on: {
-        // Filter ono keyup
+        // Filter on keyup
         keyup: () => {
           if (tout) clearTimeout(tout);
           tout = setTimeout(filtermap, 300);
         }
       }
     })
-    // Icon de recherche dans le champ de recherche
-    ol_ext_element.create('div', {
-      className: 'fr-icon-search-line',
-      role: 'listbox',
+    // Icône de recherche dans le champ de recherche
+    ol_ext_element.create('span', {
+      className: 'fr-icon-search-line fr-icon--sm',
+      "aria-hidden": true,
       parent: content,
     })
 
@@ -190,17 +190,23 @@ function createMapCard({ title, timestamp, img, id }) {
   let src = img ? img : defaultImagePath;
   let mapTitle = title ? title : '';
   let date = new Date(timestamp);
+  console.log(timestamp, date)
   let dateStr = '';
   if (date) {
     const options = {
       year: "numeric",
       month: "long",
       day: "numeric",
+    };
+
+    const localDate = date.toLocaleDateString('fr-FR', options);
+    const timeOptions = {
       hour: "2-digit",
       minute: "2-digit"
     };
+    const time = date.toLocaleTimeString('fr-FR', timeOptions).replace(":", "h");
 
-    dateStr = date.toLocaleDateString('fr-FR', options)
+    dateStr = `${localDate}, ${time}`;
   }
 
   let template = cardTemplate.replace('$IMG_SRC', src);
@@ -254,7 +260,7 @@ function openMap() {
 
 const openMapAction = new Action({
   id: 'open-map',
-  title: 'Ouvrir une carte',
+  title: 'Mes cartes',
   content: content,
   onOpen: onOpen
 })
