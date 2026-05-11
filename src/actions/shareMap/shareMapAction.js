@@ -1,7 +1,8 @@
 import Action from '../Action.js';
-import carte, { notification } from '../../carte.js';
+import carte from '../../carte.js';
 import config from 'mcutils/config/config.js';
 import modal from '../../dialogs/modal.js';
+import Alert from '../../control/Alert/Alert.js';
 
 import content from './shareMap.html?raw';
 import './shareMap.scss';
@@ -25,7 +26,14 @@ function onOpen(e) {
   const id = carte.get('id');
   if (!id) {
     setTimeout(() => dialog.close(), 0);
-    notification.error("Impossible de partager la carte. Enregistrez d'abord votre carte pour générer un lien de partage.");
+
+    Alert.addAlert({
+      type: Alert.TYPES.ERROR,
+      id: "alert--map-not-saved",
+      title: 'Impossible de partager la carte',
+      description: "Enregistrez d'abord votre carte pour générer un lien de partage.",
+    }, true);
+
     return false;
   }
 

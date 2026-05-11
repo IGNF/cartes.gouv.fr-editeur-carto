@@ -1,0 +1,16 @@
+@use '../../css/mixins.scss' as mix;
+
+.alerts-container {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  max-height: 30vh;
+  overflow: scroll;
+
+  .fr-alert {
+    background-color: var(--background-default-grey);
+  }
+}
