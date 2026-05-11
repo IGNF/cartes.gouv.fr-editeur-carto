@@ -4,6 +4,7 @@
 
 import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import InputColor from './InputColor.js';
+import BaseEvent from 'ol/events/Event.js';
 
 // Création du formulaire de style
 const labelForm = new FlatStyleForm();
@@ -19,7 +20,7 @@ label.addEventListener('keyup', () => {
   if (label.value === value) return;
   clearTimeout(tout);
   tout = setTimeout(() => {
-    labelForm.dispatchEvent({ type: 'style', property: 'text-value', value: label.value });
+    labelForm.dispatchEvent(new BaseEvent({ type: 'style', property: 'text-value', value: label.value }));
     value = label.value;
   }, 300);
 });

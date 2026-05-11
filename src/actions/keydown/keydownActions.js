@@ -14,8 +14,6 @@ document.addEventListener('keydown', evt => {
   // const isModalOpen = document.querySelector('[data-fr-js-modal="true"]:open') !== null || document.querySelector("dialog:modal") !== null;
   const isModalOpen = false;
 
-  console.log(evt.key, evt.code, `ctrl : ${evt.ctrlKey}`, `meta key : ${evt.metaKey}`);
-
   // handle Ctrl keys
   if ((evt.ctrlKey || evt.metaKey)) {
     switch (evt.key) {

@@ -140,7 +140,7 @@ function saveMap() {
           carte.set('atlas', response);
         }
         notification.info('La carte a bien été enregistrée...')
-        carte.dispatchEvent({ type: 'save' })
+        carte.dispatchEvent('save')
       }
       // Close dialog
       dialog.close();

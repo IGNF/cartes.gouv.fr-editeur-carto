@@ -299,7 +299,6 @@ function addEvents(container, story) {
   // Message d'erreur si le logo n'a pas pu se télécharger
   story?.element?.logo?.addEventListener("error", (e) => {
     const src = e.target.src;
-    console.log(import.meta)
     if (src === window.location.href) {
       // Correspond à la balise <img src>, donc pas de logo
       return;
