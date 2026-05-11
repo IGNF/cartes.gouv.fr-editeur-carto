@@ -1,5 +1,5 @@
 import Action from '../Action.js';
-import carte from '../../carte.js';
+import carte, { notification } from '../../carte.js';
 import config from 'mcutils/config/config.js';
 import modal from '../../dialogs/modal.js';
 
@@ -21,16 +21,14 @@ let dialog;
  */
 function onOpen(e) {
   dialog = e.target
-  // Existing carte ?
+
   const id = carte.get('id');
   if (!id) {
-    dialog.querySelector('[data-action="share"]').classList.add('fr-hidden');
-    const btn = dialog.querySelector('#share-save-map')
-    btn.addEventListener('click', () => {
-      Action.open(modal, 'save-map');
-    });
-    return;
+    setTimeout(() => dialog.close(), 0);
+    notification.error("Impossible de partager la carte. Enregistrez d'abord votre carte pour générer un lien de partage.");
+    return false;
   }
+
   dialog.querySelector('[data-action="nomap"]').classList.add('fr-hidden');
   // Add copy event to buttons
   let copyBtns = dialog.querySelectorAll('button.copy');
@@ -44,7 +42,7 @@ function onOpen(e) {
   dialog.querySelector('#share-iframe').value = `<iframe
   width="600" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
   sandbox="allow-forms allow-scripts allow-same-origin"
-  src="` + url + `">
+  src="${url}">
   allowfullscreen>
 </iframe>`;
 }
