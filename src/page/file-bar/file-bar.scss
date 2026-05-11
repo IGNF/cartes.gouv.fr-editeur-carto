@@ -1,48 +1,106 @@
-@use '../../css/mixins.scss' as mx;
+@use '../../css/mixins.scss' as mix;
 
-.ol-control.ol-bar .ol-button button.map-item {
+.ol-control.ol-top.ol-bar--separator.ol-bar.map-handle {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.5rem;
-  font-style: normal;
-  height: auto;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  height: auto;
-  min-height: auto;
-  border-radius: 0.25rem;
+  // width: calc(25% - 1rem);
+  --map-handle-container-width: calc(25% - 1rem);
+  width: var(--map-handle-container-width);
+  top: 0;
+  left: 0;
+  padding: 0.5rem 0;
+  margin: 0;
+  z-index: 3;
+  filter:none;
+  box-shadow: 0 4px 3px -3px var(--shadow-color) ;
+  border-bottom: 1px solid var(--border-default-grey);
 
-  &:not(:disabled) {
-    @include mx.button-state($text-color: var(--text-action-high-grey));
+  > div:first-child {
+    margin: auto;
+  }
+
+  .ol-option-bar {
+    text-align: initial;
+  }
+
+  @include mix.respond-from('sm') {
+    box-shadow: inherit;
+    filter: drop-shadow(var(--raised-shadow));
+    border-bottom: none;
+    display: flex;
+    margin: 0.5rem;
+    --map-handle-container-width: unset;
+    padding: 0.25rem;
+
+    > div:first-child {
+      margin: unset;
+    }
+  }
+
+  @include mix.respond-from('md') {
+    --map-handle-container-width: 12.125rem;
+  }
+
+  @include mix.respond-from('xl') {
+    --map-handle-container-width: 21.625rem;
+  }
+
+  &.ol-bar--fixed {
+    position: absolute;
+
+    @include mix.respond-from('sm') {
+      position: fixed;
+      top: calc(3rem + 0.5rem);
+
+      @media (display-mode: fullscreen) {
+        top: 0;
+      }
+    }
+  }
+
+  > .ol-button:first-child {
+    padding: 0;
+
+    @include mix.respond-from('md') {
+      padding: 0 0.25rem 0 0;
+    }
+  }
+
+  & .ol-control.ol-bar.map-file-actions {
+    padding: 0 1rem 1rem;
+    border-radius: 0;
+    width: 100vw;
+    left: 0;
+    position: fixed;
+    top: 7rem;
+    filter: drop-shadow(var(--raised-shadow));
+
+    @include mix.respond-from('sm') {
+      width: 21.625rem;
+      border-radius: inherit;
+      left: -0.25rem;
+      position: absolute;
+      top: calc(100% + 0.5rem + 0.25rem);
+    }
+
+    > .action-bar {
+      padding: 0;
+    }
   }
 }
-
-.ol-control.ol-top.ol-bar--separator.ol-bar.map-handle > .ol-button:first-child {
-  padding: 0;
-
-  @include mx.respond-from('lg') {
-    padding: 0 0.25rem 0 0;
-  }
-}
-
-// action-bar
+// Nom de la carte
 .ol-control.ol-bar .ol-control.ol-text-button {
   &.map-title {
     display: none;
-    // white-space: pre-wrap;
+    padding: 0.5rem 1rem 0.5rem 1.25rem !important;
 
-    @include mx.respond-from('md') {
+    @include mix.respond-from('md') {
       display: block;
-      width: 132px; // 8.25rem;
+      width: calc(var(--map-handle-container-width) - 3.25rem);
     }
-
-    @include mx.respond-from('xl') {
-      // display:block;
-      width: 278px; // 17.375rem;
-    }
+    // @include mix.respond-from('md') {
+    //   display: block;
+    //   width: calc(var(--map-handle-container-width) - );
+    // }
   }
 
   &.map-title,
@@ -56,42 +114,27 @@
   &.file-name > div {
     font-size: 0.875rem;
     &:not(:disabled) {
-      @include mx.button-state($text-color: var(--text-disabled-grey));
+      @include mix.button-state($text-color: var(--text-disabled-grey));
     }
   }
 }
 
-.ol-control.ol-bar.map-handle .ol-control.ol-bar.map-file-actions {
-  width: 330px;
-  padding: 0;
-
-  > .action-bar {
-    padding: 0;
-  }
-}
-
-.ol-control.ol-top.ol-bar--separator.ol-bar.map-handle {
+// Boutons d'action
+.ol-control.ol-bar .ol-button button.map-item {
   display: flex;
-  width: calc(25% - 1rem);
-  top: 0;
-  left: 0;
-  padding: 0.5rem;
-  margin: 0;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  font-style: normal;
+  height: auto;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  height: auto;
+  min-height: auto;
 
-  > div:first-child {
-    margin: auto;
-  }
-
-  .ol-option-bar {
-    text-align: initial;
-  }
-
-  @include mx.respond-from('sm') {
-    display: flex;
-    margin: 0.5rem;
-    // top: 0.5rem;
-    // left: 0.5rem;
-    width: unset;
-    padding: 0.25rem;
+  &:not(:disabled) {
+    @include mix.button-state($text-color: var(--text-action-high-grey));
   }
 }

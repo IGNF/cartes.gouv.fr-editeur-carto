@@ -1,6 +1,6 @@
 @use './header.scss';
 @use './footer.scss';
-@use '../css/mixins.scss' as mx;
+@use '../css/mixins.scss' as mix;
 
 html,
 body {
@@ -18,12 +18,14 @@ body {
     flex: 1;
     position: relative;
     height: calc(100vh - 3.5rem);
+    background-color: var(--background-alt-grey);
     min-height: 620px;
     overflow: hidden;
     z-index: 1;
   }
 
-  header, footer {
+  header,
+  footer {
     z-index: auto;
   }
 
@@ -32,7 +34,7 @@ body {
       flex: 1 0 auto;
       min-height: calc(100vh - 8.125rem);
 
-      @include mx.respond-from("lg") {
+      @include mix.respond-from('lg') {
         flex: 0 1 auto;
       }
     }

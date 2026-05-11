@@ -1,32 +1,16 @@
-// Extensions géoplateforme
-import 'geoportal-access-lib/dist/GpServices.js';
-
-import 'geopf-extensions-openlayers/src/packages/CSS/DSFRgeneralWidget.css';
-import 'geopf-extensions-openlayers/css/Dsfr.css';
 
 // Ma Carte
-import Carte from 'mcutils/cgouv/Carte.js';
+import { carte } from './story.js';
 
-import charte from './charte/charte.js';
-
-import 'ol-ext/dist/ol-ext.css'
-import 'mcutils/Carte.css';
-import 'mcutils/Carte.js';
 import ModifyingInteraction from 'geopf-extensions-openlayers/src/packages/Interactions/Modifying.js';
 import switcher from './mcutils/layerSwitcher.js';
 import notification from './control/Notification/notification.js';
 
-// The Carte
-const carte = new Carte({
-  target: charte.getElement('map'),
-  // Default Carte
-  url: import.meta.env.BASE_URL + 'carte/template.carte'
-})
 // Only one selction when editing features
 carte.getSelect().multi_ = false;
 
 const modify = new ModifyingInteraction({
-  select : carte.getSelect(),
+  select: carte.getSelect(),
 })
 carte.getMap().addInteraction(modify);
 carte._interactions.modify = modify;
@@ -83,5 +67,5 @@ modify.on(['duplicate'], e => {
   });
 });
 
-export { notification}
+export { notification }
 export default carte

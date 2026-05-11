@@ -1,0 +1,75 @@
+@use '../../css/mixins.scss' as mix;
+
+/**
+ * Surcharges pour Layout dialog
+ */
+dialog.GPF-dialog.layout-dialog {
+  background-color: var(--background-raised-grey);
+  height: 20rem;
+
+  @include mix.respond-from('sm') {
+    z-index: -1;
+    top: 3.5rem;
+    margin: 0.5rem;
+    max-height: unset;
+    height: calc(100% - 3.5rem - 1rem);
+    width: 16rem;
+  }
+  @include mix.respond-from('md') {
+    width: 21.625rem;
+  }
+
+  .fr-fieldset {
+    margin: 0;
+  }
+
+  // Place le toggle à gauche de l'interrupteur
+  .fr-toggle.fr-toggle--left {
+    flex-direction: row-reverse;
+    justify-content: start;
+
+    .fr-toggle__label {
+      flex-direction: row-reverse;
+      width: auto;
+
+      &::before {
+        margin-right: unset;
+        margin-left: 2rem;
+      }
+
+      &::after {
+        left: unset;
+        transform: translateX(-1rem);
+      }
+    }
+
+    input[type='checkbox']:checked ~ .fr-toggle__label {
+      &::after {
+        transform: none;
+      }
+    }
+  }
+
+  > .GPF-dialog__header {
+    display: none;
+  }
+
+  > .GPF-dialog__nav-container {
+    .fr-nav__list {
+      justify-content: space-between;
+
+      > li {
+        flex: 1 0 auto;
+
+        button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  > .GPF-dialog__content {
+    padding: 0.75rem 1.5rem 1.5rem;
+  }
+}

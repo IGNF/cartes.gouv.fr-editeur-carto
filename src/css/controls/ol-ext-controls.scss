@@ -17,6 +17,10 @@
   }
 }
 
+.ol-ctrlbar {
+  box-shadow: none !important;
+}
+
 // Hide permalink control
 .ol-permalink {
   display: none !important;
@@ -25,7 +29,12 @@
 .ol-scale-line {
   right: 4rem;
   bottom: 0.5rem;
-  // margin: 0.5rem;
+  filter: drop-shadow(var(--raised-shadow));
+
+  // Modifie la position en mobile
+  @media not (pointer: fine) {
+    right: 0.5rem;
+  }
 }
 
 // Temporaire, position de la barre full screen
@@ -35,9 +44,9 @@
 
 // Mode mobile
 @media not (pointer: fine) {
-  .ol-scale-line {
-    display: none;
-  }
+  // .ol-scale-line {
+  //   display: none;
+  // }
 
   div[id^='GPzoom-'] {
     display: none;

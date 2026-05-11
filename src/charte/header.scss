@@ -1,4 +1,4 @@
-@use '../css/mixins.scss' as mx;
+@use '../css/mixins.scss' as mix;
 
 /* HEADER */
 header.fr-header {
@@ -7,7 +7,7 @@ header.fr-header {
 
     &-tagline {
       display: none;
-      @include mx.respond-from('lg') {
+      @include mix.respond-from('lg') {
         display: block;
       }
     }
@@ -29,7 +29,7 @@ header.fr-header {
       margin: -1rem;
       padding: 1rem;
 
-      @include mx.respond-from('sm') {
+      @include mix.respond-from('sm') {
         font-size: 1.3125rem;
         margin: -1.25rem;
         padding: 1.25rem;
@@ -38,14 +38,17 @@ header.fr-header {
   }
 
   .fr-header__tools-links {
-    gap:1rem;
+    gap: 1rem;
 
-    a[target="_blank"]::after {
-      margin-left:auto;
+    a[target='_blank']::after {
+      margin-left: auto;
     }
   }
 
   &--compact {
+    .fr-header__body-row {
+      height: 3.5rem;
+    }
     footer {
       display: flex;
       box-shadow: none;
@@ -62,7 +65,7 @@ header.fr-header {
         display: none;
         margin-left: 0.625rem;
 
-        @include mx.respond-from('sm') {
+        @include mix.respond-from('sm') {
           display: inline-flex;
         }
       }

@@ -1,4 +1,4 @@
-@use '../../css/mixins.scss' as mx;
+@use '../../css/mixins.scss' as mix;
 
 .ol-control.ol-bar.step-bar.ol-bar--row .ol-toggle.action-button {
   > button {
@@ -13,7 +13,7 @@
       display: none;
     }
 
-    @include mx.respond-from('xl') {
+    @include mix.respond-from('xl') {
       height: unset;
       width: unset;
       font-size: unset;
@@ -30,85 +30,93 @@
 
 .ol-control.ol-bar.step-bar.ol-bar--row {
   &.ol-top .ol-button {
-    @include mx.respond-from('sm') {
+    @include mix.respond-from('sm') {
       &.share-button,
       &.save-button {
         display: none;
       }
     }
-    @include mx.respond-from('md') {
-      &.share-button {
-        display: unset;
-      }
-    }
-    @include mx.respond-from('lg') {
+    @include mix.respond-from('lg') {
+      &.share-button,
       &.save-button {
-        display: unset;
+        display: flex;
       }
     }
   }
 }
 
 .ol-control.ol-bar.ol-top.ol-bar--row.step-bar {
-  width: calc(75% + 2rem);
+  width: calc(75% + 1rem);
 
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0;
   top: 0;
-  margin:0;
+  margin: 0;
   right: 0;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   border-radius: 0;
+  filter:none;
+  box-shadow: 0 4px 3px -3px var(--shadow-color);
+  border-bottom: 1px solid var(--border-default-grey);
+  z-index: 3;
+
+  &.ol-bar--fixed {
+    position: absolute;
+
+    @include mix.respond-from('sm') {
+      top: calc(3rem + 0.5rem);
+      position: fixed;
+
+      @media (display-mode: fullscreen) {
+        top: 0;
+      }
+    }
+  }
 
   > div {
     text-align: center;
     background-color: transparent;
-  }
-  > div button {
-    display: inline-block;
-  }
 
-  > .ol-bar:first-child {
-    padding: 0;
-
-    @include mx.respond-from('md') {
-      padding: 0 0.25rem 0 0;
+    button {
+      display: inline-block;
     }
-  }
 
-  .ol-bar {
-    justify-content: space-between;
-    background-color: transparent;
-    grid-column: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    margin: 0;
-
-    > div {
-      background-color: transparent;
+    &.ol-button {
+      display: flex;
       justify-content: center;
-      display: inherit;
-      width: 100%;
-    }
-    .ol-button {
-      border-left: 1px solid var(--border-default-grey);
-      border-radius: 0;
     }
   }
-
-  @include mx.respond-from('sm') {
+  > .ol-toggle:first-child {
+    border-left: 1px solid var(--border-default-grey);
+    border-radius: 0;
+    padding: 0 0.25rem;
+  }
+  @include mix.respond-from('sm') {
+    filter: drop-shadow(var(--raised-shadow));
+    box-shadow: none;
+    border-bottom: none;
     display: flex;
     width: unset;
     margin: 0.5rem;
-    // top: 0.5rem;
-    // right: 0.5rem;
     padding: 0.25rem;
     border-radius: 0.25rem;
 
-    .ol-bar .ol-button {
-      border: 0;
+    > .ol-toggle:first-child {
+      border-left: 0;
+      padding: 0 0.25rem 0 0;
+    }
+
+    > .ol-toggle:nth-child(2) {
+      border-left: 0;
+      padding: 0 0 0 0.25rem;
+    }
+  }
+
+  @include mix.respond-from('lg') {
+> .ol-toggle:nth-child(2) {
+      border-left: 0;
+      padding: 0 0.25rem;
     }
   }
 }

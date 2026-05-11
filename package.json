@@ -39,8 +39,8 @@
     "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.14.1/ignf-dsfr-v1.14.1.tgz",
     "geoimport": "^0.7.0",
     "dsfr-extension": "git+https://github.com/IGNF/dsfr-extension#556230b",
-    "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.9-496.tgz",
-    "mcutils": "git+https://github.com/IGNF/cartes.gouv.fr-editeur-lib#232d2a3",
+    "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.10-503.tgz",
+    "mcutils": "git+https://github.com/IGNF/cartes.gouv.fr-editeur-lib#b239f35",
     "remixicon": "^4.6.0"
   },
   "peerDependencies": {

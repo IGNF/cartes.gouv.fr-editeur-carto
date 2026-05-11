@@ -11,8 +11,10 @@ document.addEventListener('keydown', evt => {
     || evt.target.tagName === "TEXTAREA" 
     || evt.target.isContentEditable;
   */
-  const isModalOpen = document.querySelector('[data-fr-js-modal="true"]:open') !== null
-    || document.querySelector("dialog:modal") !== null;
+  // const isModalOpen = document.querySelector('[data-fr-js-modal="true"]:open') !== null || document.querySelector("dialog:modal") !== null;
+  const isModalOpen = false;
+
+  console.log(evt.key, evt.code, `ctrl : ${evt.ctrlKey}`, `meta key : ${evt.metaKey}`);
 
   // handle Ctrl keys
   if ((evt.ctrlKey || evt.metaKey)) {
@@ -20,6 +22,7 @@ document.addEventListener('keydown', evt => {
       // save map with Ctrl+S / Cmd+S
       case 's': {
         evt.preventDefault();
+        evt.stopPropagation();
         if (!isModalOpen) {
           Action.open(modal, 'save-map');
         }
@@ -28,6 +31,7 @@ document.addEventListener('keydown', evt => {
       // Open map with Ctrl+O / Cmd+O
       case 'o': {
         evt.preventDefault();
+        evt.stopPropagation();
         if (!isModalOpen) {
           console.log('open map dialog', modal);
           Action.open(modal, 'open-map');

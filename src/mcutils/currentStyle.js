@@ -1,4 +1,5 @@
-import carte from "../carte.js";
+// import carte from "../carte.js";
+import { carte } from '../story.js';
 import Feature from 'ol/Feature.js';
 import { LineString, Point, Polygon } from 'ol/geom.js';
 
@@ -55,12 +56,12 @@ carte.getSelect().on("select", (e) => {
 
 /**
  * Retourne une copie du style courant
- * @param {Feature} f Feature dont le style doit être récupéré
+ * @param {Feature} [f] Feature dont le style doit être récupéré
  * @returns {Object} Copie du style courant
  */
 function getCurrentStyle(f) {
-  const type = f.getGeometry().getType();
-  const style = Object.assign({}, currentStyle[typeGeom[type]]);
+  const type = f?.getGeometry()?.getType();
+  const style = type ? Object.assign({}, currentStyle[typeGeom[type]]) : Object.assign({}, currentStyle);
   // Retire le zIndex
   style.zIndex = 0;
   return style;
@@ -68,14 +69,16 @@ function getCurrentStyle(f) {
 
 /**
  * Met à jour le style courant
- * @param {Feature} f Feature dont le style doit être récupéré
+ * @param {Feature} [f] Feature dont le style doit être récupéré
  */
 function updateCurrentStyle(f) {
-  const type = f.getGeometry().getType();
-  // Modifie seulement ce qui doit l'être
-  setTimeout(() => {
-    currentStyle[typeGeom[type]] = Object.assign({}, f.getIgnStyle(true));
-  });
+  const type = f?.getGeometry()?.getType();
+  if (type) {
+    // Modifie seulement ce qui doit l'être
+    setTimeout(() => {
+      currentStyle[typeGeom[type]] = Object.assign({}, f.getIgnStyle(true));
+    });
+  }
 }
 
 export { getCurrentStyle, updateCurrentStyle };

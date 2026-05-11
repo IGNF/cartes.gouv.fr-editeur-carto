@@ -2,9 +2,10 @@ import './version.js'
 import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
-import loadFonts from 'mcutils/cgouv/loadFonts.js'
 
+import story from './story.js'
 import carte from './carte.js'
+import './utils/storyToMapChanges.js'
 import './utils/dirtyMap.js';
 
 import api from './mcutils/api.js'
@@ -21,20 +22,13 @@ import './page/page.js'
 import 'remixicon/fonts/remixicon.css'
 import './css/index.scss';
 
-loadFonts()
-
 // Ajout des contrôles
 carte.once('read', () => {
   carte.addControl('layerSwitcher', switcher);
   carte.addControl('search', search);
   carte.getMap().getOverlayContainerStopEvent().style.cursor = "auto";
-  // switcher.setSelectedLayer(switcher)
   try {
     switcher.setSelectedLayer(switcher._layers[1].layer, true)
-    // console.log(switcher._layers[1].layer)
-    // switcher._layers[1].layer?.getLayer()?.setStyle();
-    // console.log(carte.getSelect())
-    // switcher._layers[1].layer.getLayer().setStyle(carte.getSelect().getStyle());
   } catch (error) {
     console.warn("aucune couche sélectionnée", error);
   }
@@ -53,6 +47,7 @@ introDialog.setAction(connectAction);
 introDialog.open();
 
 /* DEBUG */
+window.story = story;
 window.carte = carte;
 window.api = api;
 /**/

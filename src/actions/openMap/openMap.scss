@@ -1,48 +1,33 @@
 .map-list {
-  width:100%;
+  width: 100%;
   position: relative;
 
   input {
     padding-right: 2.5rem;
+    margin-bottom: 1.5rem;
   }
-  input + div {
+  input + [class^='fr-icon-'] {
     position: absolute;
-    width: 1.5rem;
-    height: 1.5rem;
     top: 0.5rem;
-    right: 0.5rem;
+    right: 1rem;
   }
 
   .map-list__list {
-    padding: .3rem;
+    // padding: 0.3rem;
     max-height: calc(100vh - 30rem);
     max-height: calc(100svh - 30rem);
     overflow: auto;
-
   }
-  .ol-map-card {
 
+  .ol-map-card {
     cursor: pointer;
     display: flex;
     flex-direction: row;
     padding: 0.75rem 1rem;
     gap: 0.5rem;
-    width:auto;
+    width: auto;
     color: var(--text-default-grey);
     --active-tint: var(--active);
-
-    &__image {
-      width: 3rem;
-      height: 3rem;
-      object-fit: cover;
-      border-radius: 0.25rem;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
 
     &__info {
       display: flex;
@@ -52,11 +37,13 @@
     }
 
     &__title {
-      margin: 0;
+      text-wrap: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &__details {
-      margin: 0;
+      font-weight: 400;
       color: var(--text-mention-grey);
     }
 
@@ -68,7 +55,7 @@
       background-color: var(--active-tint);
     }
 
-    &[aria-current="true"] {
+    &[aria-current='true'] {
       background-color: var(--hover-tint);
 
       &:active {

@@ -4,12 +4,15 @@
 
 import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
-import carte from "../../carte.js";
+import { carte } from "../../story.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
+import { SelectEvent } from "ol/interaction/Select.js";
+import charte from '../../charte/charte.js';
 
 const forms = [styleForm, labelForm];
+
 
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new StyleDialog({
@@ -18,6 +21,11 @@ const styleDialog = new StyleDialog({
   position: "left",
   select: carte.getSelect(),
   onOpen: function () {
+    if (charte.getMode() !== "editor") {
+      // Empêche la modale de s'ouvrir si on n'est pas en mode édition
+      this.close();
+      return;
+    }
     // Initialise les formulaires
     const feature = carte.getSelect().getFeatures().item(0);
     // Attendre que la feature soit prête pour récupérer son style
@@ -28,10 +36,11 @@ const styleDialog = new StyleDialog({
       });
     });
   },
-  onClose: function () {
+  onClose: () => {
     // Déselectionne la sélection courante
+    const features = [...carte.getSelect().getFeatures().getArray()]
     carte.getSelect().getFeatures().clear();
-    carte.getSelect().dispatchEvent("select");
+    carte.getSelect().dispatchEvent(new SelectEvent("select", [], [features], undefined));
   },
   forms: [
     {

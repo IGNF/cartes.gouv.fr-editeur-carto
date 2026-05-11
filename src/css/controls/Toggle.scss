@@ -1,11 +1,11 @@
-@use '../mixins.scss' as mx;
+@use '../mixins.scss' as mix;
 
 .ol-toggle.ol-button.ol-control.ol-active > button {
   // Surcharge couleurs ol-ext
   --hover: var(--background-open-blue-france-hover);
   --active: var(--background-open-blue-france-active);
 
-  @include mx.button-state(
+  @include mix.button-state(
     $text-color: var(--text-action-high-blue-france),
     $background: var(--background-open-blue-france)
   );

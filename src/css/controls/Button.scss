@@ -1,8 +1,10 @@
-@use '../mixins.scss' as mx;
+@use '../mixins.scss' as mix;
 
 .ol-button > button {
   line-height: unset;
   font-weight: 500;
+  // Transition pour l'état hover / actif
+  transition: background-color 0.3s;
 
   &,
   &:hover,
@@ -23,6 +25,8 @@
 }
 
 .ol-control.ol-control button {
+  border-radius: 0;
+
   &:focus {
     outline-color: #0a76f6;
     outline-offset: -2px;
@@ -48,9 +52,13 @@
   }
 }
 
-@include mx.hover-media-query {
+@include mix.hover-media-query {
   .ol-button > button {
     &[aria-label]:hover::after {
+      height: auto;
+      mask-image: none;
+      -webkit-mask-image: none;
+      background-color: transparent;
       font-family: Marianne, arial, sans-serif;
       content: attr(aria-label);
       position: absolute;
@@ -58,6 +66,8 @@
       color: var(--text-default-grey);
       font-size: 0.75rem;
       font-weight: 500;
+      font-style: normal;
+      line-height: 1.25rem;
       width: fit-content;
       white-space: nowrap;
       background-size:
@@ -92,9 +102,15 @@
         linear-gradient(90deg, var(--border-default-grey), var(--border-default-grey)),
         linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
     }
+
+    // Pas de contenu si le bouton contrôle l'affichage d'un élément
     &[aria-pressed='true'][aria-controls]:hover::after {
       content: none;
     }
+  }
+
+  .ol-bar .ol-button > button[aria-label] {
+    overflow: visible;
   }
 
   .ol-bar.ol-right .ol-button > button[aria-label]:hover::after {
@@ -131,6 +147,7 @@
 
   .ol-bar.ol-top .ol-button > button[aria-label]:hover::after {
     transform: translateX(-16px) translateY(40px);
+    padding: 0.875rem 0.5rem 0.5rem;
 
     // Flèche vers le haut
     background-image:
@@ -161,23 +178,26 @@
       100% 1px,
       100%;
     background-repeat: no-repeat;
-    padding-top: 1rem;
-    padding-left: 0.5rem;
     margin-top: 0.125rem;
   }
   .ol-bar.ol-top.ol-right .ol-button > button[aria-label]:hover::after {
-    transform: translateY(40px);
+    transform: translateY(41px);
     right: 0;
     background-position:
-      calc(100% - 20px) 0.125rem,
-      calc(100% - 20px) 0,
+      calc(100% - 1rem) 0.125rem,
+      calc(100% - 1rem) 0,
       0 0.45rem,
       0 0.5rem;
+  }
+
+  .ol-bar.ol-top.ol-left .ol-button > button[aria-label]:hover::after {
+    transform: translateY(41px);
+    left: 0;
   }
 }
 
 .ol-control.ol-button {
   > button {
-    @include mx.button-state();
+    @include mix.button-state();
   }
 }

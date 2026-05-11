@@ -1,4 +1,4 @@
-@use './mixins.scss' as mx;
+@use './mixins.scss' as mix;
 
 .ol-touch {
   .ol-control button:not([class*='ri-']) {
@@ -11,7 +11,7 @@
     &.ol-right {
       top: 0;
 
-      @include mx.respond-from('sm') {
+      @include mix.respond-from('sm') {
         top: 0.5rem;
       }
     }
