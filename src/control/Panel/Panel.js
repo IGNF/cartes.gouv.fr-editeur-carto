@@ -4,6 +4,7 @@ import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from "../../utils/getUid.js";
 import './panel.scss';
 import Dialog from '../Dialog/AbstractDialog.js';
+import BaseEvent from "ol/events/Event.js";
 
 
 /**
@@ -215,11 +216,11 @@ class Panel extends Dialog {
       const currentContentId = currentLink.getAttribute('aria-controls');
       const currentContent = this.querySelector(`#${currentContentId}`);
       currentContent.classList.add('fr-hidden');
-      this.dispatchEvent({
+      this.dispatchEvent(new BaseEvent({
         type: this.selectors.CLOSE_TAB,
         tab: currentLink,
         content: currentContent,
-      })
+      }))
     }
 
     // Sélectionne l'élément
@@ -228,11 +229,11 @@ class Panel extends Dialog {
     const contentId = link.getAttribute('aria-controls');
     const content = this.querySelector(`#${contentId}`);
     content.classList.remove('fr-hidden');
-    this.dispatchEvent({
+    this.dispatchEvent(new BaseEvent({
       type: this.selectors.OPEN_TAB,
       tab: link,
       content: content,
-    })
+    }))
   }
 
   /**

@@ -7,6 +7,7 @@ import addLayer from './addLayer.js';
 import Action from '../actions/Action.js';
 import modal from '../dialogs/modal.js';
 import "./layerSwitcher.scss";
+import BaseEvent from 'ol/events/Event.js';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -33,11 +34,11 @@ const switcher = new LayerSwitcher({
         icon: 'fr-icon-brush-line',
         cb: (e, instance, layer, options) => {
           carte.selectedLayer = layer;
-          carte.dispatchEvent({
+          carte.dispatchEvent(new BaseEvent({
             type: 'selected:layer:change',
             layer: layer,
             options: options,
-          })
+          }))
           styleDialog.show();
         }
       },

@@ -4,7 +4,7 @@
   .input-style {
     &__options-container {
       &-content {
-        > button[data-type='icon'] {
+        > button[data-type='icon'][data-value] {
           --hover: inherit;
           --active: inherit;
           @include mix.button-state($text-color: var(--text-label-grey), $background: transparent);

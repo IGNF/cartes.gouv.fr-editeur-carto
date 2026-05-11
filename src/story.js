@@ -29,7 +29,6 @@ const carte = new Carte({
 
 // Ajoute les options de la storymap dans la storymap après lecture de la carte
 carte.on("read", () => {
-  console.info("read")
   const storyParam = carte.get("story");
   if (storyParam) {
     Object.entries(storyParam).forEach(([key, value]) => {
@@ -46,7 +45,6 @@ carte.on("read", () => {
   story.target.dataset.logo = story.get("logo") ? "" : "none";
   setLogo(story, story.get("logo"));
 
-  console.info(story.get("showTitle"))
   // Affiche le titre s'il y'en a un
   story.get("showTitle") ? story.showTitle(true) : story.showTitle(false);
 })

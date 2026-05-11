@@ -115,7 +115,7 @@ function getUserMaps(e) {
     */
     // Filter liste des cartes en fonction du champ de recherche
     const filtermap = function () {
-      list.querySelectorAll('.ol-map-card').forEach(card => {
+      content.querySelectorAll('.ol-map-card').forEach(card => {
         const title = card.querySelector('.ol-map-card__title').textContent;
         const rex = new RegExp(filterInput.value, 'i');
         if (rex.test(title)) {
@@ -128,11 +128,10 @@ function getUserMaps(e) {
 
     let tout
     const filterInput = ol_ext_element.create('input', {
-      className: 'fr-input fr-icon-search-line',
+      className: 'fr-input',
       id: 'map-filter',
       placeholder: 'Rechercher',
       parent: content,
-      'aria-controls': 'openmap-list',
       on: {
         // Filter on keyup
         keyup: () => {
@@ -148,15 +147,6 @@ function getUserMaps(e) {
       parent: content,
     })
 
-
-    const list = ol_ext_element.create('div', {
-      className: 'map-list__list',
-      id: 'openmap',
-      parent: content
-    });
-
-
-
     maps.forEach(map => {
       if (map.type === 'macarte') {
         let card = createMapCard({
@@ -166,13 +156,13 @@ function getUserMaps(e) {
           id: map.view_id,
         })
 
-        list.appendChild(card)
+        content.appendChild(card)
       }
     });
 
     dialog.setDialogContent(content)
 
-    dialog.setButtons(buttons)
+    dialog.setButtons(buttons);
   } else {
     dialog.setDialogContent("<p>Vous n'avez pas de cartes enregistrées</p>")
   }
@@ -190,7 +180,6 @@ function createMapCard({ title, timestamp, img, id }) {
   let src = img ? img : defaultImagePath;
   let mapTitle = title ? title : '';
   let date = new Date(timestamp);
-  console.log(timestamp, date)
   let dateStr = '';
   if (date) {
     const options = {

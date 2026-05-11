@@ -8,7 +8,6 @@ class Modal extends Dialog {
     super(options)
   }
 
-
   /**
    * Initie les sélecteurs CSS utiles dans le reste
    */
@@ -82,9 +81,7 @@ class Modal extends Dialog {
       }
       if (modal && modal.isDisclosed) {
         // Envoie un événement pour l'ouverture du dialog
-        this.dispatchEvent({
-          type: this.selectors.OPEN_EVENT
-        })
+        this.dispatchEvent(this.selectors.OPEN_EVENT)
       }
     }
   }
