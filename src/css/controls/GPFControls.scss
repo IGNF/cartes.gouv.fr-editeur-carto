@@ -88,9 +88,9 @@ div[id^='GPsearchEngine-Advanced']:has(.GPSearchEngine-advanced-btn[aria-expande
 }
 
 // LayerSwitcher
-.gpf-widget-button {
-  width: 48px;
+.gpf-widget-button:not(.GPToggleControl) {
   padding: 0;
+  width: 48px;
 
   &[id^='GPlayerSwitcher-'] {
     height: 48px;

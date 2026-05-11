@@ -1,7 +1,6 @@
 import Action from '../Action.js';
 import carte from '../../carte.js';
 import config from 'mcutils/config/config.js';
-import modal from '../../dialogs/modal.js';
 import Alert from '../../control/Alert/Alert.js';
 
 import content from './shareMap.html?raw';

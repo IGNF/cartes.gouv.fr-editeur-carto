@@ -1,4 +1,4 @@
-import ControlExtended from 'geopf-extensions-openlayers/src/packages/Controls/Control';
+import ControlExtended from 'geopf-extensions-openlayers/src/packages/Controls/Control.js';
 import { getUid } from '../../utils/utils.js';
 import './Alert.scss';
 
@@ -159,6 +159,7 @@ class Alert extends ControlExtended {
    * @param {AlertOptions} options
    */
   _initContainer(options) {
+    void options;
     // Récupère les paramètres utiles
     const {
       className,
