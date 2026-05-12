@@ -145,9 +145,10 @@
 }
 
 // Carte (commun au mode édition / mise en page)
-[data-role='storymap'] {
+div[data-role='storymap'] {
   width: 100%;
   height: 100%;
+  background-color: var(--background-default-grey);
 
   // Titre
   > :nth-child(1) {
@@ -167,6 +168,10 @@
 
   .ol-control.ol-bar .ol-control.ol-text-button > div:not(:disabled) {
     @include mix.button-state($text-color: var(--text-default-grey), $background: transparent);
+  }
+
+  .map {
+    background-color: unset;
   }
 
   // Surcharge des différents états / couleurs en mode storymap
@@ -226,7 +231,7 @@
     // Boutons extensions gpf (zoom etc.)
     .gpf-btn-icon.gpf-btn--secondary:not(:disabled),
     .gpf-btn-icon.gpf-btn--tertiary:not(:disabled) {
-      @include mix.button-state($background: var(--background-default-grey));
+      @include mix.button-state($background: var(--background-raised-grey));
     }
 
     // Bouton dans une barre (surcharge)
@@ -272,7 +277,7 @@
 
     // Box-shadow bouton tertiaire ext-gpf (surcharge)
     .gpf-widget .gpf-btn-icon.gpf-btn--tertiary {
-      box-shadow: inset 0 0 0 4px var(--background-default-grey);
+      box-shadow: inset 0 0 0 4px var(--background-raised-grey);
     }
   }
 }
