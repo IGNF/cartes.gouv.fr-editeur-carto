@@ -59,6 +59,7 @@
       padding: 0.75rem;
       overflow: visible;
       height: auto;
+      min-height: 4.75rem;
 
       > * {
         white-space: unset;
@@ -85,10 +86,18 @@
       // Titre
       > h1 {
         overflow: visible;
-        font-size: 1.25rem;
         font-style: normal;
-        line-height: 2rem;
         color: var(--text-title-grey);
+
+        // XS : texte MD
+        font-size: 1rem;
+        line-height: 1.5rem;
+
+        // >= SM : texte XL
+        @include mix.respond-from('sm') {
+          font-size: 1.25rem;
+          line-height: 2rem;
+        }
       }
 
       // Description

@@ -48,7 +48,7 @@ const setTitle = (story, options) => {
   };
 
   setField('title', options.title, (el, val) => {
-    el.innerHTML = val ? val : '<i>sans titre</i>';
+    el.innerHTML = val ? val : '';
   });
   setField('subTitle', options.subTitle, (el, val) => { el.innerText = val; });
   setField('title1', options.title1, (el, val) => { el.innerText = val; });
