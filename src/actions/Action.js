@@ -11,6 +11,13 @@ import Dialog from '../control/Dialog/AbstractDialog.js';
  */
 
 /**
+ * @callback BeforeOpenFunction Fonction appelée avant l'ouverture du dialog.
+ * Elle n'est appelée que lors de la méthode statique `Action.open`, et pas lors de l'appel à `Dialog.open()`.
+ * La gestion de l'erreur doit être gérée dans cette fonction.
+ * @return {boolean} Si faux, empêche la propagation de l'événement `click` dans la méthode `Action.open`.
+ */
+
+/**
  * Action à définir pour un bouton ou un autre élément.
  * 
  * @typedef {Object} ActionOptions
@@ -18,6 +25,7 @@ import Dialog from '../control/Dialog/AbstractDialog.js';
  * @property {string|HTMLElement} content - Contenu d'un dialog.
  * @property {string} [icon] - Icône du titre.
  * @property {FooterButton[]} [buttons] - Boutons d'actions d'un dialog.
+ * @property {BeforeOpenFunction} [beforeOpen] - Fonction à appeler avant l'ouverture d'un dialog. Si rien n'est donné, 
  * @property {Function} [onOpen] - Fonction à appeler à l'ouverture d'un dialog.
  * @property {Function} [onClose] - Fonction à appeler à la fermeture d'un dialog.
  * @property {String} [size] - Uniquement pour les panneaux. Définit la taille du panneau.
@@ -45,6 +53,7 @@ class Action {
     this.content = options.content || '';
     this.buttons = options.buttons;
     this.items = options.items;
+    this.beforeOpen = typeof options.beforeOpen === 'function' ? options.beforeOpen : () => true;
     this.onOpen = typeof options.onOpen === 'function' ? options.onOpen : () => { };
     this.onClose = typeof options.onClose === 'function' ? options.onClose : () => { };
     this.icon = options.icon || '';
@@ -69,30 +78,39 @@ class Action {
   }
 
   /** Open 
-   * @param {Event || Dialog} e - Événement du clic ou dialog
-   * @param {Action} action - Action à ouvrir
+   * @param {Event|Dialog} e - Événement du clic ou dialog
+   * @param {Action} actionId - Id de l'action à ouvrir
    * @param {boolean} pressed - Si l'action est un toggle, indique si le toggle est activé ou non
    * @static
    */
-  static open(e, action, open = null) {
+  static open(e, actionId, pressed = null) {
     let dialogId;
+    let action;
     const isDialog = e instanceof Dialog;
     if (isDialog) {
       // Cas d'une ouverture classique
       dialogId = e.getId();
-      action = Action.getAction(action);
+      action = Action.getAction(actionId);
     } else {
       // Pour gérer le cas du toggle
       const target = e.target || e.detail.target;
       dialogId = target.getAttribute('aria-controls');
       action = Action.getAction(target.dataset.action);
-      open = target.ariaPressed;
+      pressed = target.ariaPressed;
     }
 
     const dialog = Dialog.getDialog(dialogId);
     if (!dialog || !action) return;
 
-    if (open === false || open === 'false') {
+    // Empêche la propagation de l'événement
+    if (action.beforeOpen() === false) {
+      e?.preventDefault();
+      e?.stopPropagation();
+      e?.stopImmediatePropagation();
+      return;
+    }
+
+    if (pressed === false || pressed === 'false') {
       dialog.close();
     } else {
       dialog.setAction(action, isDialog);

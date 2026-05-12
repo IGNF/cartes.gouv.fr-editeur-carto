@@ -13,19 +13,15 @@ import './shareMap.scss';
 let dialog;
 
 /**
- * Fonction à l'ouverture du dialog.
+ * Fonction appelée avant l'ouverture du dialog.
+ * Vérifie que la carte existe et a un ID.
+ * Si non, ajoute une alerte.
  * 
- * @param {Event} e Événement générique openlayer
- * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
- * Dialog utilisé par l'action
+ * @returns {boolean} true si la carte existe, false sinon
  */
-function onOpen(e) {
-  dialog = e.target
-
+function beforeOpen() {
   const id = carte.get('id');
   if (!id) {
-    setTimeout(() => dialog.close(), 0);
-
     Alert.addAlert({
       type: Alert.TYPES.ERROR,
       id: "alert--map-not-saved",
@@ -35,8 +31,19 @@ function onOpen(e) {
 
     return false;
   }
+  return true;
+}
 
-  dialog.querySelector('[data-action="nomap"]').classList.add('fr-hidden');
+/**
+ * Fonction à l'ouverture du dialog.
+ * 
+ * @param {Event} e Événement générique openlayer
+ * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
+ * Dialog utilisé par l'action
+ */
+function onOpen(e) {
+  dialog = e.target
+
   // Add copy event to buttons
   let copyBtns = dialog.querySelectorAll('button.copy');
   copyBtns.forEach(btn => {
@@ -75,6 +82,7 @@ const shareMapAction = new Action({
   id: 'share-map',
   title: 'Partager',
   content: content,
+  beforeOpen: beforeOpen,
   onOpen: onOpen
 });
 
