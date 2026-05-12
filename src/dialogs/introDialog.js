@@ -7,4 +7,4 @@ const introDialog = new Dialog({
   parent: document.body.querySelector('main'),
 });
 
-export default introDialog
+export default introDialog;
