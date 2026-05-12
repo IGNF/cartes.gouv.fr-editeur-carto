@@ -178,10 +178,6 @@ function initContent() {
   imageUploadLabel.setAttribute('for', IDS.IMAGE_INPUT);
   imageUploadLabel.textContent = 'URL de l\'image';
 
-  const imageUploadHint = document.createElement('span');
-  imageUploadHint.className = 'fr-hint-text';
-  imageUploadHint.textContent = 'Lien https uniquement.';
-
   const imageUploadInput = document.createElement('input');
   imageUploadInput.className = 'fr-input';
   imageUploadInput.id = IDS.IMAGE_INPUT;
@@ -195,7 +191,6 @@ function initContent() {
   // imageUploadInput.type = 'file';
   // imageUploadInput.accept = 'image/jpeg,image/png,image/svg+xml,.jpg,.jpeg,.png,.svg';
 
-  imageUploadLabel.appendChild(imageUploadHint);
   imageUploadGroup.appendChild(imageUploadLabel);
   imageUploadGroup.appendChild(imageUploadInput);
   imageUploadElement.appendChild(imageUploadGroup);
@@ -288,7 +283,7 @@ function addEvents(container, story) {
   refs.imageInput.addEventListener('change', () => {
     if (!refs.imageInput.validity.valid) {
       // Invalide, on envoie un message d'erreur
-      addMessage(refs.imageInput, `L’URL doit avoir pour en-tête le protocole “https”.`);
+      addMessage(refs.imageInput, `L’URL doit être un lien https.`);
       setLogo(story);
     } else {
       removeMessage(refs.imageInput);
