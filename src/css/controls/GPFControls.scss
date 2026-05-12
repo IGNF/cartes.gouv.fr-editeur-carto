@@ -53,6 +53,23 @@ div[id^='GPlayerSwitcher-'] {
       width: 380px;
     }
   }
+
+  // Icône
+  .gpf-btn-header {
+    width: 16px;
+    height: 16px;
+    background-image: url("../icons/stack.svg");
+    margin: 0 0.5rem;
+    position: relative;
+  }
+
+  // Titre
+  .gpf-panel__title_ls {
+    right:auto;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0;
+  }
 }
 
 div[id^='GPsearchEngine-Advanced-'] {
