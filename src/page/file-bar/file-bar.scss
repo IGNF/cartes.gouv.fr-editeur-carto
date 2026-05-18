@@ -133,6 +133,8 @@
   padding: 0.5rem 1rem;
   height: auto;
   min-height: auto;
+  border-radius: 0.25rem;
+
 
   &:not(:disabled) {
     @include mix.button-state($text-color: var(--text-action-high-grey));

@@ -7,6 +7,10 @@ dialog.GPF-dialog.layout-dialog {
   background-color: var(--background-raised-grey);
   height: 20rem;
 
+  .GPF-tabnav {
+    margin: 0.75rem 0;
+  }
+
   @include mix.respond-from('sm') {
     z-index: -1;
     top: 3.5rem;

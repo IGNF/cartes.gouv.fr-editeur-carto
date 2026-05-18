@@ -1,0 +1,7 @@
+@use '../../css/mixins.scss' as mix;
+
+.GPF-dialog[id^=style-dialog] {
+  @include mix.respond-from("sm") {
+    top : 4rem;
+  }
+}

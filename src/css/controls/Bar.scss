@@ -15,7 +15,7 @@
 
   &,
   & .ol-control.ol-option-bar {
-    background-color: var(--background-default-grey);
+    background-color: var(--background-raised-grey);
     padding: 0.25rem;
     border-radius: 0.25rem;
 
@@ -25,9 +25,8 @@
         margin: 0;
       }
 
-      &,
-      &:hover {
-        background-color: var(--background-default-grey);
+      & {
+        background-color: var(--background-raised-grey);
         outline: none;
       }
     }
@@ -175,13 +174,13 @@
 }
 
 .ol-control.ol-bar {
-  background-color: var(--background-default-grey);
+  background-color: var(--background-raised-grey);
 
   .ol-control {
     &,
     &:hover,
     &:active {
-      background-color: var(--background-default-grey);
+      background-color: var(--background-raised-grey);
     }
   }
 }

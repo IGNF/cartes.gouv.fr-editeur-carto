@@ -8,6 +8,13 @@ const layout = new Layout(story, {
   target: document.body.querySelector("main"),
 });
 
+// Bouge l'élément avant la carte pour plus de cohérence
+// Vis à vis du tab
+const target = story.get("target");
+if (target instanceof HTMLElement) {
+  target.parentNode.insertBefore(layout.getElement(), target);
+}
+
 charte.on("change:mode", (e) => {
   if (e.target.get(e.key) === Charte.modes.STORYMAP) {
     layout.show();

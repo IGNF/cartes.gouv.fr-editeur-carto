@@ -13,7 +13,7 @@
 
       &:not([aria-extended='true']):not([aria-pressed='true']) {
         &:not(:hover):not(:active) {
-          background-color: var(--background-default-grey);
+          background-color: var(--background-raised-grey);
         }
       }
     }
