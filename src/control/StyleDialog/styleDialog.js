@@ -8,6 +8,7 @@ import { carte } from "../../story.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
+import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
 import charte from '../../charte/charte.js';
 
