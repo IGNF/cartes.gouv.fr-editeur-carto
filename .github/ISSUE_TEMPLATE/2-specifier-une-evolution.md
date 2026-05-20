@@ -2,7 +2,7 @@
 name: "\U0001F680 Spécifier une évolution"
 about: Renseigner les informations nécessaires pour créer ou améliorer une fonctionnalité pour cartes.gouv.fr
 title: ''
-labels: ['amélioration']
+labels: ['amélioration','nouvelle fonctionnalité']
 projects: ["IGNF/52"]
 assignees: MatRouillard, Viglino
 type: Feature
@@ -12,8 +12,10 @@ type: Feature
 # 📣 1. Contexte produit
 
 ### Parcours concerné
+exemple : Éditeur -> Gestionnaire de couches -> Couche -> Style
 
 ### Situation d’usage (JTBD)
+exemple : Je veux modifier les couches de données de ma carte pour présenter de l'information et la rendre intelligible sous forme de carte.
 
 ---
 
@@ -36,6 +38,9 @@ type: Feature
 
 ### Composition
 
+- [ ] 
+- [ ] 
+
 ### Comportement
 
 ### Emplacement
@@ -48,8 +53,10 @@ type: Feature
 
 ### Figma
 
-Fichier : 
+lien Figma : 
 
+### Illustration
+⚠️ **Les captures ci-dessous sont présentes à titre d'indication, c'est la maquette Figma qui fait foi.**
 ---
 
 # ✅ 5. Critères d’acceptation
@@ -63,8 +70,11 @@ Fichier :
 
 ### Impact
 
-### Sonde
+exemple : L'utilisateur gagne du temps dans la création de sa carte (application, vérification) et est assuré/confiant sur le rendu de sa carte.
 
+### Sonde(s)
+Préciser le besoin, la décision à prendre grâce au résultat de cette sonde, et ce qu'il faut mesurer
+exemple : Nombre de style conditionnels ajoutés (min, max, moyenne, médiane) pour ajuster le design du panneau de style
 ---
 
 # ⚒️ 7. Contraintes métier
