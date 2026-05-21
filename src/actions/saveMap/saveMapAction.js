@@ -4,9 +4,9 @@ import api from 'mcutils/api/api.js';
 import content from './saveMap.html?raw';
 import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj.js'
-import notification from '../../control/Notification/notification.js';
 import { addMessage } from '../../utils/message.js';
 import savingContent from './saving.html?raw';
+import Alert from '../../control/Alert/Alert.js';
 
 
 let GPFThemes = [];
@@ -121,15 +121,29 @@ function saveMap() {
     function onpost(response) {
       if (response.status == 401) {
         // Connect and iterate
-        // connectAction().then(postMap);
         console.error('Unauthorized, please login to save the map');
-        notification.error('Vous devez être connecté pour enregistrer une carte...');
+        Alert.addAlert({
+          type: Alert.TYPES.ERROR,
+          id: "alert--save-login-needed",
+          description: "Vous devez être connecté·e pour enregistrer une carte.",
+          size: 'sm',
+        }, true);
       } else if (response.status == 418) {
         console.error('Map size limit exceeded');
-        notification.error('La taille de la carte dépasse la limite autorisée par le serveur...');
+        Alert.addAlert({
+          type: Alert.TYPES.ERROR,
+          id: "alert--save-size-limit-exceeded",
+          description: "La taille de la carte dépasse la limite autorisée par le serveur.",
+          size: 'sm',
+        }, true);
       } else if (response.status) {
         console.error('Error saving map', response);
-        notification.error('Une erreur est survenue lors de l\'enregistrement de la carte...' + (response.message ? ` (${response.message})` : ''));
+        Alert.addAlert({
+          type: Alert.TYPES.ERROR,
+          id: "alert--save-saving-failed",
+          description: "L'enregistrement a échoué. Veuillez essayer à nouveau.",
+          size: 'sm',
+        }, true);
       } else {
         // Update id
         if (response.view_id) {
@@ -139,7 +153,12 @@ function saveMap() {
         if (!metadata.edit_id) {
           carte.set('atlas', response);
         }
-        notification.info('La carte a bien été enregistrée...')
+        Alert.addAlert({
+          type: Alert.TYPES.SUCCESS,
+          id: "alert--save-success",
+          description: "Carte enregistrée",
+          size: 'sm',
+        }, true);
         carte.dispatchEvent('save')
       }
       // Close dialog

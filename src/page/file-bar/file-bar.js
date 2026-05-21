@@ -211,3 +211,5 @@ fileToggle.on("change:active", (e) => {
 
 carte.addControl('filebar', filebar);
 filebar.setPosition('top-left');
+
+export { shareMapBtn };
