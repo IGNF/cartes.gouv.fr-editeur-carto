@@ -2,12 +2,13 @@
 import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
 // import carte from '../carte.js';
 import { carte } from '../story.js';
-import styleDialog from '../control/StyleDialog/styleDialog.js';
 import addLayer from './addLayer.js';
 import Action from '../actions/Action.js';
 import modal from '../dialogs/modal.js';
+import editLayerStyleAction from '../actions/editLayerStyle/editLayerStyleAction.js';
 import "./layerSwitcher.scss";
 import BaseEvent from 'ol/events/Event.js';
+import leftPanel from '../dialogs/leftPanel.js';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -32,14 +33,22 @@ const switcher = new LayerSwitcher({
       {
         label: 'Style',
         icon: 'fr-icon-brush-line',
+        attributes: {
+          "aria-controls": leftPanel.getElement()?.id,
+          'data-action': 'edit-layer-style',
+        },
         cb: (e, instance, layer, options) => {
+          if (carte.getControl("left-panel") === undefined) {
+            leftPanel.setTarget()
+            carte.addControl("left-panel", leftPanel);
+          }
           carte.selectedLayer = layer;
           carte.dispatchEvent(new BaseEvent({
             type: 'selected:layer:change',
             layer: layer,
             options: options,
           }))
-          styleDialog.show();
+          Action.open(e)
         }
       },
       {
