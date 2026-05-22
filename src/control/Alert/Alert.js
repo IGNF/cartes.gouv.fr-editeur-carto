@@ -61,7 +61,7 @@ class Alert extends ControlExtended {
 
   /**
    * Ajoute une alerte au conteneur global bas-gauche.
-   * @param {Alert|AlertOptions} alertOrOptions Alerte ou options pour en créer une
+   * @param {AlertOptions|Alert} alertOrOptions Alerte ou options pour en créer une
    * @param {Boolean} [removeSameAlert=false] Si vrai, retire les ayant le même id.
    * @returns {Alert}
    */

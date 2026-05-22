@@ -3,11 +3,12 @@
 .alerts-container {
   position: absolute;
   left: 0.5rem;
-  bottom: 0.5rem;
+  bottom: 3rem;
   display: flex;
   flex-direction: column;
   z-index: 10;
   max-height: 30vh;
+  min-width: 12.875rem;
   overflow: scroll;
 
   .fr-alert {

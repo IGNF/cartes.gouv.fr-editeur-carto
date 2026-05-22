@@ -13,7 +13,7 @@ Exemple : ticket "[COMPOSANT] Panneau de style d'une couche" -->
 
 # 📣 1. Contexte produit
 
-<!-- Indiquer ici le contexte produit : parcours utilisateur et Situatuon d'usage (Job To Be Done) -->
+<!-- Indiquer ici le contexte produit : parcours utilisateur et Situation d'usage (Job To Be Done) -->
 
 ### Parcours concerné
 <!-- exemple : Éditeur → Gestionnaire de couches → Couche → Style -->
@@ -41,7 +41,7 @@ exemple :
 
 # 🗺️ 3. Parcours utilisateur
 
-<!-- Quel est le parcours utilisateur ? Comment l'utilisateur·ice effectue son action
+<!-- Quel est le parcours utilisateur ? Comment l'utilisateur·ice effectue son action ?
 
 exemple :
 - [ ] L'utilisateur ouvre sur le gestionnaire de couches.
@@ -74,7 +74,7 @@ exemple :
 
 ### Comportement
 
-<!-- Quels sont les comportements attendus
+<!-- Quels sont les comportements attendus ?
 
 exemple :
 - [ ] Lorsque l'utilisateur clique sur un style, le panneau affiche alors le contenu associé.
@@ -110,7 +110,7 @@ exemple : Aucun
 
 ### Info DSRF
 
-<!-- Notifier ici de différences avec le DSFR -->
+<!-- Notifier ici les différences éventuelles avec le DSFR -->
 
 ### Figma
 
@@ -118,7 +118,9 @@ exemple : Aucun
 
 lien Figma : 
 
-### Illustration
+### Illustrations
+
+<!-- Ajouter ici un ou plusieurs visuels qui permet d'illustrer l'idée globale du design et fonctionnement attendu -->
 
 ⚠️ **Les captures ci-dessous sont présentes à titre d'indication, c'est la maquette Figma qui fait foi.**
 
@@ -140,7 +142,7 @@ exemple:
 
 # 📊 6. Impact attendu
 
-<!-- Quels sont les imapcts attendu de ce ticket -->
+<!-- Quels sont les impacts attendus de ce ticket -->
 
 ### Impact
 
@@ -149,18 +151,18 @@ exemple:
 exemple : L'utilisateur gagne du temps dans la création de sa carte (application, vérification) et est assuré/confiant sur le rendu de sa carte.-->
 
 
-### Sonde(s)
+### Sonde(s) et/ou indicateur(s)
 
 <!-- Comment mesurer cet impact ? Sondes matomo, indicateurs etc.
 Préciser le besoin, la décision à prendre grâce au résultat de cette sonde, et ce qu'il faut mesurer
 
-exemple : Nombre de style conditionnels ajoutés (min, max, moyenne, médiane) pour ajuster le design du panneau de style -->
+exemple : Nombre de styles conditionnels ajoutés (min, max, moyenne, médiane) pour ajuster le design du panneau de style -->
 
 ---
 
 # ⚒️ 7. Contraintes métier
 
-<!-- Y'a-t-il des contraintes métier spécifiques à ce ticket ?
+<!-- Y a-t-il des contraintes métier spécifiques à ce ticket ?
 
 exemple : nécessaire de voir avec l'équipe de l'entrée carto -->
 
@@ -176,5 +178,5 @@ exemple : liens vers composant DSFR, lien vers source d'inspiration pour composa
 
 # 🎥 9. Historique / décisions produit
 
-<!-- Indiquer l'historique et les décisions prises pour ce ticket (notamment pour éviter de revenir dessus plus tard) -->
+<!-- Partie à compléter avant de recetter : indiquer l'historique et les décisions prises pour ce ticket pour éviter au recetteur de devoir parcourir tous les commentaires -->
 

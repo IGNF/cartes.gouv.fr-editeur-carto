@@ -1,5 +1,5 @@
 import Notification from 'ol-ext/control/Notification.js'
-import "./notification.css";
+import "./notification.scss";
 
 class NotificationExtended extends Notification {
   constructor(options) {
@@ -9,7 +9,7 @@ class NotificationExtended extends Notification {
     super(options);
     this.element.classList.remove('ol-control');
     // Default duration for notifications
-    this.set('duration', options.duration || 6000); 
+    this.set('duration', options.duration || 6000);
 
     // Prevent hide on mouse enter and resume on mouse leave
     this.element.addEventListener("mouseenter", () => {
@@ -20,8 +20,8 @@ class NotificationExtended extends Notification {
     });
     this.element.addEventListener("mouseleave", () => {
       this._listener = setTimeout(() => {
-          this.element.classList.add('ol-collapsed');
-          this._listener = null;
+        this.element.classList.add('ol-collapsed');
+        this._listener = null;
       }, 3000);
     });
   }
@@ -34,41 +34,61 @@ class NotificationExtended extends Notification {
    * @param {Number} [duration] duration in ms, if -1 never hide, default duration
    */
   _show(type, what, cancelFn, duration) {
+    // Contenu toujours affiché
+    const divContent = document.createElement('div');
+    divContent.className = "info-container";
+
+    // Icône
+    const spanIcon = document.createElement('span');
+    spanIcon.ariaHidden = true;
     switch (type) {
-      case 'success': 
-      case 'error': 
+      case 'success':
+      case 'error':
       case 'warning': {
-        this.element.querySelector('div').className  = 'fr-icon-' + type + '-fill';
+        spanIcon.className = 'fr-icon-' + type + '-fill';
+        divContent.classList.add(`notification--${type}`);
         break;
       }
       case 'info':
       default: {
-        this.element.querySelector('div').className  = 'fr-icon-info-fill';
+        spanIcon.className = 'fr-icon-info-fill';
+        divContent.classList.add(`notification--info`);
         break;
       }
-
     }
-    // Always show
-    const span = document.createElement('span');
-    span.textContent = what;
-    this.show(span, duration || this.get('duration'));
 
-    // Cancel button
+
+    // Contenu texte
+    const content = document.createElement('span');
+    content.textContent = what;
+
+    divContent.appendChild(spanIcon);
+    divContent.appendChild(content);
+
+    // Affiche toujours à minima cela
+    this.show(divContent, duration || this.get('duration'));
+
+    // Boutons d'actions
+    const btnGroup = document.createElement('div');
+    btnGroup.className = "buttons-group";
+
+    // Bouton annuler
     if (cancelFn) {
       const btn = document.createElement('button');
       btn.textContent = 'Annuler';
       btn.type = 'button';
       btn.className = 'gpf-btn fr-btn gpf-btn--tertiary fr-btn--tertiary';
-      notification.contentElement.appendChild(btn);
+      btnGroup.appendChild(btn);
       btn.addEventListener('click', cancelFn);
     }
-    // Close button
+    // Bouton de fermeture
     const close = document.createElement('button');
     close.textContent = 'close';
     close.type = 'button';
     close.className = 'gpf-btn fr-btn fr-btn--tertiary-no-outline fr-icon-close-line gpf-notification-close';
-    notification.contentElement.appendChild(close);
+    btnGroup.appendChild(close);
     close.addEventListener('click', () => this.hide());
+    notification.contentElement.appendChild(btnGroup)
   }
 
   info(what, cancelFn, duration) {
