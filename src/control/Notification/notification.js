@@ -9,7 +9,7 @@ class NotificationExtended extends Notification {
     super(options);
     this.element.classList.remove('ol-control');
     // Default duration for notifications
-    this.set('duration', options.duration || 66000);
+    this.set('duration', options.duration || 6000);
 
     // Prevent hide on mouse enter and resume on mouse leave
     this.element.addEventListener("mouseenter", () => {
