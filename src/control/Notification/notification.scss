@@ -1,0 +1,60 @@
+.gpf-notification {
+  position: absolute;
+
+  > div:first-child {
+    display: flex;
+    align-items: center;
+
+    &,
+    &:hover {
+      background-color: var(--background-default-grey);
+      color: var(--text-default-grey);
+      filter: drop-shadow(var(--raised-shadow));
+      border-radius: 4px;
+      padding: 0.5rem;
+    }
+
+    &::before {
+      vertical-align: middle;
+    }
+
+    button {
+      margin: 0 1rem;
+      vertical-align: middle;
+
+      &.gpf-notification-close {
+        margin: 0;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  div.info-container {
+    > span[class*='fr-icon'] {
+      margin-right: 0.5rem;
+    }
+    &.notification--info > span[class*='fr-icon'] {
+      color: var(--text-action-high-blue-france);
+    }
+    &.notification--success > span[class*='fr-icon'] {
+      color: var(--text-default-success);
+    }
+    &.notification--error > span[class*='fr-icon'] {
+      color: var(--text-default-error);
+    }
+    &.notification--warning > span[class*='fr-icon'] {
+      color: var(--text-default-warning);
+    }
+
+    margin-right: 1rem;
+  }
+
+  div.buttons-group {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    > button {
+      margin: 0;
+    }
+  }
+}

@@ -21,16 +21,16 @@ fullScreen.on('enterfullscreen', () => {
   fullScreenToggle.setActive(true);
   fullScreenToggle.button_.classList.add(fullScreenExitClass);
   fullScreenToggle.button_.classList.remove(fullScreenClass);
-  fullScreenToggle.setTitle("Sortir du plein écran");
-  fullScreenToggle.button_.ariaLabel = "Sortir du plein écran";
+  fullScreenToggle.setTitle("Quitter le plein écran");
+  fullScreenToggle.button_.ariaLabel = "Quitter le plein écran";
 })
 
 fullScreen.on('leavefullscreen', () => {
   fullScreenToggle.setActive(false);
   fullScreenToggle.button_.classList.add(fullScreenClass);
   fullScreenToggle.button_.classList.remove(fullScreenExitClass);
-  fullScreenToggle.setTitle("Afficher le plein écran");
-  fullScreenToggle.button_.ariaLabel = "Afficher le plein écran";
+  fullScreenToggle.setTitle("Plein écran");
+  fullScreenToggle.button_.ariaLabel = "Plein écran";
 })
 
 let fullScreenToggle = new Toggle({
@@ -38,8 +38,8 @@ let fullScreenToggle = new Toggle({
   autoActivate: true,
   classButton: `fr-btn fr-btn--tertiary-no-outline ${fullScreenClass}`,
   attributes: {
-    title: "Afficher le plein écran",
-    'aria-label': "Afficher le plein écran",
+    title: "Plein écran",
+    'aria-label': "Plein écran",
   },
   onToggle: onToggle
 })
