@@ -1,4 +1,5 @@
 import { isConditionalOperator } from "./ConditionalOperator";
+import BaseObject from "ol/Object.js";
 
 /**
  * @typedef {Object} ConditionOptions
@@ -14,45 +15,46 @@ import { isConditionalOperator } from "./ConditionalOperator";
 /**
  * Condition liée à un style.
  */
-class Condition {
+class Condition extends BaseObject {
 
     /**
     * @param {ConditionOptions} options
      */
     constructor ({ attribute, operator, value } = {}) {
+        super();
         this.attribute = attribute;
         this.operator = operator;
         this.value = value;
     }
 
     get attribute () {
-        return this._attribute;
+        return this.get("attribute");
     }
 
     set attribute (value) {
         if (!value || typeof value !== "string") {
-            throw new TypeError("Condition.attribute must be a non-empty string");
+            throw new TypeError("Condition.attribute doit être une chaîne non vide");
         }
-        this._attribute = value;
+        this.set("attribute", value);
     }
 
     get operator () {
-        return this._operator;
+        return this.get("operator");
     }
 
     set operator (value) {
         if (!isConditionalOperator(value)) {
-            throw new TypeError(`Unsupported conditional operator: ${value}`);
+            throw new TypeError(`Opérateur conditionnel non pris en charge : ${value}`);
         }
-        this._operator = value;
+        this.set("operator", value);
     }
 
     get value () {
-        return this._value;
+        return this.get("value");
     }
 
     set value (value) {
-        this._value = value;
+        this.set("value", value);
     }
 
     /**

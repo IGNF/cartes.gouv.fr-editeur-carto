@@ -6,6 +6,13 @@ import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/Sty
 import InputColor from './InputColor.js';
 import SelectIcons from './SelectIcons.js';
 
+// class StyleForm extends FlatStyleForm {
+
+//   constructor(options) {
+
+//   }
+// }
+
 // Création du formulaire de style
 const styleForm = new FlatStyleForm();
 

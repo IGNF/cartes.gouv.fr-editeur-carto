@@ -1,18 +1,47 @@
 import Action from "../Action.js";
 import ol_ext_element from "ol-ext/util/element.js";
+import StyleObj from "../../control/LayerStyle/StyleObj.js";
+import Condition from "../../control/LayerStyle/Condition.js";
+import LayerStyleContainer from "../../control/LayerStyle/LayerStyleContainer.js";
 import "./editLayerStyle.scss";
+import { StyleContainerEvent } from "../../control/LayerStyle/StyleContainer.js";
+import EditStyle, { EditStyleEvent } from "../../control/LayerStyle/EditStyle.js";
 
+
+/// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
 let dialog;
+/**
+ * @type {import('ol/layer/Base').default|import('mcutils/layer/VectorStyle.js').default}
+ * Layer à modifier
+ */
+let layer;
+/** 
+ * @type {LayerStyleContainer}
+ * Conteneur des styles de la couche
+ */
+let layerContainer;
+/** 
+ * @type {EditStyle}
+ * Édition d'un style
+ */
+let editStyle;
 
+/**
+ * Fonction appelée lors du clic sur le bouton d'ajout de style conditionnel
+ */
 function onAddConditionalStyleClick() {
-  console.log("Ajouter un style conditionnel");
+  console.log("add conditional style");
 }
 
-function createContent() {
+/**
+ * Créé le contenu principal du dialogue
+ * @returns {HTMLElement}
+ */
+function createMainContent() {
   const root = ol_ext_element.create("div", {
     className: "edit-layer-style-content",
   });
@@ -32,15 +61,34 @@ function createContent() {
     },
   });
 
-  ol_ext_element.create("div", {
-    className: "layer-styles-container",
-    parent: root,
+  layerContainer = new LayerStyleContainer({
   });
+  root.appendChild(layerContainer.getElement());
 
   return root;
 }
 
-const content = createContent();
+
+/**
+ * Créé le contenu d'édition du dialogue
+ * @returns {HTMLElement}
+ * @param {import("../../control/LayerStyle/EditStyle.js").EditStyleOptions} options
+ */
+function createEditStyleContent(options) {
+  const editStyle = new EditStyle(options);
+
+  return editStyle;
+}
+
+/**
+ * Gère la visibilité du contenu.
+ * @param {Boolean} visible Si vrai, affiche le contenu principal et cache l'éditeur de style. Sinon, fais l'inverse.
+ */
+function setMainContentVisibility(visible) {
+  console.log(dialog?.querySelector(".edit-layer-style-content"))
+  dialog?.querySelector(".edit-layer-style-content")?.classList.toggle("fr-hidden", !visible);
+  editStyle?.setVisible(!visible);
+}
 
 /**
  * Fonction à l'ouverture du dialog.
@@ -50,13 +98,48 @@ const content = createContent();
  * Dialog utilisé par l'action
  */
 function onOpen(e) {
-  console.log(e);
   dialog = e.target;
+  setMainContentVisibility(true);
+
+  // Créé le conteneur d'édition de style
+  editStyle = createEditStyleContent({
+    visible: false,
+    layer: editLayerStyleAction.layer,
+    target: dialog.getDialogContent(),
+  });
+
+  // Ajoute / modifie du contenu
+  dialog.setDialogTitle(editLayerStyleAction.layer?.get('title'))
+
+  // Set layer
+  layerContainer.setLayer(editLayerStyleAction.layer);
+  
+  // Écouteurs d'événements
+  layerContainer.on("open-style", (/** @type {StyleContainerEvent} */ e) => {
+    setMainContentVisibility(false);
+    openStyle(e.layer, e.styleObj);
+  })
+
+  // Écouteur d'événement à la sauvegarde du style
+  editStyle.on("save-style", (/** @type {EditStyleEvent} */ e) => {
+    setMainContentVisibility(true);
+  })
 }
+
+/**
+ * Ouvre un nouveau dialogue avec une modification du style
+ * @param {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche à modifier
+ * @param {import("../../control/LayerStyle/StyleObj.js").default} styleObj Objet de style
+ */
+function openStyle(layer, styleObj) {
+  editStyle.setStyleObj(styleObj);
+  console.log(layer, styleObj);
+}
+
+const content = createMainContent();
 
 const editLayerStyleAction = new Action({
   id: "edit-layer-style",
-  title: "",
   content: content,
   icon: "fr-icon-brush-line",
   size: "md",

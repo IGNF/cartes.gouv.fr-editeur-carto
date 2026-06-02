@@ -9,3 +9,9 @@
   -webkit-mask-image: url('./icons/share-2-line.svg');
   mask-image: url('./icons/share-2-line.svg');
 }
+
+.fr-icon-draggable-fill::before,
+.fr-icon-draggable-fill::after {
+  -webkit-mask-image: url('./icons/draggable-fill.svg');
+  mask-image: url('./icons/draggable-fill.svg');
+}

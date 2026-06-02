@@ -9,6 +9,8 @@ import editLayerStyleAction from '../actions/editLayerStyle/editLayerStyleAction
 import "./layerSwitcher.scss";
 import BaseEvent from 'ol/events/Event.js';
 import leftPanel from '../dialogs/leftPanel.js';
+import VectorSource from 'ol/source/Vector.js';
+import Alert from '../control/Alert/Alert.js';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -28,6 +30,7 @@ const switcher = new LayerSwitcher({
     ],
     advancedTools: [
       {
+        // MODIFIER BOUTON INFOS POUR OUVRIR MODALE
         key: LayerSwitcher.switcherButtons.INFO
       },
       {
@@ -35,7 +38,7 @@ const switcher = new LayerSwitcher({
         icon: 'fr-icon-brush-line',
         attributes: {
           "aria-controls": leftPanel.getElement()?.id,
-          'data-action': 'edit-layer-style',
+          'data-action': editLayerStyleAction._id,
         },
         cb: (e, instance, layer, options) => {
           if (carte.getControl("left-panel") === undefined) {
@@ -48,7 +51,27 @@ const switcher = new LayerSwitcher({
             layer: layer,
             options: options,
           }))
-          Action.open(e)
+          // Vérifie que la couche est modifiable
+          if (layer?.getSource() instanceof VectorSource) {
+            editLayerStyleAction.layer = layer;
+            const { action } = Action.open(e);
+          } else {
+            // Vérifie si on peut modifier le style
+            const tms = (options?.layer?.config && options?.layer?.config?.serviceParams?.id === "GPP:TMS");
+            const styles = tms ? options?.layer?.config?.styles : null;
+            if (tms && styles.length > 1) {
+              instance._onEditLayerStyleClick(e, styles);
+            } else {
+              const alertId = `layer-not-editable--${layer.gpLayerId ?? ''}`
+              // Affiche un message à l'utilisateur
+              Alert.addAlert({
+                id: alertId,
+                description: "Le style de cette couche n'est pas modifiable",
+                size: "sm",
+                type: Alert.TYPES.WARNING,
+              }, true)
+            }
+          }
         }
       },
       {
@@ -57,7 +80,7 @@ const switcher = new LayerSwitcher({
         attributes: {
           "aria-controls": modal.getId(),
         },
-        cb: (e) => {
+        cb: (e, instance, layer, options) => {
           Action.open(e);
         }
       },

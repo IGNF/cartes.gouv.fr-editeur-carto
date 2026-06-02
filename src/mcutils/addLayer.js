@@ -12,7 +12,7 @@ function addLayer(e, layerSwitcher) {
   let layer = new VectorStyle({
     source: new VectorSource(),
     description: "Dessin personnalisé",
-    title: "Dessin",
+    title: "Dessin ajouté",
     type: "Vector",
     thumbnail: "personal-drawing",
   });

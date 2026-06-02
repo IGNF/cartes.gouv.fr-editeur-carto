@@ -47,8 +47,6 @@ function setExtGpfAction(dialog, action) {
   action.dialog = dialog;
   dialog.getElement().dataset.actionId = action.id;
 
-  console.log("set extfg")
-
   dialog.setContent({
     title: action.title,
     icon: action.icon,
@@ -111,6 +109,7 @@ class Action {
    * @param {Event|Dialog} e - Événement du clic ou dialog
    * @param {Action} actionId - Id de l'action à ouvrir
    * @param {boolean} pressed - Si l'action est un toggle, indique si le toggle est activé ou non
+   * @returns {{action: Action, dialog: Dialog|ExtGPFDialog}} Action et dialogue correspondant
    * @static
    */
   static open(e, actionId, pressed = null) {
@@ -150,9 +149,6 @@ class Action {
       return;
     }
 
-    console.log(dialog)
-    console.log(dialog instanceof Dialog, dialog instanceof ExtGPFDialog)
-
     if (pressed === false || pressed === 'false') {
       dialog.close();
     } else if (dialog instanceof Dialog) {
@@ -160,6 +156,8 @@ class Action {
     } else if (dialog instanceof ExtGPFDialog) {
       setExtGpfAction(dialog, action);
     }
+
+    return {"action" : action, "dialog" : dialog};
   }
 
   /** @returns {string} */

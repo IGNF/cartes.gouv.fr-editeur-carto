@@ -11,7 +11,7 @@ import { getCurrentStyle } from "../../mcutils/currentStyle.js";
 /**
  * @type {Object} Objet de correspondance flat style / IGN style
  */
-const styleLut = {
+const flatToIgn = {
   'point-color': 'pointColor',
   'point-form': 'pointForm',
   'point-radius': 'pointRadius',
@@ -31,6 +31,27 @@ const styleLut = {
   'text-value': 'labelAttribute',
   'text-fill-color': 'textColor',
   'text-size': 'textSize',
+  'text-size': 'textSize',
+};
+
+/**
+ * @type {Object} Objet de correspondance IGN Style / flat style
+ */
+const ignToFlat = Object.fromEntries(Object.entries(flatToIgn).map(key => key.reverse()));
+
+/**
+ * Transforme une chaîne camelCase en kebab-case.
+ * Ex: pointGlyph -> point-glyph
+ * @param {String} value
+ * @returns {String}
+ */
+function camelToKebabCase(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .toLowerCase();
 }
 
 /**
@@ -42,7 +63,7 @@ function flatToIgnStyle(flatStyle) {
   flatStyle = flatStyle || {};
   const ignStyle = {};
   Object.keys(flatStyle).forEach(key => {
-    ignStyle[styleLut[key] || key] = flatStyle[key];
+    ignStyle[flatToIgn[key] || key] = flatStyle[key];
   });
   return ignStyle;
 }
@@ -53,7 +74,7 @@ function flatToIgnStyle(flatStyle) {
  * @returns {String} Propriété correspondante IGN (mcutils)
  */
 function flatToIgnKey(key) {
-  return styleLut[key] || key;
+  return flatToIgn[key] || key;
 }
 
 /**
@@ -91,7 +112,7 @@ function styleToFlatStyle(feature) {
   // Extraction du style de la feature, parmi ce qui est modifié
   const st = getCurrentStyle(feature);
   // Création du flatStyle openlayer
-  Object.keys(styleLut).forEach(key => {
+  Object.keys(flatToIgn).forEach(key => {
     if (key === "fill-pattern-config") {
       // Motif : modification à faire
       const pattern = st["fillPattern"];
@@ -99,7 +120,33 @@ function styleToFlatStyle(feature) {
       let name = pattern + (angle !== undefined ? `;${angle}` : "");
       flatStyle[key] = name;
     } else {
-      flatStyle[key] = st[styleLut[key]];
+      flatStyle[key] = st[flatToIgn[key]];
+    }
+  });
+  return flatStyle;
+}
+
+/**
+ * Convertit un style ignStyle en flat style;
+ * @param {Object} ignStyle - objet ignStyle
+ * @returns {Object} Objet représentant le flat style
+ */
+function ignStyleToFlatStyle(ignStyle) {
+  ignStyle = ignStyle || {};
+  const flatStyle = {};
+  Object.keys(ignStyle).forEach(ignKey => {
+    const flatKey = ignToFlat[ignKey];
+    if (flatKey) {
+      // Convertit en flatStyle
+      flatStyle[flatKey] = ignStyle[ignKey];
+    } else {
+      // Ajoute une nouvelle clé
+      let key = camelToKebabCase(ignKey);
+      flatToIgn[key] = ignKey;
+      ignToFlat[ignKey] = key;
+
+      // Ajoute aussi la valeur au style final
+      flatStyle[key] = ignStyle[ignKey];
     }
   });
   return flatStyle;
@@ -109,5 +156,7 @@ export {
   styleToFlatStyle,
   flatToIgnStyle,
   flatToIgnKey,
-  flatToIGNKeyValue
+  flatToIGNKeyValue,
+  ignStyleToFlatStyle,
+  flatToIgn
 };
