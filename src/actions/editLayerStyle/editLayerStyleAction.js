@@ -85,7 +85,6 @@ function createEditStyleContent(options) {
  * @param {Boolean} visible Si vrai, affiche le contenu principal et cache l'éditeur de style. Sinon, fais l'inverse.
  */
 function setMainContentVisibility(visible) {
-  console.log(dialog?.querySelector(".edit-layer-style-content"))
   dialog?.querySelector(".edit-layer-style-content")?.classList.toggle("fr-hidden", !visible);
   editStyle?.setVisible(!visible);
 }
@@ -109,7 +108,7 @@ function onOpen(e) {
   });
 
   // Ajoute / modifie du contenu
-  dialog.setDialogTitle(editLayerStyleAction.layer?.get('title'))
+  dialog.setDialogTitle(editLayerStyleAction.layer?.get('title'));
 
   // Set layer
   layerContainer.setLayer(editLayerStyleAction.layer);
@@ -118,12 +117,12 @@ function onOpen(e) {
   layerContainer.on("open-style", (/** @type {StyleContainerEvent} */ e) => {
     setMainContentVisibility(false);
     openStyle(e.layer, e.styleObj);
-  })
+  });
 
   // Écouteur d'événement à la sauvegarde du style
-  editStyle.on("save-style", (/** @type {EditStyleEvent} */ e) => {
+  editStyle.on("rollback-style", (/** @type {EditStyleEvent} */ e) => {
     setMainContentVisibility(true);
-  })
+  });
 }
 
 /**
@@ -133,7 +132,7 @@ function onOpen(e) {
  */
 function openStyle(layer, styleObj) {
   editStyle.setStyleObj(styleObj);
-  console.log(layer, styleObj);
+  // console.log(layer, styleObj);
 }
 
 const content = createMainContent();

@@ -178,9 +178,9 @@ drawToggle.on("drawend", (e) => {
   } else {
     // e.feature?.setIgnStyle(getCurrentStyle(e.feature));
     if (e.feature) {
-      for (let st in getCurrentStyle(e.feature)) {
-        e.feature.setIgnStyle(st, getCurrentStyle(e.feature)[st]);
-      }
+      // for (let st in getCurrentStyle(e.feature)) {
+      //   e.feature.setIgnStyle(st, getCurrentStyle(e.feature)[st]);
+      // }
     }
   }
 })

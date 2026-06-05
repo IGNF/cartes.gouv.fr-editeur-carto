@@ -7,16 +7,16 @@ import { LineString, Point, Polygon } from 'ol/geom.js';
 import { unByKey } from 'ol/Observable';
 import VectorStyle from "mcutils/layer/VectorStyle.js";
 import { defaultIgnStyle } from "mcutils/style/ignStyleFn.js";
-import { ignStyleToFlatStyle } from "../StyleDialog/styleToFlatStyle.js";
+import { flatToIGNKeyValue, flatToIgnStyle, ignStyleToFlatStyle } from "../StyleDialog/styleToFlatStyle.js";
 import { Collection } from "ol";
 
 import BaseEvent from "ol/events/Event.js";
 import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
 import { TabNav } from "geopf-extensions-openlayers/src/index.js";
 import "./EditStyle.scss";
-import labelForm from "../StyleDialog/labelForm.js";
+import { LabelForm } from "../StyleDialog/labelForm.js";
 import TabNavItem from "geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js";
-import styleForm from "../StyleDialog/styleForm.js";
+import { StyleForm } from "../StyleDialog/styleForm.js";
 
 /**
  * @typedef {Object} EditStyleOptions
@@ -34,10 +34,10 @@ const EditStyleEventType = {
   /**
    * Envoyé au clic sur le bouton revenir en arrière
    * ou lors du clic sur le bouton appliquer.
-   * @event EditStyleEvent#save-style
+   * @event EditStyleEvent#rollback-style
    * @api
    */
-  SAVE: 'save-style',
+  ROLLBACK: 'rollback-style',
   /**
    * Envoyé au clic sur le bouton appliquer.
    * @event EditStyleEvent#apply-style
@@ -54,7 +54,7 @@ const EditStyleEventType = {
 export class EditStyleEvent extends BaseEvent {
 
   /**
-   * @param {EditStyleEventType} type The event type.
+   * @param {EditStyleEventType} type Type d'événement.
    * @param {StyleObj} styleObj Style à modifier
    * @param {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche OpenLayers à styliser
    */
@@ -63,7 +63,7 @@ export class EditStyleEvent extends BaseEvent {
 
     /**
      * Style géré par ce conteneur.
-     * @type {StyleObj>}
+     * @type {StyleObj}
      * @api
      */
     this.styleObj = styleObj;
@@ -97,11 +97,9 @@ class EditStyle extends BaseObject {
 
     // Ajotue 
     if (options.target) {
-      console.log(options.target);
       const target = options.target instanceof HTMLElement
         ? options.target
         : document.getElementById(options.target);
-      console.log(target);
       target?.appendChild(this.getElement())
     }
   }
@@ -118,6 +116,22 @@ class EditStyle extends BaseObject {
      */
     this.styleObjKey = [];
     this._uid = SelectorID.generate();
+
+    /** @type {Collection<import("../StyleDialog/ExtendedFlatStyleForm.js").default>} */
+    this.forms = new Collection();
+
+    // Formulaire de style
+    this.styleForm = new StyleForm({
+      preview: true,
+      selectGeomType: true,
+    });
+    this.forms.push(this.styleForm);
+
+    // Formulaire d'étiquette
+    this.labelForm = new LabelForm({
+      generalType: false,
+    });
+    this.forms.push(this.labelForm);
   }
 
   /**
@@ -136,16 +150,10 @@ class EditStyle extends BaseObject {
 
     // Contenu principal
     const content = this._createContentElement(options);
-    
-    // Navigation tertiaire
-    // const tabNav = this._createTabNavElement(content);
-    // container.appendChild(tabNav.getElement());
-    
     container.appendChild(content);
 
     // Garde des éléments en mémoire
     this.styleName = header.querySelector(".style-title__name");
-
 
     options.visible === false && this.setVisible(false);
 
@@ -158,7 +166,11 @@ class EditStyle extends BaseObject {
    * @param {EditStyleOptions} options Options du constructeur
    */
   _initEvents(options) {
+    this.styleForm.on("style", (e) => {
+      // console.log({property: e.property, value: e.value});
+    })
 
+    // TODO : appliquer le changement de géom pour les autres formulaires
   }
 
   /**
@@ -173,7 +185,7 @@ class EditStyle extends BaseObject {
     // Bouton retour en arrière
     const saveStyleBtn = document.createElement("button");
     saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-left-line";
-    saveStyleBtn.addEventListener("click", this.saveStyle.bind(this));
+    saveStyleBtn.addEventListener("click", this.rollbackStyle.bind(this));
     saveStyleBtn.textContent = saveStyleBtn.title = "Enregistrer le style";
 
     // Preview
@@ -209,7 +221,7 @@ class EditStyle extends BaseObject {
     // Contenu du tabnav
     const tabNavContent = document.createElement("div");
     tabNavContent.className = "edit-style__tabnav-content";
-    
+
     const tabNav = this._createTabNavElement(tabNavContent);
 
     content.appendChild(tabNav.getElement());
@@ -230,12 +242,11 @@ class EditStyle extends BaseObject {
     const tabnav = this.tabnav = new TabNav({
       items: [{
         label: "Style",
-        // content: this._createStyleContent(),
-        content: styleForm.getContent().cloneNode(true),
+        content: this.styleForm.getContent(),
       },
       {
         label: "Texte",
-        content: labelForm.getContent().cloneNode(true),
+        content: this.labelForm.getContent(),
       },
       {
         label: "Conditions",
@@ -248,22 +259,19 @@ class EditStyle extends BaseObject {
   }
 
   /**
-   * Créé le contenu de l'édition de style.
-   * Celui-ci diffère en fonction du style sélectionné.
-   * 
-   * @returns {HTMLElement} Contenu de l'édition de condition
+   * Retourne le formulaire pour l'étiquette de l'objet.
+   * @returns {StyleForm} Formulaire pour l'étiquette
    */
-  _createStyleContent() {
-    let div = document.createElement("div")
+  getStyleForm() {
+    return this.styleForm;
+  }
 
-    // TEMPORAIRE
-    div.textContent = styleForm.getContent().cloneNode(true);
-    if (!this.getStyleObj()?.isDefault) {
-      // AJOUTER CONDITION
-
-    }
-
-    return div;
+  /**
+   * Retourne le formulaire pour l'étiquette de l'objet.
+   * @returns {LabelForm} Formulaire pour l'étiquette
+   */
+  getLabelForm() {
+    return this.labelForm;
   }
 
   /**
@@ -309,6 +317,15 @@ class EditStyle extends BaseObject {
       this.styleName.textContent = styleObj.name;
       this.setDefault(styleObj.isDefault);
 
+      // Modifie les formulaires
+      this.forms.forEach(form => {
+        form.setGeom(styleObj.type);
+        form.setFlatStyle(styleObj.getFlatStyle());
+      })
+
+      // N'affiche le sélecteur que sur la partie style
+      this.styleForm.showSelectGeomType(!styleObj.isDefault);
+
       // Affiche le premier onglet
       this.tabnav.selectFirst();
     } else {
@@ -329,10 +346,8 @@ class EditStyle extends BaseObject {
     if (bool) {
       // Cache le bouton de la navigation tertiaire
       isCondition && conditions.getElement().classList.add("fr-hidden")
-      // TODO : CACHER LE SÉLÉCTEUR DE GÉOMÉTRIE
     } else {
       isCondition && conditions.getElement().classList.remove("fr-hidden")
-      // TODO : AFFICHER LE SÉLÉCTEUR DE GÉOMÉTRIE
     }
   }
 
@@ -362,11 +377,11 @@ class EditStyle extends BaseObject {
   /**
    * Sauvegarde / modifie le style
    * 
-   * @fires EditStyleEvent#save-style
+   * @fires EditStyleEvent#rollback-style
    */
-  saveStyle() {
-    // TODO : SAUVEGARDER LE STYLE
-    this.dispatchEvent(new EditStyleEvent(EditStyleEventType.SAVE, this.getStyleObj(), this.getLayer()));
+  rollbackStyle() {
+    // TODO : NE PAS SAUVEGARDER LE STYLE
+    this.dispatchEvent(new EditStyleEvent(EditStyleEventType.ROLLBACK, this.getStyleObj(), this.getLayer()));
   }
 
   /**
@@ -377,6 +392,14 @@ class EditStyle extends BaseObject {
   applyStyle() {
     // TODO : APPLIQUER LE STYLE À LA COUCHE (SANS ENREGISTRER ?)
     this.dispatchEvent(new EditStyleEvent(EditStyleEventType.APPLY, this.getStyleObj(), this.getLayer()));
+    // Met à jour le styleObj
+    // TODO : AJOUTER LES AUTRES FORMULAIRES
+    this.getStyleObj().setFlatStyle(this.styleForm.getStyleObj().getFlatStyle());
+
+    const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());
+    Object.entries(ignStyle).forEach(([key, value]) => this.getLayer().setIgnStyle(key, value));
+
+    this.getLayer().getSource()?.changed();
   }
 
   /**

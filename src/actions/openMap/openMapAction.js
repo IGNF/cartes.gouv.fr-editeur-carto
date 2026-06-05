@@ -38,7 +38,6 @@ const buttonConnect = [
     'data-fr-opened': false,
     callback: (e) => {
       Action.open(e);
-      console.log(loginDialog)
       loginDialog.once(loginDialog.selectors.CLOSE_EVENT, () => {
         Action.open(modal, 'open-map');
       })

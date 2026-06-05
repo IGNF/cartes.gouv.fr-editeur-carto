@@ -42,7 +42,6 @@ function addFeatureToLayer(feature) {
     newFeature.setStyle(undefined); // Pour réinitialiser le style
     newFeature.unset("infoPopup"); // Pour ne pas avoir de conflit avec l'ancien popup
     layer.getSource().addFeature(newFeature);
-    console.log("L'objet a bien été ajoutée à la couche " + layer.get("title") || "");
     return true;
   }
 }

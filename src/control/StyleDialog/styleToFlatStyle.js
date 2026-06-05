@@ -62,8 +62,12 @@ function camelToKebabCase(value) {
 function flatToIgnStyle(flatStyle) {
   flatStyle = flatStyle || {};
   const ignStyle = {};
-  Object.keys(flatStyle).forEach(key => {
-    ignStyle[flatToIgn[key] || key] = flatStyle[key];
+  // Transforme chaque clé flat style en clé(s) ign style correspondante(s).
+  Object.entries(flatStyle).forEach(([key, value]) => {
+    const result = flatToIGNKeyValue(key, value);
+    result.forEach(({ key, value }) => {
+      ignStyle[key] = value;
+    });
   });
   return ignStyle;
 }
@@ -97,6 +101,7 @@ function flatToIGNKeyValue(key, value) {
       result.push({ key: "anglePattern", value: values.shift() });
     }
   } else {
+    value = isNaN(parseFloat(value)) ? value : parseFloat(value);
     result.push({ key: k, value: value });
   }
   return result;

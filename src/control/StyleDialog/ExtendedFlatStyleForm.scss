@@ -1,0 +1,9 @@
+@use '../../css/mixins.scss' as mix;
+
+.style-form {
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+}

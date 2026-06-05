@@ -111,7 +111,7 @@ class StyleContainer extends BaseObject {
 
     const preview = document.createElement("div");
     preview.className = `style-container__preview`;
-    const canvas = this._createSymbol(this.getStyleObj());
+    const canvas = this.preview = this._createSymbol(this.getStyleObj());
     preview.appendChild(canvas);
 
     const title = document.createElement("span");
@@ -126,7 +126,6 @@ class StyleContainer extends BaseObject {
     container.appendChild(actions)
 
     this.titleElement = title;
-    // this.previewElement = preview;
     this.element = container;
     return container;
   }

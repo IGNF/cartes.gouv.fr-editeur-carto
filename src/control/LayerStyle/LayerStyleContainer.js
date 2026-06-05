@@ -325,30 +325,39 @@ class LayerStyleContainer extends BaseObject {
    * @private
    */
   #getStyleObj(layer, type) {
-    const geometries = {
-      "Point": new Point([0, 0]),
-      "LineString": new LineString([0, 0]),
-      "Polygon": new Polygon([0, 0], [0, 0]),
-    };
     const names = {
       "Point": "Point (défaut)",
       "LineString": "Ligne (défaut)",
       "Polygon": "Surface (défaut)",
     };
-    const geom = geometries[type];
-    if (!geom) {
-      throw new SyntaxError(`Le type n'est pas un type ol valable : ${type}. Types acceptés : 'Point', 'LineString', 'Polygon'.`);
-    }
-    const feature = new Feature({
-      geometry: geom,
+
+    /** 
+     * Regex des propriétés flat-style à garder
+     * pour chaque type de géométrie.
+     */
+    const geomRegexProperties = {
+      "Point": [/^point/, /^symbol/, /^text/],
+      "LineString": [/^line/, /^stroke/, /^text/],
+      "Polygon": [/^fill/, /pattern/, /^text/],
+    };
+
+    const style = layer.getIgnStyle(true);
+    const flatStyle = ignStyleToFlatStyle(style);
+
+    // Filtre seulement les propriétés passant les expressions régulières
+    const obj = Object.entries(flatStyle).filter(([key]) => {
+      const regexes = geomRegexProperties[type];
+      return regexes.some((regex) => regex.test(key));
     });
 
-    const flatStyle = ignStyleToFlatStyle(layer.getIgnStyle(feature));
+    // Recréé le flatStyle correspondant
+    const flatStyleGeom = Object.fromEntries(obj);
+
     const styleObj = new StyleObj({
       name: names[type],
       default: true,
       type: type,
-      flatStyle: flatStyle
+      flatStyle: flatStyleGeom
     });
 
     return styleObj;

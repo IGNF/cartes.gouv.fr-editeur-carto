@@ -5,6 +5,7 @@ import { toContext } from "ol/render.js";
 import Feature from "ol/Feature.js";
 import { LineString, Point, Polygon } from "ol/geom";
 import { getStyleFn } from "mcutils/style/ignStyleFn";
+import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
 
 /**
  * @typedef {Object} StyleObjOptions
@@ -71,7 +72,9 @@ class StyleObj extends BaseObject {
     } = options;
 
     this.set("default", Boolean(isDefault));
-    this.set("image", null);
+    const canvas = document.createElement("canvas");
+    canvas.id = SelectorID.generate();
+    this.set("image", canvas);
     this._imageOptions = null;
     this.name = name;
     this.type = type;
@@ -84,9 +87,6 @@ class StyleObj extends BaseObject {
   }
 
   set name(value) {
-    if (!value || typeof value !== "string") {
-      throw new TypeError("StyleObj.name doit être une chaîne non vide");
-    }
     if (this.isDefault && this.get("name") !== undefined && this.get("name") !== value) {
       throw new Error("Le nom d'un style par défaut ne peut pas être modifié");
     }
@@ -98,11 +98,7 @@ class StyleObj extends BaseObject {
   }
 
   set type(value) {
-    if (!value || typeof value !== "string") {
-      throw new TypeError("StyleObj.type doit être une chaîne non vide");
-    }
     this.set("type", value);
-    this._invalidateImage();
   }
 
   get isDefault() {
@@ -138,9 +134,6 @@ class StyleObj extends BaseObject {
    * @param {*} value
    */
   setFlatStyleProperty(prop, value) {
-    if (!prop || typeof prop !== "string") {
-      throw new TypeError("La propriété du flat style doit être une chaîne non vide");
-    }
     this.setFlatStyle({ [prop]: value });
   }
 
@@ -154,7 +147,7 @@ class StyleObj extends BaseObject {
     }
     const currentFlatStyle = this.get("flatStyle") || {};
     this.set("flatStyle", reset ? { ...flatStyle } : { ...currentFlatStyle, ...flatStyle });
-    this._invalidateImage();
+    this.drawImage();
   }
 
   /**
@@ -204,9 +197,8 @@ class StyleObj extends BaseObject {
     const imageOptions = normalizeImageOptions(options);
     const [width, height] = imageOptions.size;
     const margin = Math.max(0, imageOptions.margin);
+    const canvas = this.get("image");
 
-    // Créé le canvas et le contexte de dessin
-    const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
 
@@ -291,7 +283,7 @@ class StyleObj extends BaseObject {
    * @private
    */
   _invalidateImage() {
-    this.set("image", null);
+    // this.set("image", null);
     this._imageOptions = null;
   }
 
