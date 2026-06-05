@@ -8,6 +8,7 @@ import './importLocal/importLocalAction.js';
 import './importFlow/importFlowAction.js';
 import './measure/measureAction.js';
 import './login/loginAction.js';
+import './editLayerStyle/editLayerStyleAction.js';
 
 import './keydown/keydownActions.js';
 import './openMap/dropMap.js';

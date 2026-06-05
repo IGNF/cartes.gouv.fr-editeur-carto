@@ -20,7 +20,7 @@ let dialog;
  */
 function onOpen(e) {
   dialog = e.target
-  let bar = createBar(dialog.getModalContent());
+  let bar = createBar(dialog.getDialogContent());
   carte.removeControl('measure-bar');
   carte.addControl('measure-bar', bar);
 }

@@ -1,4 +1,5 @@
 import Dialog from '../control/Dialog/AbstractDialog.js';
+import ExtGPFDialog from "geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js";
 
 /**
  * Bouton à mettre dans le buttons d'un dialog
@@ -33,6 +34,33 @@ import Dialog from '../control/Dialog/AbstractDialog.js';
 
 /* Action list */
 const actions = {};
+
+
+/**
+ * Lie une action à un dialog ext-gpf, met à jour son contenu et l'ouvre.
+ * Inspiré de setAction() d'AbstractDialog, sans dispatch interne CHANGE_CONTENT.
+ * @param {ExtGPFDialog} dialog
+ * @param {Action} action
+ * @returns {boolean} false si le dialog ne possède pas les méthodes requises
+ */
+function setExtGpfAction(dialog, action) {
+  action.dialog = dialog;
+  dialog.getElement().dataset.actionId = action.id;
+
+  dialog.setContent({
+    title: action.title,
+    icon: action.icon,
+    content: action.content,
+    items: action.items,
+    footer: action.buttons
+  });
+
+  dialog.setOnOpen(action.onOpen);
+  dialog.setOnClose(action.onClose);
+  
+  dialog.show();
+  return true;
+}
 
 /**
  * Classe représentant une action complète pour une modale (titre, contenu, pied de page et action à l'ouverture)
@@ -81,15 +109,16 @@ class Action {
    * @param {Event|Dialog} e - Événement du clic ou dialog
    * @param {Action} actionId - Id de l'action à ouvrir
    * @param {boolean} pressed - Si l'action est un toggle, indique si le toggle est activé ou non
+   * @returns {{action: Action, dialog: Dialog|ExtGPFDialog}} Action et dialogue correspondant
    * @static
    */
   static open(e, actionId, pressed = null) {
     let dialogId;
+    let dialog;
     let action;
-    const isDialog = e instanceof Dialog;
+    const isDialog = e instanceof Dialog || e instanceof ExtGPFDialog;
     if (isDialog) {
       // Cas d'une ouverture classique
-      dialogId = e.getId();
       action = Action.getAction(actionId);
     } else {
       // Pour gérer le cas du toggle
@@ -99,7 +128,17 @@ class Action {
       pressed = target.ariaPressed;
     }
 
-    const dialog = Dialog.getDialog(dialogId);
+    if (isDialog) {
+      dialog = e;
+    } else {
+      try {
+        dialog = Dialog.getDialog(dialogId);
+      } catch {
+        // Dialog est de type ExtGPFDialog
+        dialog = ExtGPFDialog.getDialog(dialogId);
+      }
+    }
+
     if (!dialog || !action) return;
 
     // Empêche la propagation de l'événement
@@ -112,9 +151,13 @@ class Action {
 
     if (pressed === false || pressed === 'false') {
       dialog.close();
-    } else {
+    } else if (dialog instanceof Dialog) {
       dialog.setAction(action, isDialog);
+    } else if (dialog instanceof ExtGPFDialog) {
+      setExtGpfAction(dialog, action);
     }
+
+    return {"action" : action, "dialog" : dialog};
   }
 
   /** @returns {string} */

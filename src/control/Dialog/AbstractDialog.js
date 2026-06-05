@@ -331,7 +331,7 @@ class AbstractDialog extends BaseObject {
    * Retourne le titre du dialog (contenu).
    * @returns {string} Contenu du titre
    */
-  getModalTitle() {
+  getDialogTitle() {
     return this.dialogTitle ? this.dialogTitle.textContent : '';
   }
 
@@ -350,7 +350,7 @@ class AbstractDialog extends BaseObject {
    * 
    * @returns {Element}
    */
-  getModalContent() {
+  getDialogContent() {
     return this.dialogContent;
   }
 

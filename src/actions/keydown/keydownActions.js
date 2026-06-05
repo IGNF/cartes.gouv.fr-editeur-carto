@@ -31,7 +31,6 @@ document.addEventListener('keydown', evt => {
         evt.preventDefault();
         evt.stopPropagation();
         if (!isModalOpen) {
-          console.log('open map dialog', modal);
           Action.open(modal, 'open-map');
         }
         break;

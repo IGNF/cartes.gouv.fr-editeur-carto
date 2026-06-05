@@ -29,19 +29,19 @@ function initCurrentStyle(defaultStyle) {
   }).getIgnStyle(true);
 
   const styles = {
-    Point:ptStyle,
-    LineString:lineStyle,
-    Polygon:polyStyle
+    Point: ptStyle,
+    LineString: lineStyle,
+    Polygon: polyStyle
   };
 
-  Object.entries(styles).forEach(([type, style] )=> {
+  Object.entries(styles).forEach(([type, style]) => {
     Object.entries(style).forEach(([key, value]) => {
       if (!defaultStyle[type][key]) {
         // Ajoute le style par défaut si n'est pas encore ajouté
         defaultStyle[type][key] = value;
       }
     });
-  })
+  });
 }
 
 initCurrentStyle(currentStyle);

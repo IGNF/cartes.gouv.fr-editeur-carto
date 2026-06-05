@@ -67,7 +67,7 @@ styleDialog.getForms().forEach(form => {
       const results = flatToIGNKeyValue(e.property, e.value);
       features.forEach(f => {
         // Une clé peut correspondre à plusieurs clé IGN
-        // D'où le fait d'avoir un
+        // D'où le fait d'avoir un forEach
         results.forEach(({ key, value }) => {
           f.setIgnStyle(key, value);
         })

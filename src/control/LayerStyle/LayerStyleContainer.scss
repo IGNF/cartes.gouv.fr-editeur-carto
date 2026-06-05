@@ -1,0 +1,7 @@
+@use '../../css/mixins.scss' as mix;
+
+.layer-styles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
