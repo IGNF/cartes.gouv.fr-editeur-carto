@@ -1,11 +1,8 @@
 import Action from "../Action.js";
 import ol_ext_element from "ol-ext/util/element.js";
-import StyleObj from "../../control/LayerStyle/StyleObj.js";
-import Condition from "../../control/LayerStyle/Condition.js";
 import LayerStyleContainer from "../../control/LayerStyle/LayerStyleContainer.js";
 import "./editLayerStyle.scss";
-import { StyleContainerEvent } from "../../control/LayerStyle/StyleContainer.js";
-import EditStyle, { EditStyleEvent } from "../../control/LayerStyle/EditStyle.js";
+import EditStyle from "../../control/LayerStyle/EditStyle.js";
 
 
 /// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///
@@ -14,11 +11,6 @@ import EditStyle, { EditStyleEvent } from "../../control/LayerStyle/EditStyle.js
  * Dialog utilisé par l'action
  */
 let dialog;
-/**
- * @type {import('ol/layer/Base').default|import('mcutils/layer/VectorStyle.js').default}
- * Layer à modifier
- */
-let layer;
 /** 
  * @type {LayerStyleContainer}
  * Conteneur des styles de la couche
@@ -114,14 +106,15 @@ function onOpen(e) {
   layerContainer.setLayer(editLayerStyleAction.layer);
   
   // Écouteurs d'événements
-  layerContainer.on("open-style", (/** @type {StyleContainerEvent} */ e) => {
+  layerContainer.on("open-style", (/** @type {import("../../control/LayerStyle/StyleContainer.js").StyleContainerEvent} */ e) => {
     setMainContentVisibility(false);
     openStyle(e.layer, e.styleObj);
   });
 
   // Écouteur d'événement à la sauvegarde du style
-  editStyle.on("rollback-style", (/** @type {EditStyleEvent} */ e) => {
+  editStyle.on("rollback-style", (/** @type {import("../../control/LayerStyle/EditStyle.js").EditStyleEvent} */ e) => {
     setMainContentVisibility(true);
+    console.log(e);
   });
 }
 

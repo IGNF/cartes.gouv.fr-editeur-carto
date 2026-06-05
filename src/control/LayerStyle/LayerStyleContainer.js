@@ -2,11 +2,8 @@ import BaseObject from "ol/Object.js";
 import StyleObj from "./StyleObj.js";
 import StyleContainer from "./StyleContainer.js";
 import BaseVector from "ol/layer/BaseVector.js";
-import Feature from 'ol/Feature.js';
-import { LineString, Point, Polygon } from 'ol/geom.js';
-import { unByKey } from 'ol/Observable';
+import { unByKey } from 'ol/Observable.js';
 import VectorStyle from "mcutils/layer/VectorStyle.js";
-import { defaultIgnStyle } from "mcutils/style/ignStyleFn.js";
 import { ignStyleToFlatStyle } from "../StyleDialog/styleToFlatStyle.js";
 import { Collection } from "ol";
 
@@ -39,9 +36,8 @@ class LayerStyleContainer extends BaseObject {
   /**
    * Initialise les valeurs du contrôle.
    * @protected
-   * @param {LayerStyleContainerOptions} options Options du constructeur
    */
-  _initialize(options = {}) {
+  _initialize() {
     /** @type {Collection<StyleContainer> } */
     this.styles = new Collection([], { unique: true });
     this.stylesObjsKey = {};
@@ -65,9 +61,8 @@ class LayerStyleContainer extends BaseObject {
   /**
    * Initialise les événements sur le contrôle.
    * @protected
-   * @param {LayerStyleContainerOptions} options Options du constructeur
    */
-  _initEvents(options = {}) {
+  _initEvents() {
     // Aucun événement DOM spécifique pour l'instant.
 
     // À l'ajout d'un style, on écoute différents événements
@@ -106,21 +101,21 @@ class LayerStyleContainer extends BaseObject {
       return;
     }
 
-    const handleClass = ".style__drag-btn";
+    // const handleClass = ".style__drag-btn";
 
-    // Voir lien suivant pour dragndrop avec tab
-    // https://robbymacdonell.medium.com/refactoring-a-sortable-list-for-keyboard-accessibility-2176b34a07f4
-    sortable = Sortable.create(elementDraggable, {
-      handle: handleClass,
-      dataIdAttr: "data-sortable-id", // required to calculate the custom sort
-      draggable: ".style-container",
-      filter: ".not-draggable",
-      animation: 200,
-      // Call event function on drag and drop
-      // onEnd: function (e) {
-      //   this._onEndDragAndDropLayerClick(e);
-      // }
-    });
+    // // Voir lien suivant pour dragndrop avec tab
+    // // https://robbymacdonell.medium.com/refactoring-a-sortable-list-for-keyboard-accessibility-2176b34a07f4
+    // Sortable.create(elementDraggable, {
+    //   handle: handleClass,
+    //   dataIdAttr: "data-sortable-id", // required to calculate the custom sort
+    //   draggable: ".style-container",
+    //   filter: ".not-draggable",
+    //   animation: 200,
+    //   // Call event function on drag and drop
+    //   // onEnd: function (e) {
+    //   //   this._onEndDragAndDropLayerClick(e);
+    //   // }
+    // });
   }
 
   /**
@@ -282,6 +277,7 @@ class LayerStyleContainer extends BaseObject {
   */
   _getConditionalStyles(layer) {
     // TODO : récupérer les styles conditionnels
+    console.log("_getConditionalStyles", layer)
     return []
   }
 

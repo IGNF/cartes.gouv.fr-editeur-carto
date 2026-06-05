@@ -14,7 +14,7 @@ import notification from '../../control/Notification/notification.js';
 import './edit-bar.scss';
 import rightPanel from '../../dialogs/rightPanel.js';
 import Snap from '../../mcutils/interaction/Snap.js';
-import { getCurrentStyle } from "../../mcutils/currentStyle.js";
+// import { getCurrentStyle } from "../../mcutils/currentStyle.js";
 import Button from 'ol-ext/control/Button.js';
 import Charte from '../../charte/objects/Charte.js';
 

@@ -2,7 +2,6 @@
  * @file Formulaire pour l'étiquette d'un objet
  */
 import InputColor from './InputColor.js';
-import BaseEvent from 'ol/events/Event.js';
 import ExtendedFlatStyleForm from './ExtendedFlatStyleForm.js';
 import { StyleEvent } from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 

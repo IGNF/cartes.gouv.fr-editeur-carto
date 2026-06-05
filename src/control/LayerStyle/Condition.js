@@ -1,4 +1,4 @@
-import { isConditionalOperator } from "./ConditionalOperator";
+import { isConditionalOperator } from "./ConditionalOperator.js";
 import BaseObject from "ol/Object.js";
 
 /**

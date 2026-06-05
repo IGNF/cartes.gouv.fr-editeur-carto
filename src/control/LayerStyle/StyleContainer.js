@@ -1,9 +1,9 @@
 import { unByKey } from "ol/Observable.js";
 import BaseObject from "ol/Object.js";
-import StyleObj from "./StyleObj";
-import Helper from "geopf-extensions-openlayers/src/packages/Utils/Helper";
-import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID";
-import BaseEvent from "ol/events/Event";
+import StyleObj from "./StyleObj.js";
+import Helper from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
+import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
+import BaseEvent from "ol/events/Event.js";
 
 import "./StyleContainer.scss";
 
@@ -133,9 +133,8 @@ class StyleContainer extends BaseObject {
   /**
    * Initialise les événements sur le contrôle.
    * @protected
-   * @param {StyleContainerOptions} options Options du constructeur
    */
-  _initEvents(options = {}) {
+  _initEvents() {
     // Modifie le conteneur au changement de nom
     this.getStyleObj().on("change:name", (e) => {
       this.titleElement.textContent = e.target.get(e.key);
@@ -148,9 +147,8 @@ class StyleContainer extends BaseObject {
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API | Drag and drop API}
    * 
    * @protected
-   * @param {StyleContainerOptions} options
    */
-  _createDragElement(options) {
+  _createDragElement() {
     const dragBtn = document.createElement("div");
     dragBtn.id = Helper.addUID("style__drag-btn", this._uid);
     dragBtn.className = "style__drag-btn fr-icon-draggable-fill fr-icon--sm";
@@ -197,13 +195,13 @@ class StyleContainer extends BaseObject {
     if (!isDefault) {
       const editStyleNameBtn = document.createElement("button");
       editStyleNameBtn.className = "edit-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-edit-line";
-      editStyleNameBtn.addEventListener("click", this.editStyleName.bind(this));
+      editStyleNameBtn.addEventListener("click", () => this.editStyleName());
       editStyleNameBtn.textContent = editStyleNameBtn.title = "Modifier le nom du style";
       actions.appendChild(editStyleNameBtn);
 
       const deleteStyleBtn = document.createElement("button");
       deleteStyleBtn.className = "delete-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line";
-      deleteStyleBtn.addEventListener("click", this.deleteStyle.bind(this));
+      deleteStyleBtn.addEventListener("click", () => this.deleteStyle());
       deleteStyleBtn.textContent = deleteStyleBtn.title = "Supprimer le style";
       actions.appendChild(deleteStyleBtn);
     }
@@ -211,7 +209,7 @@ class StyleContainer extends BaseObject {
     // Ajoute l'action de modification du style dans tous les cas
     const openStyleBtn = document.createElement("button");
     openStyleBtn.className = "open-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-right-s-line";
-    openStyleBtn.addEventListener("click", this.openStyle.bind(this));
+    openStyleBtn.addEventListener("click", () => this.openStyle());
     openStyleBtn.textContent = openStyleBtn.title = "Modifier le style";
     actions.appendChild(openStyleBtn);
 
@@ -220,17 +218,15 @@ class StyleContainer extends BaseObject {
 
   /**
    * Fonction gérant le renommage d'un style
-   * @param {PointerEvent} e Événement de clic
    */
-  openStyle(e) {
+  openStyle() {
     this.dispatchEvent(new StyleContainerEvent(StyleContainerEventType.OPEN, this.getStyleObj(), this.getLayer()));
   }
 
   /**
    * Fonction gérant le renommage d'un style
-   * @param {PointerEvent} e Événement de clic
    */
-  editStyleName(e) {
+  editStyleName() {
     // Prend tout l'espace du conteneur
     const mask = document.createElement("div");
     mask.className = "style-container__mask";
@@ -249,7 +245,7 @@ class StyleContainer extends BaseObject {
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "cancel-edit-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line";
     cancelBtn.textContent = cancelBtn.title = "Annuler la modification";
-    cancelBtn.addEventListener("click", (e) => {
+    cancelBtn.addEventListener("click", () => {
       mask.remove();
     });
     mask.appendChild(cancelBtn);
@@ -258,7 +254,7 @@ class StyleContainer extends BaseObject {
     const validateBtn = document.createElement("button");
     validateBtn.className = "validate-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-check-line";
     validateBtn.textContent = validateBtn.title = "Modifier le nom du style";
-    validateBtn.addEventListener("click", (e) => {
+    validateBtn.addEventListener("click", () => {
       this.getStyleObj().name = input.value;
       mask.remove();
     });
@@ -269,9 +265,8 @@ class StyleContainer extends BaseObject {
 
   /**
    * Fonction gérant la suppression d'un style
-   * @param {PointerEvent} e Événement de clic
    */
-  deleteStyle(e) {
+  deleteStyle() {
     this.dispatchEvent(new StyleContainerEvent(StyleContainerEventType.DELETE, this.getStyleObj(), this.getLayer()));
   }
 

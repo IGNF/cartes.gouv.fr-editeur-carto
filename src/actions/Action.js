@@ -133,7 +133,7 @@ class Action {
     } else {
       try {
         dialog = Dialog.getDialog(dialogId);
-      } catch (error) {
+      } catch {
         // Dialog est de type ExtGPFDialog
         dialog = ExtGPFDialog.getDialog(dialogId);
       }

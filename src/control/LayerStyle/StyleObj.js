@@ -1,10 +1,10 @@
-import Condition from "./Condition";
+import Condition from "./Condition.js";
 import { flatToIgnStyle } from "../StyleDialog/styleToFlatStyle.js";
 import BaseObject from "ol/Object.js";
 import { toContext } from "ol/render.js";
 import Feature from "ol/Feature.js";
-import { LineString, Point, Polygon } from "ol/geom";
-import { getStyleFn } from "mcutils/style/ignStyleFn";
+import { LineString, Point, Polygon } from "ol/geom.js";
+import { getStyleFn } from "mcutils/style/ignStyleFn.js";
 import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
 
 /**

@@ -54,7 +54,7 @@ const switcher = new LayerSwitcher({
           // Vérifie que la couche est modifiable
           if (layer?.getSource() instanceof VectorSource) {
             editLayerStyleAction.layer = layer;
-            const { action } = Action.open(e);
+            Action.open(e);
           } else {
             // Vérifie si on peut modifier le style
             const tms = (options?.layer?.config && options?.layer?.config?.serviceParams?.id === "GPP:TMS");

@@ -1,13 +1,9 @@
 import BaseObject from "ol/Object.js";
 import StyleObj from "./StyleObj.js";
-import StyleContainer from "./StyleContainer.js";
 import BaseVector from "ol/layer/BaseVector.js";
-import Feature from 'ol/Feature.js';
-import { LineString, Point, Polygon } from 'ol/geom.js';
-import { unByKey } from 'ol/Observable';
+import { unByKey } from 'ol/Observable.js';
 import VectorStyle from "mcutils/layer/VectorStyle.js";
-import { defaultIgnStyle } from "mcutils/style/ignStyleFn.js";
-import { flatToIGNKeyValue, flatToIgnStyle, ignStyleToFlatStyle } from "../StyleDialog/styleToFlatStyle.js";
+import { flatToIgnStyle } from "../StyleDialog/styleToFlatStyle.js";
 import { Collection } from "ol";
 
 import BaseEvent from "ol/events/Event.js";
@@ -15,7 +11,6 @@ import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorI
 import { TabNav } from "geopf-extensions-openlayers/src/index.js";
 import "./EditStyle.scss";
 import { LabelForm } from "../StyleDialog/labelForm.js";
-import TabNavItem from "geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js";
 import { StyleForm } from "../StyleDialog/styleForm.js";
 
 /**
@@ -107,9 +102,8 @@ class EditStyle extends BaseObject {
   /**
    * Initialise les valeurs du contrôle.
    * @protected
-   * @param {EditStyleOptions} options Options du constructeur
    */
-  _initialize(options) {
+  _initialize() {
     /** 
      * @type {Array<import("ol/events.js").EventsKey>}
      * Tableau d'écouteurs d'événements (pour les enlever plus facilement)
@@ -163,10 +157,9 @@ class EditStyle extends BaseObject {
   /**
    * Initialise les événements sur le contrôle.
    * @protected
-   * @param {EditStyleOptions} options Options du constructeur
    */
-  _initEvents(options) {
-    this.styleForm.on("style", (e) => {
+  _initEvents() {
+    this.styleForm.on("style", () => {
       // console.log({property: e.property, value: e.value});
     })
 
@@ -297,10 +290,9 @@ class EditStyle extends BaseObject {
 
   /**
    * Créé la preview du style
-   * @param {EditStyleOptions} options Options du constructeur
    * @returns {HTMLElement}
    */
-  _createPreview(options) {
+  _createPreview() {
     // TODO : ajouter la preview (vraie preview)
     return document.createElement("div");
   }
@@ -340,7 +332,7 @@ class EditStyle extends BaseObject {
    * le choix de la géométrie et les conditions. Sinon, les affiche
    */
   setDefault(bool) {
-    /** @type {TabNavItem} */
+    /** @type {import("geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js").default} */
     const conditions = this.tabnav.items.getArray().at(-1);
     const isCondition = (conditions.getButton().textContent === "Conditions");
     if (bool) {

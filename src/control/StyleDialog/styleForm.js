@@ -5,7 +5,6 @@
 import ExtendedFlatStyleForm from './ExtendedFlatStyleForm.js';
 import InputColor from './InputColor.js';
 import SelectIcons from './SelectIcons.js';
-import StyleObj from '../LayerStyle/StyleObj.js';
 
 /**
  * @typedef {Object} StyleFormOptions Options pour le formulaire de style d'un objet
@@ -39,10 +38,9 @@ class StyleForm extends ExtendedFlatStyleForm {
 
   /**
    * Méthode ajoutant les inputs pour les géométries de type `Point`
-   * @param {StyleFormOptions} options Options du constructeur
    * @private
    */
-  _addPointInputs(options) {
+  _addPointInputs() {
     this.addInput({
       label: 'Forme',
       property: 'point-form',
@@ -105,10 +103,9 @@ class StyleForm extends ExtendedFlatStyleForm {
 
   /**
    * Méthode ajoutant les inputs pour les géométries de type `LineString`
-   * @param {StyleFormOptions} options Options du constructeur
    * @private
    */
-  _addLineStringInputs(options) {
+  _addLineStringInputs() {
 
     // LIGNE ET POLYGONE
     this.addInput({
@@ -163,10 +160,9 @@ class StyleForm extends ExtendedFlatStyleForm {
 
   /**
    * Méthode ajoutant les inputs pour les géométries de type `Polygon`
-   * @param {StyleFormOptions} options Options du constructeur
    * @private
    */
-  _addPolygonInputs(options) {
+  _addPolygonInputs() {
     // POLYGONE //
     const inputPattern = this.addInput({
       label: 'Motif',

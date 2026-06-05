@@ -31,7 +31,6 @@ const flatToIgn = {
   'text-value': 'labelAttribute',
   'text-fill-color': 'textColor',
   'text-size': 'textSize',
-  'text-size': 'textSize',
 };
 
 /**

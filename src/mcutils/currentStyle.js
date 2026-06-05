@@ -1,15 +1,7 @@
 // import carte from "../carte.js";
-import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
 import { carte } from '../story.js';
 import Feature from 'ol/Feature.js';
 import { LineString, Point, Polygon } from 'ol/geom.js';
-
-// Modification du style par défaut
-// defaultIgnStyle.pointRadius = 24 / 2;
-// defaultIgnStyle.pointGlyph = "ri-map-pin-2-fill";
-// defaultIgnStyle.pointForm = "none"; 
-// defaultIgnStyle.symbolColor = "rgba(0, 0, 145, 1)";
-// defaultIgnStyle.pointColor = "rgba(255, 255, 255, 1)";
 
 const currentStyle = {
   Point: {},

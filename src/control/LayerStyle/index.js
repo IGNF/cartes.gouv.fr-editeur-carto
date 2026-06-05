@@ -2,11 +2,11 @@ import ConditionalOperator, {
     getConditionalOperatorInfo,
     getConditionalOperatorOptions,
     isConditionalOperator,
-} from "./ConditionalOperator";
-import Condition from "./Condition";
-import StyleObj from "./StyleObj";
-import StyleContainer from "./StyleContainer";
-import LayerStyleContainer from "./LayerStyleContainer";
+} from "./ConditionalOperator.js";
+import Condition from "./Condition.js";
+import StyleObj from "./StyleObj.js";
+import StyleContainer from "./StyleContainer.js";
+import LayerStyleContainer from "./LayerStyleContainer.js";
 
 export {
     ConditionalOperator,

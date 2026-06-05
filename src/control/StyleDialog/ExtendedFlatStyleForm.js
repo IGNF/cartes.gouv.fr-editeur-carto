@@ -63,11 +63,10 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   /**
    * Méthode permettant d'ajouter des inputs directement dans une classe
    * étendue.
-   * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
    * @abstract
    * @protected
    */
-  _addCustomInputs(options) {
+  _addCustomInputs() {
 
   }
 
@@ -233,7 +232,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       const option = document.createElement("option");
       option.value = geom.value;
       option.textContent = geom.text;
-      if ((type || "Point") === geom.value) {
+      if ((mappedType || "Point") === geom.value) {
         option.selected = true;
       }
       select.appendChild(option);
