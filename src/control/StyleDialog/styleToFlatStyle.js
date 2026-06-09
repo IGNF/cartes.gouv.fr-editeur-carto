@@ -99,7 +99,10 @@ function flatToIGNKeyValue(key, value) {
     if (values.length) {
       result.push({ key: "anglePattern", value: values.shift() });
     }
-  } else {
+  } else if (k === "strokeDash") {
+    result.push({ key: k, value: value });
+  }
+  else {
     value = isNaN(parseFloat(value)) ? value : parseFloat(value);
     result.push({ key: k, value: value });
   }

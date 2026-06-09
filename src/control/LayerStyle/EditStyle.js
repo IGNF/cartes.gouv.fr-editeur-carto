@@ -308,11 +308,12 @@ class EditStyle extends BaseObject {
       this.set("styleObj", styleObj);
       this.styleName.textContent = styleObj.name;
       this.setDefault(styleObj.isDefault);
-
-      // Modifie les formulaires
+      
+      
+      // Partage le même objet : pas besoin d'envoyer des infos
+      const formStyleObj = styleObj.clone();
       this.forms.forEach(form => {
-        form.setGeom(styleObj.type);
-        form.setFlatStyle(styleObj.getFlatStyle());
+        form.styleObj = formStyleObj;
       })
 
       // N'affiche le sélecteur que sur la partie style
@@ -341,6 +342,11 @@ class EditStyle extends BaseObject {
     } else {
       isCondition && conditions.getElement().classList.remove("fr-hidden")
     }
+  }
+
+  getConditions() {
+    // TODO : récupérer les conditions depuis le formulaire ?
+    return this.getStyleObj().conditions;
   }
 
   /**
@@ -382,14 +388,21 @@ class EditStyle extends BaseObject {
    * @fires EditStyleEvent#save-style
    */
   applyStyle() {
-    // TODO : APPLIQUER LE STYLE À LA COUCHE (SANS ENREGISTRER ?)
-    this.dispatchEvent(new EditStyleEvent(EditStyleEventType.APPLY, this.getStyleObj(), this.getLayer()));
-    // Met à jour le styleObj
-    // TODO : AJOUTER LES AUTRES FORMULAIRES
-    this.getStyleObj().setFlatStyle(this.styleForm.getStyleObj().getFlatStyle());
+    // L'objet de style est partagé, les modifications se font donc partour
+    this.getStyleObj().setFlatStyle(this.styleForm.styleObj.getFlatStyle());
 
     const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());
-    Object.entries(ignStyle).forEach(([key, value]) => this.getLayer().setIgnStyle(key, value));
+    if (this.getStyleObj().isDefault) {
+      // Modifie le style de la couche
+      Object.entries(ignStyle).forEach(([key, value]) => this.getLayer().setIgnStyle(key, value));
+    } else {
+      // Modifie un des styles conditionnels
+      // TODO : ajouter style conditionnel
+      this.getStyleObj().setConditions(this.getConditions());
+      this.getStyleObj().changed();
+    }
+
+    this.dispatchEvent(new EditStyleEvent(EditStyleEventType.APPLY, this.getStyleObj(), this.getLayer()));
 
     this.getLayer().getSource()?.changed();
   }

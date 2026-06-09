@@ -26,7 +26,7 @@ let editStyle;
  * Fonction appelée lors du clic sur le bouton d'ajout de style conditionnel
  */
 function onAddConditionalStyleClick() {
-  console.log("add conditional style");
+  layerContainer.addConditionalStyle();
 }
 
 /**

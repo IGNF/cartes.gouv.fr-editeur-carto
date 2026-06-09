@@ -1,7 +1,13 @@
 @use '../../css/mixins.scss' as mix;
 
 .layer-styles-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &:first-child:not(:empty) {
+      margin-bottom: 0.5rem;
+    }
+  }
 }
