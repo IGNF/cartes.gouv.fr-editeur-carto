@@ -10,6 +10,7 @@ import Sortable from "sortablejs";
 
 import "./LayerStyleContainer.scss";
 import SymbolLib from "mcutils/style/SymbolLib.js";
+import { toMcutilsOperator } from "./ConditionalOperator.js";
 
 // À voir si utilisation de @typedef {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} pour l'objet Layer
 
@@ -59,6 +60,16 @@ class LayerStyleContainer extends BaseObject {
     /** @type {Collection<StyleObj> } */
     this.conditionalStyles = new Collection([], { unique: true });
     this.stylesObjsKey = {};
+
+    /**
+     * Regex des propriétés flat-style à garder
+     * pour chaque type de géométrie.
+     */
+    this._geomRegexProperties = {
+      "Point": [/^point/, /^symbol/, /^text/],
+      "LineString": [/^line/, /^stroke/, /^text/],
+      "Polygon": [/^fill/, /pattern/, /^text/],
+    };
   }
 
   /**
@@ -142,7 +153,9 @@ class LayerStyleContainer extends BaseObject {
       console.log("add conditional style", e);
       // Ajoute un écouteur d'événement générique
       // Envoyé par le bouton appliquer
-      let key = e.element.on("change", (e) => this.onStyleObjChange(e));
+      let key = e.element.on("change", (e) => {
+        this._setConditionStyle(this.conditionalStyles.getArray())
+      });
 
       this.stylesObjsKey[e.element.ol_uid] ??= {};
       this.stylesObjsKey[e.element.ol_uid]["change"] = key;
@@ -171,6 +184,21 @@ class LayerStyleContainer extends BaseObject {
     /** @type {StyleObj} */
     const elem = e.target;
     console.log(this);
+
+    // Filtre le flatStyle pour ne garder que ce qui correspond à la géométrie
+    const flatStyle = elem.getFlatStyle();
+    const obj = Object.entries(flatStyle).filter(([key]) => {
+      const regexes = this._geomRegexProperties[elem.type];
+      return regexes.some((regex) => regex.test(key));
+    });
+    const flatStyleGeom = Object.fromEntries(obj);
+
+    // Recréé un style ignStyle
+    const ignStyle = flatToIgnStyle(flatStyle);
+    console.log(ignStyle);
+
+    // Applique le style conditionnel à l'objet
+
   }
 
   /**
@@ -195,8 +223,31 @@ class LayerStyleContainer extends BaseObject {
   }
 
   /**
+   * Transforme des conditions style obj en conditions macarte
+   * @param {import("./StyleObj.js").StyleObjCondition} condition Conditions de style obk
+   * @returns Condition au format macarte
+   */
+  conditionToIgnCondition(condition) {
+    const result = {
+      all: condition.all,
+      usecase: condition.usecase,
+      conditions: []
+    };
+
+    condition.conditions.forEach(cond => {
+      result.conditions.push({
+        attr: cond.attribute,
+        op: toMcutilsOperator(cond.operator),
+        val: cond.value,
+      });
+    });
+
+    return result;
+  }
+
+  /**
    * Modifie le style conditionnel d'une couche
-   * @param {Array<StyleObj>} conditions 
+   * @param {Array<StyleObj>} styles 
    */
   _setConditionStyle(styles) {
     // Transforme les conditions en objet exploitables par la couche
@@ -204,7 +255,7 @@ class LayerStyleContainer extends BaseObject {
     styles.forEach(style => {
       const condition = {
         title: style.name,
-        condition: style.conditions,
+        condition: this.conditionToIgnCondition(style.conditions),
         symbol: new SymbolLib({
           name: style.name,
           type: style.type,
@@ -486,18 +537,9 @@ class LayerStyleContainer extends BaseObject {
 
     // Donne le styleObj de la couche selon un type
     if (type) {
-      /** 
-       * Regex des propriétés flat-style à garder
-       * pour chaque type de géométrie.
-       */
-      const geomRegexProperties = {
-        "Point": [/^point/, /^symbol/, /^text/],
-        "LineString": [/^line/, /^stroke/, /^text/],
-        "Polygon": [/^fill/, /pattern/, /^text/],
-      };
       // Filtre seulement les propriétés passant les expressions régulières
       const obj = Object.entries(flatStyle).filter(([key]) => {
-        const regexes = geomRegexProperties[type];
+        const regexes = this._geomRegexProperties[type];
         return regexes.some((regex) => regex.test(key));
       });
       flatStyleGeom = Object.fromEntries(obj);

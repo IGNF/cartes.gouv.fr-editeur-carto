@@ -1,0 +1,16 @@
+@use '../../css/mixins.scss' as mix;
+
+// Conteneur de style
+.style-form-container {
+  &.conditions-form {
+    margin: -0.75rem;
+
+    > .style-form {
+      gap: 0;
+
+      &__footer {
+        padding: 0.75rem;
+      }
+    }
+  }
+}

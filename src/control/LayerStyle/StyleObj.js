@@ -145,7 +145,7 @@ class StyleObj extends BaseObject {
   /**
    * @param {Boolean} value Vrai si l'objet est un style par défaut
    */
-  set isDefault (value) {
+  set isDefault(value) {
     this.set("default", Boolean(value));
   }
 
@@ -212,22 +212,24 @@ class StyleObj extends BaseObject {
     const all = conditions.all !== undefined ? !!conditions.all : true;
     const usecase = conditions.usecase !== undefined ? !!conditions.usecase : false;
     const cond = conditions.conditions || [];
+    let conditionsObject = cond;
+    if (!(cond instanceof Collection)) {
+      /** @type {Collection<Condition>} */
+      conditionsObject = new Collection();
 
-    /** @type {Collection<Condition>} */
-    const conditionsObject = new Collection();
-
-    cond.forEach(element => {
-      let condition = element;
-      if (!(element instanceof Condition)) {
-        // Transforme les conditions en objet Condition si nécessaire
-        condition = new Condition({
-          attribute: element.attr,
-          operator: element.op,
-          value: element.val,
-        });
-      }
-      conditionsObject.push(condition);
-    });
+      cond.forEach(element => {
+        let condition = element;
+        if (!(element instanceof Condition)) {
+          // Transforme les conditions en objet Condition si nécessaire
+          condition = new Condition({
+            attribute: element.attr,
+            operator: element.op,
+            value: element.val,
+          });
+        }
+        conditionsObject.push(condition);
+      });
+    }
     const obj = {
       all: all,
       conditions: conditionsObject,
@@ -373,10 +375,10 @@ class StyleObj extends BaseObject {
    */
   clone() {
     return new StyleObj({
-      name : this.name,
-      type : this.type,
-      default : this.isDefault,
-      conditions : this.conditions,
+      name: this.name,
+      type: this.type,
+      default: this.isDefault,
+      conditions: this.conditions,
       flatStyle: this.getFlatStyle(),
     })
   }
