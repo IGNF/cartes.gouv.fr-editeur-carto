@@ -166,9 +166,15 @@ class EditStyle extends BaseObject {
    * @protected
    */
   _initEvents() {
-    this.styleForm.on("style", () => {
-      // console.log({property: e.property, value: e.value});
-    })
+    // this.styleForm.on("style", () => {
+    //   console.log({property: e.property, value: e.value});
+    // })
+
+    // this.forms.forEach(form => {
+    //   form.on("style", () => {
+    //     this.applyStyle();
+    //   })
+    // })
 
     // TODO : appliquer le changement de géom pour les autres formulaires
   }

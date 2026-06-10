@@ -5,6 +5,9 @@ dialog[data-action-id='edit-layer-style'] {
     background-color: var(--background-alt-grey);
     padding: 0;
   }
+  @include mix.respond-from('sm') {
+    top: 4rem;
+  }
 }
 
 .edit-layer-style-content {

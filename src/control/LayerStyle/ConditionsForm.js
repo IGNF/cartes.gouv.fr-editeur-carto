@@ -103,7 +103,6 @@ class ConditionsForm extends ExtendedFlatStyleForm {
       return;
     }
 
-    console.log("normalized conditions for each");
     normalizedConditions.forEach((condition, index) => {
       this.addConditionContainer(condition);
     })

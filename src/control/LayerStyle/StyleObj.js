@@ -110,7 +110,7 @@ class StyleObj extends BaseObject {
     this._imageOptions = {};
     this.name = name;
     this.type = type;
-    this.setConditions(conditions);
+    this.conditions = conditions;
     this.setFlatStyle(flatStyle, true);
   }
 
@@ -251,7 +251,7 @@ class StyleObj extends BaseObject {
    * Condition à ajouter
    */
   addCondition(condition) {
-    this.setConditions([...this.conditions, this._toCondition(condition)]);
+    this.conditions = [...this.conditions, this._toCondition(condition)];
   }
 
   /**
@@ -263,7 +263,7 @@ class StyleObj extends BaseObject {
       return;
     }
     currentConditions.splice(index, 1);
-    this.setConditions(currentConditions);
+    this.conditions = currentConditions;
   }
 
   /**

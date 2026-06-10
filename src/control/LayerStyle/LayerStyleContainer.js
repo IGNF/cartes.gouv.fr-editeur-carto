@@ -61,6 +61,8 @@ class LayerStyleContainer extends BaseObject {
     this.conditionalStyles = new Collection([], { unique: true });
     this.stylesObjsKey = {};
 
+    /** Id utilisé pour le drag n drop */
+    this._sortableId = 0;
     /**
      * Regex des propriétés flat-style à garder
      * pour chaque type de géométrie.
@@ -131,8 +133,11 @@ class LayerStyleContainer extends BaseObject {
       key = e.element.on("delete-style", (e) => this.onDeleteStyle(e));
       // Enregistre la clé pour pouvoir supprimer l'événement ensuite
       this.stylesObjsKey[e.element.ol_uid]["delete-style"] = key;
-    });
 
+      // Demande de déplacement clavier
+      key = e.element.on("move-style", (e) => this.onMoveStyle(e));
+      this.stylesObjsKey[e.element.ol_uid]["move-style"] = key;
+    });
 
     // Suppression d'un style
     this.styles.on("remove", (e) => {
@@ -150,7 +155,6 @@ class LayerStyleContainer extends BaseObject {
 
     // Ajout de style conditionnel
     this.conditionalStyles.on("add", (e) => {
-      console.log("add conditional style", e);
       // Ajoute un écouteur d'événement générique
       // Envoyé par le bouton appliquer
       let key = e.element.on("change", (e) => {
@@ -169,7 +173,6 @@ class LayerStyleContainer extends BaseObject {
     })
 
     this.conditionalStyles.on("remove", (e) => {
-      console.log("remove conditional style", e);
       this._setConditionStyle(this.conditionalStyles.getArray());
     })
 
@@ -183,8 +186,6 @@ class LayerStyleContainer extends BaseObject {
   onStyleObjChange(e) {
     /** @type {StyleObj} */
     const elem = e.target;
-    console.log(this);
-
     // Filtre le flatStyle pour ne garder que ce qui correspond à la géométrie
     const flatStyle = elem.getFlatStyle();
     const obj = Object.entries(flatStyle).filter(([key]) => {
@@ -194,9 +195,7 @@ class LayerStyleContainer extends BaseObject {
     const flatStyleGeom = Object.fromEntries(obj);
 
     // Recréé un style ignStyle
-    const ignStyle = flatToIgnStyle(flatStyle);
-    console.log(ignStyle);
-    this._setConditionStyle(this.conditionalStyles.getArray())
+    const ignStyle = flatToIgnStyle(flatStyle); this._setConditionStyle(this.conditionalStyles.getArray())
 
     // Applique le style conditionnel à l'objet
 
@@ -213,13 +212,13 @@ class LayerStyleContainer extends BaseObject {
       const removed = this.conditionalStyles.remove(elem.getStyleObj());
       const removedStyle = this.styles.remove(elem);
       if (removed === undefined) {
-        console.warn("style obj non trouvé dans conditional styles", elem, this.conditionalStyles)
+        console.warn("style obj non trouvé dans conditional styles", elem, this.conditionalStyles);
       }
       if (removedStyle === undefined) {
-        console.warn("style obj non trouvé", elem, this.conditionalStyles)
+        console.warn("style obj non trouvé", elem, this.conditionalStyles);
       }
     } else {
-        console.warn("style obj est un style par défaut", elem)
+      console.warn("style obj est un style par défaut", elem);
     }
   }
 
@@ -287,82 +286,79 @@ class LayerStyleContainer extends BaseObject {
 
     // Voir lien suivant pour dragndrop avec tab
     // https://robbymacdonell.medium.com/refactoring-a-sortable-list-for-keyboard-accessibility-2176b34a07f4
-    Sortable.create(elementDraggable, {
+    this._sortable = Sortable.create(elementDraggable, {
       handle: handleClass,
       dataIdAttr: "data-sortable-id", // required to calculate the custom sort
       draggable: ".style-container",
       filter: ".not-draggable",
       animation: 200,
       // Call event function on drag and drop
-      // onEnd: function (e) {
-      //   this._onEndDragAndDropLayerClick(e);
-      // }
+      onEnd: (e) => {
+        this._onEndDragElement(e);
+      }
     });
   }
 
   /**
-   * Fonction permettant de bouger une couche au clavier
-   * @param {HTMLElement} element Élément à bouger
-   * @param {up|down} direction Direction dans laquelle déplacer la couche
-   * @returns {Boolean} Vrai si l'opération a fonctionnée.
+   * Méthode appelée suite à la modification d'ordre des couches
+   * @param {import("sortablejs").SortableEvent} e Événement envoyé à la fin de l'événement
    */
-  _moveElement(element, direction) {
-    const sortable_list = this._sortables[0];
-    if (["up", "down"].includes(direction) == false) {
-      return false;
+  _onEndDragElement(e) {
+    // Indices sont les mêmes : on ne fait rien
+    if (e.oldIndex !== e.newIndex) {
+      const item = this.styles.item(e.oldIndex);
+      this.styles.getArray().splice(e.oldIndex, 1);
+      this.styles.getArray().splice(e.newIndex, 0, item);
+
+      const condition = this.conditionalStyles.item(e.oldIndex);
+      this.conditionalStyles.getArray().splice(e.oldIndex, 1);
+      this.conditionalStyles.getArray().splice(e.newIndex, 0, condition);
+      this._setConditionStyle(this.conditionalStyles.getArray());
     }
-    if (typeof element.dataset.sortableId == "undefined") {
-      return false;
-    }
+  }
+
+  /**
+   * Méthode appelée à la demande de déplacement d'un style.
+   * @param {import("./StyleContainer.js").StyleContainerMoveEvent} e Événement openlayers
+   */
+  onMoveStyle(e) {
+    // Éléments sur lequel on vient de cliquer
+    const oppositeDirection = e.direction === "down" ? "up" : "down";
+    const moveElement = e.target.getElement()?.querySelector(`[data-direction=${e.direction}]`);
+    const oppositeMoveElement = e.target.getElement()?.querySelector(`[data-direction=${oppositeDirection}]`);
 
     // Attribut pour réorganiser après
-    let sortableId = element.dataset.sortableId;
-    let order = sortable_list.toArray();
-    let index = order.indexOf(sortableId);
+    const sortableId = e.target.getElement().dataset.sortableId;
+    const order = this._sortable.toArray();
+    const index = order.indexOf(sortableId);
 
     // Retrait de l'objet à déplacer
     order.splice(index, 1);
 
     // Déplace la couche à la bonne position
-    if (direction == "down") {
+    if (e.direction === "down") {
       order.splice(index + 1, 0, sortableId);
-    } else if (direction == "up") {
+    } else if (e.direction === "up") {
       order.splice(index - 1, 0, sortableId);
     }
 
     // Applique l'opéaration de tri
-    sortable_list.sort(order, true);
+    this._sortable.sort(order, true);
+    const newIndex = order.indexOf(sortableId)
+    const oldIndex = e.direction === "down" ? newIndex - 1 : newIndex + 1;
     // Change le zindex et envoie l'événement
-    this._onEndDragAndDropLayerClick({
-      newIndex: order.indexOf(sortableId),
+    this._onEndDragElement({
+      newIndex: newIndex,
+      oldIndex: oldIndex
     });
-    return true;
-  }
 
-  /**
-   * Écouteur d'événement pour modifier le z-index
-   * @param {Boolean} up Vrai si c'est up. Faux si down.
-   * @param {KeyboardEvent} event Événement du clavier
-   */
-  _onMoveElement(up, event) {
-    if (["Enter", "Space"].includes(event.code)) {
-      // Choisit la bonne direction
-      const direction = up ? "up" : "down";
-      const oppositeDirection = up ? "down" : "up";
-
-      event.stopPropagation();
-      event.preventDefault();
-
-      // Déplace l'élément dans la bonne direction
-      this._moveElement(event.currentTarget.closest(".draggable-layer"), direction);
-
-      // Change le focus dans le cas où c'est le premier / dernier élément
-      if (window.getComputedStyle(event.currentTarget).visibility == "hidden") {
-        event.currentTarget.parentNode.querySelector(`[data-direction=${oppositeDirection}]`).focus();
-      } else {
-        event.currentTarget.focus();
-      }
+    // Change le focus dans le cas où c'est le premier / dernier élément
+    if (window.getComputedStyle(moveElement).visibility == "hidden") {
+      oppositeMoveElement.focus();
+    } else {
+      moveElement.focus();
     }
+    // return true;
   }
 
   /**
@@ -387,19 +383,19 @@ class LayerStyleContainer extends BaseObject {
     this.styles.clear();
     result.defaultStyles.forEach((styleObj) => {
       const styleContainer = new StyleContainer({ layer: layer, styleObj: styleObj });
-      this.styles.push(styleContainer);
+      this.styles.insertAt(0, styleContainer);
       const element = styleContainer.getElement();
-      this._getDefaultStylesContainer().appendChild(element);
+      this._getDefaultStylesContainer().prepend(element);
     });
 
     result.conditionalStyles.forEach((styleObj) => {
       const styleContainer = new StyleContainer({ layer: layer, styleObj: styleObj });
-      this.styles.push(styleContainer);
+      this.styles.insertAt(0, styleContainer);
       // Ajoute aussi au styles conditionnels
-      // Passe par la méthode 
-      this.conditionalStyles.push(styleObj);
+      this.conditionalStyles.insertAt(0, styleObj);
+      styleContainer.getElement().dataset.sortableId = this._sortableId++;
       const element = styleContainer.getElement();
-      this._getConditionalStylesContainer().appendChild(element);
+      this._getConditionalStylesContainer().prepend(element);
     });
   }
 
@@ -450,11 +446,11 @@ class LayerStyleContainer extends BaseObject {
       return [];
     }
     // Enregistre les styles par défaut
-    const ptStyleObj = this._defaultPointStyle = this.#getStyleObj(layer, "Point");
-    const lineStyleObj = this._defaultLineStringStyle = this.#getStyleObj(layer, "LineString");
     const polyStyleObj = this._defaultPolygonStyle = this.#getStyleObj(layer, "Polygon");
+    const lineStyleObj = this._defaultLineStringStyle = this.#getStyleObj(layer, "LineString");
+    const ptStyleObj = this._defaultPointStyle = this.#getStyleObj(layer, "Point");
 
-    return [ptStyleObj, lineStyleObj, polyStyleObj];
+    return [polyStyleObj, lineStyleObj, ptStyleObj];
   }
 
   /**
@@ -484,7 +480,7 @@ class LayerStyleContainer extends BaseObject {
         flatStyle: ignStyleToFlatStyle(ignStyle),
       });
 
-      styles.push(styleObj);
+      styles.unshift(styleObj);
     })
     return styles
   }
@@ -500,12 +496,15 @@ class LayerStyleContainer extends BaseObject {
     if (!(styleObj instanceof StyleObj)) {
       styleObj = this.#getStyleObj(this.getLayer());
     }
-    const styleContainer = new StyleContainer({ layer: this.getLayer(), styleObj: styleObj });
-    this.styles.push(styleContainer);
-    const element = styleContainer.getElement();
-    this._getConditionalStylesContainer().appendChild(element);
 
-    this.conditionalStyles.push(styleObj);
+    const styleContainer = new StyleContainer({ layer: this.getLayer(), styleObj: styleObj });
+    // Ajoute le conteneur à la collection
+    this.styles.insertAt(0, styleContainer);
+    const element = styleContainer.getElement();
+
+    this.conditionalStyles.insertAt(0, styleObj);
+    this._getConditionalStylesContainer().prepend(element);
+    styleContainer.getElement().dataset.sortableId = this._sortableId++;
   }
 
   /**
@@ -538,6 +537,18 @@ class LayerStyleContainer extends BaseObject {
 
     // Donne le styleObj de la couche selon un type
     if (type) {
+      // Valeurs différentes pour chaque type
+      const flatStyleType = {
+        "Point": "point",
+        "LineString": "line",
+        "Polygon": "fill",
+      };
+      const regexText = ["text-value", "text-fill-color", "text-size"];
+
+      // Applique les valeurs par défaut pour les pointTextValue etc.
+      regexText.forEach(text => {
+        flatStyle[`${flatStyleType[type]}-${text}`] = flatStyle[text] || '';
+      })
       // Filtre seulement les propriétés passant les expressions régulières
       const obj = Object.entries(flatStyle).filter(([key]) => {
         const regexes = this._geomRegexProperties[type];
