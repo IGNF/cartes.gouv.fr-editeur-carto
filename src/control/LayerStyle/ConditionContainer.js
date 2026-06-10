@@ -50,7 +50,7 @@ export class ConditionContainerEvent extends BaseEvent {
    */
   constructor(type, options = {}) {
     super(type);
-    this.condition = options.styleObj;
+    this.condition = options.condition;
     this.layer = options.layer;
   }
 }
@@ -129,7 +129,6 @@ class ConditionContainer extends BaseObject {
 
     this.layer = options.layer;
     this.condition = options.condition;
-    console.log(this.condition)
   }
 
   /**
@@ -165,19 +164,20 @@ class ConditionContainer extends BaseObject {
    * @param {Condition|import("./Condition.js").ConditionOptions} condition condition
    */
   set condition(condition) {
-    if (!(condition instanceof Condition)) {
-      if (Condition.isValid(condition)) {
-        const cond = new Condition(condition);
-        this.set("condition", cond);
-      } else {
+    let nextCondition = condition;
+    if (!(nextCondition instanceof Condition)) {
+      if (!Condition.isValid(nextCondition)) {
         throw new TypeError(`condition doit être un objet Condition ou un objet valide pour créer un objet Condition : ${condition}`);
       }
+      nextCondition = new Condition(nextCondition);
     }
 
+    this.set("condition", nextCondition);
+
     // Mets à jour les champs
-    this.attributeInput.value = condition.attribute;
-    this.operatorSelect.value = condition.operator;
-    this.valueInput.value = condition.value;
+    this.attributeInput.value = nextCondition.attribute;
+    this.operatorSelect.value = nextCondition.operator;
+    this.valueInput.value = nextCondition.value;
   }
 
   /**
@@ -266,18 +266,12 @@ class ConditionContainer extends BaseObject {
    */
   _initEvents() {
     this.attributeInput.addEventListener("change", (e) => {
-      console.log(this)
-      console.log(this.condition)
       this.condition.attribute = e.target.value;
     })
     this.operatorSelect.addEventListener("change", (e) => {
-      console.log(this)
-      console.log(this.condition)
       this.condition.operator = e.target.value;
     })
     this.valueInput.addEventListener("change", (e) => {
-      console.log(this)
-      console.log(this.condition)
       this.condition.value = e.target.value;
     })
   }
@@ -432,7 +426,10 @@ class ConditionContainer extends BaseObject {
    * @private
    */
   _deleteCondition() {
-    this.dispatchEvent(new ConditionContainerEvent(ConditionContainerEventType.DELETE, this.condition, this.layer));
+    this.dispatchEvent(new ConditionContainerDeleteEvent({
+      condition: this.condition,
+      layer: this.layer,
+    }));
   }
 }
 

@@ -229,11 +229,11 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         break;
       case 'LineString':
       case 'MultiLineString':
-        mappedType = 'Point';
+        mappedType = 'LineString';
         break;
       case 'Polygon':
       case 'MultiPolygon':
-        mappedType = 'Point';
+        mappedType = 'Polygon';
         break;
       default:
         mappedType = '';

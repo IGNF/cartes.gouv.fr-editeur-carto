@@ -212,24 +212,31 @@ class StyleObj extends BaseObject {
     const all = conditions.all !== undefined ? !!conditions.all : true;
     const usecase = conditions.usecase !== undefined ? !!conditions.usecase : false;
     const cond = conditions.conditions || [];
-    let conditionsObject = cond;
-    if (!(cond instanceof Collection)) {
-      /** @type {Collection<Condition>} */
-      conditionsObject = new Collection();
+    const sourceConditions = cond instanceof Collection ? cond.getArray() : cond;
 
-      cond.forEach(element => {
-        let condition = element;
-        if (!(element instanceof Condition)) {
-          // Transforme les conditions en objet Condition si nécessaire
-          condition = new Condition({
-            attribute: element.attr,
-            operator: element.op,
-            value: element.val,
-          });
-        }
-        conditionsObject.push(condition);
-      });
-    }
+    /** @type {Collection<Condition>} */
+    const conditionsObject = new Collection();
+
+    sourceConditions.forEach(element => {
+      let condition;
+      if (element instanceof Condition) {
+        // Clone la condition pour éviter les références partagées.
+        condition = new Condition({
+          attribute: element.attribute,
+          operator: element.operator,
+          value: element.value,
+        });
+      } else {
+        // Transforme les conditions en objet Condition si nécessaire
+        condition = new Condition({
+          attribute: element.attribute ?? element.attr,
+          operator: element.operator ?? element.op,
+          value: element.value ?? element.val,
+        });
+      }
+      conditionsObject.push(condition);
+    });
+
     const obj = {
       all: all,
       conditions: conditionsObject,
@@ -374,11 +381,23 @@ class StyleObj extends BaseObject {
    * @returns {StyleObj} Nouvel objet styleObj copié
    */
   clone() {
+    const clonedConditions = {
+      all: this.conditions?.all,
+      usecase: this.conditions?.usecase,
+      conditions: this.conditions?.conditions instanceof Collection
+        ? this.conditions.conditions.getArray().map((condition) => ({
+            attribute: condition.attribute,
+            operator: condition.operator,
+            value: condition.value,
+          }))
+        : [],
+    };
+
     return new StyleObj({
       name: this.name,
       type: this.type,
       default: this.isDefault,
-      conditions: this.conditions,
+      conditions: clonedConditions,
       flatStyle: this.getFlatStyle(),
     })
   }

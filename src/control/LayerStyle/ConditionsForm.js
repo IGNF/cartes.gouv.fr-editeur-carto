@@ -28,11 +28,6 @@ class ConditionsForm extends ExtendedFlatStyleForm {
 
     this.getContent().classList.add("conditions-form");
 
-    // Datalist pour les attributs
-    const datalist = document.createElement("datalist");
-    datalist.id = `attribute-datalist-${this._uid}`;
-    this._datalist = datalist;
-
     // Footer pour ajouter une condition
     const footer = this.footer = document.createElement("div");
     footer.className = "style-form__footer";
@@ -44,11 +39,8 @@ class ConditionsForm extends ExtendedFlatStyleForm {
 
     footer.appendChild(addConditionBtn);
 
-    console.log(this.getContent());
-    console.log(footer);
-
     this.getContent().appendChild(footer);
-    this.getContent().appendChild(datalist);
+    this.getContent().appendChild(this._datalist);
   }
 
   /**
@@ -60,13 +52,9 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     // Enlève les anciens attributs
     this._datalist.replaceChildren();
 
-    console.log("set layer condition form")
-    console.log(layer)
-
     if (layer) {
       // Récupère les attributs
       const attributes = layer.getAttributes();
-      console.log(attributes)
       Object.keys(attributes).forEach(attr => {
         const option = document.createElement("option");
         option.value = attr;
@@ -89,42 +77,55 @@ class ConditionsForm extends ExtendedFlatStyleForm {
   set styleObj(styleObj) {
     super.styleObj = styleObj;
 
-    // Enlève les précédents formulaires
-    this.conditionContainers.forEach((container, index) => {
-      if (index > 0) {
-        this.conditionContainers.removeAt(index);
-      }
-    })
+    // Enlève les formulaires précédents
+    this.conditionContainers.clear();
 
     // Ajoute les conditions
-    styleObj?.conditions?.conditions?.forEach((condition, index) => {
-      console.log(condition, index)
-      if (index === 0) {
-        // Mets à jour la première condition
-        this.conditionContainers.item(0).condition = condition;
-      } else {
-        const container = new ConditionContainer({
-          datalistId: this._datalist.id,
-          condition: condition,
-          title: `Condition ${this.conditionContainers.getLength() + 1}`,
-        });
-        this.conditionContainers.push(container);
-      }
+    const conditions = styleObj?.conditions?.conditions;
+    const normalizedConditions = conditions instanceof Collection
+      ? conditions.getArray()
+      : [];
+
+    // Si aucune condition, en ajoute une de base
+    if (normalizedConditions.length === 0) {
+      const conditionOptions = {
+        attribute: "",
+        operator: "EQ",
+        value: "",
+      };
+      const conditionContainer = new ConditionContainer({
+        datalistId: this._datalist.id,
+        delete: false,
+        title: "Condition",
+        condition: conditionOptions
+      })
+      this.conditionContainers.push(conditionContainer);
+      return;
+    }
+
+    console.log("normalized conditions for each");
+    normalizedConditions.forEach((condition, index) => {
+      this.addConditionContainer(condition);
     })
   }
-    
+
   /**
    * @param {ConditionsFormOptions} options Options du constructeur
    * @override
    */
   _initialize(options) {
-    super._initialize(options);
+    /** @type {Collection<ConditionContainer>} */
+    this.conditionContainers = new Collection();
 
     options.preview = false;
     options.selectGeomType = false;
 
-    /** @type {Collection<ConditionContainer>} */
-    this.conditionContainers = new Collection();
+    super._initialize(options);
+
+    // Datalist pour les attributs
+    const datalist = document.createElement("datalist");
+    datalist.id = `attribute-datalist-${this._uid}`;
+    this._datalist = datalist;
   }
 
   /**
@@ -180,7 +181,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
       this.getElement().appendChild(e.element.getElement());
       let key = e.element.on("delete-condition", (ev) => {
         // Enlève l'élément de la collection et n'écoute plus l'événement
-        e.target.remove(ev.target);
+        this.conditionContainers.remove(ev.target);
         unByKey(key);
       });
     });
@@ -192,34 +193,26 @@ class ConditionsForm extends ExtendedFlatStyleForm {
   }
 
   /**
-   * Méthode permettant d'ajouter des inputs directement dans une classe
-   * étendue.
-   * @param {ConditionsFormOptions} options Options du constructeur
-   * @abstract
-   * @protected
-   */
-  _addCustomInputs(options) {
-    // On n'utilise pas this.datalist puisque l'attribut n'existe pas encore
-    const conditionContainer = new ConditionContainer({
-      datalistId: `attribute-datalist-${this._uid}`,
-      delete: false,
-      title: "Condition",
-    })
-    this.conditionContainers.push(conditionContainer);
-
-    // On l'ajoute ici, cette méthode étant appelée avant _initEvents
-    this.getElement().appendChild(conditionContainer.getElement());
-  }
-
-  /**
    * Ajoute une condition au formulaire
    * @param {import('./Condition.js').default|import('./Condition.js').ConditionOptions} condition Condition à ajouter
    */
   addConditionContainer(condition) {
+    const conditionOptions = condition
+      ? {
+        attribute: condition?.attribute ?? condition?.attr ?? "",
+        operator: condition?.operator ?? condition?.op ?? "EQ",
+        value: condition?.value ?? condition?.val ?? "",
+      }
+      : undefined;
+    // Si c'est le premier, ne permet pas de supprimer la condition
+    const length = this.conditionContainers.getLength();
+    const title = !!length ? `Condition ${this.conditionContainers.getLength() + 1}` : "Condition";
+    const first = !!length;
     const conditionContainer = new ConditionContainer({
       datalistId: this._datalist.id,
-      condition: condition,
-      title: `Condition ${this.conditionContainers.getLength() + 1}`,
+      condition: conditionOptions,
+      delete: first,
+      title: title,
     });
     this.conditionContainers.push(conditionContainer);
   }

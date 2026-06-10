@@ -381,7 +381,11 @@ class EditStyle extends BaseObject {
    * @fires EditStyleEvent#save-style
    */
   applyStyle() {
-    // L'objet de style est partagé, les modifications se font donc partour
+    // L'objet de style est partagé, les modifications se font donc partout
+    const editedGeomType = this.styleForm.styleObj?.type;
+    if (editedGeomType) {
+      this.getStyleObj().type = editedGeomType;
+    }
     this.getStyleObj().setFlatStyle(this.styleForm.styleObj.getFlatStyle());
 
     const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());

@@ -154,7 +154,7 @@ class LayerStyleContainer extends BaseObject {
       // Ajoute un écouteur d'événement générique
       // Envoyé par le bouton appliquer
       let key = e.element.on("change", (e) => {
-        this._setConditionStyle(this.conditionalStyles.getArray())
+        this.onStyleObjChange(e);
       });
 
       this.stylesObjsKey[e.element.ol_uid] ??= {};
@@ -196,6 +196,7 @@ class LayerStyleContainer extends BaseObject {
     // Recréé un style ignStyle
     const ignStyle = flatToIgnStyle(flatStyle);
     console.log(ignStyle);
+    this._setConditionStyle(this.conditionalStyles.getArray())
 
     // Applique le style conditionnel à l'objet
 
