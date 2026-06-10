@@ -164,7 +164,7 @@ class LayerStyleContainer extends BaseObject {
       this.stylesObjsKey[e.element.ol_uid] ??= {};
       this.stylesObjsKey[e.element.ol_uid]["change"] = key;
 
-      key = e.element.on("change:name", (e) => {
+      key = e.element.on("change:name", () => {
         this._setConditionStyle(this.conditionalStyles.getArray());
       });
       this.stylesObjsKey[e.element.ol_uid]["change:name"] = key;
@@ -172,7 +172,7 @@ class LayerStyleContainer extends BaseObject {
       this._setConditionStyle(this.conditionalStyles.getArray());
     })
 
-    this.conditionalStyles.on("remove", (e) => {
+    this.conditionalStyles.on("remove", () => {
       this._setConditionStyle(this.conditionalStyles.getArray());
     })
 
@@ -187,15 +187,16 @@ class LayerStyleContainer extends BaseObject {
     /** @type {StyleObj} */
     const elem = e.target;
     // Filtre le flatStyle pour ne garder que ce qui correspond à la géométrie
-    const flatStyle = elem.getFlatStyle();
-    const obj = Object.entries(flatStyle).filter(([key]) => {
-      const regexes = this._geomRegexProperties[elem.type];
-      return regexes.some((regex) => regex.test(key));
-    });
-    const flatStyleGeom = Object.fromEntries(obj);
+    // const flatStyle = elem.getFlatStyle();
+    // const obj = Object.entries(flatStyle).filter(([key]) => {
+    //   const regexes = this._geomRegexProperties[elem.type];
+    //   return regexes.some((regex) => regex.test(key));
+    // });
+    // const flatStyleGeom = Object.fromEntries(obj);
 
     // Recréé un style ignStyle
-    const ignStyle = flatToIgnStyle(flatStyle); this._setConditionStyle(this.conditionalStyles.getArray())
+    // const ignStyle = flatToIgnStyle(flatStyle);
+    this._setConditionStyle(this.conditionalStyles.getArray())
 
     // Applique le style conditionnel à l'objet
 

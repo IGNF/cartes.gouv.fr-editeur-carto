@@ -1,13 +1,9 @@
-import { unByKey } from "ol/Observable.js";
 import BaseObject from "ol/Object.js";
-import StyleObj from "./StyleObj.js";
-import Helper from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
 import BaseEvent from "ol/events/Event.js";
 
 import "./ConditionContainer.scss";
 import Condition from "./Condition.js";
-import Collection from "ol/Collection.js";
 import { getConditionalOperatorOptions } from "./ConditionalOperator.js";
 
 

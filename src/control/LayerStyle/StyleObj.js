@@ -317,7 +317,6 @@ class StyleObj extends BaseObject {
 
     // Applique le flatStyle et récupère le style openlayers
     feature.setStyle(getStyleFn());
-    const flatStyle = flatToIgnStyle(this.getFlatStyle());
     feature.setIgnStyle(flatToIgnStyle(this.getFlatStyle()));
 
     let style = feature.getStyle();

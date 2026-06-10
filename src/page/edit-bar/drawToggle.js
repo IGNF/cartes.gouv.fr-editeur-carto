@@ -60,11 +60,11 @@ Object.keys(typeObjects).forEach(k => {
   });
 });
 
-drawToggle.getStyleDialog().onOpen((e) => {
+drawToggle.getStyleDialog().onOpen(() => {
   leftPanel.close();
 })
 
-leftPanel.onOpen((e) => {
+leftPanel.onOpen(() => {
   drawToggle.getStyleDialog().close();
 })
 

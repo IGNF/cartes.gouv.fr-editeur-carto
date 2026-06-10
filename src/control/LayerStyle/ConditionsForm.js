@@ -2,7 +2,6 @@
  * @file Formulaire pour l'étiquette d'un objet
  */
 import ExtendedFlatStyleForm from '../StyleDialog/ExtendedFlatStyleForm.js';
-import { StyleEvent } from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import ConditionContainer from './ConditionContainer.js';
 import Collection from 'ol/Collection.js';
 import { unByKey } from 'ol/Observable.js';
@@ -103,7 +102,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
       return;
     }
 
-    normalizedConditions.forEach((condition, index) => {
+    normalizedConditions.forEach((condition) => {
       this.addConditionContainer(condition);
     })
   }
@@ -171,7 +170,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
    * @param {ConditionsFormOptions} options Options du constructeur
    * @override
    */
-  _initEvents(options) {
+  _initEvents() {
     // Pas de super._initEvents car pas nécessaire
 
     // Ajoute un écouteur d'événement sur la collection
@@ -205,7 +204,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
       : undefined;
     // Si c'est le premier, ne permet pas de supprimer la condition
     const length = this.conditionContainers.getLength();
-    const title = !!length ? `Condition ${this.conditionContainers.getLength() + 1}` : "Condition";
+    const title = length ? `Condition ${this.conditionContainers.getLength() + 1}` : "Condition";
     const first = !!length;
     const conditionContainer = new ConditionContainer({
       datalistId: this._datalist.id,

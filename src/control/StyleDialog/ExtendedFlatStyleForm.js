@@ -174,7 +174,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    * @param {Feature|Array<Feature>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
    * @override
   */
-  setGeom(featureOrGeomName, silenced = false) {
+  setGeom(featureOrGeomName) {
     super.setGeom(featureOrGeomName);
     if (this.isSelectGeomTypeShown()) {
       // Modifie l'option sélectionné seulement si on affiche le sélecteur
