@@ -1,15 +1,11 @@
-import { isConditionalOperator } from "./ConditionalOperator.js";
+import { fromMcutilsOperator, isConditionalOperator, isMcutilsOperator } from "./ConditionalOperator.js";
 import BaseObject from "ol/Object.js";
 
 /**
  * @typedef {Object} ConditionOptions
- * @property {String} attribute
- * @property {String} operator
- * @property {*} value
- */
-
-/**
- * @typedef {Object<String, *>|{get: function(String): *}} FeatureLike
+ * @property {String} attribute Attribut sur lequel appliquer la condition
+ * @property {String} operator Opérateur
+ * @property {any} value Valeur avec laquelle comparer l'attribut
  */
 
 /**
@@ -18,58 +14,88 @@ import BaseObject from "ol/Object.js";
 class Condition extends BaseObject {
 
     /**
-    * @param {ConditionOptions} options
+     * Vérifie si une condition est valide, i.e. si les
+     * options permettent de créer une 
+    * @param {ConditionOptions} options Options à vérifier
      */
-    constructor ({ attribute, operator, value } = {}) {
-        super();
-        this.attribute = attribute;
-        this.operator = operator;
-        this.value = value;
+    static isValid(options) {
+        try {
+            new Condition(options);
+            return true;
+        } catch (error) {
+            console.warn("Condition non valide : ", error)
+            return false
+        }
     }
 
-    get attribute () {
+    /**
+    * @param {ConditionOptions} options
+     */
+    constructor(options = {}) {
+        super();
+        this.attribute = options.attribute;
+        this.operator = options.operator;
+        this.value = options.value;
+    }
+
+    get attribute() {
         return this.get("attribute");
     }
 
-    set attribute (value) {
-        if (!value || typeof value !== "string") {
-            throw new TypeError("Condition.attribute doit être une chaîne non vide");
+    /**
+     * @param {String} attribute Nom de l'attribut
+     */
+    set attribute(attribute) {
+        if (typeof attribute === "string") {
+            this.set("attribute", attribute);
+        } else {
+            throw new TypeError(`Le paramètre attribut doit être une chaîne de charactère non vide : ${attribute}`);
         }
-        this.set("attribute", value);
     }
 
-    get operator () {
+    get operator() {
         return this.get("operator");
     }
 
-    set operator (value) {
-        if (!isConditionalOperator(value)) {
+    /**
+     * @param {String} value Opérateur.
+     * Voir [ConditionalOperator]{@link (./ConditionalOperator.js)} pour plus d'infos sur la valeur à utiliser.
+     */
+    set operator(value) {
+        if (isMcutilsOperator(value)) {
+            this.set("operator", fromMcutilsOperator(value))
+        } else if (!isConditionalOperator(value)) {
             throw new TypeError(`Opérateur conditionnel non pris en charge : ${value}`);
+        } else {
+            this.set("operator", value);
         }
-        this.set("operator", value);
     }
 
-    get value () {
+    get value() {
         return this.get("value");
     }
 
-    set value (value) {
+    set value(value) {
         this.set("value", value);
     }
 
     /**
-        * @param {FeatureLike} feature
-     * @returns {Boolean}
+     * Vérifie si un objet (Feature) passe la condition
+     * 
+     * @param {import("ol/Feature.js").default} feature Feature openlayer.
+     * @returns {Boolean} Vrai si la condition est validée, faux sinon.
      */
-    isValid (feature) {
-        const candidate = this._getFeatureValue(feature, this.attribute);
-        return this._applyOperator(candidate, this.operator, this.value);
+    isValid(feature) {
+        const attribute = feature.get(this.attribute);
+        return this._applyOperator(attribute, this.operator, this.value);
     }
 
     /**
+     * Récupère la valeur de l'attribut
+     * @param {import("ol/Feature.js").default} feature Feature openlayer
      * @private
      */
-    _getFeatureValue (feature, attribute) {
+    _getFeatureValue(feature, attribute) {
         if (!feature) {
             return undefined;
         }
@@ -80,9 +106,12 @@ class Condition extends BaseObject {
     }
 
     /**
+     * Compare deux éléments en fonction de l'opérateur
+     * 
+     * @returns {Boolean} Vrai si la condition est vérifiée
      * @private
      */
-    _applyOperator (left, operator, right) {
+    _applyOperator(left, operator, right) {
         switch (operator) {
             case "EQ":
                 return left === right;
@@ -100,19 +129,16 @@ class Condition extends BaseObject {
                 return String(left ?? "").startsWith(String(right ?? ""));
             case "ENDS_WITH":
                 return String(left ?? "").endsWith(String(right ?? ""));
-            case "LIKE": {
+            case "LIKE":
                 const source = String(left ?? "").toLowerCase();
                 const pattern = String(right ?? "").toLowerCase();
                 return source.includes(pattern);
-            }
-            case "IN": {
-                const list = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
-                return list.includes(left);
-            }
-            case "NOT_IN": {
-                const list = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
-                return !list.includes(left);
-            }
+            case "IN":
+                const listIn = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
+                return listIn.includes(left);
+            case "NOT_IN":
+                const listNotIn = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
+                return !listNotIn.includes(left);
             case "NOT":
                 return !this._toBoolean(left);
             default:
@@ -121,9 +147,12 @@ class Condition extends BaseObject {
     }
 
     /**
+     * Convertit une valeur en booléen, valeur pouvant être une chaîne de charactère
+     * @param {String} value Valeur à convertir
+     * @returns {Boolean} Vrai si la valeur correspond à un booléen.
      * @private
      */
-    _toBoolean (value) {
+    _toBoolean(value) {
         if (typeof value === "string") {
             return ["true", "1", "yes", "oui"].includes(value.trim().toLowerCase());
         }

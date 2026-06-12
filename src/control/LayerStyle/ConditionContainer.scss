@@ -1,0 +1,47 @@
+@use '../../css/mixins.scss' as mix;
+
+// Conteneur de style
+.condition-container {
+  padding: 0.75rem;
+  fieldset {
+    margin-bottom: 0;
+    .fr-fieldset__element {
+      margin: 0;
+    }
+  }
+
+  &__header {
+    color: var(--text-mention-grey);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 2rem;
+
+    > span {
+      margin: 0;
+    }
+  }
+
+  &__secondary-fields {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+
+    > :first-child {
+      flex: 0 0 5rem;
+    }
+
+    > :last-child {
+      flex: 0 1 auto;
+    }
+  }
+
+  border-bottom: 1px solid var(--border-default-grey);
+  // &:not(:first-child) {
+
+  // > .condition-container__header {
+  //   margin-top: 0.75rem;
+  // }
+  // }
+}

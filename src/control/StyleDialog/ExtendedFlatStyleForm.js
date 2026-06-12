@@ -37,6 +37,10 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Place le header avant le formulaire
     this.getElement().before(container);
 
+    this.styleObj = new StyleObj({
+      flatStyle: this.flatStyle,
+    })
+
     this._addCustomInputs(options);
 
     // Type du formulaire
@@ -54,10 +58,6 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     this.set("showPreview", options.preview);
     options.selectGeomType ??= false;
     this.set("showSelectGeomType", options.selectGeomType);
-
-    this.styleObj = new StyleObj({
-      flatStyle: this.flatStyle,
-    })
   }
 
   /**
@@ -79,16 +79,32 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     this.on("style", (e) => {
       this.styleObj.setFlatStyleProperty(e.property, e.value);
-      this.updatePreview();
+      // this.updatePreview();
+    })
+
+    this.styleObj.on("change:image", (e) => {
+      const image = e.target.get(e.key);
+      this.preview.lastChild.replaceWith(image);
     })
   }
 
   /**
-   * Retourne l'objet styleObj
    * @returns {StyleObj}
    */
-  getStyleObj() {
-    return this.styleObj;
+  get styleObj() {
+    return this.get("styleObj");
+  }
+
+  /**
+   * @param {StyleObj} styleObj Objet styleObj
+   */
+  set styleObj(styleObj) {
+    if (!(styleObj instanceof StyleObj)) {
+      throw new SyntaxError("styleObj doit être de type StyleObj.")
+    }
+    this.set("styleObj", styleObj);
+    this.setFlatStyle(styleObj.getFlatStyle());
+    styleObj.type && this.setGeom(styleObj.type);
   }
 
   /**
@@ -97,7 +113,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   updatePreview() {
     if (this.isPreviewShown()) {
       // Met à jour la preview
-      const image = this.getStyleObj()?.getImage({ size: [72, 72], margin: 8 });
+      const image = this.styleObj?.getImage({ size: [72, 72], margin: 8 });
       this.preview.lastChild.replaceWith(image);
     }
   }
@@ -111,7 +127,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     if (this.isPreviewShown()) {
       // Modifie le styleObj
-      this.getStyleObj().setFlatStyle(this.flatStyle, true);
+      this.styleObj.setFlatStyle(this.flatStyle, true);
       this.updatePreview();
     }
   }
@@ -176,8 +192,10 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         }
       }
     }
-    if (this.getGeom()?.split(' ').at(0)) {
-      this.getStyleObj().type = this.getGeom(this.getGeom().split(' ').at(0));
+    const type = this.getGeom()?.split(' ').at(0);
+    if (this.styleObj.type !== type) {
+      
+      this.styleObj.type = type
       this.updatePreview();
     }
   }
@@ -211,11 +229,11 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         break;
       case 'LineString':
       case 'MultiLineString':
-        mappedType = 'Point';
+        mappedType = 'LineString';
         break;
       case 'Polygon':
       case 'MultiPolygon':
-        mappedType = 'Point';
+        mappedType = 'Polygon';
         break;
       default:
         mappedType = '';
@@ -260,8 +278,8 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     preview.appendChild(label);
 
     let image = document.createElement("canvas");
-    if ((this.getStyleObj() instanceof StyleObj)) {
-      image = this.getStyleObj().getImage({ size: [72, 72], margin: 8 });
+    if ((this.styleObj instanceof StyleObj)) {
+      image = this.styleObj.getImage({ size: [72, 72], margin: 8 });
     } else {
       image.width = 72;
       image.height = 72;

@@ -6,20 +6,52 @@ import Feature from "ol/Feature.js";
 import { LineString, Point, Polygon } from "ol/geom.js";
 import { getStyleFn } from "mcutils/style/ignStyleFn.js";
 import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
+import Collection from "ol/Collection.js";
 
 /**
  * @typedef {Object} StyleObjOptions
- * @property {String} name
- * @property {String} type
- * @property {Boolean} [default=false]
- * @property {Array<Condition|Object>} [conditions=[]]
- * @property {Object} [flatStyle={}]
+ * @property {String} name Nom du style.
+ * @property {"Point"|"LineString"|"Polygon"} type Type d'objet sur lequel le style s'applique.
+ * @property {Boolean} [default=false] Si vrai, considère que c'est un style par défaut. Sinon, permet la modification.
+ * @property {StyleObjConditionOptions} [conditions] Objet contenant les conditions.
+ * @property {Object} [flatStyle={}] FlatStyle correspondant à l'objet
+ */
+
+/**
+ * @typedef {Object} StyleObjCondition Conditions contenu dans le styleObj
+ * @property {Boolean} [all=true] Si vrai, la condition s'applique sur l'ensemble des mots.
+ * @property {Collection<Condition>} conditions Ensemble des conditions s'appliquant au style.
+ * Les conditions peuvent être des objets {@link ./Condition.js | Condition}
+ * ou un objet js la décrivant.
+ * Elles sont liées par la clause `AND`.
+ * @property {Boolean} [usecase=false] Si vrai, la condition est sensible à la casse.
+ */
+
+
+/**
+ * @typedef {Object} StyleObjConditionOptions Objet utilisé à la construction de l'objet StyleObj
+ * @property {Boolean} [all=true] Si vrai, la condition s'applique sur l'ensemble des mots.
+ * @property {Array<Condition|SingleCondition>} conditions Ensemble des conditions s'appliquant au style.
+ * Les conditions peuvent être des objets {@link ./Condition.js | Condition} ou un objet js
+ * la décrivant.
+ * Elles sont liées par la clause `AND`.
+ * @property {Boolean} [usecase=false] Si vrai, la condition est sensible à la casse.
+ */
+
+/**
+ * @typedef {Object} SingleCondition Objet décrivant une condition
+ * @property {String} attr Attribut sur lequel la condition s'applique
+ * @property {String} op Opérateur 
+ * @property {String} val Valeur avec laquelle comparer
  */
 
 /**
  * @typedef {Object} StyleObjImageOptions
  * @property {Array<Number>} [size=[48,48]] Taille [largeur, hauteur] du canvas
  * @property {Number} [margin=0] Marge de dessin autour de la géométrie
+ * 
+ * @property {Boolean} [clone = false] Si vrai, clone le canvas
+ * @property {Boolean} [force = false] Si vrai, force l'image à se mettre à jour
  */
 
 /**
@@ -75,10 +107,10 @@ class StyleObj extends BaseObject {
     const canvas = document.createElement("canvas");
     canvas.id = SelectorID.generate();
     this.set("image", canvas);
-    this._imageOptions = null;
+    this._imageOptions = {};
     this.name = name;
     this.type = type;
-    this.setConditions(conditions);
+    this.conditions = conditions;
     this.setFlatStyle(flatStyle, true);
   }
 
@@ -98,28 +130,43 @@ class StyleObj extends BaseObject {
   }
 
   set type(value) {
+    const type = this.type;
     this.set("type", value);
+    if (type !== value) {
+      const options = Object.assign(this._imageOptions, { force: true });
+      this.getImage(options);
+    }
   }
 
   get isDefault() {
     return this.get("default") === true;
   }
 
-  set isDefault (value) {
+  /**
+   * @param {Boolean} value Vrai si l'objet est un style par défaut
+   */
+  set isDefault(value) {
     this.set("default", Boolean(value));
   }
 
+  /**
+   * @returns {StyleObjCondition}
+   */
   get conditions() {
-    return [...(this.get("conditions") || [])];
-  }
-
-  set conditions(value) {
-    this.setConditions(value);
+    return this.get("conditions");
   }
 
   /**
-   * @param {String} [flatStyleProperty]
-   * @returns {Object}
+   * @param {StyleObjConditionOptions} condition Objet avec les conditions de l'objet
+   */
+  set conditions(condition) {
+    this.setConditions(condition);
+  }
+
+  /**
+   * Renvoie une copie du flatStyle ou une propriété.
+   * @param {String} [flatStyleProperty] Si donné, renvoie la valeur correspondante.
+   * @returns {Object|any} Valeur d'une propriété flatStyle ou copie de l'objet flatStyle.
    */
   getFlatStyle(flatStyleProperty) {
     const flatStyle = this.get("flatStyle") || {};
@@ -130,16 +177,21 @@ class StyleObj extends BaseObject {
   }
 
   /**
-   * @param {String} prop
-   * @param {*} value
+   * Modifie une propriété du flatStyle.
+   * 
+   * @param {String} prop Propriété flatStyle
+   * @param {any} value Valeur correspondante
    */
   setFlatStyleProperty(prop, value) {
     this.setFlatStyle({ [prop]: value });
   }
 
   /**
+   * Modifie le flatStyle.
+   * 
    * @param {Object} flatStyle Objet flatStyle
-   * @param {Boolean} [reset=false]
+   * @param {Boolean} [reset=false] Si vrai, modifie l'entièreté du flatStyle.
+   * Sinon, ajoute les propriétés au flatStyle actuel
    */
   setFlatStyle(flatStyle, reset = false) {
     if (!flatStyle || typeof flatStyle !== "object" || Array.isArray(flatStyle)) {
@@ -147,24 +199,59 @@ class StyleObj extends BaseObject {
     }
     const currentFlatStyle = this.get("flatStyle") || {};
     this.set("flatStyle", reset ? { ...flatStyle } : { ...currentFlatStyle, ...flatStyle });
-    this.drawImage();
+
+    const options = Object.assign(this._imageOptions, { force: true });
+    this.getImage(options);
   }
 
   /**
-   * @param {Array<Condition|Object>} conditions
+   * @param {StyleObjConditionOptions} conditions
    */
-  setConditions(conditions = []) {
-    if (!Array.isArray(conditions)) {
-      throw new TypeError("conditions doit être un tableau");
+  setConditions(conditions) {
+    // Récupère les informations
+    const all = conditions.all !== undefined ? !!conditions.all : true;
+    const usecase = conditions.usecase !== undefined ? !!conditions.usecase : false;
+    const cond = conditions.conditions || [];
+    const sourceConditions = cond instanceof Collection ? cond.getArray() : cond;
+
+    /** @type {Collection<Condition>} */
+    const conditionsObject = new Collection();
+
+    sourceConditions.forEach(element => {
+      let condition;
+      if (element instanceof Condition) {
+        // Clone la condition pour éviter les références partagées.
+        condition = new Condition({
+          attribute: element.attribute,
+          operator: element.operator,
+          value: element.value,
+        });
+      } else {
+        // Transforme les conditions en objet Condition si nécessaire
+        condition = new Condition({
+          attribute: element.attribute ?? element.attr,
+          operator: element.operator ?? element.op,
+          value: element.value ?? element.val,
+        });
+      }
+      conditionsObject.push(condition);
+    });
+
+    const obj = {
+      all: all,
+      conditions: conditionsObject,
+      usecase: usecase
     }
-    this.set("conditions", conditions.map((condition) => this._toCondition(condition)));
+    this.set("conditions", obj);
   }
 
   /**
-   * @param {Condition|Object} condition
+   * Ajoute une condition 
+   * @param {Condition|import("./Condition.js").ConditionOptions} condition
+   * Condition à ajouter
    */
   addCondition(condition) {
-    this.setConditions([...this.conditions, this._toCondition(condition)]);
+    this.conditions = [...this.conditions, this._toCondition(condition)];
   }
 
   /**
@@ -176,7 +263,7 @@ class StyleObj extends BaseObject {
       return;
     }
     currentConditions.splice(index, 1);
-    this.setConditions(currentConditions);
+    this.conditions = currentConditions;
   }
 
   /**
@@ -214,7 +301,7 @@ class StyleObj extends BaseObject {
     let feature;
     switch (this.type) {
       case 'Point':
-        feature = new Feature(new Point([cx, canvas.height - 4]));
+        feature = new Feature(new Point([cx, cy]));
         break;
       case 'LineString':
         feature = new Feature(new LineString([[cx - sx, cy], [cx + sx, cy]]));
@@ -258,18 +345,17 @@ class StyleObj extends BaseObject {
 
   /**
    * Retourne une représentation canvas du style courant.
-   * @param {StyleObjImageOptions} [options]
-   * @param {Boolean} [clone=false] Si vrai, clone le canvas
+   * @param {StyleObjImageOptions} [options] Options pour l'image
    * @returns {HTMLCanvasElement|null}
    */
-  getImage(options = {}, clone = false) {
+  getImage(options = {}) {
     const imageOptions = normalizeImageOptions(options);
     let image = this.get("image");
-    if (!image || !isSameImageOptions(this._imageOptions, imageOptions)) {
+    if (!image || !isSameImageOptions(this._imageOptions, imageOptions) || options.force === true) {
       image = this.drawImage(imageOptions);
     }
     // clone l'image
-    if (clone) {
+    if (options.clone) {
       const img = document.createElement('canvas');
       img.width = image.width;
       img.height = image.height;
@@ -282,19 +368,37 @@ class StyleObj extends BaseObject {
   /**
    * @private
    */
-  _invalidateImage() {
-    // this.set("image", null);
-    this._imageOptions = null;
-  }
-
-  /**
-   * @private
-   */
   _toCondition(condition) {
     if (condition instanceof Condition) {
       return condition;
     }
     return new Condition(condition);
+  }
+
+  /**
+   * Clone un objet styleObj
+   * @returns {StyleObj} Nouvel objet styleObj copié
+   */
+  clone() {
+    const clonedConditions = {
+      all: this.conditions?.all,
+      usecase: this.conditions?.usecase,
+      conditions: this.conditions?.conditions instanceof Collection
+        ? this.conditions.conditions.getArray().map((condition) => ({
+            attribute: condition.attribute,
+            operator: condition.operator,
+            value: condition.value,
+          }))
+        : [],
+    };
+
+    return new StyleObj({
+      name: this.name,
+      type: this.type,
+      default: this.isDefault,
+      conditions: clonedConditions,
+      flatStyle: this.getFlatStyle(),
+    })
   }
 }
 

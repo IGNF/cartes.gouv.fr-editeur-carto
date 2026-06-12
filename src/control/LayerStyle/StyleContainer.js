@@ -24,7 +24,17 @@ const StyleContainerEventType = {
    * @api
    */
   DELETE: 'delete-style',
+  /**
+   * Envoyé lors d'un clic sur les boutons de déplacement clavier.
+   * @event StyleContainerEvent#move-style
+   * @api
+   */
+  MOVE: 'move-style',
 };
+
+/**
+ * @typedef {'up'|'down'} StyleContainerMoveDirection Direction du déplacement demandée
+ */
 
 /**
  * @classdesc
@@ -57,6 +67,37 @@ export class StyleContainerEvent extends BaseEvent {
   }
 }
 
+/**
+ * @classdesc
+ * Événement émis lors d'une demande de déplacement d'un style.
+ */
+export class StyleContainerMoveEvent extends BaseEvent {
+
+  /**
+   * @param {StyleContainerMoveDirection} direction Options de déplacement
+   */
+  constructor(direction) {
+    super(StyleContainerEventType.MOVE);
+
+    /**
+     * Direction demandée.
+     * @type {StyleContainerMoveDirection}
+     * @api
+     */
+    this.direction = direction;
+  }
+}
+
+/**
+ * @template Return
+ * @typedef {import("ol/Observable.js").OnSignature<import("ol/Observable.js").EventTypes, import("ol/events/Event.js").default, Return> &
+ *   import("ol/Observable.js").OnSignature<import("ol/ObjectEventType.js").Types, import("ol/Object.js").ObjectEvent, Return> &
+ *   import("ol/Observable.js").OnSignature<'open-style', StyleContainerEvent, Return> &
+ *   import("ol/Observable.js").OnSignature<'delete-style', StyleContainerEvent, Return> &
+ *   import("ol/Observable.js").OnSignature<'move-style', StyleContainerMoveEvent, Return> &
+ *   import("ol/Observable.js").CombinedOnSignature<import("ol/Observable.js").EventTypes|import("ol/ObjectEventType.js").Types|'open-style'|'delete-style'|'move-style', Return>} StyleContainerOnSignature
+ */
+
 
 /**
  * @typedef {Object} StyleContainerOptions
@@ -77,6 +118,14 @@ class StyleContainer extends BaseObject {
    */
   constructor(options = {}) {
     super(options);
+
+    // Pour la documentation des événements personnalisés
+    /** @type {StyleContainerOnSignature<import("ol/events.js").EventsKey>} */
+    this.on;
+    /** @type {StyleContainerOnSignature<import("ol/events.js").EventsKey>} */
+    this.once;
+    /** @type {StyleContainerOnSignature<void>} */
+    this.un;
 
     this._initialize(options);
     this._initContainer(options);
@@ -159,20 +208,22 @@ class StyleContainer extends BaseObject {
       dragBtn.setAttribute("disabled", true);
     } else {
       dragBtn.title = "Deplacer le style";
+      
       // Ajoute la navigation au clavier
+      // Des événements sont envoyés pour être gérés dans LayerStyleContainer
       const buttonUp = document.createElement("button");
       buttonUp.dataset.direction = "up";
       buttonUp.id = Helper.addUID("style__drag-btn-up", this._uid);
       buttonUp.title = buttonUp.ariaLabel = "Déplacer le style vers le haut";
       buttonUp.className = "fr-icon-arrow-up-line fr-icon--sm";
-      // buttonUp.onkeydown = this._onMoveElement.bind(this, true);
+      buttonUp.addEventListener("click", (e) => this.dispatchEvent(new StyleContainerMoveEvent(e.currentTarget.dataset.direction)));
 
       const buttonDown = document.createElement("button");
       buttonDown.dataset.direction = "down";
       buttonDown.id = Helper.addUID("style__drag-btn-down", this._uid);
       buttonDown.title = buttonDown.ariaLabel = "Déplacer le style vers le bas";
       buttonDown.className = "fr-icon-arrow-down-line fr-icon--sm";
-      // buttonDown.onkeydown = this._onMoveElement.bind(this, false);
+      buttonDown.addEventListener("click", (e) => this.dispatchEvent(new StyleContainerMoveEvent(e.currentTarget.dataset.direction)));
       const divKeyboard = document.createElement("div");
       divKeyboard.className = "style__drag-keyboard";
 
@@ -189,12 +240,12 @@ class StyleContainer extends BaseObject {
     const actions = document.createElement("div");
     actions.className = `style-container__actions`;
 
-    const isDefault = this.getStyleObj().isDefault;
-
     // Couche par défaut : non supprimable et nom non modifiable
-    if (!isDefault) {
+    if (!this.getStyleObj().isDefault) {
       const editStyleNameBtn = document.createElement("button");
       editStyleNameBtn.className = "edit-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-edit-line";
+      // Mettre l'event listener sur le titre si on veut cliquer
+      // sur le nom pour le modifier
       editStyleNameBtn.addEventListener("click", () => this.editStyleName());
       editStyleNameBtn.textContent = editStyleNameBtn.title = "Modifier le nom du style";
       actions.appendChild(editStyleNameBtn);
@@ -239,13 +290,14 @@ class StyleContainer extends BaseObject {
     input.ariaLabel = input.title = `Nom du style`;
     input.value = this.getStyleObj()?.name;
     input.id = `input-edit-layer-name-${this._uid}`;
-    mask.appendChild(input)
+    mask.appendChild(input);
 
     // Annuler
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "cancel-edit-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line";
     cancelBtn.textContent = cancelBtn.title = "Annuler la modification";
     cancelBtn.addEventListener("click", () => {
+      input.removeEventListener("keydown", keydownEvent);
       mask.remove();
     });
     mask.appendChild(cancelBtn);
@@ -255,12 +307,28 @@ class StyleContainer extends BaseObject {
     validateBtn.className = "validate-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-check-line";
     validateBtn.textContent = validateBtn.title = "Modifier le nom du style";
     validateBtn.addEventListener("click", () => {
-      this.getStyleObj().name = input.value;
+      if (input.value.trim().length > 0) {
+        this.getStyleObj().name = input.value.trim();
+      }
+      input.removeEventListener("keydown", keydownEvent);
       mask.remove();
     });
     mask.appendChild(validateBtn);
 
+
+    // Ajoute un événement pour les raccourcis
+    const keydownEvent = (/** @type {KeyboardEvent} */ e) => {
+      if (e.key === "Enter") {
+        validateBtn.click();
+      } else if (e.key === "Escape") {
+        cancelBtn.click();
+      }
+    }
+
+    input.addEventListener("keydown", keydownEvent);
+
     this.element.after(mask);
+    input.focus();
   }
 
   /**

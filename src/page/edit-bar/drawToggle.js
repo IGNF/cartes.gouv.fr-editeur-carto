@@ -3,6 +3,7 @@ import carte from '../../carte.js';
 import Draw from "geopf-extensions-openlayers/src/packages/Controls/Draw/Draw.js";
 import Drawing from "geopf-extensions-openlayers/src/packages/Interactions/Drawing.js";
 import styleDialog from '../../control/StyleDialog/styleDialog.js';
+import leftPanel from '../../dialogs/leftPanel.js';
 
 const drawToggle = new Draw({
   position: "right",
@@ -58,5 +59,13 @@ Object.keys(typeObjects).forEach(k => {
     label: obj.label,
   });
 });
+
+drawToggle.getStyleDialog().onOpen(() => {
+  leftPanel.close();
+})
+
+leftPanel.onOpen(() => {
+  drawToggle.getStyleDialog().close();
+})
 
 export default drawToggle;

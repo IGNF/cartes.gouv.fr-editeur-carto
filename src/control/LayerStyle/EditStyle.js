@@ -12,6 +12,7 @@ import { TabNav } from "geopf-extensions-openlayers/src/index.js";
 import "./EditStyle.scss";
 import { LabelForm } from "../StyleDialog/labelForm.js";
 import { StyleForm } from "../StyleDialog/styleForm.js";
+import ConditionsForm from "./ConditionsForm.js";
 
 /**
  * @typedef {Object} EditStyleOptions
@@ -126,6 +127,12 @@ class EditStyle extends BaseObject {
       generalType: false,
     });
     this.forms.push(this.labelForm);
+
+    // Formulaire de conditions
+    this.conditionsForm = new ConditionsForm({
+      
+    });
+    this.forms.push(this.conditionsForm);
   }
 
   /**
@@ -159,9 +166,15 @@ class EditStyle extends BaseObject {
    * @protected
    */
   _initEvents() {
-    this.styleForm.on("style", () => {
-      // console.log({property: e.property, value: e.value});
-    })
+    // this.styleForm.on("style", () => {
+    //   console.log({property: e.property, value: e.value});
+    // })
+
+    // this.forms.forEach(form => {
+    //   form.on("style", () => {
+    //     this.applyStyle();
+    //   })
+    // })
 
     // TODO : appliquer le changement de géom pour les autres formulaires
   }
@@ -243,7 +256,7 @@ class EditStyle extends BaseObject {
       },
       {
         label: "Conditions",
-        content: this._createConditionsContent(),
+        content: this.conditionsForm.getContent(),
       }],
       contentContainer: contentContainer,
     });
@@ -268,25 +281,12 @@ class EditStyle extends BaseObject {
   }
 
   /**
-   * Créé le contenu de l'édition de conditions.
-   * Ce dernier n'est pas créé ni affiché pour les styles par défaut
-   * 
-   * @param {EditStyleOptions} options Options du constructeur
-   * @returns {HTMLElement} Contenu de l'édition de condition
+   * Retourne le formulaire pour l'étiquette de l'objet.
+   * @returns {ConditionsForm} Formulaire pour l'étiquette
    */
-  _createConditionsContent() {
-    let div = document.createElement("div")
-
-    if (!this.getStyleObj()?.isDefault) {
-      // AJOUTER CONDITION
-      div.textContent = "Ajout de condition";
-    } else {
-      div.className = "fr-hidden";
-    }
-
-    return div;
+  getConditionsForm() {
+    return this.conditionsForm;
   }
-
 
   /**
    * Créé la preview du style
@@ -296,7 +296,6 @@ class EditStyle extends BaseObject {
     // TODO : ajouter la preview (vraie preview)
     return document.createElement("div");
   }
-
 
   /**
    * @param {StyleObj} styleObj
@@ -308,11 +307,11 @@ class EditStyle extends BaseObject {
       this.set("styleObj", styleObj);
       this.styleName.textContent = styleObj.name;
       this.setDefault(styleObj.isDefault);
-
-      // Modifie les formulaires
+      
+      // Partage le même objet : pas besoin d'envoyer des infos
+      const formStyleObj = styleObj.clone();
       this.forms.forEach(form => {
-        form.setGeom(styleObj.type);
-        form.setFlatStyle(styleObj.getFlatStyle());
+        form.styleObj = formStyleObj;
       })
 
       // N'affiche le sélecteur que sur la partie style
@@ -343,6 +342,11 @@ class EditStyle extends BaseObject {
     }
   }
 
+  getConditions() {
+    // TODO : récupérer les conditions depuis le formulaire ?
+    return this.getStyleObj().conditions;
+  }
+
   /**
    * @returns {StyleObj}
    */
@@ -356,6 +360,7 @@ class EditStyle extends BaseObject {
   setLayer(layer) {
     if (layer instanceof BaseVector || layer instanceof VectorStyle) {
       this.set("layer", layer);
+      this.getConditionsForm().layer = layer;
     }
   }
 
@@ -382,14 +387,25 @@ class EditStyle extends BaseObject {
    * @fires EditStyleEvent#save-style
    */
   applyStyle() {
-    // TODO : APPLIQUER LE STYLE À LA COUCHE (SANS ENREGISTRER ?)
-    this.dispatchEvent(new EditStyleEvent(EditStyleEventType.APPLY, this.getStyleObj(), this.getLayer()));
-    // Met à jour le styleObj
-    // TODO : AJOUTER LES AUTRES FORMULAIRES
-    this.getStyleObj().setFlatStyle(this.styleForm.getStyleObj().getFlatStyle());
+    // L'objet de style est partagé, les modifications se font donc partout
+    const editedGeomType = this.styleForm.styleObj?.type;
+    if (editedGeomType) {
+      this.getStyleObj().type = editedGeomType;
+    }
+    this.getStyleObj().setFlatStyle(this.styleForm.styleObj.getFlatStyle());
 
     const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());
-    Object.entries(ignStyle).forEach(([key, value]) => this.getLayer().setIgnStyle(key, value));
+    if (this.getStyleObj().isDefault) {
+      // Modifie le style de la couche
+      Object.entries(ignStyle).forEach(([key, value]) => this.getLayer().setIgnStyle(key, value));
+    } else {
+      // Modifie un des styles conditionnels
+      // TODO : ajouter style conditionnel
+      this.getStyleObj().conditions = this.getConditionsForm().getConditions();
+      this.getStyleObj().changed();
+    }
+
+    this.dispatchEvent(new EditStyleEvent(EditStyleEventType.APPLY, this.getStyleObj(), this.getLayer()));
 
     this.getLayer().getSource()?.changed();
   }

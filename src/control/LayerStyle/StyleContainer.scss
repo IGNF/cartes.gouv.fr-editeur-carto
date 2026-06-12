@@ -49,24 +49,29 @@
     // }
 
     [data-direction] {
-      display: inline-flex;
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
 
       &::before {
         visibility: visible;
       }
     }
   }
-}
 
-[data-direction] {
-  width: 1rem;
-  height: 1rem;
-  padding: 0;
-  color: var(--text-action-high-blue-france);
-  cursor: move;
+  [data-direction] {
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    color: var(--text-action-high-blue-france);
+    cursor: move;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
 
-  &::before {
-    visibility: hidden;
+    &::before {
+      visibility: hidden;
+    }
   }
 }
 
