@@ -158,7 +158,7 @@ class LayerStyleContainer extends BaseObject {
       // Ajoute un écouteur d'événement générique
       // Envoyé par le bouton appliquer
       let key = e.element.on("change", (e) => {
-        this.onStyleObjChange(e);
+        this._setConditionStyle(this.conditionalStyles.getArray())
       });
 
       this.stylesObjsKey[e.element.ol_uid] ??= {};
@@ -177,29 +177,6 @@ class LayerStyleContainer extends BaseObject {
     })
 
     this._createDraggableElement(this._getConditionalStylesContainer());
-  }
-
-  /**
-   * Méthode appelée au changement de l'objet styleObj
-   * @param {import("ol/events/Event.js").default} e Événement openlayer
-   */
-  onStyleObjChange(e) {
-    /** @type {StyleObj} */
-    const elem = e.target;
-    // Filtre le flatStyle pour ne garder que ce qui correspond à la géométrie
-    // const flatStyle = elem.getFlatStyle();
-    // const obj = Object.entries(flatStyle).filter(([key]) => {
-    //   const regexes = this._geomRegexProperties[elem.type];
-    //   return regexes.some((regex) => regex.test(key));
-    // });
-    // const flatStyleGeom = Object.fromEntries(obj);
-
-    // Recréé un style ignStyle
-    // const ignStyle = flatToIgnStyle(flatStyle);
-    this._setConditionStyle(this.conditionalStyles.getArray())
-
-    // Applique le style conditionnel à l'objet
-
   }
 
   /**
@@ -506,6 +483,9 @@ class LayerStyleContainer extends BaseObject {
     this.conditionalStyles.insertAt(0, styleObj);
     this._getConditionalStylesContainer().prepend(element);
     styleContainer.getElement().dataset.sortableId = this._sortableId++;
+
+    // Ouvre le conteneur de style
+    styleContainer.openStyle();
   }
 
   /**

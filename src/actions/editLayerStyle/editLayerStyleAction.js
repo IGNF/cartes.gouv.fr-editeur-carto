@@ -112,7 +112,7 @@ function onOpen(e) {
   });
 
   // Écouteur d'événement à la sauvegarde du style
-  editStyle.on("rollback-style", (/** @type {import("../../control/LayerStyle/EditStyle.js").EditStyleEvent} */ e) => {
+  editStyle.on("rollback-style", () => {
     setMainContentVisibility(true);
   });
 }

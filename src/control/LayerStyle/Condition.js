@@ -129,16 +129,19 @@ class Condition extends BaseObject {
                 return String(left ?? "").startsWith(String(right ?? ""));
             case "ENDS_WITH":
                 return String(left ?? "").endsWith(String(right ?? ""));
-            case "LIKE":
+            case "LIKE": {
                 const source = String(left ?? "").toLowerCase();
                 const pattern = String(right ?? "").toLowerCase();
                 return source.includes(pattern);
-            case "IN":
+            }
+            case "IN": {
                 const listIn = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
                 return listIn.includes(left);
-            case "NOT_IN":
+            }
+            case "NOT_IN": {
                 const listNotIn = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
                 return !listNotIn.includes(left);
+            }
             case "NOT":
                 return !this._toBoolean(left);
             default:

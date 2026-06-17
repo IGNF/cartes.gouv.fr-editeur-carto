@@ -54,6 +54,7 @@ import Collection from "ol/Collection.js";
  * Si absente, la taille par défaut dépend du mode `small`.
  * @property {Number} [margin=0] Marge de dessin autour de la géométrie
  * @property {Boolean} [small=true] Si vrai, utilise une visualisation compacte
+ * @property {Boolean} [displayText=false] Si faux, masque le texte/label de la prévisualisation
  * 
  * @property {Boolean} [clone = false] Si vrai, clone le canvas
  * @property {Boolean} [force = false] Si vrai, force l'image à se mettre à jour
@@ -64,7 +65,7 @@ import Collection from "ol/Collection.js";
  * sur un canvas
  * @param {StyleObjImageOptions} [options] Options à normaliser
  * @param {Boolean} [defaultSmall=true] Valeur small par défaut
- * @returns {{ size: Array<Number>, margin: Number, small: Boolean }} Options normalisées
+ * @returns {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }} Options normalisées
  */
 function normalizeImageOptions(options = {}, defaultSmall = true) {
   // Les valeurs par défaut dépendent du mode d'affichage (small / large).
@@ -77,16 +78,18 @@ function normalizeImageOptions(options = {}, defaultSmall = true) {
   const normalizedSmall = options.small === undefined
     ? Boolean(defaultSmall)
     : options.small !== false;
+  const normalizedDisplayText = options.displayText === true ? true : false;
   return {
     size: normalizedSize,
     margin: normalizedMargin,
     small: normalizedSmall,
+    displayText: normalizedDisplayText,
   };
 }
 
 /**
- * @param {{ size: Array<Number>, margin: Number, small: Boolean }|null} previous
- * @param {{ size: Array<Number>, margin: Number, small: Boolean }} next
+ * @param {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }|null} previous
+ * @param {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }} next
  * @returns {Boolean}
  */
 function isSameImageOptions(previous, next) {
@@ -95,6 +98,7 @@ function isSameImageOptions(previous, next) {
   }
   return previous.margin === next.margin
     && previous.small === next.small
+    && previous.displayText === next.displayText
     && previous.size[0] === next.size[0]
     && previous.size[1] === next.size[1];
 }
@@ -441,7 +445,18 @@ class StyleObj extends BaseObject {
       flatStyle["point-radius"] = 12;
     }
 
-    feature.setIgnStyle(flatToIgnStyle(flatStyle));
+    // Masque le texte si displayText est false (ne modifie pas le flatStyle permanent)
+    let styleToApply = flatStyle;
+    if (!imageOptions.displayText) {
+      styleToApply = Object.keys(flatStyle).reduce((acc, key) => {
+        if (!key.startsWith("text-")) {
+          acc[key] = flatStyle[key];
+        }
+        return acc;
+      }, {});
+    }
+
+    feature.setIgnStyle(flatToIgnStyle(styleToApply));
 
     let style = feature.getStyle();
     if (typeof style === "function") {

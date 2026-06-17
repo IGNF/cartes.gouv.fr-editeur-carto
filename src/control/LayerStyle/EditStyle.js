@@ -194,7 +194,7 @@ class EditStyle extends BaseObject {
 
       if (styleObj) {
         // Ajoute l'image
-        const keys = styleObj.on(["change:flatStyle"], () => {
+        const keys = styleObj.on(["change:flatStyle", "change:type"], () => {
           const image = styleObj.getImage({ small: true, clone: true });
           this._headerPreview.replaceWith(image);
           this._headerPreview = image;

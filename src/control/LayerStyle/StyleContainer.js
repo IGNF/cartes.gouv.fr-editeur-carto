@@ -166,6 +166,7 @@ class StyleContainer extends BaseObject {
     const title = document.createElement("span");
     title.className = `style-container__title`;
     title.textContent = this.getStyleObj()?.name;
+    title.title = this.getStyleObj()?.name
 
     const actions = this.createActionsButton();
 
@@ -186,7 +187,7 @@ class StyleContainer extends BaseObject {
   _initEvents() {
     // Modifie le conteneur au changement de nom
     this.getStyleObj().on("change:name", (e) => {
-      this.titleElement.textContent = e.target.get(e.key);
+      this.titleElement.textContent = this.titleElement.title = e.target.get(e.key);
     });
   }
 
@@ -268,7 +269,7 @@ class StyleContainer extends BaseObject {
   }
 
   /**
-   * Fonction gérant le renommage d'un style
+   * Fonction gérant l'ouverture d'un style
    */
   openStyle() {
     this.dispatchEvent(new StyleContainerEvent(StyleContainerEventType.OPEN, this.getStyleObj(), this.getLayer()));
