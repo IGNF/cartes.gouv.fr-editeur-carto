@@ -130,7 +130,7 @@ class EditStyle extends BaseObject {
 
     // Formulaire de conditions
     this.conditionsForm = new ConditionsForm({
-      
+
     });
     this.forms.push(this.conditionsForm);
   }
@@ -155,6 +155,7 @@ class EditStyle extends BaseObject {
 
     // Garde des éléments en mémoire
     this.styleName = header.querySelector(".style-title__name");
+    this._headerPreview = header.querySelector(".style-title__preview");
 
     options.visible === false && this.setVisible(false);
 
@@ -166,17 +167,41 @@ class EditStyle extends BaseObject {
    * @protected
    */
   _initEvents() {
-    // this.styleForm.on("style", () => {
-    //   console.log({property: e.property, value: e.value});
+    // // Option 1 : Modifier l'image seulement à l'ouverture du style
+    // // (i.e. pas lors de la modification du style)
+    // this.on("change:styleObj", (e) => {
+    //   /** @type {StyleObj} */
+    //   const styleObj = e.target.get(e.key);
+
+    //   if (styleObj) {
+    //     // Ajoute l'image
+    //     const keys = styleObj.on(["change:image", "change:flatStyle"], () => {
+    //       const image = styleObj.getImage({ small: true, clone: true });
+    //       this._headerPreview.replaceWith(image);
+    //       this._headerPreview = image;
+    //     });
+
+    //     // Garde les écouteurs d'événements pour pouvoir les enlever après
+    //     this.styleObjKey.push(...keys);
+    //   }
     // })
 
-    // this.forms.forEach(form => {
-    //   form.on("style", () => {
-    //     this.applyStyle();
-    //   })
-    // })
+    // Option 2 : Modifier l'image à chaque fois que le style est màj
+    this.styleForm.on("change:styleObj", (e) => {
 
-    // TODO : appliquer le changement de géom pour les autres formulaires
+      /** @type {StyleObj} */
+      const styleObj = e.target.get(e.key);
+
+      if (styleObj) {
+        // Ajoute l'image
+        const keys = styleObj.on(["change:flatStyle"], () => {
+          const image = styleObj.getImage({ small: true, clone: true });
+          this._headerPreview.replaceWith(image);
+          this._headerPreview = image;
+        });
+        this.styleObjKey.push(...keys);
+      }
+    });
   }
 
   /**
@@ -290,11 +315,11 @@ class EditStyle extends BaseObject {
 
   /**
    * Créé la preview du style
-   * @returns {HTMLElement}
+   * @returns {HTMLCanvasElement}
    */
   _createPreview() {
     // TODO : ajouter la preview (vraie preview)
-    return document.createElement("div");
+    return document.createElement("canvas");
   }
 
   /**
@@ -305,9 +330,14 @@ class EditStyle extends BaseObject {
     this.styleObjKey.forEach(key => unByKey(key));
     if (styleObj instanceof StyleObj) {
       this.set("styleObj", styleObj);
-      this.styleName.textContent = styleObj.name;
       this.setDefault(styleObj.isDefault);
-      
+
+      // Modifie le header
+      const image = styleObj.getImage({ small: true, clone: true });
+      this._headerPreview.replaceWith(image);
+      this._headerPreview = image;
+      this.styleName.textContent = styleObj.name;
+
       // Partage le même objet : pas besoin d'envoyer des infos
       const formStyleObj = styleObj.clone();
       this.forms.forEach(form => {

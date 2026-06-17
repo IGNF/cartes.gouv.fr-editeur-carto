@@ -23,6 +23,36 @@ class StyleForm extends ExtendedFlatStyleForm {
     super(options);
   }
 
+
+  /**
+   * @param {Feature|Array<Feature>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
+   * @override
+  */
+  setGeom(featureOrGeomName) {
+    super.setGeom(featureOrGeomName);
+    if (this.isSelectGeomTypeShown()) {
+      // Modifie l'option sélectionné seulement si on affiche le sélecteur
+      const select = this.header.querySelector("select");
+      const option = select.selectedOptions.item(0);
+      if (option && !this.getGeom().includes(option.value)) {
+        const geomType = this.getGeom();
+        // On modifie l'option sélectionné
+        const options = Array.from(select.options);
+        for (let i = 0; i < options.length; i++) {
+          if (options[i].value === geomType) {
+            options[i].selected = true;
+            break;
+          }
+        }
+      }
+    }
+    const type = this.getGeom()?.split(' ').at(0);
+    if (this.styleObj.type !== type) {
+      this.styleObj.type = type
+    }
+    this.updatePreview();
+  }
+
   /**
    * Méthode permettant d'ajouter des inputs directement dans une classe
    * étendue.

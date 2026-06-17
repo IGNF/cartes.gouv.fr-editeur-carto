@@ -31,6 +31,8 @@ class LabelForm extends ExtendedFlatStyleForm {
     super._initialize(options);
 
     options.generalType ??= true;
+    options.preview = false;
+    options.selectGeomType = false;
 
     // Utilisé pour l'affichage des inputs points, ligne et surface
     this.set("generalType", !!options.generalType)

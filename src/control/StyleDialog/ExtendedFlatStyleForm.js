@@ -102,6 +102,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     if (!(styleObj instanceof StyleObj)) {
       throw new SyntaxError("styleObj doit être de type StyleObj.")
     }
+    styleObj.small = false;
     this.set("styleObj", styleObj);
     this.setFlatStyle(styleObj.getFlatStyle());
     styleObj.type && this.setGeom(styleObj.type);
@@ -113,7 +114,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   updatePreview() {
     if (this.isPreviewShown()) {
       // Met à jour la preview
-      const image = this.styleObj?.getImage({ size: [72, 72], margin: 8 });
+      const image = this.styleObj?.getImage({ small: false });
       this.preview.lastChild.replaceWith(image);
     }
   }
@@ -166,38 +167,6 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    */
   isPreviewShown() {
     return this.get("showPreview");
-  }
-
-  /**
-   * 
-   * 
-   * @param {Feature|Array<Feature>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
-   * @override
-  */
-  setGeom(featureOrGeomName) {
-    super.setGeom(featureOrGeomName);
-    if (this.isSelectGeomTypeShown()) {
-      // Modifie l'option sélectionné seulement si on affiche le sélecteur
-      const select = this.header.querySelector("select");
-      const option = select.selectedOptions.item(0);
-      if (option && !this.getGeom().includes(option.value)) {
-        const geomType = this.getGeom();
-        // On modifie l'option sélectionné
-        const options = Array.from(select.options);
-        for (let i = 0; i < options.length; i++) {
-          if (options[i].value === geomType) {
-            options[i].selected = true;
-            break;
-          }
-        }
-      }
-    }
-    const type = this.getGeom()?.split(' ').at(0);
-    if (this.styleObj.type !== type) {
-      
-      this.styleObj.type = type
-      this.updatePreview();
-    }
   }
 
   /**
@@ -279,7 +248,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     let image = document.createElement("canvas");
     if ((this.styleObj instanceof StyleObj)) {
-      image = this.styleObj.getImage({ size: [72, 72], margin: 8 });
+      image = this.styleObj.getImage({ small: false });
     } else {
       image.width = 72;
       image.height = 72;

@@ -357,7 +357,7 @@ class StyleContainer extends BaseObject {
       unByKey(this._styleObjChangeKey);
       this._styleObjChangeKey = null;
     }
-
+    styleObj.small = true;
     this.set("styleObj", styleObj);
   }
 
@@ -387,7 +387,7 @@ class StyleContainer extends BaseObject {
     if (!(styleObj instanceof StyleObj)) {
       return document.createElement("canvas");
     }
-    return styleObj.getImage({ size: [48, 48], margin: 8 });
+    return styleObj.getImage({ small: true });
   }
 
   /**

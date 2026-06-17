@@ -104,7 +104,7 @@ function onOpen(e) {
 
   // Set layer
   layerContainer.setLayer(editLayerStyleAction.layer);
-  
+
   // Écouteurs d'événements
   layerContainer.on("open-style", (/** @type {import("../../control/LayerStyle/StyleContainer.js").StyleContainerEvent} */ e) => {
     setMainContentVisibility(false);
@@ -114,7 +114,6 @@ function onOpen(e) {
   // Écouteur d'événement à la sauvegarde du style
   editStyle.on("rollback-style", (/** @type {import("../../control/LayerStyle/EditStyle.js").EditStyleEvent} */ e) => {
     setMainContentVisibility(true);
-    console.log(e);
   });
 }
 
