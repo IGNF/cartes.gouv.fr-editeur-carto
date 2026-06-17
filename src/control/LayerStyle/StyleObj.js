@@ -4,6 +4,8 @@ import BaseObject from "ol/Object.js";
 import { toContext } from "ol/render.js";
 import Feature from "ol/Feature.js";
 import { LineString, Point, Polygon } from "ol/geom.js";
+
+import { extend } from 'ol/extent.js'
 import { getStyleFn } from "mcutils/style/ignStyleFn.js";
 import SelectorID from "geopf-extensions-openlayers/src/packages/Utils/SelectorID.js";
 import Collection from "ol/Collection.js";
@@ -12,6 +14,7 @@ import Collection from "ol/Collection.js";
  * @typedef {Object} StyleObjOptions
  * @property {String} name Nom du style.
  * @property {"Point"|"LineString"|"Polygon"} type Type d'objet sur lequel le style s'applique.
+ * @property {Boolean} [small=true] Si vrai, utilise une visualisation compacte
  * @property {Boolean} [default=false] Si vrai, considère que c'est un style par défaut. Sinon, permet la modification.
  * @property {StyleObjConditionOptions} [conditions] Objet contenant les conditions.
  * @property {Object} [flatStyle={}] FlatStyle correspondant à l'objet
@@ -47,8 +50,11 @@ import Collection from "ol/Collection.js";
 
 /**
  * @typedef {Object} StyleObjImageOptions
- * @property {Array<Number>} [size=[48,48]] Taille [largeur, hauteur] du canvas
+ * @property {Array<Number>} [size] Taille [largeur, hauteur] du canvas.
+ * Si absente, la taille par défaut dépend du mode `small`.
  * @property {Number} [margin=0] Marge de dessin autour de la géométrie
+ * @property {Boolean} [small=true] Si vrai, utilise une visualisation compacte
+ * @property {Boolean} [displayText=false] Si faux, masque le texte/label de la prévisualisation
  * 
  * @property {Boolean} [clone = false] Si vrai, clone le canvas
  * @property {Boolean} [force = false] Si vrai, force l'image à se mettre à jour
@@ -58,22 +64,32 @@ import Collection from "ol/Collection.js";
  * Fonction permettant de normaliser les options pour dessiner
  * sur un canvas
  * @param {StyleObjImageOptions} [options] Options à normaliser
- * @returns {{ size: Array<Number>, margin: Number }} Options normalisées
+ * @param {Boolean} [defaultSmall=true] Valeur small par défaut
+ * @returns {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }} Options normalisées
  */
-function normalizeImageOptions(options = {}) {
+function normalizeImageOptions(options = {}, defaultSmall = true) {
+  // Les valeurs par défaut dépendent du mode d'affichage (small / large).
+  const defaultSize = options.small === true ? [48, 48] : [72, 72];
+  const defaultMargin = options.small === true ? 8 : 2;
   const normalizedSize = Array.isArray(options.size) && options.size.length === 2
     ? options.size
-    : [48, 48];
-  const normalizedMargin = Number.isFinite(options.margin) ? options.margin : 0;
+    : defaultSize;
+  const normalizedMargin = Number.isFinite(options.margin) ? options.margin : defaultMargin;
+  const normalizedSmall = options.small === undefined
+    ? Boolean(defaultSmall)
+    : options.small !== false;
+  const normalizedDisplayText = options.displayText === true ? true : false;
   return {
     size: normalizedSize,
     margin: normalizedMargin,
+    small: normalizedSmall,
+    displayText: normalizedDisplayText,
   };
 }
 
 /**
- * @param {{ size: Array<Number>, margin: Number }|null} previous
- * @param {{ size: Array<Number>, margin: Number }} next
+ * @param {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }|null} previous
+ * @param {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }} next
  * @returns {Boolean}
  */
 function isSameImageOptions(previous, next) {
@@ -81,8 +97,82 @@ function isSameImageOptions(previous, next) {
     return false;
   }
   return previous.margin === next.margin
+    && previous.small === next.small
+    && previous.displayText === next.displayText
     && previous.size[0] === next.size[0]
     && previous.size[1] === next.size[1];
+}
+
+/**
+ * Calcule le centre ajusté pour un point en tenant compte de l'ancre de l'image de style,
+ * de sorte que le symbole soit centré visuellement dans le canvas.
+ * @param {Array<import("ol/style/Style.js").default>} styles
+ * @param {Number} cx Centre X de base
+ * @param {Number} cy Centre Y de base
+ * @returns {{ cx: Number, cy: Number }}
+ */
+function computeCenteredPoint(styles, cx, cy) {
+  let extent = null;
+  styles.forEach(s => {
+    const img = s.getImage?.();
+    if (img?.getAnchor) {
+      const anchor = img.getAnchor();
+      if (anchor) {
+        const si = img.getSize();
+        if (si) {
+          const dx = anchor[0] - si[0];
+          const dy = anchor[1] - si[1];
+          if (!extent) {
+            extent = [dx, dy, dx + si[0], dy + si[1]];
+          } else {
+            extend(extent, [dx, dy, dx + si[0], dy + si[1]]);
+          }
+        }
+      }
+    }
+  });
+  if (extent) {
+    return {
+      cx: cx + (extent[2] + extent[0]) / 2,
+      cy: cy + (extent[3] + extent[1]) / 2,
+    };
+  }
+  return { cx, cy };
+}
+
+/**
+ * Dessine une croix de repère centrée, similaire à un repère de grille.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Number} width
+ * @param {Number} height
+ */
+function drawGridCross(ctx, width, height) {
+  const cx = width / 2;
+  const cy = height / 2;
+  const gap = 3; // demi-espace au centre (carré vide de 6px de côté)
+  const margin = 12; // distance aux bords
+
+  ctx.save();
+  ctx.strokeStyle = "#DDDDDD";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([]);
+
+  ctx.beginPath();
+  // Trait horizontal gauche
+  ctx.moveTo(margin, cy);
+  ctx.lineTo(cx - gap, cy);
+  // Trait horizontal droit
+  ctx.moveTo(cx + gap, cy);
+  ctx.lineTo(width - margin, cy);
+  // Trait vertical haut
+  ctx.moveTo(cx, margin);
+  ctx.lineTo(cx, cy - gap);
+  // Trait vertical bas
+  ctx.moveTo(cx, cy + gap);
+  ctx.lineTo(cx, height - margin);
+  ctx.stroke();
+
+  ctx.restore();
 }
 
 /**
@@ -98,6 +188,7 @@ class StyleObj extends BaseObject {
     const {
       name,
       type,
+      small = true,
       default: isDefault = false,
       conditions = [],
       flatStyle = {},
@@ -107,7 +198,9 @@ class StyleObj extends BaseObject {
     const canvas = document.createElement("canvas");
     canvas.id = SelectorID.generate();
     this.set("image", canvas);
+    /** @private @type {{ size?: Array<Number>, margin?: Number, small?: Boolean }} */
     this._imageOptions = {};
+    this.small = small;
     this.name = name;
     this.type = type;
     this.conditions = conditions;
@@ -133,7 +226,7 @@ class StyleObj extends BaseObject {
     const type = this.type;
     this.set("type", value);
     if (type !== value) {
-      const options = Object.assign(this._imageOptions, { force: true });
+      const options = Object.assign(this._imageOptions, { force: true, small: this.small });
       this.getImage(options);
     }
   }
@@ -147,6 +240,31 @@ class StyleObj extends BaseObject {
    */
   set isDefault(value) {
     this.set("default", Boolean(value));
+  }
+
+  get small() {
+    return this.get("small") !== false;
+  }
+
+  /**
+   * @param {Boolean} value Vrai si la visualisation doit être compacte
+   */
+  set small(value) {
+    const normalized = Boolean(value);
+    const previous = this.get("small");
+    this.set("small", normalized);
+
+    if (previous !== undefined && previous !== normalized) {
+      this.getImage({ ...this._imageOptions, force: true, small: normalized });
+    }
+  }
+
+  /**
+   * Canvas interne de prévisualisation mis en cache.
+   * @returns {HTMLCanvasElement}
+   */
+  get image() {
+    return this.get("image");
   }
 
   /**
@@ -198,9 +316,10 @@ class StyleObj extends BaseObject {
       throw new TypeError("flatStyle doit être un objet");
     }
     const currentFlatStyle = this.get("flatStyle") || {};
-    this.set("flatStyle", reset ? { ...flatStyle } : { ...currentFlatStyle, ...flatStyle });
+    const result = reset ? { ...flatStyle } : { ...currentFlatStyle, ...flatStyle }
+    this.set("flatStyle", result);
 
-    const options = Object.assign(this._imageOptions, { force: true });
+    const options = Object.assign(this._imageOptions, { force: true, small: this.small });
     this.getImage(options);
   }
 
@@ -275,16 +394,15 @@ class StyleObj extends BaseObject {
   }
 
   /**
-   * Dessine (ou redessine) une représentation canvas du style courant.
-   * @param {StyleObjImageOptions} [options]
-   * @returns {HTMLCanvasElement|null}
+   * Effectue le rendu du style sur un canvas donné, sans modifier l'état de l'instance.
+   * @param {HTMLCanvasElement} canvas Canvas cible
+   * @param {{ size: Array<Number>, margin: Number, small: Boolean }} imageOptions Options normalisées
+   * @returns {HTMLCanvasElement}
+   * @private
    */
-  drawImage(options = {}) {
-    // Récupère les options de dessin pour l'image
-    const imageOptions = normalizeImageOptions(options);
+  _renderToCanvas(canvas, imageOptions) {
     const [width, height] = imageOptions.size;
     const margin = Math.max(0, imageOptions.margin);
-    const canvas = this.get("image");
 
     canvas.width = width;
     canvas.height = height;
@@ -294,8 +412,14 @@ class StyleObj extends BaseObject {
 
     const cx = width / 2;
     const cy = height / 2;
-    const sx = Math.max(1, cx - margin);
-    const sy = Math.max(1, cy - margin);
+    const isSmall = imageOptions.small;
+    const sizeFactor = isSmall ? 0.55 : 1;
+    const sx = Math.max(1, (cx - margin) * sizeFactor);
+    const sy = Math.max(1, (cy - margin) * sizeFactor);
+
+    if (!isSmall) {
+      drawGridCross(ctx, width, height);
+    }
 
     // Créé la feature
     let feature;
@@ -310,14 +434,29 @@ class StyleObj extends BaseObject {
         feature = new Feature(new Polygon([[[cx - sx, cy - sy], [cx + sx, cy - sy], [cx + sx, cy + sy], [cx - sx, cy + sy], [cx - sx, cy - sy]]]));
         break;
       default:
-        this._imageOptions = imageOptions;
-        this.set("image", canvas);
         return canvas;
     }
 
-    // Applique le flatStyle et récupère le style openlayers
+    // Applique le flatStyle puis laisse ignStyleFn fabriquer les styles OL.
     feature.setStyle(getStyleFn());
-    feature.setIgnStyle(flatToIgnStyle(this.getFlatStyle()));
+
+    const flatStyle = Object.assign({}, this.getFlatStyle());
+    if (isSmall) {
+      flatStyle["point-radius"] = 12;
+    }
+
+    // Masque le texte si displayText est false (ne modifie pas le flatStyle permanent)
+    let styleToApply = flatStyle;
+    if (!imageOptions.displayText) {
+      styleToApply = Object.keys(flatStyle).reduce((acc, key) => {
+        if (!key.startsWith("text-")) {
+          acc[key] = flatStyle[key];
+        }
+        return acc;
+      }, {});
+    }
+
+    feature.setIgnStyle(flatToIgnStyle(styleToApply));
 
     let style = feature.getStyle();
     if (typeof style === "function") {
@@ -327,6 +466,12 @@ class StyleObj extends BaseObject {
       style = [style];
     }
 
+    // En mode compact, recentre visuellement l'icône en tenant compte de son ancre.
+    if (isSmall && this.type === "Point") {
+      const centered = computeCenteredPoint(style, cx, cy);
+      feature.setGeometry(new Point([centered.cx, centered.cy]));
+    }
+
     // Dessine sur le canvas
     ctx.save();
     style.forEach(s => {
@@ -334,10 +479,22 @@ class StyleObj extends BaseObject {
       vectorContext.setStyle(s);
       vectorContext.drawGeometry(feature.getGeometry());
       ctx.restore();
-    })
-
+    });
     ctx.restore();
 
+    return canvas;
+  }
+
+  /**
+   * Dessine (ou redessine) une représentation canvas du style courant
+   * et met à jour l'état interne (cache).
+   * @param {StyleObjImageOptions} [options]
+   * @returns {HTMLCanvasElement}
+   */
+  drawImage(options = {}) {
+    const imageOptions = normalizeImageOptions(options, this.small);
+    const canvas = this.get("image");
+    this._renderToCanvas(canvas, imageOptions);
     this._imageOptions = imageOptions;
     this.set("image", canvas);
     return canvas;
@@ -345,22 +502,24 @@ class StyleObj extends BaseObject {
 
   /**
    * Retourne une représentation canvas du style courant.
+   * - Sans `clone` : retourne le canvas interne (mis en cache).
+   * - Avec `clone` : dessine dans un canvas temporaire sans modifier l'état de l'instance.
    * @param {StyleObjImageOptions} [options] Options pour l'image
-   * @returns {HTMLCanvasElement|null}
+   * @returns {HTMLCanvasElement}
    */
   getImage(options = {}) {
-    const imageOptions = normalizeImageOptions(options);
+    const imageOptions = normalizeImageOptions(options, this.small);
+
+    if (options.clone) {
+      // Rendu isolé dans un canvas temporaire : aucune mutation de l'état interne
+      const tmp = document.createElement('canvas');
+      this._renderToCanvas(tmp, imageOptions);
+      return tmp;
+    }
+
     let image = this.get("image");
     if (!image || !isSameImageOptions(this._imageOptions, imageOptions) || options.force === true) {
       image = this.drawImage(imageOptions);
-    }
-    // clone l'image
-    if (options.clone) {
-      const img = document.createElement('canvas');
-      img.width = image.width;
-      img.height = image.height;
-      img.getContext('2d').drawImage(image, 0, 0);
-      return img;
     }
     return image;
   }

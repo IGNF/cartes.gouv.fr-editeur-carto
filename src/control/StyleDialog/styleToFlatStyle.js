@@ -88,7 +88,7 @@ function flatToIgnKey(key) {
  * @returns {Array<IGNKeyValue>} Propriété et valeur associée pour le style IGN
  */
 function flatToIGNKeyValue(key, value) {
-  let result = [];
+  const result = [];
   const k = flatToIgnKey(key);
   if (k === "labelAttribute") {
     value = value.replace(/\n{1,}$/g, '');
@@ -124,7 +124,7 @@ function styleToFlatStyle(feature) {
       // Motif : modification à faire
       const pattern = st["fillPattern"];
       const angle = st["anglePattern"];
-      let name = pattern + (angle !== undefined ? `;${angle}` : "");
+      const name = pattern + (angle !== undefined ? `;${angle}` : "");
       flatStyle[key] = name;
     } else {
       flatStyle[key] = st[flatToIgn[key]];
@@ -148,14 +148,19 @@ function ignStyleToFlatStyle(ignStyle) {
       flatStyle[flatKey] = ignStyle[ignKey];
     } else {
       // Ajoute une nouvelle clé
-      let key = camelToKebabCase(ignKey);
+      const key = camelToKebabCase(ignKey);
       flatToIgn[key] = ignKey;
       ignToFlat[ignKey] = key;
-
+      
       // Ajoute aussi la valeur au style final
       flatStyle[key] = ignStyle[ignKey];
     }
   });
+  // TODO : améliorer gestion flatStyle - ign style
+  // Ajoute le fill pattern config pour bien initier le formulaire
+  if (flatStyle["fill-pattern"] && flatStyle["angle-pattern"]) {
+    flatStyle["fill-pattern-config"] = flatStyle["fill-pattern"] + (flatStyle["angle-pattern"] !== undefined ? `;${flatStyle["angle-pattern"]}` : "");
+  }
   return flatStyle;
 }
 

@@ -36,7 +36,6 @@ let createmap = new Toggle({
   className: 'action-button',
   classButton: 'fr-btn fr-btn--tertiary-no-outline',
   attributes: {
-    title: "Gérer le contenu de la carte",
     'aria-label': "Gérer le contenu de la carte",
     'data-action': Charte.modes.EDITOR,
   },
@@ -54,7 +53,6 @@ let storymap = new Toggle({
   // autoActivate: true,
   classButton: 'fr-btn fr-btn--tertiary-no-outline',
   attributes: {
-    title: "Gérer la mise en page de la carte",
     'aria-label': "Gérer la mise en page de la carte",
     'data-action': Charte.modes.STORYMAP,
   },
@@ -70,7 +68,6 @@ let save = new Button({
   classButton: `fr-btn fr-btn--tertiary-no-outline ${saveIcon}`,
   attributes: {
     type: 'button',
-    title: "Enregistrer",
     'aria-label': "Enregistrer",
     'data-action': 'save-map',
     'aria-controls': modal.getId(),
@@ -84,7 +81,6 @@ let share = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-share-2-line',
   attributes: {
     type: 'button',
-    title: "Partager",
     'aria-label': "Partager",
     'data-action': 'share-map',
     'aria-controls': modal.getId(),
@@ -99,13 +95,11 @@ carte.on("read", () => {
   if (!carte.get("id")) {
     shareBtns.forEach(share => {
       share.setDisable(true);
-      share.button_.setAttribute("title", "Enregistrez avant de partager");
       share.button_.setAttribute("aria-label", "Enregistrez avant de partager")
     });
   } else {
     shareBtns.forEach(share => {
       share.setDisable(false);
-      share.button_.setAttribute("title", "Partager");
       share.button_.setAttribute("aria-label", "Partager");
 
     });
@@ -117,7 +111,6 @@ carte.on("save", () => {
   const shareBtns = [shareMapBtn, share];
   shareBtns.forEach(share => {
     share.setDisable(false);
-    share.button_.setAttribute("title", "Partager");
     share.button_.setAttribute("aria-label", "Partager");
   });
 

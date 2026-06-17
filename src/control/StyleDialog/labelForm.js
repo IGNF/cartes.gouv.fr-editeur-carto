@@ -31,6 +31,11 @@ class LabelForm extends ExtendedFlatStyleForm {
     super._initialize(options);
 
     options.generalType ??= true;
+    options.preview = false;
+    options.selectGeomType = false;
+
+    // Utilisé pour l'affichage des inputs points, ligne et surface
+    this.set("generalType", !!options.generalType)
   }
 
   /**
@@ -41,12 +46,42 @@ class LabelForm extends ExtendedFlatStyleForm {
    * @protected
    */
   _addCustomInputs(options) {
+    this._addLabelInputs();
     if (options.generalType === false) {
       this._addLabelInputs("Point");
       this._addLabelInputs("LineString");
       this._addLabelInputs("Polygon");
+    }
+  }
+
+  /**
+   * @returns {import('../LayerStyle/StyleObj.js').default}
+   */
+  get styleObj() {
+    return super.styleObj;
+  }
+
+  /**
+   * @param {import('../LayerStyle/StyleObj.js').default} styleObj Objet styleObj
+   */
+  set styleObj(styleObj) {
+    super.styleObj = styleObj;
+    if (!styleObj?.isDefault) {
+      this.setGeom();
+    }
+  }
+
+  /**
+   * @param {import('ol/Feature.js').default|Array<import('ol/Feature.js').default>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
+   * @override Affiche l'input par défaut si pas de géométrie donné.
+  */
+  setGeom(featureOrGeomName) {
+    super.setGeom(featureOrGeomName);
+    const textElements = this.getContent().querySelectorAll("[data-property^=text]")
+    if (!this.get("generalType") && this.getGeom()) {
+      textElements.forEach(elem => elem.classList.add("fr-hidden"));
     } else {
-      this._addLabelInputs();
+      textElements.forEach(elem => elem.classList.remove("fr-hidden"));
     }
   }
 
