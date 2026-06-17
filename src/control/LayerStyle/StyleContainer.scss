@@ -68,6 +68,7 @@
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.1s ease-in-out;
+    display: flex;
 
     &::before {
       visibility: hidden;
