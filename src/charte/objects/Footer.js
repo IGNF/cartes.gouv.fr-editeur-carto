@@ -29,8 +29,8 @@ class Footer extends BaseObject {
       id: expandBtnId,
       type: 'button',
       className: 'fr-icon-arrow-up-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
-      'aria-label': 'plus d\'informations',
-      'title': 'plus d\'informations',
+      'aria-label': 'Plus d\'informations',
+      'title': 'Plus d\'informations',
       'aria-expanded': 'false',
       'aria-controls': containId,
       parent: this.element
@@ -42,9 +42,9 @@ class Footer extends BaseObject {
       containBt.classList.toggle('fr-icon-arrow-up-s-line', expanded)
       containBt.classList.toggle('fr-btn--close', !expanded)
       containBt.classList.toggle('fr-btn--icon-right', !expanded)
-      containBt.setAttribute('aria-label', expanded ? 'plus d\'informations' : 'Fermer')
+      containBt.setAttribute('aria-label', expanded ? 'Plus d\'informations' : 'Fermer')
       containBt.innerText = "Fermer";
-      containBt.setAttribute('title', expanded ? 'plus d\'informations' : 'Fermer')
+      containBt.setAttribute('title', expanded ? 'Plus d\'informations' : 'Fermer')
 
       // Scroll en bas de la page
       const top = !expanded ? document.body.scrollHeight : 0;

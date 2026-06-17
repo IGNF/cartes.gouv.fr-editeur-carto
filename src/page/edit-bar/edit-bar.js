@@ -60,7 +60,6 @@ function closeToggle(toggle) {
 let selectToggle = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line',
   attributes: {
-    title: "Sélecteur",
     'aria-label': "Sélecteur",
   },
   // interaction: carte.getSelect(),
@@ -83,7 +82,6 @@ let catalogue = new Toggle({
   attributes: {
     'data-action': 'import-catalog',
     'aria-controls': rightPanel.getId(),
-    title: "Importer une donnée depuis cartes.gouv",
     'aria-label': "Importer une donnée depuis cartes.gouv",
   },
   onToggle: onToggleAction
@@ -94,7 +92,6 @@ let file = new Toggle({
   attributes: {
     'data-action': 'import-local',
     'aria-controls': rightPanel.getId(),
-    title: "Importer une donnée locale",
     'aria-label': "Importer une donnée locale",
   },
   onToggle: onToggleAction
@@ -138,7 +135,6 @@ let measureToggle = new Toggle({
   attributes: {
     'data-action': 'measure',
     'aria-controls': rightPanel.getId(),
-    title: "Mesurer",
     'aria-label': "Mesurer",
   },
   onToggle: onToggleAction

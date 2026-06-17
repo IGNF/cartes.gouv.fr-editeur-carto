@@ -59,7 +59,7 @@ const getInstances = (element) => {
 function initContent() {
   // Formulaire racine du panneau "Titre"
   const container = document.createElement('form');
-  container.setAttribute('aria-label', 'Paramètres du titre');
+  container.setAttribute('aria-label', 'Configuration du panneau de titre');
 
   // Fieldset de contenu piloté par le toggle "Titre"
   const titleFieldset = document.createElement('fieldset');
@@ -154,7 +154,6 @@ function initContent() {
   imageToggleInput.className = 'fr-toggle__input';
   imageToggleInput.type = 'checkbox';
   imageToggleInput.id = IDS.IMAGE_TOGGLE;
-  imageToggleInput.setAttribute('aria-label', 'Image');
   imageToggleInput.setAttribute('aria-controls', IDS.IMAGE_INPUT);
 
   const imageToggleLabel = document.createElement('label');

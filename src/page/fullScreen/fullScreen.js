@@ -38,7 +38,6 @@ let fullScreenToggle = new Toggle({
   autoActivate: true,
   classButton: `fr-btn fr-btn--tertiary-no-outline ${fullScreenClass}`,
   attributes: {
-    title: "Plein écran",
     'aria-label': "Plein écran",
   },
   onToggle: onToggle
