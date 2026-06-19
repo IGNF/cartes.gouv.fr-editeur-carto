@@ -23,7 +23,6 @@ class StyleForm extends ExtendedFlatStyleForm {
     super(options);
   }
 
-
   /**
    * @param {Feature|Array<Feature>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
    * @override
@@ -50,6 +49,21 @@ class StyleForm extends ExtendedFlatStyleForm {
     if (this.styleObj.type !== type) {
       this.styleObj.type = type
     }
+
+    // Affiche les éléments correspondant aux surfaces
+    // (style par défaut seulement)
+    const strokeElements = this.getContent().querySelectorAll("[data-property^=stroke-]");
+    const fillStrokeElements = this.getContent().querySelectorAll("[data-property^=fill-stroke-]");
+    // Style par défaut : on affiche les inputs "fill-stroke..."
+    if (this.styleObj.isDefault && this.getGeom()?.split(' ').includes("Polygon")) {
+      strokeElements.forEach(elem => elem.classList.add("fr-hidden"));
+      fillStrokeElements.forEach(elem => elem.classList.remove("fr-hidden"));
+    } else {
+      // Sinon, affichage normal
+      strokeElements.forEach(elem => elem.classList.remove("fr-hidden"));
+      fillStrokeElements.forEach(elem => elem.classList.add("fr-hidden"));
+    }
+
     this.updatePreview();
   }
 
@@ -161,7 +175,7 @@ class StyleForm extends ExtendedFlatStyleForm {
       type: "number",
     });
 
-    this.addBreak('line-arrow');
+    this.addBreak('line-stroke');
     this.addInput({
       label: 'Début',
       // disabled: true,
@@ -186,6 +200,7 @@ class StyleForm extends ExtendedFlatStyleForm {
       },
       type: "arrow",
     });
+    this.addBreak('line-arrow');
   }
 
   /**
@@ -194,6 +209,30 @@ class StyleForm extends ExtendedFlatStyleForm {
    */
   _addPolygonInputs() {
     // POLYGONE //
+    this.addInput({
+      label: 'Bordure',
+      property: 'fill-stroke-line-dash',
+      options: {
+        "": "Continue",
+        "5,5": "Tiret",
+        "0,5": "Pointillé",
+        "10,5,0,5": "Tirets irréguliers",
+      },
+      type: "stroke",
+    });
+    this.addInput({
+      label: 'Couleur',
+      property: 'fill-stroke-color',
+      input: new InputColor()
+    });
+    this.addInput({
+      label: 'Taille',
+      labelInfo: '(px)',
+      property: 'fill-stroke-width',
+      type: "number",
+    });
+    this.addBreak('fill-stroke');
+
     const inputPattern = this.addInput({
       label: 'Motif',
       property: 'fill-pattern-config',

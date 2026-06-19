@@ -157,7 +157,7 @@ class LayerStyleContainer extends BaseObject {
     this.conditionalStyles.on("add", (e) => {
       // Ajoute un écouteur d'événement générique
       // Envoyé par le bouton appliquer
-      let key = e.element.on("change", (e) => {
+      let key = e.element.on("change", () => {
         this._setConditionStyle(this.conditionalStyles.getArray())
       });
 
@@ -518,18 +518,20 @@ class LayerStyleContainer extends BaseObject {
 
     // Donne le styleObj de la couche selon un type
     if (type) {
+      // Applique les valeurs par défaut pour les pointTextValue etc.
+      const textRegex = ["text-value", "text-fill-color", "text-size"];
+
       // Valeurs différentes pour chaque type
       const flatStyleType = {
         "Point": "point",
         "LineString": "line",
         "Polygon": "fill",
       };
-      const regexText = ["text-value", "text-fill-color", "text-size"];
 
-      // Applique les valeurs par défaut pour les pointTextValue etc.
-      regexText.forEach(text => {
+      textRegex.forEach(text => {
         flatStyle[`${flatStyleType[type]}-${text}`] = flatStyle[text] || '';
-      })
+      });
+
       // Filtre seulement les propriétés passant les expressions régulières
       const obj = Object.entries(flatStyle).filter(([key]) => {
         const regexes = this._geomRegexProperties[type];

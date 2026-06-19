@@ -69,8 +69,8 @@ import Collection from "ol/Collection.js";
  */
 function normalizeImageOptions(options = {}, defaultSmall = true) {
   // Les valeurs par défaut dépendent du mode d'affichage (small / large).
-  const defaultSize = options.small === true ? [48, 48] : [72, 72];
-  const defaultMargin = options.small === true ? 8 : 2;
+  const defaultSize = options.small === true ? [48, 48] : [80, 80];
+  const defaultMargin = options.small === true ? 8 : 4;
   const normalizedSize = Array.isArray(options.size) && options.size.length === 2
     ? options.size
     : defaultSize;
@@ -413,7 +413,7 @@ class StyleObj extends BaseObject {
     const cx = width / 2;
     const cy = height / 2;
     const isSmall = imageOptions.small;
-    const sizeFactor = isSmall ? 0.55 : 1;
+    const sizeFactor = isSmall ? 0.65 : 1;
     const sx = Math.max(1, (cx - margin) * sizeFactor);
     const sy = Math.max(1, (cy - margin) * sizeFactor);
 
@@ -442,7 +442,7 @@ class StyleObj extends BaseObject {
 
     const flatStyle = Object.assign({}, this.getFlatStyle());
     if (isSmall) {
-      flatStyle["point-radius"] = 12;
+      flatStyle["point-radius"] = 15;
     }
 
     // Masque le texte si displayText est false (ne modifie pas le flatStyle permanent)
@@ -456,7 +456,23 @@ class StyleObj extends BaseObject {
       }, {});
     }
 
-    feature.setIgnStyle(flatToIgnStyle(styleToApply));
+    // En preview, la feature n'a pas de layer: les alias altProperties ne s'appliquent pas.
+    // On applique localement les propriétés de bordure de surface vers les propriétés des lignes.
+    let previewFlatStyle = styleToApply;
+    if (this.type === "Polygon") {
+      previewFlatStyle = { ...styleToApply };
+      if (previewFlatStyle["fill-stroke-color"] !== undefined) {
+        previewFlatStyle["stroke-color"] = previewFlatStyle["fill-stroke-color"];
+      }
+      if (previewFlatStyle["fill-stroke-width"] !== undefined) {
+        previewFlatStyle["stroke-width"] = previewFlatStyle["fill-stroke-width"];
+      }
+      if (previewFlatStyle["fill-stroke-line-dash"] !== undefined) {
+        previewFlatStyle["stroke-line-dash"] = previewFlatStyle["fill-stroke-line-dash"];
+      }
+    }
+
+    feature.setIgnStyle(flatToIgnStyle(previewFlatStyle));
 
     let style = feature.getStyle();
     if (typeof style === "function") {
