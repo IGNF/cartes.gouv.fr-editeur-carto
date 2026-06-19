@@ -44,7 +44,7 @@ import Collection from "ol/Collection.js";
 /**
  * @typedef {Object} SingleCondition Objet décrivant une condition
  * @property {String} attr Attribut sur lequel la condition s'applique
- * @property {String} op Opérateur 
+ * @property {String} op Opérateur
  * @property {String} val Valeur avec laquelle comparer
  */
 
@@ -55,7 +55,6 @@ import Collection from "ol/Collection.js";
  * @property {Number} [margin=0] Marge de dessin autour de la géométrie
  * @property {Boolean} [small=true] Si vrai, utilise une visualisation compacte
  * @property {Boolean} [displayText=false] Si faux, masque le texte/label de la prévisualisation
- * 
  * @property {Boolean} [clone = false] Si vrai, clone le canvas
  * @property {Boolean} [force = false] Si vrai, force l'image à se mettre à jour
  */
@@ -296,7 +295,7 @@ class StyleObj extends BaseObject {
 
   /**
    * Modifie une propriété du flatStyle.
-   * 
+   *
    * @param {String} prop Propriété flatStyle
    * @param {any} value Valeur correspondante
    */
@@ -306,7 +305,7 @@ class StyleObj extends BaseObject {
 
   /**
    * Modifie le flatStyle.
-   * 
+   *
    * @param {Object} flatStyle Objet flatStyle
    * @param {Boolean} [reset=false] Si vrai, modifie l'entièreté du flatStyle.
    * Sinon, ajoute les propriétés au flatStyle actuel
@@ -365,7 +364,7 @@ class StyleObj extends BaseObject {
   }
 
   /**
-   * Ajoute une condition 
+   * Ajoute une condition
    * @param {Condition|import("./Condition.js").ConditionOptions} condition
    * Condition à ajouter
    */
@@ -474,6 +473,7 @@ class StyleObj extends BaseObject {
 
     feature.setIgnStyle(flatToIgnStyle(previewFlatStyle));
 
+    /** @type {Array<import("ol/style/Style.js").default>} */
     let style = feature.getStyle();
     if (typeof style === "function") {
       style = style(feature);
@@ -493,7 +493,7 @@ class StyleObj extends BaseObject {
     style.forEach(s => {
       ctx.save();
       vectorContext.setStyle(s);
-      vectorContext.drawGeometry(feature.getGeometry());
+      vectorContext.drawGeometry(s.getGeometry()(feature));
       ctx.restore();
     });
     ctx.restore();

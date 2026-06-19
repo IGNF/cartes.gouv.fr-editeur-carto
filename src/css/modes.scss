@@ -71,11 +71,13 @@
         max-width: 5rem;
         padding: 0;
         box-shadow: none;
+        float: left;
+        margin-right: 0.5rem;
 
         // Image par défaut en cas d'erreur / initialement
         &:not([src]),
         &[src=''] {
-          display: unset;
+          display: block;
           width: 3rem;
           height: 3rem;
           content: url('/img/alt-image.svg');
@@ -84,7 +86,6 @@
 
       // Titre
       > h1 {
-        overflow: visible;
         font-style: normal;
         color: var(--text-title-grey);
 
@@ -93,7 +94,7 @@
         line-height: 1.5rem;
 
         // >= SM : texte XL
-        @include mix.respond-from('sm') {
+        @include mix.respond-from('md') {
           font-size: 1.25rem;
           line-height: 2rem;
         }
@@ -101,12 +102,23 @@
 
       // Description
       > h2 {
-        overflow: visible;
         font-size: 0.75rem;
         font-style: normal;
         font-weight: 400;
         line-height: 1.25rem;
         color: var(--text-mention-grey);
+      }
+
+      > * {
+        text-wrap: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        // >= SM : texte XL (MD ici pour la visualisation)
+        @include mix.respond-from('md') {
+          overflow: visible;
+          text-wrap: auto;
+        }
       }
     }
 
