@@ -24,6 +24,10 @@ const flatToIgn = {
   'stroke-line-dash': 'strokeDash',
   'line-arrow-start': 'strokeArrowStart',
   'line-arrow-end': 'strokeArrow',
+  // Bordure différente pour les surfaces
+  'fill-stroke-color' : 'fillStrokeColor',
+  'fill-stroke-width' : 'fillStrokeWidth',
+  'fill-stroke-line-dash' : 'fillStrokeDash',
   'fill-color': 'fillColor',
   'fill-pattern-config': 'fillPatternConfig',
   'fill-pattern-color': 'fillColorPattern',
@@ -31,6 +35,16 @@ const flatToIgn = {
   'text-value': 'labelAttribute',
   'text-fill-color': 'textColor',
   'text-size': 'textSize',
+  // Texte à la couche
+  'point-text-value' : 'pointTextValue',
+  'line-text-value': 'lineTextValue',
+  'fill-text-value' : 'fillTextValue',
+  'point-text-fill-color' : 'pointTextFillColor',
+  'line-text-fill-color' : 'lineTextFillColor',
+  'fill-text-fill-color' : 'fillTextFillColor',
+  'point-text-size' : 'pointTextSize',
+  'line-text-size' : 'lineTextSize',
+  'fill-text-size' : 'fillTextSize',
 };
 
 /**
@@ -99,7 +113,7 @@ function flatToIGNKeyValue(key, value) {
     if (values.length) {
       result.push({ key: "anglePattern", value: values.shift() });
     }
-  } else if (k === "strokeDash") {
+  } else if (k.toLowerCase().includes("strokedash")) {
     result.push({ key: k, value: value });
   }
   else {

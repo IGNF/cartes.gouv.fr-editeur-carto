@@ -44,7 +44,7 @@ import Collection from "ol/Collection.js";
 /**
  * @typedef {Object} SingleCondition Objet décrivant une condition
  * @property {String} attr Attribut sur lequel la condition s'applique
- * @property {String} op Opérateur 
+ * @property {String} op Opérateur
  * @property {String} val Valeur avec laquelle comparer
  */
 
@@ -55,7 +55,6 @@ import Collection from "ol/Collection.js";
  * @property {Number} [margin=0] Marge de dessin autour de la géométrie
  * @property {Boolean} [small=true] Si vrai, utilise une visualisation compacte
  * @property {Boolean} [displayText=false] Si faux, masque le texte/label de la prévisualisation
- * 
  * @property {Boolean} [clone = false] Si vrai, clone le canvas
  * @property {Boolean} [force = false] Si vrai, force l'image à se mettre à jour
  */
@@ -69,8 +68,8 @@ import Collection from "ol/Collection.js";
  */
 function normalizeImageOptions(options = {}, defaultSmall = true) {
   // Les valeurs par défaut dépendent du mode d'affichage (small / large).
-  const defaultSize = options.small === true ? [48, 48] : [72, 72];
-  const defaultMargin = options.small === true ? 8 : 2;
+  const defaultSize = options.small === true ? [48, 48] : [80, 80];
+  const defaultMargin = options.small === true ? 8 : 4;
   const normalizedSize = Array.isArray(options.size) && options.size.length === 2
     ? options.size
     : defaultSize;
@@ -296,7 +295,7 @@ class StyleObj extends BaseObject {
 
   /**
    * Modifie une propriété du flatStyle.
-   * 
+   *
    * @param {String} prop Propriété flatStyle
    * @param {any} value Valeur correspondante
    */
@@ -306,7 +305,7 @@ class StyleObj extends BaseObject {
 
   /**
    * Modifie le flatStyle.
-   * 
+   *
    * @param {Object} flatStyle Objet flatStyle
    * @param {Boolean} [reset=false] Si vrai, modifie l'entièreté du flatStyle.
    * Sinon, ajoute les propriétés au flatStyle actuel
@@ -365,7 +364,7 @@ class StyleObj extends BaseObject {
   }
 
   /**
-   * Ajoute une condition 
+   * Ajoute une condition
    * @param {Condition|import("./Condition.js").ConditionOptions} condition
    * Condition à ajouter
    */
@@ -413,7 +412,7 @@ class StyleObj extends BaseObject {
     const cx = width / 2;
     const cy = height / 2;
     const isSmall = imageOptions.small;
-    const sizeFactor = isSmall ? 0.55 : 1;
+    const sizeFactor = isSmall ? 0.65 : 1;
     const sx = Math.max(1, (cx - margin) * sizeFactor);
     const sy = Math.max(1, (cy - margin) * sizeFactor);
 
@@ -442,7 +441,7 @@ class StyleObj extends BaseObject {
 
     const flatStyle = Object.assign({}, this.getFlatStyle());
     if (isSmall) {
-      flatStyle["point-radius"] = 12;
+      flatStyle["point-radius"] = 15;
     }
 
     // Masque le texte si displayText est false (ne modifie pas le flatStyle permanent)
@@ -456,8 +455,25 @@ class StyleObj extends BaseObject {
       }, {});
     }
 
-    feature.setIgnStyle(flatToIgnStyle(styleToApply));
+    // En preview, la feature n'a pas de layer: les alias altProperties ne s'appliquent pas.
+    // On applique localement les propriétés de bordure de surface vers les propriétés des lignes.
+    let previewFlatStyle = styleToApply;
+    if (this.type === "Polygon") {
+      previewFlatStyle = { ...styleToApply };
+      if (previewFlatStyle["fill-stroke-color"] !== undefined) {
+        previewFlatStyle["stroke-color"] = previewFlatStyle["fill-stroke-color"];
+      }
+      if (previewFlatStyle["fill-stroke-width"] !== undefined) {
+        previewFlatStyle["stroke-width"] = previewFlatStyle["fill-stroke-width"];
+      }
+      if (previewFlatStyle["fill-stroke-line-dash"] !== undefined) {
+        previewFlatStyle["stroke-line-dash"] = previewFlatStyle["fill-stroke-line-dash"];
+      }
+    }
 
+    feature.setIgnStyle(flatToIgnStyle(previewFlatStyle));
+
+    /** @type {Array<import("ol/style/Style.js").default>} */
     let style = feature.getStyle();
     if (typeof style === "function") {
       style = style(feature);
@@ -477,7 +493,7 @@ class StyleObj extends BaseObject {
     style.forEach(s => {
       ctx.save();
       vectorContext.setStyle(s);
-      vectorContext.drawGeometry(feature.getGeometry());
+      vectorContext.drawGeometry(s.getGeometry()(feature));
       ctx.restore();
     });
     ctx.restore();
