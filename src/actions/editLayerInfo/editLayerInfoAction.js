@@ -1,8 +1,6 @@
 import Action from '../Action.js';
-import { carte } from '../../story.js';
 import content from './editLayerInfo.html?raw';
 import { addMessage, removeMessage } from '../../utils/message.js';
-import Alert from '../../control/Alert/Alert.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
 
 /**

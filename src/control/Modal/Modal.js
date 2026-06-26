@@ -10,8 +10,8 @@ class Modal extends Dialog {
     // Ajoute un écouteur d'événement sur la fermeture de la modale
     let dsfr = window.dsfr;
     if (typeof dsfr === 'function') {
-      // Attend que le js soit chargé
-      this.getDialog().addEventListener("dsfr.conceal", (e) => {
+      this.getDialog().addEventListener("dsfr.conceal", () => {
+        // Permet d'appeler la méthode onClose
         this.close();
       });
     }
