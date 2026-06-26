@@ -211,8 +211,8 @@ class AbstractDialog extends BaseObject {
     if (options.icon) {
       this.setIcon(options.icon, this.dialogIcon);
     }
-    this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen : () => { };
-    this.onCloseFn = typeof options.onClose === 'function' ? options.onClose : () => { };
+    this.onOpenFn = typeof options.onOpen === 'function' ? options.onOpen.bind(this) : () => { };
+    this.onCloseFn = typeof options.onClose === 'function' ? options.onClose.bind(this) : () => { };
     this.on(this.selectors.CLOSE_EVENT, () => {
       this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
     });
@@ -539,7 +539,7 @@ class AbstractDialog extends BaseObject {
   setOnOpen(onOpen) {
     this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
     if (typeof onOpen === 'function') {
-      this.onOpenFn = onOpen;
+      this.onOpenFn = onOpen.bind(this);
       this.on(this.selectors.OPEN_EVENT, this.onOpenFn);
     }
   }
@@ -553,7 +553,7 @@ class AbstractDialog extends BaseObject {
   setOnClose(onClose) {
     this.un([this.selectors.CLOSE_EVENT, this.selectors.CHANGE_CONTENT], this.onCloseFn);
     if (typeof onClose === 'function') {
-      this.onCloseFn = onClose;
+      this.onCloseFn = onClose.bind(this);
       this.on(this.selectors.CLOSE_EVENT, this.onCloseFn);
       this.on(this.selectors.CHANGE_CONTENT, this.onCloseFn);
     }
@@ -561,17 +561,17 @@ class AbstractDialog extends BaseObject {
 
   onOpen(callback, once) {
     if (once) {
-      this.once(this.selectors.OPEN_EVENT, callback);
+      this.once(this.selectors.OPEN_EVENT, callback.bind(this));
     } else {
-      this.on(this.selectors.OPEN_EVENT, callback);
+      this.on(this.selectors.OPEN_EVENT, callback.bind(this));
     }
   }
 
   onClose(callback, once) {
     if (once) {
-      this.once(this.selectors.CLOSE_EVENT, callback);
+      this.once(this.selectors.CLOSE_EVENT, callback.bind(this));
     } else {
-      this.on(this.selectors.CLOSE_EVENT, callback);
+      this.on(this.selectors.CLOSE_EVENT, callback.bind(this));
     }
   }
 

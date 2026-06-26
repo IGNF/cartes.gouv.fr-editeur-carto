@@ -27,6 +27,8 @@ carte.once('read', () => {
   carte.addControl('layerSwitcher', switcher);
   carte.addControl('search', search);
   carte.getMap().getOverlayContainerStopEvent().style.cursor = "auto";
+
+  // TODO : enlever pour intégrer ça dans les extensions
   try {
     switcher.setSelectedLayer(switcher._layers[1].layer, true)
   } catch (error) {
@@ -35,7 +37,7 @@ carte.once('read', () => {
 })
 
 switcher.on(switcher.ADD_LAYER_EVENT, (e) => {
-  console.log(e)
+  console.log(e);
 })
 
 

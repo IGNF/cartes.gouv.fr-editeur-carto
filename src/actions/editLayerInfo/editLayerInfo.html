@@ -1,0 +1,50 @@
+<form id="edit-layer-info-form" action="edit-form-action">
+  <fieldset class="fr-fieldset" id="form-layer-info" aria-labelledby="form-layer-info__messages">
+    <div class="fr-fieldset__element">
+      <div class="fr-input-group">
+        <label class="fr-label" for="layer-name">Nom de la couche (obligatoire)</label>
+        <input class="fr-input" aria-describedby="layer-name__messages" name="name" id="layer-name" data-field="title"
+          autocomplete="off" type="text" required>
+        <div class="fr-messages-group" id="layer-name__messages" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="fr-fieldset__element">
+      <div class="fr-input-group">
+        <label for="layer-description" class="fr-label">
+          Description (optionnel)
+        </label>
+        <textarea class="fr-input" id="layer-description" name="description"
+          aria-describedby="layer-description__messages" data-field="description"></textarea>
+        <div class="fr-messages-group" id="layer-description__messages" aria-live="polite">
+          <p class="fr-message fr-message--info" id="layer-description-message-info">La description est visible dans les
+            informations de la couche lors du partage de la carte.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fr-fieldset__element">
+      <div class="fr-input-group">
+        <label class="fr-label" for="layer-attributions">
+          Crédits (optionnel)
+        </label>
+        <input class="fr-input" aria-describedby="layer-attributions__messages" name="attributions"
+          id="layer-attributions" data-field="attributions" type="text">
+        <div class="fr-messages-group" id="layer-attributions__messages" aria-live="polite">
+
+          <p class="fr-message fr-message--info" id="layer-attributions-message-info">Les crédits sont visibles dans les
+            informations de la couche lors du partage de la carte.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fr-fieldset__element">
+      <div class="fr-input-group">
+        <label class="fr-label" for="layer-thumbnail">
+          Vignette (optionnel)
+        </label>
+        <input class="fr-input" aria-describedby="layer-thumbnail__messages" name="thumbnail" id="layer-thumbnail"
+          data-field="thumbnail" type="url" pattern="https://.*">
+        <div class="fr-messages-group" id="layer-thumbnail__messages" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="fr-messages-group" id="form-layer-info__messages" aria-live="polite"></div>
+  </fieldset>
+</form>

@@ -11,6 +11,7 @@ import BaseEvent from 'ol/events/Event.js';
 import leftPanel from '../dialogs/leftPanel.js';
 import VectorSource from 'ol/source/Vector.js';
 import Alert from '../control/Alert/Alert.js';
+import editLayerInfoAction from '../actions/editLayerInfo/editLayerInfoAction.js';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -30,15 +31,30 @@ const switcher = new LayerSwitcher({
     ],
     advancedTools: [
       {
-        // MODIFIER BOUTON INFOS POUR OUVRIR MODALE
-        key: LayerSwitcher.switcherButtons.INFO
+        label: 'Info',
+        icon: 'fr-icon-information-line',
+        attributes: {
+          "aria-controls": modal.getId(),
+          'data-action': editLayerInfoAction.id,
+          'data-fr-opened': 'false'
+        },
+        cb: (e, instance, layer, options) => {
+          // Enregistre les informations dans l'action
+          editLayerInfoAction.layer = layer;
+
+          // Config : vient du gestionnaire de couche
+          editLayerInfoAction.options = options
+          editLayerInfoAction.layerSwitcher = instance;
+
+          Action.open(e);
+        }
       },
       {
         label: 'Style',
         icon: 'fr-icon-brush-line',
         attributes: {
           "aria-controls": leftPanel.getElement()?.id,
-          'data-action': editLayerStyleAction._id,
+          'data-action': editLayerStyleAction.id,
         },
         cb: (e, instance, layer, options) => {
           if (carte.getControl("left-panel") === undefined) {
@@ -72,16 +88,6 @@ const switcher = new LayerSwitcher({
               }, true)
             }
           }
-        }
-      },
-      {
-        label: 'Paramètres',
-        icon: 'fr-icon-settings-5-line',
-        attributes: {
-          "aria-controls": modal.getId(),
-        },
-        cb: (e, instance, layer, options) => {
-          Action.open(e);
         }
       },
     ]
