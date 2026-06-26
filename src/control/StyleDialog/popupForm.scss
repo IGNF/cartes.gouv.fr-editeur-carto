@@ -1,0 +1,15 @@
+.style-form [data-property^=popup] {
+  display: block;
+}
+
+.style-form-container .fr-select-group:has(> input[type="url"]) {
+  flex: 1 0 auto;
+}
+
+.style-form-container .fr-input-group:has(> input[type=url]) {
+  flex: 1 0 auto;
+}
+
+.style-form-container input:invalid {
+  background-color: var(--warning-975-75);
+}
