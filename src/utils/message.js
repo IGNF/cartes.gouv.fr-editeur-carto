@@ -27,7 +27,7 @@ const messageClasses = {
  * Si error est vrai, ajoute un message d'erreur.
  * Sinon, ajouter un message de succès.
  * 
- * @param {Element} input Input sur lequel ajouter le message.
+ * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} input Input sur lequel ajouter le message.
  * @param {String} message Message à ajouter.
  * @param {Object} options Options à ajouter
  * @param {Boolean} options.type Optionnel. Définit le type de message.
@@ -82,12 +82,16 @@ function addMessage(input, message, options) {
   p.classList.add('fr-message', `fr-message${msgClass}`);
   p.id = getUid(`fr-message${msgClass}`);
   p.textContent = message;
-  msg.appendChild(p)
+  msg.appendChild(p);
+
+  // Ajoute aussi à l'input en cas d'erreur
+  options.type === "error" && input.setCustomValidity(message);
 }
 
 /**
+ * Fonction permettant d'enlever un message
  * 
- * @param {Element} input Input sur lequel ajouter le message.
+ * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} input Input sur lequel ajouter le message.
  * @param {String} closest Optionnel. Définit le tag de l'élément sur lequel
  * mettre la classe d'erreur. Par défaut 'div'.
  */
@@ -102,6 +106,7 @@ function removeMessage(input, closest = 'div') {
   let elementClass = element.classList.item(0);
   const removedClass = Object.values(messageClasses);
   removedClass.forEach(k => element.classList.remove(elementClass + k));
+  input.setCustomValidity("");
 
   msg.replaceChildren();
 }
