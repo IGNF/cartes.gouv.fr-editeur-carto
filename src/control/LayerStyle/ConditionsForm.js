@@ -51,9 +51,28 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     // Enlève les anciens attributs
     this._datalist.replaceChildren();
 
+    console.log("ConditionsForm layer", layer);
+
     if (layer) {
-      // Récupère les attributs
-      const attributes = layer.getAttributes();
+      const attributes = {};
+      // Récupère les attributs du layer
+      Object.keys(layer.getAttributes()).forEach(attr => {
+        attributes[attr] = true;
+      });
+      // Ajoute les attributs des objets
+      if (layer.getSource()?.getFeatures()) {
+        const features = layer.getSource().getFeatures(); 
+        const max = Math.min(features.length, 100);
+        for (let i=0; i < max; i++) {
+          const feature = features[i];
+          Object.keys(feature.getProperties()).forEach(attr => {
+            attributes[attr] = true;
+          });
+        }
+      }
+      // Enlève la géométrie de la liste des attributs
+      delete attributes.geometry;
+      // Ajoute les attributs à la datalist
       Object.keys(attributes).forEach(attr => {
         const option = document.createElement("option");
         option.value = attr;
@@ -66,6 +85,9 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     })
   }
 
+  /** 
+   * @return {import("./StyleObj.js").default} styleObj Objet styleObj
+   */
   get styleObj() {
     return super.styleObj;
   }
