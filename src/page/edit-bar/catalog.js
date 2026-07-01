@@ -3,13 +3,14 @@ import carte from '../../carte.js';
 import Catalog from "geopf-extensions-openlayers/src/packages/Controls/Catalog/Catalog.js";
 
 // import local des layers
-import GeoportalWFS from "geopf-extensions-openlayers/src/packages/Layers/LayerWFS";
-import GeoportalWMS from "geopf-extensions-openlayers/src/packages/Layers/LayerWMS";
-import GeoportalWMTS from "geopf-extensions-openlayers/src/packages/Layers/LayerWMTS";
-import GeoportalMapBox from "geopf-extensions-openlayers/src/packages/Layers/LayerMapBox";
+import GeoportalWFS from "geopf-extensions-openlayers/src/packages/Layers/LayerWFS.js";
+import GeoportalWMS from "geopf-extensions-openlayers/src/packages/Layers/LayerWMS.js";
+import GeoportalWMTS from "geopf-extensions-openlayers/src/packages/Layers/LayerWMTS.js";
+import GeoportalMapBox from "geopf-extensions-openlayers/src/packages/Layers/LayerMapBox.js";
 
-import Config from "geopf-extensions-openlayers/src/packages/Utils/Config";
-import LayerConfig from "geopf-extensions-openlayers/src/packages/Utils/LayerConfigUtils";
+import Config from "geopf-extensions-openlayers/src/packages/Utils/Config.js";
+import LayerConfig from "geopf-extensions-openlayers/src/packages/Utils/LayerConfigUtils.js";
+import GeopfExtensionsFormat from 'mcutils/cgouv/GeopfExtensionsFormat.js';
 
 /**
  * @typedef {Object} CatalogEvent Événément envoyé lors d'un clic sur une couche du catalogue
@@ -96,7 +97,6 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
   }
   const conf = (!Config.isConfigLoaded()) ? LayerConfig.getLayerConfig(this.layersList[id]) : null;
   let layer = null;
-
   // Créé la couche correspondante
   switch (service) {
     case "WMS":
@@ -131,7 +131,17 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
 
   // Ajoute la couche à la carte
   if (layer) {
+    // Ajoute le type si présent
+    for (let i = 0; i < GeopfExtensionsFormat.validConstructors.length; i++) {
+      const [type, constructor] = GeopfExtensionsFormat.validConstructors[i];
+      if (layer instanceof constructor) {
+        layer.set("type", type);
+        break;
+      }
+    }
     const config = Object.assign({}, this.layersList[id]);
+    // Dans le cas où la personne aurait enregistrée la carte auparavant
+    // layer.set("title", config.title);
     // Ajoute les infos manquantes
     layer.config.thumbnail = config.thumbnail || "default";
     layer.config.producer = config.producer || "";
@@ -144,7 +154,7 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
 // addToMap est faux, on appelle nous même la méthode removeLayer
 catalog.on(catalog.REMOVE_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} */ e) {
   this.removeLayer(e.name, e.service);
-})
+});
 
 window.catalog = catalog;
 

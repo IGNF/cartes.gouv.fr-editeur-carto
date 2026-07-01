@@ -2,6 +2,7 @@ import Action from '../Action.js';
 import content from './editLayerInfo.html?raw';
 import { addMessage, removeMessage } from '../../utils/message.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
+import Alert from '../../control/Alert/Alert.js';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -25,11 +26,11 @@ let layer;
  * 
  * @param {import("ol/events/Event.js").default} e Événement générique openlayer
  */
-function onOpen (e) {
+function onOpen(e) {
   dialog = e.target;
   const inputs = getInstances(dialog.getDialogContent());
 
-  options = this?.action?.options;
+  options = this?.action?.options || {};
   layer = this?.action?.layer;
 
   /** @type {HTMLFormElement} */
@@ -40,6 +41,31 @@ function onOpen (e) {
   inputs.description.value = getDescription(options, layer);
   inputs.attributions.value = getAttributions(layer);
   inputs.thumbnail.value = getThumbnail(options, layer);
+
+  // Couche du catalogue
+  if (layer.config?.catalogId) {
+    // Désactive visuellement les inputs
+    setDisabled(true);
+
+    const description = getCatalogDescription(this?.action?.layerSwitcher, options, layer);
+    inputs.description.value = description;
+
+    // Ajoute une alerte au formulaire si pas présente
+    if (!form.querySelector(".fr-alert")) {
+
+      const alert = new Alert({
+        closable: false,
+        size: 'sm',
+        type: 'warning',
+        description: "Les informations des couches du catalogue ne sont pas modifiables, seulement consultable."
+      });
+
+      form.firstChild.before(alert.getElement());
+    }
+  } else {
+    form.querySelector(".fr-alert")?.remove();
+    setDisabled(false);
+  }
 
   // Écouteurs d'événements
   inputs.title.addEventListener("change", (e) => {
@@ -64,6 +90,28 @@ function onOpen (e) {
   // dans le cas où la couche est importée avec ses copyrights
   // (OSM, cartalogue etc.)
 }
+/**
+ * "Désactive" les éléments du formulaire (hors nom) et passe les inputs en readonly
+ * @param {Boolean} bool Vrai si les éléments doivent être désactivé visuellement, faux sinon
+ */
+function setDisabled(bool) {
+  // Récupère les inputs
+  const inputs = getInstances(dialog.getDialogContent());
+
+  /**
+   * Modifie l'apparence d'un input
+   * @param {HTMLInputElement|HTMLTextAreaElement} input Input à modifier
+   */
+  const setInputDisabled = (input) => {
+    input.readOnly = bool;
+    bool ? input.parentElement.classList.add("fr-input-group--disabled") : input.parentElement.classList.remove("fr-input-group--disabled")
+  }
+
+  setInputDisabled(inputs.title);
+  setInputDisabled(inputs.description);
+  setInputDisabled(inputs.attributions);
+  setInputDisabled(inputs.thumbnail);
+}
 
 /**
  * Fonction utilitaire retournant le titre de la couche
@@ -85,6 +133,81 @@ function getTitle(config, layer) {
  */
 function getDescription(config, layer) {
   return config?.description ?? layer.get("description") ?? "";
+}
+
+/**
+ * Fonction utilitaire pour extraire les liens d'un élément
+ * 
+ * @param {HTMLElement} element Élément à traiter
+ * @returns {String[]} Liste des URLs extraites
+ */
+function extractLinksFromElement(element) {
+  if (!element) return [];
+  const links = [];
+  element.querySelectorAll("a").forEach(link => {
+    if (link.href) {
+      links.push(link.href);
+    }
+  });
+  return links;
+}
+
+/**
+ * Fonction utilitaire retournant la description de la couche du catalogue
+ * 
+ * @param {import("geopf-extensions-openlayers/src/index.js").LayerSwitcher} switcher Instance layerswitcher
+ * @param {Object} layerOptions Options de la couche
+ * @returns {String} Description formatée de la couche
+ */
+function getCatalogDescription(switcher, layerOptions) {
+  // Créé l'info comme dans le panel
+  const obj = {
+    id: layerOptions.div?.id,
+    title: layerOptions.title,
+    description: layerOptions.description,
+    quicklookUrl: layerOptions.quicklookUrl,
+    metadata: layerOptions.metadata,
+    legends: layerOptions.legends
+  }
+  const div = switcher._createContainerLayerInfoElement(obj);
+
+  // Récupère les informations intéressantes
+  const quicklook = div.querySelector("[id^=GPlayerInfoQuicklook]");
+  const desc = div.querySelector("[id^=GPlayerInfoDescription]");
+  const metadata = div.querySelector("[id^=GPlayerInfoMetadata]");
+  const legend = div.querySelector("[id^=GPlayerInfoLegend]");
+
+  // Construit le contenu texte
+  const parts = [];
+
+  // Quicklook : ne pas modifier
+  if (quicklook && quicklook.textContent.trim()) {
+    parts.push(quicklook.textContent.trim());
+  }
+
+  // Description : texte simple
+  if (desc && desc.textContent.trim()) {
+    parts.push(desc.textContent.trim());
+  }
+
+  // Métadonnées : extraire les liens et les formatter
+  if (metadata && metadata.textContent.trim()) {
+    const metadataLinks = extractLinksFromElement(metadata);
+    if (metadataLinks.length > 0) {
+      parts.push("Métadonnées : " + metadataLinks.join("\n"));
+    }
+  }
+
+  // Légende : extraire les liens et les formatter
+  if (legend && legend.textContent.trim()) {
+    const legendLinks = extractLinksFromElement(legend);
+    if (legendLinks.length > 0) {
+      parts.push("Légende : " + legendLinks.join("\n"));
+    }
+  }
+
+  // Assemble les parties avec des sauts de ligne
+  return parts.join("\n\n");
 }
 
 /**
@@ -123,7 +246,7 @@ function getThumbnail(config, layer) {
 function getInstances(dialog) {
   return {
     /** @type {HTMLInputElement} */ title: dialog.querySelector("[data-field=title]"),
-    /** @type {HTMLFieldSetElement} */ description: dialog.querySelector("[data-field=description]"),
+    /** @type {HTMLTextAreaElement} */ description: dialog.querySelector("[data-field=description]"),
     /** @type {HTMLInputElement} */ attributions: dialog.querySelector("[data-field=attributions]"),
     /** @type {HTMLInputElement} */ thumbnail: dialog.querySelector("[data-field=thumbnail]"),
   };
@@ -145,7 +268,7 @@ function getErrorInputs(dialog) {
  */
 function saveInfo(e) {
   e.preventDefault();
-  
+
   // Récupère les inputs
   const inputs = getInstances(dialog.getDialogContent());
 
@@ -170,38 +293,39 @@ function saveInfo(e) {
     focusElement?.focus();
     return false;
   } else {
-    // Pas d'erreur, on enregistre
-    // Titre et description
-    layer.set("title", title);
-    layer.set("description", description);
-    
-    // Crédits / copyright : on modifie la source
-    layer.getSource()?.setAttributions(attributions);
-    layer.set("copyright", attributions);
-    
-    // Logo : passe par switcher.addLayer pour le modifier
-    const image = options.div.querySelector(".GPtitleImage");
-    layer.set("thumbnail", thumbnail);
-    layer.set("logo", thumbnail);
+    // La couche n'est pas une couche du catalogue
+    if (!layer.config?.catalogId) {
+      // Titre et description
+      layer.set("title", title);
+      layer.set("description", description);
 
-    if (thumbnail) {
-      // Modifie la source et enlève l'image par défaut
-      image.src = thumbnail;
-      image.classList.remove("GPtitleDefaultImage");
-    } else if (layer instanceof VectorStyle) {
-      // Mets l'image de dessin par défaut
-      thumbnail = "personal-drawing"
-      image.src = thumbnail;
-    } else {
-      image.removeAttribute("src");
-      image.classList.add("GPtitleDefaultImage");
-      // Image par défaut
+      // Crédits / copyright : on modifie la source
+      layer.getSource()?.setAttributions(attributions);
+      layer.set("copyright", attributions);
+
+      // Logo : passe par switcher.addLayer pour le modifier
+      const image = options.div.querySelector(".GPtitleImage");
+      layer.set("thumbnail", thumbnail);
+      layer.set("logo", thumbnail);
+
+      if (thumbnail) {
+        // Modifie la source et enlève l'image par défaut
+        image.src = thumbnail;
+        image.classList.remove("GPtitleDefaultImage");
+      } else if (layer instanceof VectorStyle) {
+        // Mets l'image de dessin par défaut
+        thumbnail = "personal-drawing"
+        image.src = thumbnail;
+      } else {
+        // Image par défaut
+        image.removeAttribute("src");
+        image.classList.add("GPtitleDefaultImage");
+      }
+      // Modifie les options de configuration du layerswitcher
+      options.title = title;
+      options.description = description;
+      options.thumbnail = thumbnail;
     }
-    
-    // Modifie les options de configuration du layerswitcher
-    options.title = title;
-    options.description = description;
-    options.thumbnail = thumbnail;
 
     // Ferme le dialogue
     dialog.close();

@@ -96,7 +96,7 @@ catalogToggle.on("change:active", function (e) {
   catalog.setCollapsed(!e?.active)
 })
 
-catalog.buttonCatalogClose.addEventListener("click", (e) => {
+catalog.buttonCatalogClose.addEventListener("click", () => {
   console.log("catalog.getCollapsed()", catalog.getCollapsed())
   catalogToggle.setActive(!catalog.getCollapsed());
   console.log("catalogToggle.getActive", catalogToggle.getActive());
