@@ -6,6 +6,7 @@ import styleDialog from '../../control/StyleDialog/styleDialog.js';
 import switcher from '../../mcutils/layerSwitcher.js';
 import VectorSource from 'ol/source/Vector.js';
 import drawToggle from "./drawToggle.js";
+import catalog from "./catalog.js";
 import charte from '../../charte/charte.js';
 
 import Action from '../../actions/Action.js';
@@ -33,7 +34,7 @@ function onToggleAction() {
     toggle !== drawToggle && toggle.setActive(false);
   }
   toggle = this;
-  let e = new CustomEvent('click', {
+  const e = new CustomEvent('click', {
     detail: {
       'target': toggle.button_,
     }
@@ -57,7 +58,7 @@ function closeToggle(toggle) {
 }
 
 // Interaction de select (revient à un état de base)
-let selectToggle = new Button({
+const selectToggle = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line',
   attributes: {
     'aria-label': "Sélecteur",
@@ -68,6 +69,7 @@ let selectToggle = new Button({
     // Ferme les panneaux au click
     rightPanel.close();
     drawToggle.getActive() && drawToggle.setActive(false);
+    !catalog.getCollapsed() && catalog.setCollapsed(true);
     !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
 
     // Réactive l'intéraction de sélection si elle est désactivée
@@ -77,17 +79,30 @@ let selectToggle = new Button({
 });
 
 // Barre ajout de donnée
-let catalogue = new Toggle({
+const catalogToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-map-2-line',
   attributes: {
-    'data-action': 'import-catalog',
-    'aria-controls': rightPanel.getId(),
     'aria-label': "Importer une donnée depuis cartes.gouv",
+    'aria-controls': catalog.getContainer()?.querySelector("dialog")?.id,
   },
-  onToggle: onToggleAction
 });
 
-let file = new Toggle({
+// Écouteur sur change:active, car onToggle n'est pas appelé via setActive
+catalogToggle.on("change:active", function (e) {
+  if (toggle && toggle !== this) {
+    toggle !== drawToggle && toggle.setActive(false);
+  }
+  toggle = this;
+  catalog.setCollapsed(!e?.active)
+})
+
+catalog.buttonCatalogClose.addEventListener("click", () => {
+  console.log("catalog.getCollapsed()", catalog.getCollapsed())
+  catalogToggle.setActive(!catalog.getCollapsed());
+  console.log("catalogToggle.getActive", catalogToggle.getActive());
+})
+
+const file = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-file-upload-line',
   attributes: {
     'data-action': 'import-local',
@@ -97,10 +112,10 @@ let file = new Toggle({
   onToggle: onToggleAction
 });
 
-let addDataBar = new Bar({
+const addDataBar = new Bar({
   toggleOne: true,
   controls: [
-    catalogue,
+    catalogToggle,
     file,
   ]
 });
@@ -130,7 +145,7 @@ switcher.on("layerswitcher:change:selected", (e) => {
 })
 
 
-let measureToggle = new Toggle({
+const measureToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-ruler-line ',
   attributes: {
     'data-action': 'measure',
@@ -141,7 +156,7 @@ let measureToggle = new Toggle({
 });
 
 // Barre d'interaction
-let interactionBar = new Bar({
+const interactionBar = new Bar({
   // toggleOne: true, // Ne fonctionne pas en liant les contrôles ol-ext et geopf 
   controls: [
     drawToggle,
@@ -150,7 +165,7 @@ let interactionBar = new Bar({
 })
 
 // Barre d'édition
-let editDataBar = new Bar({
+const editDataBar = new Bar({
   controls: [
     interactionBar,
   ]
@@ -174,7 +189,7 @@ drawToggle.on("drawend", (e) => {
   } else {
     // e.feature?.setIgnStyle(getCurrentStyle(e.feature));
     if (e.feature) {
-      // for (let st in getCurrentStyle(e.feature)) {
+      // for (const st in getCurrentStyle(e.feature)) {
       //   e.feature.setIgnStyle(st, getCurrentStyle(e.feature)[st]);
       // }
     }
@@ -194,6 +209,16 @@ drawToggle.getDialog().on("dialog:open", () => {
   !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
 })
 
+catalog.on("change:collapsed", () => {
+  if (catalog.getCollapsed() === false) {
+    // On ouvre le catalogue donc on ferme les autres
+    rightPanel.close();
+
+    !(switcher.getCollapsed()) && switcher._showLayerSwitcherButton?.click();
+    drawToggle.getActive() && drawToggle.setActive(false);
+  }
+})
+
 switcher.on("change:collapsed", () => {
   if (switcher.getCollapsed() === false) {
     // On ouvre le layerswitcher donc on ferme les autres
@@ -203,7 +228,7 @@ switcher.on("change:collapsed", () => {
 })
 
 // Barre principale
-let mainbar = new Bar({
+const mainbar = new Bar({
   className: 'ol-bar--separator edit-bar',
   toggleOne: true,
   controls: [selectToggle, addDataBar, editDataBar]
@@ -220,5 +245,6 @@ charte.on("change:mode", (e) => {
 
 carte.addControl('mainBar', mainbar)
 carte.addControl("styleDialog", styleDialog);
+carte.addControl("catalog", catalog)
 
 mainbar.setPosition('right');
