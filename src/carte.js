@@ -5,6 +5,7 @@ import { carte } from './story.js';
 import ModifyingInteraction from 'geopf-extensions-openlayers/src/packages/Interactions/Modifying.js';
 import switcher from './mcutils/layerSwitcher.js';
 import notification from './control/Notification/notification.js';
+import './mcutils/Feature.js';
 
 // Only one selction when editing features
 carte.getSelect().multi_ = false;

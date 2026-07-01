@@ -4,6 +4,7 @@
 
 import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
+import popupForm from './popupForm.js';
 import { carte } from "../../story.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
@@ -35,6 +36,7 @@ const styleDialog = new StyleDialog({
       forms.forEach(form => {
         form.setFlatStyle(flatStyle);
       });
+      popupForm.setFeature(feature);
     });
   },
   onClose: () => {
@@ -54,6 +56,11 @@ const styleDialog = new StyleDialog({
       label: "Texte",
       title: "Configuration du texte"
     },
+    {
+      form: popupForm,
+      label: "Infobulle",
+      title: "Configuration de l'infobulle"
+    }
   ],
   labelTabNav: "Navigation de configuration",
 });
@@ -69,7 +76,12 @@ styleDialog.getForms().forEach(form => {
         // Une clé peut correspondre à plusieurs clé IGN
         // D'où le fait d'avoir un forEach
         results.forEach(({ key, value }) => {
-          f.setIgnStyle(key, value);
+          if (/^popup/.test(key)) {
+            popupForm.setPopupContent(f, key, value);
+            f.showPopup(carte.popup);
+          } else {
+            f.setIgnStyle(key, value);
+          }
         })
         // Met à jour le style courant
         updateCurrentStyle(f);
