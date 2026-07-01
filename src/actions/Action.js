@@ -142,12 +142,15 @@ class Action {
     if (!dialog || !action) return;
 
     // Empêche la propagation de l'événement
-    if (action.beforeOpen() === false) {
+    if (action.beforeOpen?.() === false) {
       e?.preventDefault();
       e?.stopPropagation();
       e?.stopImmediatePropagation();
       return;
     }
+
+    // Modifie l'emitter
+    action.emitter = e.target || e.detail?.target;
 
     if (pressed === false || pressed === 'false') {
       dialog.close();
@@ -210,6 +213,19 @@ class Action {
   set items(items) {
     if (!Array.isArray(items)) return;
     this._items = items;
+  }
+
+  /** 
+   * Élément HTML ayant émis l'action
+   * @returns {HTMLElement}
+   */
+  get emitter() {
+    return this._emitter;
+  }
+
+  /** @param {HTMLElement} value */
+  set emitter(value) {
+    this._emitter = value;
   }
 
 

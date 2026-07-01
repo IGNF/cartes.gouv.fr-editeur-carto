@@ -5,7 +5,16 @@ import Dialog from '../Dialog/AbstractDialog.js';
 
 class Modal extends Dialog {
   constructor(options) {
-    super(options)
+    super(options);
+
+    // Ajoute un écouteur d'événement sur la fermeture de la modale
+    let dsfr = window.dsfr;
+    if (typeof dsfr === 'function') {
+      this.getDialog().addEventListener("dsfr.conceal", () => {
+        // Permet d'appeler la méthode onClose
+        this.close();
+      });
+    }
   }
 
   /**
@@ -24,7 +33,6 @@ class Modal extends Dialog {
     }
 
     Utils.assign(this.options, options);
-
 
     this.selectors.FOOTER = '.fr-modal__footer';
     // this.selectors.OPEN_EVENT = 'dsfr.disclose';
@@ -59,6 +67,38 @@ class Modal extends Dialog {
     // Laisse le DSFR gérer l'ouverture de la modale
   }
 
+  /**
+   * @override
+   */
+  close() {
+    // Garde la valeur de l'emitter car super.close() réinitialise l'action
+    const emitter = this.action?.emitter;
+    const actionId = this.action?.id;
+    super.close();
+    // Si un emitter est enregistré, on replace le focus dessus
+    if (emitter?.checkVisibility()) {
+      emitter?.focus();
+    } else if (actionId) {
+      // Vérifie où est le focus
+      // Tente de remettre le focus sur un élément similaire
+      let button = null;
+      /** @type {NodeListOf<HTMLButtonElement>} */
+      const dataActions = document.querySelectorAll(`[data-action=${actionId}]`);
+      for (const elem of dataActions) {
+        if (elem.checkVisibility()) {
+          button = elem;
+          break;
+        }
+      }
+      // Aucun élément trouvé, place le focus sur le bloc marianne
+      if (!button) {
+        button = document.querySelector(".fr-header__service > a");
+      }
+      button.focus();
+    } else if (document.activeElement === null) {
+      document.querySelector(".fr-header__service > a").focus();
+    }
+  }
 
   /**
    * Ajoute ou remplace la fonction lancée à l'ouverture
