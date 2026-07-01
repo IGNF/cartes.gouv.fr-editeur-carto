@@ -12,6 +12,7 @@ import leftPanel from '../dialogs/leftPanel.js';
 import VectorSource from 'ol/source/Vector.js';
 import Alert from '../control/Alert/Alert.js';
 import editLayerInfoAction from '../actions/editLayerInfo/editLayerInfoAction.js';
+import editLayerPopupAction from '../actions/editLayerPopup/editLayerPopupAction.js';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -88,6 +89,23 @@ const switcher = new LayerSwitcher({
               }, true)
             }
           }
+        }
+      },
+      {
+        label: 'Infobulle',
+        icon: 'fr-icon-chat-quote-line',
+        attributes: {
+          "aria-controls": leftPanel.getElement()?.id,
+          'data-action': editLayerPopupAction.id,
+        },
+        cb: (e, instance, layer, options) => {
+          if (carte.getControl("left-panel") === undefined) {
+            leftPanel.setTarget()
+            carte.addControl("left-panel", leftPanel);
+          }
+          carte.selectedLayer = layer;
+          editLayerPopupAction.layer = layer;
+          Action.open(e);
         }
       },
     ]

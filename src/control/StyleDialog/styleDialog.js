@@ -4,7 +4,7 @@
 
 import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
-import popupForm from './popupForm.js';
+import PopupForm from './popupForm.js';
 import { carte } from "../../story.js";
 import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
@@ -14,7 +14,7 @@ import { SelectEvent } from "ol/interaction/Select.js";
 import charte from '../../charte/charte.js';
 
 const forms = [styleForm, labelForm];
-
+const popupForm = new PopupForm({ carte: carte });
 
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new StyleDialog({
