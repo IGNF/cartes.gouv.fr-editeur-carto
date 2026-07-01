@@ -63,19 +63,21 @@ class PopupForm extends FlatStyleForm {
     });
     const url = this._addInput({
       label: "Image",
-      labelInfo: "(URL)",
+      labelInfo: "URL",
+      labelError: "L'URL doit commencer par http:// ou https://",
       property: "popup-img",
       type: "url"
     });
     const link = this._addInput({
       label: "Lien",
-      labelInfo: "(nom)",
+      labelInfo: "Nom",
       property: "popup-link",
       type: "text"
     });
     const linkurl = this._addInput({
-      label: "Lien",
-      labelInfo: "(URL)",
+      label: "",
+      labelInfo: "URL",
+      labelError: "L'URL doit commencer par http:// ou https://",
       property: "popup-url",
       type: "url"
     });
@@ -127,6 +129,17 @@ class PopupForm extends FlatStyleForm {
         labelInfo.className = "fr-hint-text";
         labelInfo.innerText = options.labelInfo;
         input.parentNode.querySelector("label").appendChild(labelInfo);
+      }
+      if (options.labelError) {
+        const labelError = document.createElement("div");
+        labelError.className = "fr-messages-group";
+        labelError.ariaLive = "assertive";
+        input.ariaDescribedby = labelError.id = input.id + "-error";
+        input.parentNode.appendChild(labelError);
+        const labelErrorTxt = document.createElement("p");
+        labelErrorTxt.className = "fr-message fr-message--error";
+        labelErrorTxt.innerText = options.labelError;
+        labelError.appendChild(labelErrorTxt);
       }
       if (type === "url") {
         input.pattern="https?://.*"

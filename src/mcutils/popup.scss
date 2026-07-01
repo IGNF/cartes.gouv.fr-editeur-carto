@@ -52,10 +52,12 @@
       height: auto;
       float: right;
       position: relative;
+      font-weight: 500;
+      font-size: 0.875rem;
+
 
       &:hover {
         text-shadow: unset;
-        font-weight: normal;
       }
       
       &:after {
