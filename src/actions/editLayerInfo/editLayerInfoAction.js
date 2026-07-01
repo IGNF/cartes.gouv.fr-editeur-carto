@@ -3,6 +3,7 @@ import content from './editLayerInfo.html?raw';
 import { addMessage, removeMessage } from '../../utils/message.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
 import Alert from '../../control/Alert/Alert.js';
+import "./editLayerInfo.scss";
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -79,7 +80,7 @@ function onOpen(e) {
 
   inputs.thumbnail.addEventListener("change", (e) => {
     if (e.target.value && !e.target.value.startsWith("https://")) {
-      addMessage(e.target, 'Le li en doit être un lien https.', { type: 'error' });
+      addMessage(e.target, 'Le lien doit être un lien https.', { type: 'error' });
       return;
     } else {
       removeMessage(e.target)
