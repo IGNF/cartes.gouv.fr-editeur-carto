@@ -1,0 +1,28 @@
+.style-form [data-property^=popup] {
+  display: block;
+
+  .fr-messages-group {
+    display: none;
+  }
+
+  input:invalid {
+    box-shadow: inset 0 -2px 0 0 var(--border-plain-error);
+  }
+  input:invalid ~ .fr-messages-group {
+    display: block;
+  }
+
+  span {
+    display: block;
+    padding-left: 0;
+  }
+}
+
+.style-form-container .fr-select-group:has(> input[type="url"]) {
+  flex: 1 0 auto;
+}
+
+.style-form-container .fr-input-group:has(> input[type=url]) {
+  flex: 1 0 auto;
+}
+
