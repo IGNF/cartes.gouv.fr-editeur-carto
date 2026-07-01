@@ -1,18 +1,17 @@
 /**
  * @file Formulaire pour le popup d'un objet
  */
-import ControlExtended from "geopf-extensions-openlayers/src/packages/Controls/Control.js";
 import FlatStyleForm from "geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js";
 import carte from "../../carte.js";
 
 import "./popupForm.scss";
 
-let currentFeature = null;
+// TODO: let currentFeature = null;
 let currentCoord = null;
 
 // Get current feature and coordinate from carte popup
 carte.on('layer:featureInfo', e => {
-  currentFeature = e.feature
+  // currentFeature = e.feature
   currentCoord = e.coordinate
 })
 
@@ -50,31 +49,31 @@ class PopupForm extends FlatStyleForm {
    * @abstract
    * @protected
    */
-  _addCustomInputs(options) {
-    const label = this._addInput({
+  _addCustomInputs(/* options */) {
+    this._addInput({
       label: "Titre",
       property: "popup-titre",
       type: "text"
     });
-    const desc = this._addInput({
+    this._addInput({
       label: "Description",
       property: "popup-desc",
       type: "textarea"
     });
-    const url = this._addInput({
+    this._addInput({
       label: "Image",
       labelInfo: "URL",
       labelError: "L'URL doit commencer par http:// ou https://",
       property: "popup-img",
       type: "url"
     });
-    const link = this._addInput({
+    this._addInput({
       label: "Lien",
       labelInfo: "Nom",
       property: "popup-link",
       type: "text"
     });
-    const linkurl = this._addInput({
+    this._addInput({
       label: "",
       labelInfo: "URL",
       labelError: "L'URL doit commencer par http:// ou https://",
