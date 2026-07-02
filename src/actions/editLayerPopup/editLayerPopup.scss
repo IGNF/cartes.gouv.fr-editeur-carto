@@ -7,4 +7,8 @@ dialog[data-action-id='edit-layer-popup'] {
   @include mix.respond-from('sm') {
     top: 4rem;
   }
+
+  .fr-alert{
+    margin-top: 1.5rem
+  }
 }
