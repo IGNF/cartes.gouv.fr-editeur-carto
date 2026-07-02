@@ -33,27 +33,20 @@
  "layers": [
   {
    "id": 1,
-   "type": "GeoportalMapBox",
-   "name": "PLAN.IGN",
-   "title": "PLAN.IGN",
+   "type": "Geoportail",
+   "name": "Plan IGN",
+   "title": "Plan IGN",
    "visibility": true,
    "opacity": 1,
+   "description": "Cartographie multi-échelles sur le territoire national, issue des bases de données vecteur de l’IGN, mis à jour régulièrement et réalisée selon un processus entièrement automatisé. Version actuellement en beta test",
    "copyright": "",
-   "selectable": true,
-   "reload": 0,
-   "reloadId": "",
    "popupContent": {},
    "grayscale": false,
    "blendMode": "",
    "minZoom": null,
    "maxZoom": null,
-   "declutter": "true",
    "crop": {},
-   "thumbnail": "https://data.geopf.fr/annexes/ressources/metadata/thumbnail/vignette-plan-ign.jpg",
-   "catalogId": "PLAN.IGN$GEOPORTAIL:GPP:TMS",
-   "producer": [
-    "INSTITUT NATIONAL DE L'INFORMATION GEOGRAPHIQUE ET FORESTIERE (IGN)"
-   ]
+   "layer": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
   },
   {
    "dessin": true,
