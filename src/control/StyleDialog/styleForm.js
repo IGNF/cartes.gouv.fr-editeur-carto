@@ -29,6 +29,7 @@ class StyleForm extends ExtendedFlatStyleForm {
   */
   setGeom(featureOrGeomName) {
     super.setGeom(featureOrGeomName);
+    //
     if (this.isSelectGeomTypeShown()) {
       // Modifie l'option sélectionné seulement si on affiche le sélecteur
       const select = this.header.querySelector("select");

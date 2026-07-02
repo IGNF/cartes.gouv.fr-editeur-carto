@@ -17,3 +17,17 @@
     }
   }
 }
+
+.style-form-container {
+  .fr-alert {
+    display: none;
+  }
+  &[data-condition-style] {
+    .style-form {
+      display: none;
+    }
+    .fr-alert {
+      display: block;
+    }
+  }
+}

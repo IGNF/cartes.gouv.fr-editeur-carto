@@ -41,11 +41,54 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       flatStyle: this.flatStyle,
     })
 
+    // Alerte pour le style au calque
+    const div = document.createElement("div");
+    div.className = "fr-alert fr-alert--warning fr-alert--small";
+    this.getContent().appendChild(div);
+
+    // Ajoute les inputs personnalisés
     this._addCustomInputs(options);
 
     // Type du formulaire
     this.setGeom(options.type);
     this._initEvents(options);
+  }
+
+  setGeom(featureOrGeomName) {
+    super.setGeom(featureOrGeomName);
+
+    delete this.getContent().dataset.conditionStyle;
+
+    // Interdire le changement de style si le style est géré par la couche (style conditionnel, statistique, etc.)
+    if (featureOrGeomName) {
+      let error = false;
+      // Is feature ?
+      const feature = featureOrGeomName.length ? featureOrGeomName[0] : featureOrGeomName;
+      // Vérifie si le style est géré par la couche
+      if (feature && feature.getLayer) {
+        // Style conditionnel
+        if (feature.getLayer().getConditionStyle().length > 0) {
+          this.showError("Le style de cette couche est paramétré par des conditions.");
+        } else if (feature.getLayer().get("type") === "Statistique") {
+          // Style statistique
+          this.showError("Le style de cette couche est paramétré par un style statistique.");
+          // TODO : bouton pour convertir un
+          //  couche statistique en couche simple
+        } else {
+          // TODO
+        }
+      } 
+    }
+  }
+
+  /** Show error message
+   * @param {String} message Message to show
+   */
+  showError(message) {
+    this.getContent().dataset.conditionStyle = '';
+    this.getContent().querySelector(".style-form-container .fr-alert").innerHTML =  `<p>
+      Le formulaire de style ne peut pas être utilisé pour modifier le style de cette couche.
+      <br/>` + message + "</p>";
   }
 
   /**
