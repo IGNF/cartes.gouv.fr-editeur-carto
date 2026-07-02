@@ -84,7 +84,7 @@ class PopupForm extends FlatStyleForm {
     ["popup-titre", "popup-desc", "popup-link"].forEach(key => {
       // Enable tab key for all inputs except the description
       if (key === "popup-desc") {
-        this.inputs[key].addEventListener("keydown", e => {
+        this.inputs[key].addEventListener("keydown", () => {
           // enable Tab key ?
           /*        
           if (e.keyCode === 9) { 
