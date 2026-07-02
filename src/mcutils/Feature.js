@@ -31,14 +31,14 @@ Feature.prototype.getPopupContent = function (options, html) {
       const div = document.createElement("div");
       div.className = "fr-popup-footer";
       div.innerHTML = link;
-      popupContent.appendChild(div);
-      const a = popupContent.querySelector(".fr-popup-footer a");
+      content.appendChild(div);
+      const a = content.querySelector(".fr-popup-footer a");
       if (a) {
         a.className = "fr-link fr-icon-arrow-right-line fr-link--icon-right";
       }
     }
   }
-  return popupContent;
+  return content;
 }
 
 
