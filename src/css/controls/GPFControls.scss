@@ -47,10 +47,31 @@ div[id^='GPlayerSwitcher-'] {
   }
 
   // Taille du dialogue (pour ne pas passer par gpf-mobile-fullscreen)
-  > button[id^='GPshowLayersListPicto'][aria-pressed='true'] + dialog[id^='GPlayersList'] {
-    width: 100vw;
-    @include mix.respond-from('sm') {
-      width: 380px;
+  > button[id^='GPshowLayersListPicto'][aria-pressed='true'] {
+    & ~ dialog[id^='GPlayersList'] {
+      width: 100vw;
+      @include mix.respond-from('sm') {
+        width: 380px;
+      }
+    }
+
+    & ~ dialog[id^='GPlayerStylePanel-'] {
+      width: 100vw;
+      left: 0;
+      transform: translate(calc(-100vw + 48px + 0.5rem), 0);
+      // transform: none;
+      @include mix.respond-from('sm') {
+        width: max-content;
+        left: unset;
+        transform: translate(calc(-100% - 2px), 0);
+      }
+      @include mix.respond-from('md') {
+        transform: translate(calc(-380px - 0.5rem), 0);
+      }
+
+      > div {
+        border-radius: 0.25rem;
+      }
     }
   }
 
@@ -58,14 +79,14 @@ div[id^='GPlayerSwitcher-'] {
   .gpf-btn-header {
     width: 16px;
     height: 16px;
-    background-image: url("../icons/stack.svg");
+    background-image: url('../icons/stack.svg');
     margin: 0 0.5rem;
     position: relative;
   }
 
   // Titre
   .gpf-panel__title_ls {
-    right:auto;
+    right: auto;
     font-size: 0.875rem;
     font-weight: 500;
     padding: 0;
@@ -110,13 +131,14 @@ div[id^='GPsearchEngine-Advanced']:has(.GPSearchEngine-advanced-btn[aria-expande
   width: 48px;
 
   &[id^='GPlayerSwitcher-'] {
+    width: 48px;
     height: 48px;
     padding: 0;
     filter: drop-shadow(var(--raised-shadow));
   }
 
   > .gpf-btn-icon {
-    padding: 4px;
+    // padding: 4px;
     width: 48px;
     height: 48px;
     transition: background-color 0.3s;
@@ -139,6 +161,27 @@ div[id^='GPlayerSwitcher-'] {
     padding: 4px;
     float: unset;
   }
+}
+
+div[id^='GPcatalog-'] {
+  // Cache le bouton
+  > button {
+    display: none;
+  }
+
+  > dialog {
+    @include mix.respond-from('sm') {
+      transform: translateX(-0.375rem) translateY(5.375rem);
+
+      .fr-modal__body {
+        border-radius: 0.25rem;
+      }
+    }
+  }
+}
+
+div[id^=position-container-] {
+  z-index: auto;
 }
 
 span.GPlayerCounter {

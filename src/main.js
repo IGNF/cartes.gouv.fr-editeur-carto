@@ -2,6 +2,7 @@ import './version.js'
 import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
+import config from "mcutils/config/config.js";
 
 import story from './story.js'
 import carte from './carte.js'
@@ -21,6 +22,17 @@ import './page/page.js'
 // Custom CSS
 import 'remixicon/fonts/remixicon.css'
 import './css/index.scss';
+
+// Connecte aux services géoportail
+import Gp from "geoportal-access-lib/dist/GpServices-src.js"
+Gp.Services.getConfig({
+  customConfigFile : config.customConfigFile,
+  timeOut : 20000,
+  onSuccess : (e) => console.log(e),
+  onFailure : (e) => {
+      console.error(e);
+  }
+});
 
 // Ajout des contrôles
 carte.once('read', () => {

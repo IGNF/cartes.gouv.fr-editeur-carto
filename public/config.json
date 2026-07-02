@@ -1,4 +1,5 @@
 {
   "server": "https://qlf-macarte.ign.fr/",
-  "viewer": "/voir-une-carte/?map=$ID"
+  "viewer": "/voir-une-carte/?map=$ID",
+  "customConfigFile": "https://raw.githubusercontent.com/IGNF/geoportal-configuration/new-url/dist/fullConfig.json"
 }

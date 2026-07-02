@@ -3,7 +3,6 @@ import './openMap/openMapAction.js';
 import './shareMap/shareMapAction.js';
 import './saveMap/saveMapAction.js';
 import './renameMap/renameMapAction.js';
-import './importCatalog/importCatalogAction.js';
 import './importLocal/importLocalAction.js';
 import './importFlow/importFlowAction.js';
 import './measure/measureAction.js';
