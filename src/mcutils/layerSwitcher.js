@@ -121,4 +121,32 @@ switcherBtn.ariaLabel = "Couches";
 switcherBtn.classList.remove('fr-btn--tertiary', 'gpf-btn--tertiary');
 switcherBtn.classList.add('gpf-btn--primary');
 
+// Modifie l'ordre des couches lors d'un repositionnement
+switcher.on("layerswitcher:change:position", (e) => {
+  const position = e.position;
+  const layer = e.layer?.layer;
+  if (position !== undefined && layer !== undefined) {
+    const collection = switcher.getMap().getLayers();
+
+    // Trouve et enlève la couche
+    // Ne passe pas par collection.insertAt etc. pour éviter les envois d'événements
+    const length = collection.getArray().length;
+    for (let i = 0; i < length; ++i) {
+      if (collection.getArray()[i] === layer) {
+        // L'ordre est inversé entre l'ordre des couches (map.getLayer())
+        // et l'ordre du layer switcher
+        const index = (length - 1 - position);
+        // Élément trouvé, on l'enlève et on insert ensuite l'élément
+        if (i !== index) {
+          // L'élément a bien été déplacé : on l'enlève et on le place autre part
+          collection.getArray().splice(i, 1);
+          // Place l'élément au bon endroit
+          collection.getArray().splice(index, 0, layer);
+        }
+        break;
+      }
+    }
+  }
+})
+
 export default switcher;
