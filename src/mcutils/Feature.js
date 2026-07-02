@@ -17,22 +17,28 @@ const getPopupContent = Feature.prototype.getPopupContent;
  * @param {boolean} [html=false] true return html string
  * @return {string|Element} popupcontent
  */
-Feature.prototype.getPopupContent = function (content, html) {
-  const popupContent = getPopupContent.call(this, content, html);
-  if (popupContent.appendChild && this._popupContent && this._popupContent.active) {
-    if (this._popupContent.link && this._popupContent.url) {
-      const link = md2html(`[${this._popupContent.link}](${this._popupContent.url})`);
+Feature.prototype.getPopupContent = function (options, html) {
+  const content = getPopupContent.call(this, options, html);
+  if (content.appendChild) {
+    let popupContent;
+    if (this._popupContent && this._popupContent.active) {
+      popupContent = this._popupContent;
+    } else {
+      popupContent = (this.getLayer() && this.getLayer().getPopupContent ? this.getLayer().getPopupContent() : '');
+    }
+    if (popupContent.link && popupContent.url) {
+      const link = md2html(`[${popupContent.link}](${popupContent.url})`);
       const div = document.createElement("div");
       div.className = "fr-popup-footer";
       div.innerHTML = link;
-      popupContent.appendChild(div);
-      const a = popupContent.querySelector(".fr-popup-footer a");
+      content.appendChild(div);
+      const a = content.querySelector(".fr-popup-footer a");
       if (a) {
         a.className = "fr-link fr-icon-arrow-right-line fr-link--icon-right";
       }
     }
   }
-  return popupContent;
+  return content;
 }
 
 

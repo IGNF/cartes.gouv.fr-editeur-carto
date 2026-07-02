@@ -1,0 +1,14 @@
+@use '../../css/mixins.scss' as mix;
+
+dialog[data-action-id='edit-layer-popup'] {
+  > .GPF-dialog__content {
+    background-color: var(--background-alt-grey);
+  }
+  @include mix.respond-from('sm') {
+    top: 4rem;
+  }
+
+  .fr-alert{
+    margin-top: 1.5rem
+  }
+}

@@ -2,18 +2,11 @@
  * @file Formulaire pour le popup d'un objet
  */
 import FlatStyleForm from "geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js";
-import carte from "../../carte.js";
 
 import "./popupForm.scss";
 
 // TODO: let currentFeature = null;
-let currentCoord = null;
-
-// Get current feature and coordinate from carte popup
-carte.on('layer:featureInfo', e => {
-  // currentFeature = e.feature
-  currentCoord = e.coordinate
-})
+let currentCoord = false;
 
 /**
  * @typedef {Object} PopupFromOptions Options pour le formulaire de style d'un objet
@@ -23,8 +16,6 @@ carte.on('layer:featureInfo', e => {
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
  * @property {Boolean} [generalType = true] Vrai par défaut. Si vrai, le type de géométrie n'influe pas sur le formulaire et seul 3 inputs sont ajoutés. Sinon, les propriétés flat-style sont précédés du type de géométrie et ne sont affichés que si le type de géométrie est donné.
  */
-
-
 class PopupForm extends FlatStyleForm {
   /**
    * @param {PopupFromOptions} options Options du constructeur
@@ -32,6 +23,15 @@ class PopupForm extends FlatStyleForm {
   constructor(options = {}) {
     super(options);
     this._addCustomInputs(options);
+    // Get current feature and coordinate from carte popup
+    this.carte = options.carte;
+    if (this.carte && currentCoord === false) {
+      currentCoord = null;
+      this.carte.on('layer:featureInfo', e => {
+        // currentFeature = e.feature
+        currentCoord = e.coordinate
+      })
+    }
   }
 
   /**
@@ -82,13 +82,34 @@ class PopupForm extends FlatStyleForm {
     });
     let tout = null;
     ["popup-titre", "popup-desc", "popup-link"].forEach(key => {
+      // Enable tab key for all inputs except the description
+      if (key === "popup-desc") {
+        this.inputs[key].addEventListener("keydown", e => {
+          // enable Tab key ?
+          /*        
+          if (e.keyCode === 9) { 
+            e.preventDefault();
+            const textarea = e.target;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            // set textarea value to: text before caret + tab + text after caret
+            textarea.value = textarea.value.substring(0, start) + "\t" + textarea.value.substring(end);
+            // put caret at right position again
+            textarea.selectGeomTypeionStart = textarea.selectionEnd = start + 1;
+          }
+          */
+        });
+      }
+      // Update feature popup content on input change
       this.inputs[key].addEventListener("input", e => {
         if (this.feature) {
           this.setPopupContent(this.feature, key, e.target.value);
-          clearTimeout(tout);
-          tout = setTimeout(() => {
-            this.feature.showPopup(carte.popup, currentCoord);
-          }, 200);
+          if (this.carte) {
+            clearTimeout(tout);
+            tout = setTimeout(() => {
+              this.feature.showPopup(this.carte.popup, currentCoord);
+            }, 200);
+          }
         }
       });
     });
@@ -166,10 +187,19 @@ class PopupForm extends FlatStyleForm {
       this.inputs['popup-' + key].value = options[key] || '';
     });
   }
+
+  /**
+   * Définit le contenu du formulaire à partir d'une feature
+   * @param {import('ol/Feature.js').default
+   */
+  setLayer(layer) {
+    this.layer = layer;
+    const options = layer?.getPopupContent() || {};
+    ['titre', 'desc', 'img', 'link', 'url'].forEach(key => {
+      this.inputs['popup-' + key].value = options[key] || '';
+    });
+  }
+
 }
 
-// Création du formulaire de popup
-const popupForm = new PopupForm();
-
-export default popupForm;
-export { PopupForm };
+export default PopupForm;
