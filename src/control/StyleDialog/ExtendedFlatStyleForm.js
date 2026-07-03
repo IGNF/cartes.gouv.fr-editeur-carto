@@ -8,6 +8,7 @@ import "./ExtendedFlatStyleForm.scss";
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
+ * @property {Boolean} [hasreset] Indique si le formulaire a un bouton de reset.
  * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`. 
  * @property {Boolean} [selectGeomType = false] Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
@@ -41,11 +42,80 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       flatStyle: this.flatStyle,
     })
 
+    // Restaure style
+    const footer = this.footer = document.createElement("div");
+    footer.className = "style-form__footer";
+    this.getContent().appendChild(footer);
+    if (options.hasreset) {
+      const btn = document.createElement("button");
+      btn.innerHTML = "Revenir au style par défaut";
+      btn.className = "fr-btn reset fr-icon-corner-up-left-fill fr-btn--icon-left fr-btn--tertiary";
+      btn.type = "button";
+      btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
+      footer.appendChild(btn);
+    }
+
+    // Alerte pour le style au calque
+    const divAlert = document.createElement("div");
+    divAlert.className = "fr-alert fr-alert--warning fr-alert--small";
+    this.getContent().appendChild(divAlert);
+
+    // Ajoute les inputs personnalisés
     this._addCustomInputs(options);
 
     // Type du formulaire
     this.setGeom(options.type);
     this._initEvents(options);
+  }
+
+  /** Get form footer
+   * @return {HTMLElement} Footer element
+   */
+  getFooter() {
+    return this.footer;
+  }
+
+  /** Get form header
+   * @return {HTMLElement} Header element
+   */
+  getHeader() {
+    return this.header;
+  }
+
+  setGeom(featureOrGeomName) {
+    super.setGeom(featureOrGeomName);
+
+    delete this.getContent().dataset.conditionStyle;
+
+    // Interdire le changement de style si le style est géré par la couche (style conditionnel, statistique, etc.)
+    if (featureOrGeomName) {
+      // Is feature ?
+      const feature = featureOrGeomName.length ? featureOrGeomName[0] : featureOrGeomName;
+      // Vérifie si le style est géré par la couche
+      if (feature && feature.getLayer) {
+        // Style conditionnel
+        if (feature.getLayer().getConditionStyle().length > 0) {
+          this.showError("Le style de cette couche est paramétré par des conditions.");
+        } else if (feature.getLayer().get("type") === "Statistique") {
+          // Style statistique
+          this.showError("Le style de cette couche est paramétré par un style statistique.");
+          // TODO : bouton pour convertir un
+          //  couche statistique en couche simple
+        } else {
+          // TODO
+        }
+      } 
+    }
+  }
+
+  /** Show error message
+   * @param {String} message Message to show
+   */
+  showError(message) {
+    this.getContent().dataset.conditionStyle = '';
+    this.getContent().querySelector(".style-form-container .fr-alert").innerHTML =  `<p>
+      Le formulaire de style ne peut pas être utilisé pour modifier le style de cette couche.
+      <br/>` + message + "</p>";
   }
 
   /**

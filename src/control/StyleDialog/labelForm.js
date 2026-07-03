@@ -149,7 +149,7 @@ class LabelForm extends ExtendedFlatStyleForm {
 }
 
 // Création du formulaire de style
-const labelForm = new LabelForm();
+const labelForm = new LabelForm({ hasreset: true });
 
 export default labelForm;
 export { LabelForm };

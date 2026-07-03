@@ -29,6 +29,7 @@ class StyleForm extends ExtendedFlatStyleForm {
   */
   setGeom(featureOrGeomName) {
     super.setGeom(featureOrGeomName);
+    //
     if (this.isSelectGeomTypeShown()) {
       // Modifie l'option sélectionné seulement si on affiche le sélecteur
       const select = this.header.querySelector("select");
@@ -289,7 +290,7 @@ class StyleForm extends ExtendedFlatStyleForm {
 }
 
 // Création du formulaire de style
-const styleForm = new StyleForm();
+const styleForm = new StyleForm({ hasreset: true });
 
 export default styleForm;
 export { StyleForm };
