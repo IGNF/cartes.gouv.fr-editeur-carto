@@ -8,6 +8,7 @@ import "./ExtendedFlatStyleForm.scss";
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
+ * @property {Boolean} [hasreset] Indique si le formulaire a un bouton de reset.
  * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`. 
  * @property {Boolean} [selectGeomType = false] Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
@@ -41,10 +42,23 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       flatStyle: this.flatStyle,
     })
 
+    // Restaure style
+    const footer = this.footer = document.createElement("div");
+    footer.className = "style-form__footer";
+    this.getContent().appendChild(footer);
+    if (options.hasreset) {
+      const btn = document.createElement("button");
+      btn.innerHTML = "Revenir au style par défaut";
+      btn.className = "fr-btn reset fr-icon-corner-up-left-fill fr-btn--icon-left fr-btn--tertiary";
+      btn.type = "button";
+      btn.addEventListener("click", e => this.dispatchEvent({ type: "reset" }));
+      footer.appendChild(btn);
+    }
+
     // Alerte pour le style au calque
-    const div = document.createElement("div");
-    div.className = "fr-alert fr-alert--warning fr-alert--small";
-    this.getContent().appendChild(div);
+    const divAlert = document.createElement("div");
+    divAlert.className = "fr-alert fr-alert--warning fr-alert--small";
+    this.getContent().appendChild(divAlert);
 
     // Ajoute les inputs personnalisés
     this._addCustomInputs(options);
@@ -52,6 +66,20 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Type du formulaire
     this.setGeom(options.type);
     this._initEvents(options);
+  }
+
+  /** Get form footer
+   * @return {HTMLElement} Footer element
+   */
+  getFooter() {
+    return this.footer;
+  }
+
+  /** Get form header
+   * @return {HTMLElement} Header element
+   */
+  getHeader() {
+    return this.header;
   }
 
   setGeom(featureOrGeomName) {

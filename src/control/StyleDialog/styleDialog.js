@@ -6,7 +6,7 @@ import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
 import PopupForm from './popupForm.js';
 import { carte } from "../../story.js";
-import { flatToIGNKeyValue, styleToFlatStyle } from './styleToFlatStyle.js';
+import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
 import "./styleDialog.scss";
@@ -15,6 +15,19 @@ import charte from '../../charte/charte.js';
 
 const forms = [styleForm, labelForm];
 const popupForm = new PopupForm({ carte: carte });
+
+// Initialise les formulaires
+const initForm = () => {
+  const feature = carte.getSelect().getFeatures().item(0);
+  // Attendre que la feature soit prête pour récupérer son style
+  setTimeout(() => {
+    const flatStyle = styleToFlatStyle(feature);
+    forms.forEach(form => {
+      form.setFlatStyle(flatStyle);
+    });
+    popupForm.setFeature(feature);
+  });
+}
 
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new StyleDialog({
@@ -28,16 +41,7 @@ const styleDialog = new StyleDialog({
       this.close();
       return;
     }
-    // Initialise les formulaires
-    const feature = carte.getSelect().getFeatures().item(0);
-    // Attendre que la feature soit prête pour récupérer son style
-    setTimeout(() => {
-      const flatStyle = styleToFlatStyle(feature);
-      forms.forEach(form => {
-        form.setFlatStyle(flatStyle);
-      });
-      popupForm.setFeature(feature);
-    });
+    initForm();
   },
   onClose: () => {
     // Déselectionne la sélection courante
@@ -67,6 +71,24 @@ const styleDialog = new StyleDialog({
 
 // Écouteurs d'événements "style" pour chaque formulaire
 styleDialog.getForms().forEach(form => {
+  form.on("reset", e => {
+    // Réinitialise le style par défaut
+    const features = carte.getSelect().getFeatures();
+    const keys = [];
+    Object.keys(form.inputs).forEach(k => keys.push(flatToIgnKey(k)));
+    const layers = {};
+    features.forEach(f => {
+      const style = f.getIgnStyle();
+      keys.forEach(key => delete style[key]);
+      f.setIgnStyle(style);
+      layers[f.getLayer()?.get("id")] = f.getLayer();
+    });
+    // Update layers
+    Object.values(layers).forEach(layer => layer.getSource().changed());
+    // Update style & form
+    updateCurrentStyle(features.item(0));
+    initForm();
+  });
   form.on("style", (e) => {
     const features = carte.getSelect().getFeatures();
     if (e.property) {

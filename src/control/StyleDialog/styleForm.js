@@ -290,7 +290,7 @@ class StyleForm extends ExtendedFlatStyleForm {
 }
 
 // Création du formulaire de style
-const styleForm = new StyleForm();
+const styleForm = new StyleForm({ hasreset: true });
 
 export default styleForm;
 export { StyleForm };
