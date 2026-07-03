@@ -51,8 +51,6 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     // Enlève les anciens attributs
     this._datalist.replaceChildren();
 
-    console.log("ConditionsForm layer", layer);
-
     if (layer) {
       const attributes = {};
       // Récupère les attributs du layer

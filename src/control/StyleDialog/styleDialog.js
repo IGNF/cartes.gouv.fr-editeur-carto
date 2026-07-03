@@ -71,11 +71,20 @@ const styleDialog = new StyleDialog({
 
 // Écouteurs d'événements "style" pour chaque formulaire
 styleDialog.getForms().forEach(form => {
-  form.on("reset", e => {
+  form.on("reset", () => {
     // Réinitialise le style par défaut
     const features = carte.getSelect().getFeatures();
     const keys = [];
-    Object.keys(form.inputs).forEach(k => keys.push(flatToIgnKey(k)));
+    Object.keys(form.inputs).forEach(k => {
+      console.log("reset", k);
+      if (k==="fill-pattern-config") {
+        keys.push("fillPattern");
+        keys.push("anglePattern");
+        keys.push("spacingPattern");
+      } else {
+        keys.push(flatToIgnKey(k));
+      }
+    });
     const layers = {};
     features.forEach(f => {
       const style = f.getIgnStyle();

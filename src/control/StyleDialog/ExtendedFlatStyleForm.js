@@ -51,7 +51,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.innerHTML = "Revenir au style par défaut";
       btn.className = "fr-btn reset fr-icon-corner-up-left-fill fr-btn--icon-left fr-btn--tertiary";
       btn.type = "button";
-      btn.addEventListener("click", e => this.dispatchEvent({ type: "reset" }));
+      btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
       footer.appendChild(btn);
     }
 
@@ -89,7 +89,6 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     // Interdire le changement de style si le style est géré par la couche (style conditionnel, statistique, etc.)
     if (featureOrGeomName) {
-      let error = false;
       // Is feature ?
       const feature = featureOrGeomName.length ? featureOrGeomName[0] : featureOrGeomName;
       // Vérifie si le style est géré par la couche

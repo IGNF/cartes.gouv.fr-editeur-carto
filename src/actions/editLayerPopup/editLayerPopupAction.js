@@ -29,7 +29,6 @@ function onOpen(e) {
   this.popupForm.setLayer(editLayerPopupAction.layer);
   const content = this.popupForm.getContent();
   const layer = editLayerPopupAction.layer
-  console.log(layer);
   if (layer && (layer instanceof VectorStyle || /WMTS|Statistique|MVT|PBF/.test(layer.get('type'))
       || (layer.getSource() && layer.getSource().getFeatureInfo && layer.get('queryable'))
   )) {
