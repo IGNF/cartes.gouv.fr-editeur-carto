@@ -13,6 +13,13 @@
     }
   }
 
+  [id^="layout-legend-item-action-"] {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.75rem;
+    background-color: var(--background-default-grey);
+  }
+
   .legend-item-list {
     background-color: var(--background-alt-grey);
     margin: 0 -1rem;

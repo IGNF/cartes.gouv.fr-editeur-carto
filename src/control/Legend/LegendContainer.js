@@ -52,15 +52,24 @@ class LegendContainer extends BaseObject {
       // Call event function on drag and drop
       onEnd: (e) => {
         if (e.oldIndex === e.newIndex) return;
-        const legend = carte.getControl('legend').getLegend().getItems();
-        const item = legend.removeAt(e.oldIndex);
-        legend.insertAt(e.newIndex, item);
+        const items = carte.getControl('legend').getLegend().getItems();
+        const item = items.removeAt(e.oldIndex);
+        items.insertAt(e.newIndex, item);
         this.content.querySelectorAll('.legend-item').forEach((elt, i) => {
           elt.dataset.sortableId = i;
         });
       }
     });
 
+    // Add legend items
+    this.content.querySelector('.add-item-btn').addEventListener('click', (e) => {
+    });
+    // Add legend title
+    this.content.querySelector('.add-title-btn').addEventListener('click', (e) => {
+      const legend = carte.getControl('legend').getLegend();
+      legend.addItem({title: 'Titre de la section'});
+      this.refreshList();
+    });
   }
 
   /** Item correspondant à un attribut
