@@ -2,12 +2,11 @@ import BaseObject from "ol/Object.js";
 import element from 'ol-ext/util/element.js';
 import Sortable from "sortablejs";
 import Legend from 'ol-ext/legend/Legend.js';
+import getUid from '../../utils/getUid.js';
 
 import './legend.scss';
 import html from './legend.html?raw';
 import itemHtml from './legend-item.html?raw';
-
-let id = 0;
 
 /**
  * @classdesc
@@ -23,7 +22,7 @@ class LegendContainer extends BaseObject {
 
     this.content = element.create('form', {
       className: 'legend',
-      html: html.replace(/-ID/g, '-' + id++),
+      html: html.replace(/-ID/g, '-' + getUid()),
       'aria-label': 'Configuration de la légende',
     });
     this.content.addEventListener("submit", (e) => {
@@ -126,7 +125,7 @@ class LegendContainer extends BaseObject {
       const elt = element.create('div', {
         className: 'legend-item' + (prop.feature ? '' : ' legend-title'),
         'data-sortable-id': i,
-        html: itemHtml.replace(/-ID/g, '-' + id++),
+        html: itemHtml.replace(/-ID/g, '-' + getUid()),
         parent: this._legendList
       });
       // Image de la légende

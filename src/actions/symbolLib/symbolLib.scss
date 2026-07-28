@@ -1,0 +1,48 @@
+.symbol-lib-item-list {
+  background-color: var(--background-alt-grey);
+  margin: 0 -1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 0;
+
+  .symbol-lib-title,
+  .symbol-lib-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.25rem;
+    height: 4.25rem;
+    background-color: var(--background-default-grey);
+    overflow: hidden;
+  }
+
+  .symbol-lib-container__mask {
+    position: absolute;
+    background-color: var(--background-default-grey);
+    inset: 0;
+    display: none;
+
+    input.fr-input {
+      height: 2.5rem;
+      max-height: unset;
+      padding: 1.9rem 1rem;
+      margin: 0.25rem;
+    }
+  }
+  .symbol-lib-item.edit .symbol-lib-container__mask {
+    display: flex;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    * {
+      color: var(--text-disabled-grey);
+    }
+    canvas {
+      opacity: 0.5;
+    }
+  }
+} 

@@ -3,6 +3,10 @@
  */
 import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import StyleObj from '../LayerStyle/StyleObj.js';
+import styleLibDialog from '../../dialogs/styleLibDialog.js';
+import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
+import Action from '../../actions/Action.js';
+
 import "./ExtendedFlatStyleForm.scss";
 
 /**
@@ -52,6 +56,16 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.className = "fr-btn reset fr-icon-corner-up-left-fill fr-btn--icon-left fr-btn--tertiary";
       btn.type = "button";
       btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
+      footer.appendChild(btn);
+    }
+    if (!options.hasSymbolLib) {
+      const btn = document.createElement("button");
+      btn.innerHTML = "Depuis la bibliothèque";
+      btn.className = "fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary";
+      btn.type = "button";
+      btn.addEventListener("click", () => {
+        Action.open(styleLibDialog, 'symbolLib');
+      });
       footer.appendChild(btn);
     }
 
