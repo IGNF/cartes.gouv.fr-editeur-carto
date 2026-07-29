@@ -1,3 +1,16 @@
+.symbol-lib-action-btns {
+  margin: 0.5rem -0.5rem 0;
+
+  button.fr-btn {
+    margin-bottom: 0;
+
+    canvas {
+      margin-left: -0.25rem;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
 .symbol-lib-item-list {
   background-color: var(--background-alt-grey);
   margin: 0 -1rem;
@@ -7,7 +20,7 @@
   padding: 1rem;
   border: 0;
 
-  .symbol-lib-title,
+  
   .symbol-lib-item {
     position: relative;
     display: flex;
@@ -17,6 +30,14 @@
     height: 4.25rem;
     background-color: var(--background-default-grey);
     overflow: hidden;
+
+    &.selected {
+      background-color: var(--background-alt-blue-france);
+
+      .symbol-lib-container__mask {
+        background-color: var(--background-alt-blue-france);
+      }
+    }
   }
 
   .symbol-lib-container__mask {
@@ -24,6 +45,7 @@
     background-color: var(--background-default-grey);
     inset: 0;
     display: none;
+    margin-left: 6.5rem;
 
     input.fr-input {
       height: 2.5rem;
@@ -32,8 +54,13 @@
       margin: 0.25rem;
     }
   }
-  .symbol-lib-item.edit .symbol-lib-container__mask {
-    display: flex;
+  .symbol-lib-item.edit {
+    .symbol-lib-container__mask {
+      display: flex;
+    }
+    .style-container__actions {
+      display: none;
+    }
   }
 
   &:disabled {

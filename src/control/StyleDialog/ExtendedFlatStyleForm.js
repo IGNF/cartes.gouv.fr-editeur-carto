@@ -64,7 +64,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.className = "fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary";
       btn.type = "button";
       btn.addEventListener("click", () => {
-        Action.open(styleLibDialog, 'symbolLib');
+        symbolLibAction.open(styleLibDialog, { styleObj: this.styleObj });
       });
       footer.appendChild(btn);
     }
