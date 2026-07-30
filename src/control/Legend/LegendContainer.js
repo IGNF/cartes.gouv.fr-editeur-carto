@@ -3,6 +3,9 @@ import element from 'ol-ext/util/element.js';
 import Sortable from "sortablejs";
 import Legend from 'ol-ext/legend/Legend.js';
 import getUid from '../../utils/getUid.js';
+import styleLibDialog from '../../dialogs/styleLibDialog.js';
+import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
+import legendItem from 'ol-ext/legend/Item.js';
 
 import './legend.scss';
 import html from './legend.html?raw';
@@ -40,6 +43,7 @@ class LegendContainer extends BaseObject {
     this.getItem('lineHeight').addEventListener('input', (e) => {
       const legend = this._story.getCarte().getControl('legend').getLegend();
       legend.set('lineHeight', parseInt(e.target.value));
+      e.preventDefault();
     });
       
     this._legendList = this.content.querySelector('.legend-item-list');
@@ -62,12 +66,24 @@ class LegendContainer extends BaseObject {
 
     // Add legend items
     this.content.querySelector('.add-item-btn').addEventListener('click', (e) => {
+      symbolLibAction.open(styleLibDialog, {
+        onSelect: (symbol) => {
+          console.log("Selected symbol:", symbol);
+          const legend = carte.getControl('legend').getLegend();
+          legend.addItem(new legendItem({
+            title: symbol.get('name') || '',
+            feature: symbol._feature.clone()
+          }))
+          this.refreshList();
+        }
+      });
     });
     // Add legend title
     this.content.querySelector('.add-title-btn').addEventListener('click', (e) => {
       const legend = carte.getControl('legend').getLegend();
       legend.addItem({title: 'Titre de la section'});
       this.refreshList();
+      e.preventDefault();
     });
   }
 

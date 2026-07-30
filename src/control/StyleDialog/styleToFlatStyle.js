@@ -102,6 +102,10 @@ function flatToIgnKey(key) {
  * @returns {Array<IGNKeyValue>} Propriété et valeur associée pour le style IGN
  */
 function flatToIGNKeyValue(key, value) {
+  if (key === "undefined") {
+    console.warn("flatToIGNKeyValue : clé undefined");
+    return [];
+  }
   const result = [];
   const k = flatToIgnKey(key);
   if (k === "labelAttribute") {

@@ -20,12 +20,12 @@
   }
  },
  "legende": {
-  "legendtitle": "Ma légende",
-  "lineHeight": 45,
+  "legendtitle": "",
+  "lineHeight": 30,
   "legendWidth": 300,
   "legendParam": {
    "width": 300,
-   "lineHeight": 45
+   "lineHeight": 30
   },
   "items": [],
   "legendVisible": false

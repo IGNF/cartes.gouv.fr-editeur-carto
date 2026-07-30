@@ -32,10 +32,11 @@ class SymbolLibAction extends Action {
    *  @param {Object} [options.styleObj] - style object to edit 
    *  @param {Collection} [options.symbolLib] - symbol library to edit (default: carte.getSymbolLib())
    */
-  open(dialog, options) {
+  open(dialog, options = {}) {
     this.styleObj = options.styleObj || null;
     this.symbolLib = options.symbolLib || carte.getSymbolLib();
     this.selectedSymbol = null;
+    this._onSelect = options.onSelect || null;
     // Open action
     Action.open(dialog, this.id);
   }
@@ -105,6 +106,14 @@ class SymbolLibAction extends Action {
           this.selectedSymbol = item;
           symbolList.querySelectorAll('.symbol-lib-item').forEach(elt => elt.classList.remove('selected'));
           elt.classList.add('selected');
+        },
+        on: {
+          dblclick: (e) => {
+            if (this._onSelect) {
+              this.getDialog().close();
+              this._onSelect(this.selectedSymbol);
+            }
+          }
         }
       });
       if (item === this.selectedSymbol) {
@@ -184,7 +193,9 @@ const symbolLibAction = new SymbolLibAction({
     kind: 1,
     close: true,
     callback: (e) => {
-      console.log("TODO : appliquer le symbole sélectionné");
+      if (symbolLibAction._onSelect && symbolLibAction.selectedSymbol) {
+        symbolLibAction._onSelect(symbolLibAction.selectedSymbol);
+      }
     }
   }]
 });

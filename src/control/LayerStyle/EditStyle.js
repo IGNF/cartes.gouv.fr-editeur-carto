@@ -130,7 +130,7 @@ class EditStyle extends BaseObject {
 
     // Formulaire de conditions
     this.conditionsForm = new ConditionsForm({
-
+      noSymbolLib: true,
     });
     this.forms.push(this.conditionsForm);
   }
