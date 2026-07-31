@@ -3,12 +3,17 @@
  */
 import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import StyleObj from '../LayerStyle/StyleObj.js';
+import styleLibDialog from '../../dialogs/styleLibDialog.js';
+import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
+
 import "./ExtendedFlatStyleForm.scss";
+import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
 
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
  * @property {Boolean} [hasreset] Indique si le formulaire a un bouton de reset.
+ * @property {Boolean} [noSymbolLib] Indique si le formulaire n'a pas de bouton pour ouvrir la bibliothèque de symboles.
  * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`. 
  * @property {Boolean} [selectGeomType = false] Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
@@ -45,7 +50,6 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Restaure style
     const footer = this.footer = document.createElement("div");
     footer.className = "style-form__footer";
-    this.getContent().appendChild(footer);
     if (options.hasreset) {
       const btn = document.createElement("button");
       btn.innerHTML = "Revenir au style par défaut";
@@ -53,6 +57,33 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.type = "button";
       btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
       footer.appendChild(btn);
+    }
+    if (!options.noSymbolLib) {
+      const btn = document.createElement("button");
+      btn.innerHTML = "Depuis la bibliothèque";
+      btn.className = "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary";
+      btn.type = "button";
+      btn.addEventListener("click", () => {
+        symbolLibAction.open(styleLibDialog, { 
+          styleObj: this.styleObj,
+          onSelect: (symbol) => {
+            const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+            this.setFlatStyle(style);
+            this.styleObj.setFlatStyle(style);
+            this.dispatchEvent({ 
+              type: "style",
+              ignStyle: symbol.getIgnStyle(),
+              flatStyle: style,
+              typeGeom: symbol.getType()
+            });
+            this.updatePreview();
+          }
+        });
+      });
+      footer.appendChild(btn);
+    }
+    if (footer.childNodes.length > 0) {
+      this.getContent().appendChild(footer);
     }
 
     // Alerte pour le style au calque
@@ -196,9 +227,14 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   setFlatStyle(flatStyle) {
     super.setFlatStyle(flatStyle);
 
+    const styleo = this.styleObj.get('flatStyle')
+    Object.keys(styleo).forEach(key => {
+      styleo[key] = flatStyle[key];
+    });
+    
     if (this.isPreviewShown()) {
       // Modifie le styleObj
-      this.styleObj.setFlatStyle(this.flatStyle, true);
+      this.styleObj.setFlatStyle(flatStyle, true);
       this.updatePreview();
     }
   }

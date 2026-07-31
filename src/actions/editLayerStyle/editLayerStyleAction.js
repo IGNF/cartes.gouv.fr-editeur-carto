@@ -112,7 +112,7 @@ function onOpen(e) {
   });
 
   // Écouteur d'événement à la sauvegarde du style
-  editStyle.on("rollback-style", () => {
+  editStyle.on(["rollback-style", "apply-style"], () => {
     setMainContentVisibility(true);
   });
 }

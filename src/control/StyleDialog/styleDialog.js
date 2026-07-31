@@ -76,7 +76,6 @@ styleDialog.getForms().forEach(form => {
     const features = carte.getSelect().getFeatures();
     const keys = [];
     Object.keys(form.inputs).forEach(k => {
-      console.log("reset", k);
       if (k==="fill-pattern-config") {
         keys.push("fillPattern");
         keys.push("anglePattern");
@@ -119,8 +118,17 @@ styleDialog.getForms().forEach(form => {
         f.changed();
       });
     } else {
-      /* TODO: Appliquer le style à la ou les features sélectionnées */
-      console.log('changer le style ?', e);
+      // Appliquer le style à la ou les features sélectionnées 
+      features.forEach(f => {
+        if (e.typeGeom) {
+          const rex = new RegExp(e.typeGeom);
+          if (!rex.test(f.getGeometry().getType())) return;
+        } 
+        f.setIgnStyle(e.ignStyle);
+        // Met à jour le style courant
+        updateCurrentStyle(f);
+        f.changed();
+      });
     }
   })
 })

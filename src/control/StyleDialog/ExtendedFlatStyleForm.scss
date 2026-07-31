@@ -40,6 +40,11 @@
     margin-top: 0.75rem;
     display: flex;
     justify-content: flex-end;
+    flex-direction: column;
+
+    button {
+      margin-left: auto;
+    }
 
     &:empty {
       display: none;

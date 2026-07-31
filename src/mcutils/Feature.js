@@ -41,5 +41,4 @@ Feature.prototype.getPopupContent = function (options, html) {
   return content;
 }
 
-
 export default Feature;

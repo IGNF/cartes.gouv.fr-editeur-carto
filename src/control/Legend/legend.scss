@@ -67,8 +67,13 @@
         max-height: 3.75rem;
       }
     }
-    .legend-item.edit .legend-container__mask {
-      display: flex;
+    .legend-item.edit {
+      .legend-container__mask {
+        display: flex;
+      }
+      .style-container__actions {
+        display: none;
+      }
     }
 
     &:disabled {

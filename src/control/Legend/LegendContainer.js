@@ -2,12 +2,15 @@ import BaseObject from "ol/Object.js";
 import element from 'ol-ext/util/element.js';
 import Sortable from "sortablejs";
 import Legend from 'ol-ext/legend/Legend.js';
+import getUid from '../../utils/getUid.js';
+import styleLibDialog from '../../dialogs/styleLibDialog.js';
+import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
+import legendItem from 'ol-ext/legend/Item.js';
+import carte from '../../carte.js';
 
 import './legend.scss';
 import html from './legend.html?raw';
 import itemHtml from './legend-item.html?raw';
-
-let id = 0;
 
 /**
  * @classdesc
@@ -23,7 +26,7 @@ class LegendContainer extends BaseObject {
 
     this.content = element.create('form', {
       className: 'legend',
-      html: html.replace(/-ID/g, '-' + id++),
+      html: html.replace(/-ID/g, '-' + getUid()),
       'aria-label': 'Configuration de la légende',
     });
     this.content.addEventListener("submit", (e) => {
@@ -41,6 +44,7 @@ class LegendContainer extends BaseObject {
     this.getItem('lineHeight').addEventListener('input', (e) => {
       const legend = this._story.getCarte().getControl('legend').getLegend();
       legend.set('lineHeight', parseInt(e.target.value));
+      e.preventDefault();
     });
       
     this._legendList = this.content.querySelector('.legend-item-list');
@@ -62,13 +66,24 @@ class LegendContainer extends BaseObject {
     });
 
     // Add legend items
-    this.content.querySelector('.add-item-btn').addEventListener('click', (e) => {
+    this.content.querySelector('.add-item-btn').addEventListener('click', () => {
+      symbolLibAction.open(styleLibDialog, {
+        onSelect: (symbol) => {
+          const legend = carte.getControl('legend').getLegend();
+          legend.addItem(new legendItem({
+            title: symbol.get('name') || '',
+            feature: symbol._feature.clone()
+          }))
+          this.refreshList();
+        }
+      });
     });
     // Add legend title
     this.content.querySelector('.add-title-btn').addEventListener('click', (e) => {
       const legend = carte.getControl('legend').getLegend();
       legend.addItem({title: 'Titre de la section'});
       this.refreshList();
+      e.preventDefault();
     });
   }
 
@@ -126,7 +141,7 @@ class LegendContainer extends BaseObject {
       const elt = element.create('div', {
         className: 'legend-item' + (prop.feature ? '' : ' legend-title'),
         'data-sortable-id': i,
-        html: itemHtml.replace(/-ID/g, '-' + id++),
+        html: itemHtml.replace(/-ID/g, '-' + getUid()),
         parent: this._legendList
       });
       // Image de la légende
@@ -138,28 +153,37 @@ class LegendContainer extends BaseObject {
       const title = (item.get('title') || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/, '<br/>');
       elt.querySelector('[data-attr="title"]').innerHTML = title;
       // delete button
-      elt.querySelector('.delete-legend-btn').addEventListener('click', (e) => {
+      elt.querySelector('.delete-legend-item-btn').addEventListener('click', () => {
         legend.getItems().removeAt(elt.dataset.sortableId);
         this.refreshList();
       });
       // edit button
-      elt.querySelector('.edit-legend-name-btn').addEventListener('click', (e) => {
+      elt.querySelector('.edit-legend-name-btn').addEventListener('click', () => {
         elt.classList.add('edit');
         elt.querySelector('.legend-container__mask textarea').value = item.get('title') || '';
         elt.querySelector('.legend-container__mask textarea').focus();
       });
-      elt.querySelector('.cancel-legend-name-btn').addEventListener('click', (e) => {
+      elt.querySelector('.cancel-legend-name-btn').addEventListener('click', () => {
         elt.classList.remove('edit');
       });
-      elt.querySelector('.validate-legend-name-btn').addEventListener('click', (e) => {
+      elt.querySelector('.validate-legend-name-btn').addEventListener('click', () => {
         elt.classList.remove('edit');
         item.setTitle(elt.querySelector('.legend-container__mask textarea').value);
         const title = (item.get('title') || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/, '<br/>');
         elt.querySelector('[data-attr="title"]').innerHTML = title;
       });
+      // Update button
+      elt.querySelector('.update-legend-item-btn').addEventListener('click', () => {
+        symbolLibAction.open(styleLibDialog, {        
+          onSelect: (symbol) => {
+            item.set('feature', symbol._feature.clone());
+            this.refreshList();
+          }
+        });
+      });
       // Boutons de déplacement
       elt.querySelectorAll('[data-direction]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
           const items = legend.getItems();
           const inc = btn.dataset.direction === 'up' ? -1 : 1;
           const oldIndex = parseInt(elt.dataset.sortableId);
