@@ -1,9 +1,7 @@
 import Action from '../../actions/Action.js';
 import content from './symbolLib.html?raw';
 import getUid from '../../utils/getUid.js';
-import Collection from 'ol/Collection.js';
 import element from 'ol-ext/util/element.js';
-import Legend from 'ol-ext/legend/Legend.js';
 import Sortable from "sortablejs";
 import SymbolLib from 'mcutils/style/SymbolLib.js';
 import { flatToIgnStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
@@ -20,7 +18,7 @@ let sortable = null;
 class SymbolLibAction extends Action {
   constructor(options = {}) {
     // Affichage des symboles disponibles
-    options.onOpen = (e) => {
+    options.onOpen = () => {
       this.setSymbols();
     };
     super(options);
@@ -53,7 +51,7 @@ class SymbolLibAction extends Action {
         type: 'button',
         className: 'fr-btn addCurrentSymbol fr-btn--secondary',
         parent: modal.getDialogContent().querySelector('.symbol-lib-action-btns'),
-        click: (e) => {
+        click: () => {
           symbolLib.push(currentSymbol);
           this.styleObj = null;
           this.setSymbols();
@@ -107,13 +105,13 @@ class SymbolLibAction extends Action {
         'data-sortable-id': i,
         html: symbolLibItem.replace(/-ID/g, '-' + getUid()),
         parent: symbolList,
-        click: (e) => {
+        click: () => {
           this.selectedSymbol = item;
           symbolList.querySelectorAll('.symbol-lib-item').forEach(elt => elt.classList.remove('selected'));
           elt.classList.add('selected');
         },
         on: {
-          dblclick: (e) => {
+          dblclick: () => {
             if (this._onSelect) {
               this.getDialog().close();
               this._onSelect(this.selectedSymbol);
@@ -130,7 +128,7 @@ class SymbolLibAction extends Action {
       // Title
       elt.querySelector('[data-attr="title"]').innerText = item.get('name') || '';
       // delete button
-      elt.querySelector('.delete-symbol-lib-btn').addEventListener('click', (e) => {
+      elt.querySelector('.delete-symbol-lib-btn').addEventListener('click', () => {
         symbolLib.remove(item);
         this.setSymbols();
       });
@@ -143,22 +141,22 @@ class SymbolLibAction extends Action {
           elt.querySelector('.cancel-symbol-lib-name-btn').click();
         }
       });
-      elt.querySelector('.edit-symbol-lib-name-btn').addEventListener('click', (e) => {
+      elt.querySelector('.edit-symbol-lib-name-btn').addEventListener('click', () => {
         elt.classList.add('edit');
         elt.querySelector('.symbol-lib-container__mask input').value = item.get('name') || '';
         elt.querySelector('.symbol-lib-container__mask input').focus();
       });
-      elt.querySelector('.cancel-symbol-lib-name-btn').addEventListener('click', (e) => {
+      elt.querySelector('.cancel-symbol-lib-name-btn').addEventListener('click', () => {
         elt.classList.remove('edit');
       });
-      elt.querySelector('.validate-symbol-lib-name-btn').addEventListener('click', (e) => {
+      elt.querySelector('.validate-symbol-lib-name-btn').addEventListener('click', () => {
         elt.classList.remove('edit');
         item.set('name', elt.querySelector('.symbol-lib-container__mask input').value);
         elt.querySelector('[data-attr="title"]').innerText = item.get('name') || '';
       });
       // Boutons de déplacement
       elt.querySelectorAll('[data-direction]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
           const inc = btn.dataset.direction === 'up' ? -1 : 1;
           const oldIndex = parseInt(elt.dataset.sortableId);
           const newIndex = oldIndex + inc;
@@ -196,7 +194,7 @@ const symbolLibAction = new SymbolLibAction({
     kind: 1,
     // 'data-action': 'editStyle',
     // 'aria-controls': introDialog.getId(),
-    callback: (e) => {
+    callback: () => {
       // TODO : ouvrir la bibliothèque de symboles
       console.log("TODO : ouvrir l'editeur de styles");
     }
@@ -205,7 +203,7 @@ const symbolLibAction = new SymbolLibAction({
     className: 'applySymbol',
     kind: 1,
     close: true,
-    callback: (e) => {
+    callback: () => {
       if (symbolLibAction._onSelect && symbolLibAction.selectedSymbol) {
         symbolLibAction._onSelect(symbolLibAction.selectedSymbol);
       }
