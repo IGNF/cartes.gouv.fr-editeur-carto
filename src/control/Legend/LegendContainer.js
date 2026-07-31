@@ -68,7 +68,6 @@ class LegendContainer extends BaseObject {
     this.content.querySelector('.add-item-btn').addEventListener('click', (e) => {
       symbolLibAction.open(styleLibDialog, {
         onSelect: (symbol) => {
-          console.log("Selected symbol:", symbol);
           const legend = carte.getControl('legend').getLegend();
           legend.addItem(new legendItem({
             title: symbol.get('name') || '',
@@ -153,7 +152,7 @@ class LegendContainer extends BaseObject {
       const title = (item.get('title') || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/, '<br/>');
       elt.querySelector('[data-attr="title"]').innerHTML = title;
       // delete button
-      elt.querySelector('.delete-legend-btn').addEventListener('click', (e) => {
+      elt.querySelector('.delete-legend-item-btn').addEventListener('click', (e) => {
         legend.getItems().removeAt(elt.dataset.sortableId);
         this.refreshList();
       });
@@ -171,6 +170,15 @@ class LegendContainer extends BaseObject {
         item.setTitle(elt.querySelector('.legend-container__mask textarea').value);
         const title = (item.get('title') || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/, '<br/>');
         elt.querySelector('[data-attr="title"]').innerHTML = title;
+      });
+      // Update button
+      elt.querySelector('.update-legend-item-btn').addEventListener('click', (e) => {
+        symbolLibAction.open(styleLibDialog, {        
+          onSelect: (symbol) => {
+            item.set('feature', symbol._feature.clone());
+            this.refreshList();
+          }
+        });
       });
       // Boutons de déplacement
       elt.querySelectorAll('[data-direction]').forEach(btn => {

@@ -29,11 +29,13 @@ class SymbolLibAction extends Action {
   /** Open in a dialog
    * @param {Dialog} dialog
    * @param {Object} options
+   *  @param {string} [options.typeGeom] - type of geometry to filter symbols (default: all)
    *  @param {Object} [options.styleObj] - style object to edit 
    *  @param {Collection} [options.symbolLib] - symbol library to edit (default: carte.getSymbolLib())
    */
   open(dialog, options = {}) {
     this.styleObj = options.styleObj || null;
+    this.typeGeom = options.typeGeom || this.styleObj?.get('type') || null;
     this.symbolLib = options.symbolLib || carte.getSymbolLib();
     this.selectedSymbol = null;
     this._onSelect = options.onSelect || null;
@@ -96,6 +98,9 @@ class SymbolLibAction extends Action {
     });
     // Items
     symbolLib.forEach((item, i) => {
+      // Filter by geometry type
+      if (this.typeGeom && item.getType() !== this.typeGeom) return;
+      // Create item element
       const prop = item.getProperties();
       const elt = element.create('div', {
         className: 'symbol-lib-item' + (prop.feature ? '' : ' symbol-lib-title'),
@@ -168,6 +173,14 @@ class SymbolLibAction extends Action {
         });
       });
     });
+    // Message si aucun symbole disponible
+    if (symbolList.querySelectorAll('.symbol-lib-item').length === 0) {
+      element.create('div', {
+        className: 'fr-alert fr-alert--info fr-info--small',
+        html: 'Aucun symbole disponible ' + (this.typeGeom ? 'pour le type de géométrie' : ''),
+        parent: symbolList
+      });
+    }
   }
 }
 
