@@ -28,50 +28,74 @@ class SymbolLibAction extends Action {
    * @param {Dialog} dialog
    * @param {Object} options
    *  @param {string} [options.typeGeom] - type of geometry to filter symbols (default: all)
-   *  @param {Object} [options.styleObj] - style object to edit 
+   *  @param {Object} [options.styleObj] - style object to add to the library (default: none) 
    *  @param {Collection} [options.symbolLib] - symbol library to edit (default: carte.getSymbolLib())
    */
   open(dialog, options = {}) {
-    this.styleObj = options.styleObj || null;
     this.typeGeom = options.typeGeom || this.styleObj?.get('type') || null;
     this.symbolLib = options.symbolLib || carte.getSymbolLib();
     this.selectedSymbol = null;
     this._onSelect = options.onSelect || null;
+    // Add existing symbol to the library
+    if (options.styleObj) {
+      const currentSymbol = new SymbolLib({
+        type: options.styleObj.type,
+        name: '',
+        style: flatToIgnStyle(options.styleObj.getFlatStyle())
+      });
+      this.symbolLib.push(currentSymbol);
+      // Focus on the new symbol to edit its name
+      this.editLastItem();
+    }
     // Open action
     Action.open(dialog, this.id);
+  }
+  /** Edit the last item in the library (to edit its name)
+   */
+  editLastItem() {
+    setTimeout(() => {
+      const parent = this.getDialog().getDialogContent().parentNode.parentNode;
+      parent.scrollTop = parent.scrollHeight;
+      this.getDialog().getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child .edit-symbol-lib-name-btn').click();
+    }, 100);
+  }
+  /** Select a symbol in the library
+   * @param {HTMLElement} [elt] - element of the symbol to select
+   * @param {SymbolLib} [item] - symbol to select
+   */
+  selectItem(elt, item) {
+    const modal = symbolLibAction.getDialog();
+    const symbolList = modal.getDialogContent().querySelector('.symbol-lib-item-list');
+    symbolList.querySelectorAll('.symbol-lib-item').forEach(elt => elt.classList.remove('selected'));
+    if (item) {
+      this.selectedSymbol = item;
+      elt.classList.add('selected');
+    } else {
+      this.selectedSymbol = null;
+    }
+    modal.getDialog().querySelector('.applySymbol').disabled = item ? false : true;
+    modal.getDialog().querySelector('.duplicateSymbol').disabled = item ? false : true;
+  }
+  /** Add a symbol to the library
+   * @param {SymbolLib} symbol - symbol to add
+   */
+  addSymbol(symbol) {
+    console.log("addSymbol", symbol, this.symbolLib);
+    const currentSymbol = new SymbolLib({
+      type: symbol.getType(),
+      name: '',
+      style: symbol.getIgnStyle()
+    });
+    this.symbolLib.push(currentSymbol);
+    this.setSymbols();
+    // Focus on the new symbol to edit its name
+    this.editLastItem();
   }
   /** Afficher les symboles disponibles dans la bibliothèque
    */
   setSymbols() {
     const modal = symbolLibAction.getDialog();
     modal.getDialogContent().innerHTML = symbolLibHTML.replace(/-ID/g, '-' + this.uid);
-    // Add exisiting symbol to the library
-    if (this.styleObj) {
-      const addBtn = element.create('button', {
-        type: 'button',
-        className: 'fr-btn addCurrentSymbol fr-btn--secondary',
-        parent: modal.getDialogContent().querySelector('.symbol-lib-action-btns'),
-        click: () => {
-          symbolLib.push(currentSymbol);
-          this.styleObj = null;
-          this.setSymbols();
-          // Focus on the new symbol to edit its name
-          setTimeout(() => {
-            modal.getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child .edit-symbol-lib-name-btn').click();
-          });
-        }
-      });
-      const currentSymbol = new SymbolLib({
-        type: this.styleObj.type,
-        name: '',
-        style: flatToIgnStyle(this.styleObj.getFlatStyle())
-      });
-      addBtn.appendChild(currentSymbol.getImage(true));
-      element.create('span', {
-        html: 'Ajouter le symbole',
-        parent: addBtn
-      });
-    }
     // Show symbols in the dialog
     const symbolLib = this.symbolLib;
     const symbolList = modal.getDialogContent().querySelector('.symbol-lib-item-list');
@@ -95,6 +119,7 @@ class SymbolLibAction extends Action {
       }
     });
     // Items
+    let hasSelection = false;
     symbolLib.forEach((item, i) => {
       // Filter by geometry type
       if (this.typeGeom && item.getType() !== this.typeGeom) return;
@@ -105,11 +130,7 @@ class SymbolLibAction extends Action {
         'data-sortable-id': i,
         html: symbolLibItem.replace(/-ID/g, '-' + getUid()),
         parent: symbolList,
-        click: () => {
-          this.selectedSymbol = item;
-          symbolList.querySelectorAll('.symbol-lib-item').forEach(elt => elt.classList.remove('selected'));
-          elt.classList.add('selected');
-        },
+        click: () => this.selectItem(elt, item),
         on: {
           dblclick: () => {
             if (this._onSelect) {
@@ -120,7 +141,8 @@ class SymbolLibAction extends Action {
         }
       });
       if (item === this.selectedSymbol) {
-        elt.classList.add('selected');
+        this.selectItem(elt, item);
+        hasSelection = true;
       }
       // Image de la légende
       const preview = elt.querySelector('.style-container__preview');
@@ -128,9 +150,10 @@ class SymbolLibAction extends Action {
       // Title
       elt.querySelector('[data-attr="title"]').innerText = item.get('name') || '';
       // delete button
-      elt.querySelector('.delete-symbol-lib-btn').addEventListener('click', () => {
+      elt.querySelector('.delete-symbol-lib-btn').addEventListener('click', (e) => {
         symbolLib.remove(item);
         this.setSymbols();
+        e.stopPropagation();
       });
       // edit button
       elt.querySelector('.symbol-lib-container__mask input').addEventListener('keydown', (e) => {
@@ -171,6 +194,10 @@ class SymbolLibAction extends Action {
         });
       });
     });
+    // No item selected
+    if (!hasSelection) {
+      this.selectItem();
+    } 
     // Message si aucun symbole disponible
     if (symbolList.querySelectorAll('.symbol-lib-item').length === 0) {
       element.create('div', {
@@ -190,7 +217,8 @@ const symbolLibAction = new SymbolLibAction({
   title: 'Bibliothèque de symboles',
   content: content,
   buttons: [{
-    label: 'Editer',
+    label: 'Ajouter',
+    className: 'addSymbol',
     kind: 1,
     // 'data-action': 'editStyle',
     // 'aria-controls': introDialog.getId(),
@@ -198,6 +226,11 @@ const symbolLibAction = new SymbolLibAction({
       // TODO : ouvrir la bibliothèque de symboles
       console.log("TODO : ouvrir l'editeur de styles");
     }
+  }, {
+    label: 'Dupliquer',
+    className: 'duplicateSymbol',
+    kind: 1,
+    callback: () => symbolLibAction.addSymbol(symbolLibAction.selectedSymbol)
   }, {
     label: 'Appliquer',
     className: 'applySymbol',

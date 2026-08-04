@@ -5,6 +5,7 @@ import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/Sty
 import StyleObj from '../LayerStyle/StyleObj.js';
 import styleLibDialog from '../../dialogs/styleLibDialog.js';
 import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
+import element from 'ol-ext/util/element.js';
 
 import "./ExtendedFlatStyleForm.scss";
 import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
@@ -58,10 +59,48 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
       footer.appendChild(btn);
     }
+    const onselect = (symbol) => {
+      const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+      this.setFlatStyle(style);
+      this.styleObj.setFlatStyle(style);
+      this.dispatchEvent({ 
+        type: "style",
+        ignStyle: symbol.getIgnStyle(),
+        flatStyle: style,
+        typeGeom: symbol.getType()
+      });
+      this.updatePreview();
+    }
     if (!options.noSymbolLib) {
-      const btn = document.createElement("button");
-      btn.innerHTML = "Depuis la bibliothèque";
-      btn.className = "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary";
+      // Bouton pour ouvrir la bibliothèque de symboles
+      element.create("button", {
+        html: "Depuis la bibliothèque",
+        type: "button",
+        className: "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary",
+        click: () =>  {
+          symbolLibAction.open(styleLibDialog, { 
+            onSelect: onselect
+          });
+        },
+        parent: footer
+      });
+      // Bouton pour ajouter le style actuel à la bibliothèque
+      element.create("button", {
+        html: "Ajouter à la bibliothèque",
+        type: "button",
+        className: "addToSymbolLib fr-btn reset fr-icon-add-circle-line fr-btn--icon-left fr-btn--tertiary",
+        click: () =>  {
+          symbolLibAction.open(styleLibDialog, { 
+            styleObj: this.styleObj,
+            onSelect: onselect
+          });
+        },
+        parent: footer
+      });
+      /*
+      const btnAdd = document.createElement("button");
+      btn.innerHTML = "Ajouter à la bibliothèque";
+      btn.className = "fromSymbolLib fr-btn reset fr-icon-palette fr-btn--icon-left fr-btn--tertiary";
       btn.type = "button";
       btn.addEventListener("click", () => {
         symbolLibAction.open(styleLibDialog, { 
@@ -80,7 +119,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
           }
         });
       });
-      footer.appendChild(btn);
+      */
     }
     if (footer.childNodes.length > 0) {
       this.getContent().appendChild(footer);
