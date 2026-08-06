@@ -146,6 +146,21 @@ class LabelForm extends ExtendedFlatStyleForm {
 
   }
 
+  /**
+   * Récupère le style flat du formulaire
+   * @returns {Object} Objet représentant le flat style
+   */
+  getFormFlatStyle() {
+    const current = this.styleObj.getFlatStyle();
+    // filter only text properties
+    Object.keys(current).forEach(key => {
+      if (!/text-/.test(key)) {
+        delete current[key];
+      }
+    })
+    return current;
+  }
+
 }
 
 // Création du formulaire de style

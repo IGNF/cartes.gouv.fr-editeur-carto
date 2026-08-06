@@ -1,3 +1,10 @@
+[id^="style-lib-modal-"][data-edit] {
+  .fr-modal__footer,
+  .style-form__footer,
+  .symbol-lib-item-list {
+    display: none;
+  }
+}
 .symbol-lib-action-btns {
   margin: 0.5rem -0.5rem 0;
 
@@ -73,3 +80,31 @@
     }
   }
 } 
+
+/* Color picker popup */
+[id^="color-picker-popup-"] {
+  position: absolute;
+  display: none;
+  background-color: var(--background-default-grey);
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+
+  &.ol-visible {
+    display: block;
+  }
+}
+
+
+dialog .dialog-colorpicker {
+  width: 0px;
+  height: 0px;
+  display: block;
+  overflow: hidden;
+  border: 0;
+  box-shadow: none;
+
+  &.eyedropper .ol-txtcolor input.ol-txt-color {
+    width: calc(100% - 3em);
+    height: 2rem;
+  }
+}

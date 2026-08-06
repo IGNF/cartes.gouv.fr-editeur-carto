@@ -83,6 +83,7 @@ function normalizeImageOptions(options = {}, defaultSmall = true) {
     margin: normalizedMargin,
     small: normalizedSmall,
     displayText: normalizedDisplayText,
+    typeGeom: options.typeGeom,
   };
 }
 
@@ -96,6 +97,7 @@ function isSameImageOptions(previous, next) {
     return false;
   }
   return previous.margin === next.margin
+    && previous.typeGeom === next.typeGeom
     && previous.small === next.small
     && previous.displayText === next.displayText
     && previous.size[0] === next.size[0]
@@ -525,6 +527,7 @@ class StyleObj extends BaseObject {
    */
   getImage(options = {}) {
     const imageOptions = normalizeImageOptions(options, this.small);
+    imageOptions.typeGeom = this.type;
 
     if (options.clone) {
       // Rendu isolé dans un canvas temporaire : aucune mutation de l'état interne
@@ -569,7 +572,7 @@ class StyleObj extends BaseObject {
 
     return new StyleObj({
       name: this.name,
-      type: this.type,
+      type: this.get("type"),
       default: this.isDefault,
       conditions: clonedConditions,
       flatStyle: this.getFlatStyle(),

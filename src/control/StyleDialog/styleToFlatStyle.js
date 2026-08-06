@@ -47,10 +47,38 @@ const flatToIgn = {
   'fill-text-size' : 'fillTextSize',
 };
 
+/** 
+ * @type {Object} Liste des propriétés de style qui sont liées à la géométrie
+ */
+const flatGeomValue = [
+  'text-value', 
+  'text-fill-color', 
+  'text-size',
+  'stroke-color',
+  'stroke-width',
+];
+
 /**
  * @type {Object} Objet de correspondance IGN Style / flat style
  */
 const ignToFlat = Object.fromEntries(Object.entries(flatToIgn).map(key => key.reverse()));
+
+/**
+ * Transforme un type de géométrie en type de flat style
+ * @param {string} typeGeom 
+ * @returns {string} 
+ */
+function geomToFlat(typeGeom) {
+  const flatStyleType = {
+    "Point": "point",
+    "MultiPoint": "point",
+    "LineString": "line",
+    "MultiLineString": "line",
+    "Polygon": "fill",
+    "MultiPolygon": "fill",
+  };
+  return flatStyleType[typeGeom];
+};
 
 /**
  * Transforme une chaîne camelCase en kebab-case.
@@ -72,7 +100,7 @@ function camelToKebabCase(value) {
  * @param {Object} flatStyle Objet de flat style
  * @returns {Object} style IGN (mcutils)
  */
-function flatToIgnStyle(flatStyle) {
+function flatToIgnStyle(flatStyle, typeGeom) {
   flatStyle = flatStyle || {};
   const ignStyle = {};
   // Transforme chaque clé flat style en clé(s) ign style correspondante(s).
@@ -82,6 +110,15 @@ function flatToIgnStyle(flatStyle) {
       ignStyle[key] = value;
     });
   });
+  if (typeGeom) {
+    flatGeomValue.forEach(key => {
+      const flatKey = geomToFlat(typeGeom) + "-" + key;
+      if (ignStyle[flatToIgn[flatKey]]) {
+        ignStyle[flatToIgn[key]] = ignStyle[flatToIgn[flatKey]];
+        // delete ignStyle[flatToIgn[flatKey]];
+      }
+    });
+  }
   return ignStyle;
 }
 
@@ -103,7 +140,6 @@ function flatToIgnKey(key) {
  */
 function flatToIGNKeyValue(key, value) {
   if (key === "undefined") {
-    console.warn("flatToIGNKeyValue : clé undefined");
     return [];
   }
   const result = [];
@@ -156,7 +192,7 @@ function styleToFlatStyle(feature) {
  * @param {Object} ignStyle - objet ignStyle
  * @returns {Object} Objet représentant le flat style
  */
-function ignStyleToFlatStyle(ignStyle) {
+function ignStyleToFlatStyle(ignStyle, typeGeom) {
   ignStyle = ignStyle || {};
   const flatStyle = {};
   Object.keys(ignStyle).forEach(ignKey => {
@@ -178,6 +214,14 @@ function ignStyleToFlatStyle(ignStyle) {
   // Ajoute le fill pattern config pour bien initier le formulaire
   if (flatStyle["fill-pattern"] && flatStyle["angle-pattern"]) {
     flatStyle["fill-pattern-config"] = flatStyle["fill-pattern"] + (flatStyle["angle-pattern"] !== undefined ? `;${flatStyle["angle-pattern"]}` : "");
+  }
+  // suivant la geometre
+  if (typeGeom) {
+    flatGeomValue.forEach(key => {
+      if (typeGeom !== "Point" || /text-/.test(key)) {
+        flatStyle[geomToFlat(typeGeom) + "-" + key] = flatStyle[key];
+      }
+    })
   }
   return flatStyle;
 }

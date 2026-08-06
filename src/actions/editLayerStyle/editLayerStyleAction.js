@@ -68,7 +68,6 @@ function createMainContent() {
  */
 function createEditStyleContent(options) {
   const editStyle = new EditStyle(options);
-
   return editStyle;
 }
 
@@ -115,6 +114,7 @@ function onOpen(e) {
   editStyle.on(["rollback-style", "apply-style"], () => {
     setMainContentVisibility(true);
   });
+
 }
 
 /**
@@ -124,7 +124,6 @@ function onOpen(e) {
  */
 function openStyle(layer, styleObj) {
   editStyle.setStyleObj(styleObj);
-  // console.log(layer, styleObj);
 }
 
 const content = createMainContent();
