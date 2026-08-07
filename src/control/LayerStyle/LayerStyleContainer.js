@@ -558,7 +558,6 @@ class LayerStyleContainer extends BaseObject {
       type: type,
       flatStyle: flatStyleGeom
     });
-    console.log("flatStyleGeom", flatStyleGeom);
 
     return styleObj;
   }

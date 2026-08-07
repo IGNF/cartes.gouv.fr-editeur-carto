@@ -3,6 +3,11 @@ import ol_ext_element from "ol-ext/util/element.js";
 import LayerStyleContainer from "../../control/LayerStyle/LayerStyleContainer.js";
 import "./editLayerStyle.scss";
 import EditStyle from "../../control/LayerStyle/EditStyle.js";
+import symbolLibAction from "../symbolLib/symbolLibAction.js";
+import styleLibDialog from "../../dialogs/styleLibDialog.js";
+import { createDefaultStyle } from "ol/style/flat.js";
+import { ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
+import StyleObj from "../../control/LayerStyle/StyleObj.js";
 
 
 /// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///
@@ -114,6 +119,38 @@ function onOpen(e) {
   editStyle.on(["rollback-style", "apply-style"], () => {
     setMainContentVisibility(true);
   });
+  // Écouteur d'événement à la gestion de la librairie de symboles
+  function onLibSymbolEvent(e) {
+    const type = editStyle.getStyleForm().styleObj.get('type');
+    let styleObj = null;
+    if (e.type === "lib:addsymbol") {
+      const styles = createDefaultStyle() || {};
+      [editStyle.getStyleForm(), editStyle.getLabelForm()].forEach(frm => {
+        const st = frm.getFormFlatStyle();
+        Object.keys(st).forEach((key) => {
+          styles[key] = st[key];
+        });
+      });
+      styleObj = new StyleObj({
+        flatStyle: styles,
+        type: type,
+      });
+    }
+    symbolLibAction.open(styleLibDialog, { 
+      styleObj: styleObj,
+      typeGeom: type,
+      onSelect: (symbol) => {
+        // Get style from forms
+        const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+        openStyle(editStyle.getLayer(), new StyleObj({
+          flatStyle: style,
+          type: symbol.getType(),
+        }));
+      },
+    });
+  }
+  editStyle.getStyleForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
+  editStyle.getLabelForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
 
 }
 

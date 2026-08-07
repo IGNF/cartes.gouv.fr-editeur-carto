@@ -261,11 +261,12 @@ class SymbolLibAction extends Action {
   showEditStyle(item) {
     const modal = symbolLibAction.getDialog();
     const typeGeom = item ? item.getType() : this.typeGeom || 'Point';
-    const flatStyle = item ? ignStyleToFlatStyle(item.getIgnStyle(), typeGeom) : ignStyleToFlatStyle(defaultIgnStyle);
+    const flatStyle = item ? ignStyleToFlatStyle(item.getIgnStyle(), typeGeom) : ignStyleToFlatStyle(defaultIgnStyle, 'Point');
     const styleObj = new StyleObj({
       type: typeGeom,
       flatStyle: flatStyle
     });
+    console.log("styleObj", flatStyle, defaultIgnStyle);
     styleObj.isDefault = true;
     styleObj.showGeom = !item && !this.typeGeom;
     this.editStyle.element.querySelector('.apply-btn').innerText = item ? 'Appliquer' : 'Ajouter';
@@ -274,13 +275,16 @@ class SymbolLibAction extends Action {
     this.editStyle.setVisible(true);
     modal.getDialog().dataset.edit = '';
     // Color picker popup is moved to the dialog to avoid being hidden by overflow:hidden
-    const cpicker = modal.getDialog().querySelector('.dialog-colorpicker') || element.create('div', {
-      className: 'dialog-colorpicker ol-ext-colorpicker' + (window.EyeDropper ? ' eyedropper' : ''),
-    });
-    modal.getDialog().appendChild(cpicker);
-    this.popup.forEach(p => {
-      cpicker.appendChild(p);
-    });
+    let cpicker = modal.getDialog().querySelector('.dialog-colorpicker');
+    if (!cpicker) {
+      cpicker = element.create('div', {
+        className: 'dialog-colorpicker ol-ext-colorpicker' + (window.EyeDropper ? ' eyedropper' : ''),
+      });
+      modal.getDialog().appendChild(cpicker);
+      this.popup.forEach(p => {
+        cpicker.appendChild(p);
+      });
+    }
   }
 }
 
@@ -298,7 +302,6 @@ const symbolLibAction = new SymbolLibAction({
     // 'data-action': 'editStyle',
     // 'aria-controls': introDialog.getId(),
     callback: () => {
-      console.log("symbolLibAction.addSymbol");
       symbolLibAction.showEditStyle();
     }
   }, {
