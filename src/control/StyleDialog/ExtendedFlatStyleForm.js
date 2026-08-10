@@ -3,8 +3,7 @@
  */
 import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import StyleObj from '../LayerStyle/StyleObj.js';
-import styleLibDialog from '../../dialogs/styleLibDialog.js';
-import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
+import element from 'ol-ext/util/element.js';
 
 import "./ExtendedFlatStyleForm.scss";
 import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
@@ -58,29 +57,46 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
       footer.appendChild(btn);
     }
-    if (!options.noSymbolLib) {
-      const btn = document.createElement("button");
-      btn.innerHTML = "Depuis la bibliothèque";
-      btn.className = "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary";
-      btn.type = "button";
-      btn.addEventListener("click", () => {
-        symbolLibAction.open(styleLibDialog, { 
-          styleObj: this.styleObj,
-          onSelect: (symbol) => {
-            const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-            this.setFlatStyle(style);
-            this.styleObj.setFlatStyle(style);
-            this.dispatchEvent({ 
-              type: "style",
-              ignStyle: symbol.getIgnStyle(),
-              flatStyle: style,
-              typeGeom: symbol.getType()
-            });
-            this.updatePreview();
-          }
-        });
+    // TODO selection de style depuis la bibliothèque
+    const onselect = (symbol) => {
+      const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+      this.setFlatStyle(style);
+      this.styleObj.setFlatStyle(style);
+      this.dispatchEvent({ 
+        type: "style",
+        ignStyle: symbol.getIgnStyle(),
+        flatStyle: style,
+        typeGeom: symbol.getType()
       });
-      footer.appendChild(btn);
+      this.updatePreview();
+    }
+    if (!options.noSymbolLib) {
+      // Bouton pour ouvrir la bibliothèque de symboles
+      element.create("button", {
+        html: "Depuis la bibliothèque",
+        type: "button",
+        className: "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary",
+        click: () =>  {
+          this.dispatchEvent({
+            type: "lib:getsymbol",
+            styleObj: this.styleObj,
+          });
+        },
+        parent: footer
+      });
+      // Bouton pour ajouter le style actuel à la bibliothèque
+      element.create("button", {
+        html: "Ajouter à la bibliothèque",
+        type: "button",
+        className: "addToSymbolLib fr-btn reset fr-icon-add-circle-line fr-btn--icon-left fr-btn--tertiary",
+        click: () =>  {
+          this.dispatchEvent({
+            type: "lib:addsymbol",
+            styleObj: this.styleObj,
+          });
+        },
+        parent: footer
+      });
     }
     if (footer.childNodes.length > 0) {
       this.getContent().appendChild(footer);
@@ -206,7 +222,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     styleObj.small = false;
     this.set("styleObj", styleObj);
     this.setFlatStyle(styleObj.getFlatStyle());
-    styleObj.type && this.setGeom(styleObj.type);
+    styleObj.get("type") && this.setGeom(styleObj.get("type"));
   }
 
   /**
@@ -276,6 +292,14 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   }
 
   /**
+   * Récupère le style flat du formulaire
+   * @returns {Object} Objet représentant le flat style
+   */
+  getFormFlatStyle() {
+    return this.styleObj.getFlatStyle();
+  }
+
+  /**
    * Ajoute un sélecteur de géométrie au formulaire de style.
    * @param {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} type Géométrie à sélectionner.
    * Par défaut, n'en sélectionne pas.
@@ -333,6 +357,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     select.addEventListener("change", evt => {
       this.setGeom(evt.target.value);
+      this.updatePreview();
     });
 
     selectGroup.append(label, select);

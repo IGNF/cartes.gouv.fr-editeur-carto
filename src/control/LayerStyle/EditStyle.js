@@ -345,7 +345,7 @@ class EditStyle extends BaseObject {
       })
 
       // N'affiche le sélecteur que sur la partie style
-      this.styleForm.showSelectGeomType(!styleObj.isDefault);
+      this.styleForm.showSelectGeomType(styleObj.showGeom || !styleObj.isDefault);
 
       // Affiche le premier onglet
       this.tabnav.selectFirst();
@@ -427,7 +427,7 @@ class EditStyle extends BaseObject {
     const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());
     if (this.getStyleObj().isDefault) {
       // Modifie le style de la couche
-      Object.entries(ignStyle).forEach(([key, value]) => this.getLayer().setIgnStyle(key, value));
+      Object.entries(ignStyle).forEach(([key, value]) => this.getLayer()?.setIgnStyle(key, value));
     } else {
       // Modifie un des styles conditionnels
       // TODO : ajouter style conditionnel
@@ -437,7 +437,7 @@ class EditStyle extends BaseObject {
 
     this.dispatchEvent(new EditStyleEvent(EditStyleEventType.APPLY, this.getStyleObj(), this.getLayer()));
 
-    this.getLayer().getSource()?.changed();
+    this.getLayer()?.getSource()?.changed();
   }
 
   /**

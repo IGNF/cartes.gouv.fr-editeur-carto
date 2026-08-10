@@ -5,6 +5,7 @@
   margin-top: 0.5rem;
 }
 
+dialog,
 .fr-input-group {
   .ol-ext-colorpicker {
     // margin-top: 0.5rem;
@@ -202,6 +203,7 @@
 }
 
 @media (max-width: 36em) {
+  dialog .ol-ext-colorpicker .ol-popup,
   .fr-input-group .ol-ext-colorpicker .ol-popup {
     width: 100%;
     top: unset !important;

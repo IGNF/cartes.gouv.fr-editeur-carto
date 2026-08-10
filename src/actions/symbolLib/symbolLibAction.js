@@ -4,7 +4,13 @@ import getUid from '../../utils/getUid.js';
 import element from 'ol-ext/util/element.js';
 import Sortable from "sortablejs";
 import SymbolLib from 'mcutils/style/SymbolLib.js';
-import { flatToIgnStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
+import { flatToIgnStyle, ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
+import ExtendedFlatStyleForm from "../../control/StyleDialog/ExtendedFlatStyleForm.js";
+import EditStyle from "../../control/LayerStyle/EditStyle.js";
+import StyleObj from '../../control/LayerStyle/StyleObj.js';
+import Feature from 'ol/Feature.js';
+import Point from 'ol/geom/Point.js';
+import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
 
 import carte from '../../carte.js';
 
@@ -18,7 +24,7 @@ let sortable = null;
 class SymbolLibAction extends Action {
   constructor(options = {}) {
     // Affichage des symboles disponibles
-    options.onOpen = () => {
+    options.onOpen = (e) => {
       this.setSymbols();
     };
     super(options);
@@ -28,50 +34,107 @@ class SymbolLibAction extends Action {
    * @param {Dialog} dialog
    * @param {Object} options
    *  @param {string} [options.typeGeom] - type of geometry to filter symbols (default: all)
-   *  @param {Object} [options.styleObj] - style object to edit 
+   *  @param {Object} [options.styleObj] - style object to add to the library (default: none) 
    *  @param {Collection} [options.symbolLib] - symbol library to edit (default: carte.getSymbolLib())
    */
   open(dialog, options = {}) {
-    this.styleObj = options.styleObj || null;
+    // Initialize editStyle if not already done
+    if (!this.editStyle) {
+      this.editStyle = new EditStyle({
+        visible: false,
+        className: 'symbol-lib-edit-style',
+      });
+      // Color picker popup is moved to the dialog
+      this.popup = this.editStyle.element.querySelectorAll('[id^="color-picker-popup-"]')
+      // 
+      this.editStyle.on('rollback-style', (e) => {
+        this.setSymbols();
+      });
+      this.editStyle.on('apply-style', (e) => {
+        const style = this.editStyle.styleForm.styleObj.getFlatStyle();
+        const style2 = this.editStyle.labelForm.styleObj.getFlatStyle();
+        Object.keys(style2).forEach((key) => {
+          if (!style[key]) style[key] = style2[key];
+        });
+        const ignStyle = flatToIgnStyle(style, e.styleObj.get('type'));
+        if (this.editStyle.item) {
+          this.editStyle.item._type = e.styleObj.get('type');
+          this.editStyle.item.setIgnStyle(ignStyle);
+          this.setSymbols();
+        } else {
+          // Add new symbol to the library
+          this.addSymbol(new SymbolLib({
+            type: e.styleObj.get('type'),
+            style: flatToIgnStyle(ignStyle, e.styleObj.get('type')),
+          }));
+        }
+      });
+    }
+    // Set options
     this.typeGeom = options.typeGeom || this.styleObj?.get('type') || null;
     this.symbolLib = options.symbolLib || carte.getSymbolLib();
     this.selectedSymbol = null;
     this._onSelect = options.onSelect || null;
+    // Add existing symbol to the library
+    if (options.styleObj) {
+      const currentSymbol = new SymbolLib({
+        type: options.styleObj.get('type'),
+        name: '',
+        style: flatToIgnStyle(options.styleObj.getFlatStyle())
+      });
+      this.symbolLib.push(currentSymbol);
+      // Focus on the new symbol to edit its name
+      this.editLastItem();
+    }
     // Open action
     Action.open(dialog, this.id);
+  }
+  /** Edit the last item in the library (to edit its name)
+   */
+  editLastItem() {
+    setTimeout(() => {
+      const parent = this.getDialog().getDialogContent().parentNode.parentNode;
+      parent.scrollTop = parent.scrollHeight;
+      this.getDialog().getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child .edit-symbol-lib-name-btn').click();
+    }, 100);
+  }
+  /** Select a symbol in the library
+   * @param {HTMLElement} [elt] - element of the symbol to select
+   * @param {SymbolLib} [item] - symbol to select
+   */
+  selectItem(elt, item) {
+    const modal = symbolLibAction.getDialog();
+    const symbolList = modal.getDialogContent().querySelector('.symbol-lib-item-list');
+    symbolList.querySelectorAll('.symbol-lib-item').forEach(elt => elt.classList.remove('selected'));
+    if (item) {
+      this.selectedSymbol = item;
+      elt.classList.add('selected');
+    } else {
+      this.selectedSymbol = null;
+    }
+    modal.getDialog().querySelector('.applySymbol').disabled = item ? false : true;
+    modal.getDialog().querySelector('.duplicateSymbol').disabled = item ? false : true;
+  }
+  /** Add a symbol to the library
+   * @param {SymbolLib} symbol - symbol to add
+   */
+  addSymbol(symbol) {
+    const currentSymbol = new SymbolLib({
+      type: symbol.getType(),
+      name: '',
+      style: symbol.getIgnStyle()
+    });
+    this.symbolLib.push(currentSymbol);
+    this.setSymbols();
+    // Focus on the new symbol to edit its name
+    this.editLastItem();
   }
   /** Afficher les symboles disponibles dans la bibliothèque
    */
   setSymbols() {
     const modal = symbolLibAction.getDialog();
     modal.getDialogContent().innerHTML = symbolLibHTML.replace(/-ID/g, '-' + this.uid);
-    // Add exisiting symbol to the library
-    if (this.styleObj) {
-      const addBtn = element.create('button', {
-        type: 'button',
-        className: 'fr-btn addCurrentSymbol fr-btn--secondary',
-        parent: modal.getDialogContent().querySelector('.symbol-lib-action-btns'),
-        click: () => {
-          symbolLib.push(currentSymbol);
-          this.styleObj = null;
-          this.setSymbols();
-          // Focus on the new symbol to edit its name
-          setTimeout(() => {
-            modal.getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child .edit-symbol-lib-name-btn').click();
-          });
-        }
-      });
-      const currentSymbol = new SymbolLib({
-        type: this.styleObj.type,
-        name: '',
-        style: flatToIgnStyle(this.styleObj.getFlatStyle())
-      });
-      addBtn.appendChild(currentSymbol.getImage(true));
-      element.create('span', {
-        html: 'Ajouter le symbole',
-        parent: addBtn
-      });
-    }
+    delete modal.getDialog().dataset.edit;
     // Show symbols in the dialog
     const symbolLib = this.symbolLib;
     const symbolList = modal.getDialogContent().querySelector('.symbol-lib-item-list');
@@ -95,6 +158,7 @@ class SymbolLibAction extends Action {
       }
     });
     // Items
+    let hasSelection = false;
     symbolLib.forEach((item, i) => {
       // Filter by geometry type
       if (this.typeGeom && item.getType() !== this.typeGeom) return;
@@ -105,11 +169,7 @@ class SymbolLibAction extends Action {
         'data-sortable-id': i,
         html: symbolLibItem.replace(/-ID/g, '-' + getUid()),
         parent: symbolList,
-        click: () => {
-          this.selectedSymbol = item;
-          symbolList.querySelectorAll('.symbol-lib-item').forEach(elt => elt.classList.remove('selected'));
-          elt.classList.add('selected');
-        },
+        click: () => this.selectItem(elt, item),
         on: {
           dblclick: () => {
             if (this._onSelect) {
@@ -120,17 +180,24 @@ class SymbolLibAction extends Action {
         }
       });
       if (item === this.selectedSymbol) {
-        elt.classList.add('selected');
+        this.selectItem(elt, item);
+        hasSelection = true;
       }
       // Image de la légende
       const preview = elt.querySelector('.style-container__preview');
       preview.appendChild(item.getImage(true));
       // Title
       elt.querySelector('[data-attr="title"]').innerText = item.get('name') || '';
+      // Open button
+      elt.querySelector('.open-symbol-lib-btn').addEventListener('click', (e) => {
+        this.showEditStyle(item);
+        e.stopPropagation();
+      });
       // delete button
-      elt.querySelector('.delete-symbol-lib-btn').addEventListener('click', () => {
+      elt.querySelector('.delete-symbol-lib-btn').addEventListener('click', (e) => {
         symbolLib.remove(item);
         this.setSymbols();
+        e.stopPropagation();
       });
       // edit button
       elt.querySelector('.symbol-lib-container__mask input').addEventListener('keydown', (e) => {
@@ -171,12 +238,50 @@ class SymbolLibAction extends Action {
         });
       });
     });
+    // No item selected
+    if (!hasSelection) {
+      this.selectItem();
+    } 
     // Message si aucun symbole disponible
     if (symbolList.querySelectorAll('.symbol-lib-item').length === 0) {
       element.create('div', {
         className: 'fr-alert fr-alert--info fr-info--small',
         html: 'Aucun symbole disponible ' + (this.typeGeom ? 'pour le type de géométrie' : ''),
         parent: symbolList
+      });
+    }
+
+    // Formulaire d'édition de style
+    const formContainer = modal.getDialogContent().querySelector('.symbol-lib-item-form');
+    formContainer.appendChild(this.editStyle.getElement());
+    this.editStyle.setVisible(false);
+  }
+  /** Show the edit style form
+   */
+  showEditStyle(item) {
+    const modal = symbolLibAction.getDialog();
+    const typeGeom = item ? item.getType() : this.typeGeom || 'Point';
+    const flatStyle = item ? ignStyleToFlatStyle(item.getIgnStyle(), typeGeom) : ignStyleToFlatStyle(defaultIgnStyle, 'Point');
+    const styleObj = new StyleObj({
+      type: typeGeom,
+      flatStyle: flatStyle
+    });
+    styleObj.isDefault = true;
+    styleObj.showGeom = !item && !this.typeGeom;
+    this.editStyle.element.querySelector('.apply-btn').innerText = item ? 'Appliquer' : 'Ajouter';
+    this.editStyle.setStyleObj(styleObj);
+    this.editStyle.item = item;
+    this.editStyle.setVisible(true);
+    modal.getDialog().dataset.edit = '';
+    // Color picker popup is moved to the dialog to avoid being hidden by overflow:hidden
+    let cpicker = modal.getDialog().querySelector('.dialog-colorpicker');
+    if (!cpicker) {
+      cpicker = element.create('div', {
+        className: 'dialog-colorpicker ol-ext-colorpicker' + (window.EyeDropper ? ' eyedropper' : ''),
+      });
+      modal.getDialog().appendChild(cpicker);
+      this.popup.forEach(p => {
+        cpicker.appendChild(p);
       });
     }
   }
@@ -190,14 +295,19 @@ const symbolLibAction = new SymbolLibAction({
   title: 'Bibliothèque de symboles',
   content: content,
   buttons: [{
-    label: 'Editer',
+    label: 'Ajouter',
+    className: 'addSymbol',
     kind: 1,
     // 'data-action': 'editStyle',
     // 'aria-controls': introDialog.getId(),
     callback: () => {
-      // TODO : ouvrir la bibliothèque de symboles
-      console.log("TODO : ouvrir l'editeur de styles");
+      symbolLibAction.showEditStyle();
     }
+  }, {
+    label: 'Dupliquer',
+    className: 'duplicateSymbol',
+    kind: 1,
+    callback: () => symbolLibAction.addSymbol(symbolLibAction.selectedSymbol)
   }, {
     label: 'Appliquer',
     className: 'applySymbol',

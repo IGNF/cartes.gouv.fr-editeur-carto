@@ -47,8 +47,8 @@ class StyleForm extends ExtendedFlatStyleForm {
       }
     }
     const type = this.getGeom()?.split(' ').at(0);
-    if (this.styleObj.type !== type) {
-      this.styleObj.type = type
+    if (this.styleObj.get('type') !== type) {
+      this.styleObj.set('type', type);
     }
 
     // Affiche les éléments correspondant aux surfaces
@@ -285,6 +285,21 @@ class StyleForm extends ExtendedFlatStyleForm {
         inputFillSize.input.disabled = true;
       }
     });
+  }
+
+  /**
+   * Récupère le style flat du formulaire
+   * @returns {Object} Objet représentant le flat style
+   */
+  getFormFlatStyle() {
+    const current = this.styleObj.getFlatStyle();
+    // Remove text properties
+    Object.keys(current).forEach(key => {
+      if (/text-/.test(key)) {
+        delete current[key];
+      }
+    })
+    return current;
   }
 
 }
