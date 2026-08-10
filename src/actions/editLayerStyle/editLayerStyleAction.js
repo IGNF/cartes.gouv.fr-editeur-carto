@@ -142,10 +142,10 @@ function onOpen(e) {
       onSelect: (symbol) => {
         // Get style from forms
         const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-        openStyle(editStyle.getLayer(), new StyleObj({
-          flatStyle: style,
-          type: symbol.getType(),
-        }));
+        const styleObj = editStyle.getStyleObj();
+        styleObj.set('type', symbol.getType());
+        styleObj.set('flatStyle', style);
+        editStyle.setStyleObj(styleObj);
       },
     });
   }

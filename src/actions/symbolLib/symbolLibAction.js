@@ -266,7 +266,6 @@ class SymbolLibAction extends Action {
       type: typeGeom,
       flatStyle: flatStyle
     });
-    console.log("styleObj", flatStyle, defaultIgnStyle);
     styleObj.isDefault = true;
     styleObj.showGeom = !item && !this.typeGeom;
     this.editStyle.element.querySelector('.apply-btn').innerText = item ? 'Appliquer' : 'Ajouter';
