@@ -5,8 +5,12 @@
     border-radius: 0;
     border-color: transparent;
     box-shadow: 3px 3px 6px var(--shadow-color);
-
+    width: 280px;
     background-color: var(--background-default-grey);
+
+    .ol-scroll {
+      top: 3rem;
+    }
 
     .anchor {
       color: var(--shadow-color);
@@ -27,7 +31,8 @@
         text-shadow: unset;
         position: relative;
         padding-right: 1.5rem;
-        margin-top: 0.375rem;
+        margin-top: 0.75rem;
+        width: fit-content;
       }
 
       a.fr-link:after {
@@ -83,14 +88,13 @@
     }
 
     img {
-      margin: 0.375rem 0;
+      margin: 0.75rem 0;
     }
 
     h1,
     h2,
     h3,
     h4 {
-      color: var(--text-action-high-blue-france);
       margin: 0.375rem 0;
     }
   }
