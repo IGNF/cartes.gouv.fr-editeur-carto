@@ -18,7 +18,6 @@ const getPopupContent = Feature.prototype.getPopupContent;
  * @return {string|Element} popupcontent
  */
 Feature.prototype.getPopupContent = function (options, html) {
-  console.log(options);
   const content = getPopupContent.call(this, options, html);
   if (content.appendChild) {
     let popupContent;
