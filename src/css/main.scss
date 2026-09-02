@@ -29,3 +29,7 @@
   top: 6em;
   opacity: 1;
 }
+
+[data-role="storymap"] .title {
+  user-select: text;
+}
