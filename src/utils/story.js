@@ -24,6 +24,7 @@
 const setLogo = (story, src) => {
   story.set('logo', src || '');
   story.element.logo.src = src || '';
+  story.element.logo.alt = '';
 }
 
 /**

@@ -27,6 +27,9 @@ function renameMap() {
   if (input.value) {
     carte.set('title', input.value);
     carte.getMap().set('title', input.value);
+    if (carte.get('atlas')) {
+      carte.get('atlas').title = input.value;
+    }
   }
 
   dialog.close()

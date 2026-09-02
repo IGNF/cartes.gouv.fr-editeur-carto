@@ -5,11 +5,8 @@ import element from 'ol-ext/util/element.js';
 import Sortable from "sortablejs";
 import SymbolLib from 'mcutils/style/SymbolLib.js';
 import { flatToIgnStyle, ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
-import ExtendedFlatStyleForm from "../../control/StyleDialog/ExtendedFlatStyleForm.js";
 import EditStyle from "../../control/LayerStyle/EditStyle.js";
 import StyleObj from '../../control/LayerStyle/StyleObj.js';
-import Feature from 'ol/Feature.js';
-import Point from 'ol/geom/Point.js';
 import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
 
 import carte from '../../carte.js';
@@ -24,7 +21,7 @@ let sortable = null;
 class SymbolLibAction extends Action {
   constructor(options = {}) {
     // Affichage des symboles disponibles
-    options.onOpen = (e) => {
+    options.onOpen = () => {
       this.setSymbols();
     };
     super(options);
@@ -47,7 +44,7 @@ class SymbolLibAction extends Action {
       // Color picker popup is moved to the dialog
       this.popup = this.editStyle.element.querySelectorAll('[id^="color-picker-popup-"]')
       // 
-      this.editStyle.on('rollback-style', (e) => {
+      this.editStyle.on('rollback-style', () => {
         this.setSymbols();
       });
       this.editStyle.on('apply-style', (e) => {

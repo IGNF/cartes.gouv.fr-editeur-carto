@@ -98,7 +98,7 @@ const switcher = new LayerSwitcher({
           "aria-controls": leftPanel.getElement()?.id,
           'data-action': editLayerPopupAction.id,
         },
-        cb: (e, instance, layer, options) => {
+        cb: (e, instance, layer /*, options*/) => {
           if (carte.getControl("left-panel") === undefined) {
             leftPanel.setTarget()
             carte.addControl("left-panel", leftPanel);

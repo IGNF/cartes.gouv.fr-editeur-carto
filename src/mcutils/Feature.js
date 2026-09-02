@@ -26,6 +26,13 @@ Feature.prototype.getPopupContent = function (options, html) {
     } else {
       popupContent = (this.getLayer() && this.getLayer().getPopupContent ? this.getLayer().getPopupContent() : '');
     }
+    // Show img when there is no information text
+    if (content.querySelector('img') && !content.innerText) {
+      const span = document.createElement("span");
+      span.className = "hidden";
+      span.innerHTML = "&nbsp;";
+      content.appendChild(span);
+    }
     if (popupContent.link && popupContent.url) {
       const link = md2html(`[${popupContent.link}](${popupContent.url})`);
       const div = document.createElement("div");
