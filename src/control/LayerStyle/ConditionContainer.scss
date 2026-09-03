@@ -37,6 +37,33 @@
     }
   }
 
+  ul.fr-combobox {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    filter: drop-shadow(var(--raised-shadow));
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: var(--background-default-grey);
+    z-index: 1;
+    display: none;
+
+    li {
+      padding: 0.5rem 1rem;
+
+      &.active,
+      &:hover {
+        background-color: var(--background-default-grey-hover);
+      }
+    }
+  }
+  input[aria-expanded="true"] + ul.fr-combobox {
+    display: block;
+    &:empty {
+      display: none;
+    }
+  }
   // &:not(:first-child) {
 
   // > .condition-container__header {
