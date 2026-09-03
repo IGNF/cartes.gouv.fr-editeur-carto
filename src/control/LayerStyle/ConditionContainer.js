@@ -6,7 +6,6 @@ import "./ConditionContainer.scss";
 import Condition from "./Condition.js";
 import { getConditionalOperatorOptions } from "./ConditionalOperator.js";
 
-
 /**
  * @typedef {import('mcutils/layer/VectorStyle.js').default} Layer Couche openlayers
  */
@@ -298,7 +297,7 @@ class ConditionContainer extends BaseObject {
     attributeInput.id = attributeId;
 
     // Lie une datalist à l'input
-    options.datalistId && attributeInput.setAttribute("list", options.datalistId);
+    options.datalistId && attributeInput.setAttribute("list-attr", options.datalistId);
 
     attributeInput.name = "attribute";
 
@@ -386,6 +385,97 @@ class ConditionContainer extends BaseObject {
     inputGroup.appendChild(label);
     inputGroup.appendChild(inputNode);
     fieldsetElement.appendChild(inputGroup);
+
+    // Autocomplete list
+    const listId = inputNode.getAttribute('list-attr');
+    if (listId) {
+      let values = [];
+      let currentValue = '';
+      function fillValues () {
+        const rex = new RegExp(inputNode.value, 'i')
+        const filteredValues = values.filter(value => rex.test(value));
+        combobox.innerHTML = "";
+        filteredValues.forEach((value, i) => {
+          const li = document.createElement("li");
+          li.id = "combobox-" + listId + "-item-" + i;
+          li.textContent = value;
+          combobox.appendChild(li);
+          li.addEventListener('click', () => inputNode.value = value );
+        });
+        currentValue = "";
+        inputNode.ariaExpanded = "true";
+        inputNode.dataset.activeOption = "";
+      }
+      const combobox = document.createElement("ul");
+      combobox.className = "fr-combobox";
+      combobox.ariaLabel = "Attributs";
+      combobox.role = "listbox";
+      combobox.id = "combobox-" + listId;
+      inputGroup.appendChild(combobox);
+      //
+      inputNode.ariaExpanded = "false";
+      inputNode.role = "combobox";
+      inputNode.ariaControls = combobox.id;
+      inputNode.ariaAutocomplete = "list";
+      inputNode.dataset.activeOption = "";
+      // Fill values on focus
+      inputNode.addEventListener('focus', () => {
+        const datalist = document.getElementById(listId);
+        values = Array.from(datalist.options).map(option => option.value);
+        fillValues();
+        inputNode.ariaExpanded = "true";
+      });
+      // Hide on blur
+      inputNode.addEventListener('blur', () => inputNode.ariaExpanded = "false" )
+      // filter on key down
+      inputNode.addEventListener('keyup', (e) => {
+        switch (e.key) {
+          case "ArrowDown": 
+          case "ArrowUp": {
+            const activeItem = combobox.querySelector(".active");
+            let newActiveItem;
+            if (activeItem) {
+              newActiveItem = (e.key === "ArrowUp") ? activeItem.previousElementSibling : activeItem.nextElementSibling;
+            } else {
+              if (e.key === "ArrowUp") {
+                newActiveItem = combobox.lastElementChild;
+              } else {
+                newActiveItem = combobox.firstElementChild;
+              }
+            }
+            if (newActiveItem) {
+              activeItem?.classList.remove("active");
+              newActiveItem.classList.add("active");
+              newActiveItem.scrollIntoView({ block: "nearest" });
+              currentValue = newActiveItem.textContent;
+              inputNode.dataset.activeOption = newActiveItem.id;
+            } else {
+              inputNode.dataset.activeOption = "";
+            }
+            inputNode.ariaExpanded = "true";
+            break;
+          }
+          case "Enter": {
+            if (inputNode.ariaExpanded === "false") {
+              inputNode.ariaExpanded = "true";
+            } else if (currentValue) {
+              inputNode.value = currentValue;
+              inputNode.dataset.activeOption = "";
+              inputNode.ariaExpanded = "false";
+            }
+            break;
+          }
+          case "Escape": {
+            inputNode.ariaExpanded = "false";
+            break;
+          }
+          default: {
+            fillValues();
+            break;
+          }
+        }
+      })
+    }
 
     return fieldsetElement;
   }
