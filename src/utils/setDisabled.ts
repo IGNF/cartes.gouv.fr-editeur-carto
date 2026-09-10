@@ -4,7 +4,7 @@
  * @param {HTMLInputElement|string} inputOrId Input ciblé ou son id
  * @param {boolean} disabled Etat disabled à appliquer
  */
-function setDisabled(inputOrId, disabled) {
+function setDisabled(inputOrId: any, disabled: any) {
     const input = typeof inputOrId === "string" ? document.getElementById(inputOrId) : inputOrId;
 
     if (!input || !("disabled" in input)) {
@@ -18,6 +18,7 @@ function setDisabled(inputOrId, disabled) {
         return;
     }
 
+    // @ts-expect-error TS(2345): Argument of type 'unknown' is not assignable to pa... Remove this comment to see the full error message
     const groupClassName = Array.from(parent.classList).find((className) => /^fr-[a-z0-9-]+-group$/.test(className));
 
     if (!groupClassName) {

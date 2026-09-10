@@ -37,11 +37,12 @@ const messageClasses = {
  * @param {true} options.append Optionnel. Si vrai, ajoute le message
  * aux autres messages. Sinon, enlève les messages existants. Par défaut `false`.
  */
-function addMessage(input, message, options) {
+function addMessage(input: any, message: any, options: any) {
     options = options ? options : {};
     options.closest = options.closest ? options.closest : "div";
     options.type = Object.keys(messageClasses).includes(options.type) ? options.type : "error";
     // Classe à ajouter au message
+    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     let msgClass = messageClasses[options.type];
     // switch (options.type) {
     //   case 'warning': {
@@ -80,6 +81,7 @@ function addMessage(input, message, options) {
     if (!options.append) msg.replaceChildren();
     const p = document.createElement("p");
     p.classList.add("fr-message", `fr-message${msgClass}`);
+    // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
     p.id = getUid(`fr-message${msgClass}`);
     p.textContent = message;
     msg.appendChild(p);
@@ -95,7 +97,7 @@ function addMessage(input, message, options) {
  * @param {String} closest Optionnel. Définit le tag de l'élément sur lequel
  * mettre la classe d'erreur. Par défaut 'div'.
  */
-function removeMessage(input, closest = "div") {
+function removeMessage(input: any, closest = "div") {
     // Récupère les éléments importants
     const msgId = input.getAttribute("aria-describedby");
     let element = input.closest(closest);

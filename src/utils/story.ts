@@ -21,7 +21,7 @@
  * @param {import("mcutils/StoryMap.js").default} story Storymap sur laquelle il faut changer le logo
  * @param {String} [src] Source de l'image à modifier.
  */
-const setLogo = (story, src) => {
+const setLogo = (story: any, src: any) => {
     story.set("logo", src || "");
     story.element.logo.src = src || "";
     story.element.logo.alt = "";
@@ -34,7 +34,7 @@ const setLogo = (story, src) => {
  * @param {import("mcutils/StoryMap.js").default} story Storymap à modifier
  * @param {TitleOptions} options Propriétés à mettre à jour
  */
-const setTitle = (story, options) => {
+const setTitle = (story: any, options: any) => {
     /**
      * Modifie un élément HTML selon une fonction render.
      * Permet d'éviter une suite de `if` par la suite;
@@ -42,22 +42,22 @@ const setTitle = (story, options) => {
      * @param {string|undefined} value Valeur correspondante
      * @param {(el: HTMLElement, val: string) => void} render Fonction de transformation
      */
-    const setField = (key, value, render) => {
+    const setField = (key: any, value: any, render: any) => {
         if (value === undefined) return;
         story.set(key, value);
         render(story.element[key], value);
     };
 
-    setField("title", options.title, (el, val) => {
+    setField("title", options.title, (el: any, val: any) => {
         el.innerHTML = val ? val : "";
     });
-    setField("subTitle", options.subTitle, (el, val) => {
+    setField("subTitle", options.subTitle, (el: any, val: any) => {
         el.innerText = val;
     });
-    setField("title1", options.title1, (el, val) => {
+    setField("title1", options.title1, (el: any, val: any) => {
         el.innerText = val;
     });
-    setField("title2", options.title2, (el, val) => {
+    setField("title2", options.title2, (el: any, val: any) => {
         el.innerText = val;
     });
 
@@ -69,7 +69,7 @@ const setTitle = (story, options) => {
  * @param {import("mcutils/StoryMap.js").default} story Storymap sur laquelle récupérer le titre
  * @returns {String} Titre de la storymap
  */
-const getTitle = (story) => {
+const getTitle = (story: any) => {
     return story.get("title") || story.getCarte()?.getTitle(true);
 };
 

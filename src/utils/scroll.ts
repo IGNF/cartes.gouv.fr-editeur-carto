@@ -8,7 +8,7 @@
  * @param {Element} element Élément à vérifier
  * @returns {Boolean} Vrai si l'élément est visible.
  */
-function isElementInView(element) {
+function isElementInView(element: any) {
     var bounding = element.getBoundingClientRect();
 
     return (
@@ -24,7 +24,7 @@ function isElementInView(element) {
  * @param {Element} element Élément à vérifier
  * @returns {Boolean} Vrai si c'est le cas.
  */
-function isScrollable(element) {
+function isScrollable(element: any) {
     return element && element.clientHeight < element.scrollHeight;
 }
 
@@ -34,7 +34,7 @@ function isScrollable(element) {
  * @param {Element} activeElement Élément actif (élément enfant)
  * @param {Element} scrollParent Élément parent
  */
-function maintainScrollVisibility(activeElement, scrollParent) {
+function maintainScrollVisibility(activeElement: any, scrollParent: any) {
     const { offsetHeight, offsetTop } = activeElement;
     const { offsetHeight: parentOffsetHeight, scrollTop } = scrollParent;
 

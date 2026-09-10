@@ -1,4 +1,4 @@
-function htmlToNode(html) {
+function htmlToNode(html: any) {
     const template = document.createElement("template");
     template.innerHTML = html;
     const nNodes = template.content.childNodes.length;

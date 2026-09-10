@@ -5,28 +5,28 @@ class MissingFileError extends Error {
     }
 }
 class UnsupportedExtensionError extends Error {
-    constructor(extension) {
+    constructor(extension: any) {
         super(extension);
         this.name = "UnsupportedExtensionError";
     }
 }
 
 class EmptyLayerError extends Error {
-    constructor(fileName) {
+    constructor(fileName: any) {
         super(fileName);
         this.name = "EmptyLayerError";
     }
 }
 
 class MissingFileInZipError extends Error {
-    constructor(fileName) {
+    constructor(fileName: any) {
         super(fileName);
         this.name = "MissingFileInZipError";
     }
 }
 
 class FileCorruptionError extends Error {
-    constructor(reason) {
+    constructor(reason: any) {
         super(reason);
         this.name = "FileCorruptionError";
     }
