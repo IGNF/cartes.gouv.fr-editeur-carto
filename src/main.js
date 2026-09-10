@@ -3,6 +3,7 @@ import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
 
+import "./oidc.js"
 import story from './story.js'
 import carte from './carte.js'
 import './utils/storyToMapChanges.js'
