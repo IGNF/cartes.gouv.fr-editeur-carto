@@ -1,4 +1,3 @@
-
 /**
  * @typedef ServiceOptions Options du service
  * @property {string} [service] Nom du service

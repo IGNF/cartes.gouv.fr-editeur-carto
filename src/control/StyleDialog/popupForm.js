@@ -17,76 +17,76 @@ let currentCoord = false;
  * @property {Boolean} [generalType = true] Vrai par défaut. Si vrai, le type de géométrie n'influe pas sur le formulaire et seul 3 inputs sont ajoutés. Sinon, les propriétés flat-style sont précédés du type de géométrie et ne sont affichés que si le type de géométrie est donné.
  */
 class PopupForm extends FlatStyleForm {
-  /**
-   * @param {PopupFromOptions} options Options du constructeur
-   */
-  constructor(options = {}) {
-    super(options);
-    this._addCustomInputs(options);
-    // Get current feature and coordinate from carte popup
-    this.carte = options.carte;
-    if (this.carte && currentCoord === false) {
-      currentCoord = null;
-      this.carte.on('layer:featureInfo', e => {
-        // currentFeature = e.feature
-        currentCoord = e.coordinate
-      })
+    /**
+     * @param {PopupFromOptions} options Options du constructeur
+     */
+    constructor(options = {}) {
+        super(options);
+        this._addCustomInputs(options);
+        // Get current feature and coordinate from carte popup
+        this.carte = options.carte;
+        if (this.carte && currentCoord === false) {
+            currentCoord = null;
+            this.carte.on("layer:featureInfo", (e) => {
+                // currentFeature = e.feature
+                currentCoord = e.coordinate;
+            });
+        }
     }
-  }
 
-  /**
-   * @param {PopupFromOptions} options Options du constructeur
-   * @override
-   */
-  _initialize(options) {
-    super._initialize(options);
-  }
+    /**
+     * @param {PopupFromOptions} options Options du constructeur
+     * @override
+     */
+    _initialize(options) {
+        super._initialize(options);
+    }
 
-  /**
-   * Méthode permettant d'ajouter des inputs directement dans une classe
-   * étendue.
-   * @param {PopupFromOptions} options Options du constructeur
-   * @abstract
-   * @protected
-   */
-  _addCustomInputs(/* options */) {
-    this._addInput({
-      label: "Titre",
-      property: "popup-titre",
-      type: "text"
-    });
-    this._addInput({
-      label: "Description",
-      property: "popup-desc",
-      type: "textarea"
-    });
-    this._addInput({
-      label: "Image",
-      labelInfo: "URL",
-      labelError: "L'URL doit commencer par http:// ou https://",
-      property: "popup-img",
-      type: "url"
-    });
-    this._addInput({
-      label: "Lien",
-      labelInfo: "Nom",
-      property: "popup-link",
-      type: "text"
-    });
-    this._addInput({
-      label: "",
-      labelInfo: "URL",
-      labelError: "L'URL doit commencer par http:// ou https://",
-      property: "popup-url",
-      type: "url"
-    });
-    let tout = null;
-    ["popup-titre", "popup-desc", "popup-link"].forEach(key => {
-      // Enable tab key for all inputs except the description
-      if (key === "popup-desc") {
-        this.inputs[key].addEventListener("keydown", (/* e */) => {
-          // enable Tab key ?
-          /*        
+    /**
+     * Méthode permettant d'ajouter des inputs directement dans une classe
+     * étendue.
+     * @param {PopupFromOptions} options Options du constructeur
+     * @abstract
+     * @protected
+     */
+    _addCustomInputs(/* options */) {
+        this._addInput({
+            label: "Titre",
+            property: "popup-titre",
+            type: "text",
+        });
+        this._addInput({
+            label: "Description",
+            property: "popup-desc",
+            type: "textarea",
+        });
+        this._addInput({
+            label: "Image",
+            labelInfo: "URL",
+            labelError: "L'URL doit commencer par http:// ou https://",
+            property: "popup-img",
+            type: "url",
+        });
+        this._addInput({
+            label: "Lien",
+            labelInfo: "Nom",
+            property: "popup-link",
+            type: "text",
+        });
+        this._addInput({
+            label: "",
+            labelInfo: "URL",
+            labelError: "L'URL doit commencer par http:// ou https://",
+            property: "popup-url",
+            type: "url",
+        });
+        let tout = null;
+        ["popup-titre", "popup-desc", "popup-link"].forEach((key) => {
+            // Enable tab key for all inputs except the description
+            if (key === "popup-desc") {
+                this.inputs[key].addEventListener("keydown", (/* e */) => {
+                    // enable Tab key ?
+                    /*        
           if (e.keyCode === 9) { 
             e.preventDefault();
             const textarea = e.target;
@@ -98,108 +98,107 @@ class PopupForm extends FlatStyleForm {
             textarea.selectGeomTypeionStart = textarea.selectionEnd = start + 1;
           }
           */
+                });
+            }
+            // Update feature popup content on input change
+            this.inputs[key].addEventListener("input", (e) => {
+                if (this.feature) {
+                    this.setPopupContent(this.feature, key, e.target.value);
+                    if (this.carte) {
+                        clearTimeout(tout);
+                        tout = setTimeout(() => {
+                            this.feature.showPopup(this.carte.popup, currentCoord);
+                        }, 200);
+                    }
+                }
+            });
         });
-      }
-      // Update feature popup content on input change
-      this.inputs[key].addEventListener("input", e => {
-        if (this.feature) {
-          this.setPopupContent(this.feature, key, e.target.value);
-          if (this.carte) {
-            clearTimeout(tout);
-            tout = setTimeout(() => {
-              this.feature.showPopup(this.carte.popup, currentCoord);
-            }, 200);
-          }
-        }
-      });
-    });
-  }
-
-  /** Update feature popup content
-   * @param {import('ol/Feature.js').default} f Feature to update
-   * @param {String} key Key to update
-   * @param {String} value Value to set
-   * @private
-   * 
-   */
-  setPopupContent(f, key, value) {
-    const content = f.getPopupContent() || {};
-    content[key.split('-')[1]] = value;
-    content.active = false;
-    ['titre', 'desc', 'img', 'link', 'url', 'coord'].forEach(k => {
-      if (content[k]) {
-        content.active = true;
-      }
-    });
-    f.setPopupContent(content);
-  }
-
-  /** Add input
-   * @param {Object} options Options de l'input
-   * @private
-   */
-  _addInput(options) {
-    const type = options.type;
-    options.type = options.type.replace(/^(url|text)$/, "input");
-    const input = this.addInput(options);
-    if (options.type === "input") {
-      input.type = type;
-      if (options.labelInfo) {
-        const labelInfo = document.createElement("span");
-        labelInfo.className = "fr-hint-text";
-        labelInfo.innerText = options.labelInfo;
-        input.parentNode.querySelector("label").appendChild(labelInfo);
-      }
-      if (options.labelError) {
-        const labelError = document.createElement("div");
-        labelError.className = "fr-messages-group";
-        labelError.ariaLive = "assertive";
-        input.ariaDescribedby = labelError.id = input.id + "-error";
-        input.parentNode.appendChild(labelError);
-        const labelErrorTxt = document.createElement("p");
-        labelErrorTxt.className = "fr-message fr-message--error";
-        labelErrorTxt.innerText = options.labelError;
-        labelError.appendChild(labelErrorTxt);
-      }
-      if (type === "url") {
-        input.pattern="https?://.*"
-      }
     }
-    return input;
-  }
 
-  /**
-   * Récupère le contenu global du formulaire
-   * @returns {HTMLElement} L'élément conteneur du formulaire (avec la grille et le bouton)
-   */
-  getContent () {
-    return this.container;
-  }
+    /** Update feature popup content
+     * @param {import('ol/Feature.js').default} f Feature to update
+     * @param {String} key Key to update
+     * @param {String} value Value to set
+     * @private
+     *
+     */
+    setPopupContent(f, key, value) {
+        const content = f.getPopupContent() || {};
+        content[key.split("-")[1]] = value;
+        content.active = false;
+        ["titre", "desc", "img", "link", "url", "coord"].forEach((k) => {
+            if (content[k]) {
+                content.active = true;
+            }
+        });
+        f.setPopupContent(content);
+    }
 
-  /**
-   * Définit le contenu du formulaire à partir d'une feature
-   * @param {import('ol/Feature.js').default
-   */
-  setFeature(feature) {
-    this.feature = feature;
-    const options = feature?.getPopupContent() || {};
-    ['titre', 'desc', 'img', 'link', 'url'].forEach(key => {
-      this.inputs['popup-' + key].value = options[key] || '';
-    });
-  }
+    /** Add input
+     * @param {Object} options Options de l'input
+     * @private
+     */
+    _addInput(options) {
+        const type = options.type;
+        options.type = options.type.replace(/^(url|text)$/, "input");
+        const input = this.addInput(options);
+        if (options.type === "input") {
+            input.type = type;
+            if (options.labelInfo) {
+                const labelInfo = document.createElement("span");
+                labelInfo.className = "fr-hint-text";
+                labelInfo.innerText = options.labelInfo;
+                input.parentNode.querySelector("label").appendChild(labelInfo);
+            }
+            if (options.labelError) {
+                const labelError = document.createElement("div");
+                labelError.className = "fr-messages-group";
+                labelError.ariaLive = "assertive";
+                input.ariaDescribedby = labelError.id = input.id + "-error";
+                input.parentNode.appendChild(labelError);
+                const labelErrorTxt = document.createElement("p");
+                labelErrorTxt.className = "fr-message fr-message--error";
+                labelErrorTxt.innerText = options.labelError;
+                labelError.appendChild(labelErrorTxt);
+            }
+            if (type === "url") {
+                input.pattern = "https?://.*";
+            }
+        }
+        return input;
+    }
 
-  /**
-   * Définit le contenu du formulaire à partir d'une feature
-   * @param {import('ol/Feature.js').default
-   */
-  setLayer(layer) {
-    this.layer = layer;
-    const options = layer?.getPopupContent() || {};
-    ['titre', 'desc', 'img', 'link', 'url'].forEach(key => {
-      this.inputs['popup-' + key].value = options[key] || '';
-    });
-  }
+    /**
+     * Récupère le contenu global du formulaire
+     * @returns {HTMLElement} L'élément conteneur du formulaire (avec la grille et le bouton)
+     */
+    getContent() {
+        return this.container;
+    }
 
+    /**
+     * Définit le contenu du formulaire à partir d'une feature
+     * @param {import('ol/Feature.js').default
+     */
+    setFeature(feature) {
+        this.feature = feature;
+        const options = feature?.getPopupContent() || {};
+        ["titre", "desc", "img", "link", "url"].forEach((key) => {
+            this.inputs["popup-" + key].value = options[key] || "";
+        });
+    }
+
+    /**
+     * Définit le contenu du formulaire à partir d'une feature
+     * @param {import('ol/Feature.js').default
+     */
+    setLayer(layer) {
+        this.layer = layer;
+        const options = layer?.getPopupContent() || {};
+        ["titre", "desc", "img", "link", "url"].forEach((key) => {
+            this.inputs["popup-" + key].value = options[key] || "";
+        });
+    }
 }
 
 export default PopupForm;

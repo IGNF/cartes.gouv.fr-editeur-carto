@@ -1,13 +1,13 @@
 ---
 name: "\U0001F680 Spécifier une évolution"
 about: Renseigner les informations nécessaires pour créer ou améliorer une fonctionnalité pour cartes.gouv.fr
-title: ''
-labels: ['amélioration','nouvelle fonctionnalité']
+title: ""
+labels: ["amélioration", "nouvelle fonctionnalité"]
 projects: ["IGNF/52"]
 assignees: MatRouillard, Viglino
 type: Feature
-
 ---
+
 <!-- CE QUI EST ÉCRIT ENTRE CES BALISES NE S'AFFICHE PAS DANS LE TICKET
 Exemple : ticket "[COMPOSANT] Panneau de style d'une couche" -->
 
@@ -16,9 +16,11 @@ Exemple : ticket "[COMPOSANT] Panneau de style d'une couche" -->
 <!-- Indiquer ici le contexte produit : parcours utilisateur et Situation d'usage (Job To Be Done) -->
 
 ### Parcours concerné
+
 <!-- exemple : Éditeur → Gestionnaire de couches → Couche → Style -->
 
 ### Situation d’usage (JTBD)
+
 <!-- exemple : Je veux modifier les couches de données de ma carte pour présenter de l'information et la rendre intelligible sous forme de carte. -->
 
 ---
@@ -116,7 +118,7 @@ exemple : Aucun
 
 <!-- Liens vers la ou les maquettes Figma -->
 
-lien Figma : 
+lien Figma :
 
 ### Illustrations
 
@@ -128,15 +130,15 @@ lien Figma :
 
 # ✅ 5. Critères d’acceptation
 
-<!-- Quels sont les critères d'acceptation de ce ticket ? (i.e., que doit-on vérifier pour pouvoir recetter le ticket) 
+<!-- Quels sont les critères d'acceptation de ce ticket ? (i.e., que doit-on vérifier pour pouvoir recetter le ticket)
 
-exemple: 
+exemple:
 - [ ] Le panneau s'ouvre au clic sur le bouton style de la couche
 - [ ] Le panneau a pour titre le nom de la couche sur laquelle l'utilisateur a cliqué
 - [ ] L'utilisateur peut fermer le panneau grâce au bouton icone [close]
 -->
 
-- [ ] 
+- [ ]
 
 ---
 
@@ -149,7 +151,6 @@ exemple:
 <!--  Impact sur l'utilisateur·ice
 
 exemple : L'utilisateur gagne du temps dans la création de sa carte (application, vérification) et est assuré/confiant sur le rendu de sa carte.-->
-
 
 ### Sonde(s) et/ou indicateur(s)
 
@@ -179,4 +180,3 @@ exemple : liens vers composant DSFR, lien vers source d'inspiration pour composa
 # 🎥 9. Historique / décisions produit
 
 <!-- Partie à compléter avant de recetter : indiquer l'historique et les décisions prises pour ce ticket pour éviter au recetteur de devoir parcourir tous les commentaires -->
-

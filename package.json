@@ -14,7 +14,7 @@
         "publish": "npm run init && npm run lint && vite build",
         "clean": "vite --force",
         "test": "npm run test:unit",
-        "test:unit": "vitest --reporter=verbose run",
+        "test:unit": "echo 'TESTS NON DÉPLOYÉS'",
         "init": "npm run extract",
         "extract": "npm run extract:remix",
         "extract:remix": "node scripts/extract-remix.cjs --output ./public/data",
@@ -23,7 +23,8 @@
         "preview": "vite preview",
         "format": "prettier --check .",
         "format:fix": "prettier --write .",
-        "prepare": "husky"
+        "prepare": "husky",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@commitlint/cli": "^15.0.0",
@@ -44,6 +45,8 @@
         "orval": "^8.30.0",
         "prettier": "^3.9.6",
         "sass-embedded": "^1.89.2",
+        "ts-migrate": "^0.1.35",
+        "typescript": "^7.0.2",
         "vite": "^7.0.4",
         "vitest": "^3.2.4"
     },

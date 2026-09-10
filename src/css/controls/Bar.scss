@@ -1,206 +1,206 @@
-@use '../mixins.scss' as mix;
+@use "../mixins.scss" as mix;
 
 // Filter drop-shadow pour les barres sur la carte
 .ol-overlaycontainer-stopevent > .ol-control.ol-bar {
-  filter: drop-shadow(var(--raised-shadow));
+    filter: drop-shadow(var(--raised-shadow));
 }
 
 .ol-control.ol-bar {
-  margin: 0.5rem;
+    margin: 0.5rem;
 
-  // Position à choisir en fonction de la barre
-  &.ol-bar--fixed {
-    position: fixed;
-  }
+    // Position à choisir en fonction de la barre
+    &.ol-bar--fixed {
+        position: fixed;
+    }
 
-  &,
-  & .ol-control.ol-option-bar {
-    background-color: var(--background-raised-grey);
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-
-    .ol-toggle,
-    .ol-button {
-      button {
-        margin: 0;
-      }
-
-      & {
+    &,
+    & .ol-control.ol-option-bar {
         background-color: var(--background-raised-grey);
-        outline: none;
-      }
-    }
-  }
+        padding: 0.25rem;
+        border-radius: 0.25rem;
 
-  & .ol-control.ol-option-bar {
-    box-shadow: none;
-    border-radius: 0;
+        .ol-toggle,
+        .ol-button {
+            button {
+                margin: 0;
+            }
 
-    &::before {
-      border: 0;
-    }
-  }
-
-  &.ol-right .ol-control.ol-option-bar {
-    margin: 0 0.5rem;
-  }
-
-  &.ol-right > .ol-control > .ol-bar {
-    display: block;
-  }
-
-  &.ol-right.ol-bar--separator:not(.ol-bar--row),
-  &.ol-right .ol-control.ol-active > .ol-option-bar.ol-bar--separator {
-    > * {
-      padding: 0.25rem 0;
-    }
-    > *:first-child {
-      padding: 0 0 0.25rem;
+            & {
+                background-color: var(--background-raised-grey);
+                outline: none;
+            }
+        }
     }
 
-    > *:last-child {
-      padding: 0.25rem 0 0;
+    & .ol-control.ol-option-bar {
+        box-shadow: none;
+        border-radius: 0;
+
+        &::before {
+            border: 0;
+        }
     }
 
-    > *:not(:last-child) {
-      border-radius: 0;
-      border-bottom: 1px solid var(--border-default-grey);
+    &.ol-right .ol-control.ol-option-bar {
+        margin: 0 0.5rem;
     }
-  }
 
-  .ol-control.ol-active > .ol-option-bar.ol-bar--separator {
-    display: flex;
-    flex-direction: column;
-  }
+    &.ol-right > .ol-control > .ol-bar {
+        display: block;
+    }
 
-  &.ol-right {
-    right: 0rem;
-  }
-  &.ol-left {
-    left: 0rem;
-  }
-  &.ol-top {
-    top: 0rem;
-  }
-  &.ol-bottom {
-    bottom: 0rem;
-  }
+    &.ol-right.ol-bar--separator:not(.ol-bar--row),
+    &.ol-right .ol-control.ol-active > .ol-option-bar.ol-bar--separator {
+        > * {
+            padding: 0.25rem 0;
+        }
+        > *:first-child {
+            padding: 0 0 0.25rem;
+        }
+
+        > *:last-child {
+            padding: 0.25rem 0 0;
+        }
+
+        > *:not(:last-child) {
+            border-radius: 0;
+            border-bottom: 1px solid var(--border-default-grey);
+        }
+    }
+
+    .ol-control.ol-active > .ol-option-bar.ol-bar--separator {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.ol-right {
+        right: 0rem;
+    }
+    &.ol-left {
+        left: 0rem;
+    }
+    &.ol-top {
+        top: 0rem;
+    }
+    &.ol-bottom {
+        bottom: 0rem;
+    }
 }
 
 // Bar en haut à droite
 .ol-control.ol-bar.ol-top {
-  border-radius: 0;
-  @include mix.respond-from('sm') {
-    border-radius: 0.25rem;
-  }
-
-  &.ol-left,
-  &.ol-right {
-    .ol-control {
-      margin: unset;
-      padding: unset;
-    }
-  }
-
-  &.ol-bar--row {
-    &,
-    .ol-bar:not(.ol-bar--column) {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+    border-radius: 0;
+    @include mix.respond-from("sm") {
+        border-radius: 0.25rem;
     }
 
-    .fr-btn:not(:empty) {
-      padding: 0.5rem 1rem;
+    &.ol-left,
+    &.ol-right {
+        .ol-control {
+            margin: unset;
+            padding: unset;
+        }
     }
 
-    &.ol-bar--separator {
-      > * {
-        padding: 0 0.25rem;
-      }
-      > *:first-child {
-        padding: 0 0.25rem 0 0;
-      }
+    &.ol-bar--row {
+        &,
+        .ol-bar:not(.ol-bar--column) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
 
-      > *:last-child {
-        padding: 0 0 0 0.25rem;
-      }
+        .fr-btn:not(:empty) {
+            padding: 0.5rem 1rem;
+        }
 
-      > *:last-child:first-child {
-        padding: 0;
-      }
+        &.ol-bar--separator {
+            > * {
+                padding: 0 0.25rem;
+            }
+            > *:first-child {
+                padding: 0 0.25rem 0 0;
+            }
 
-      > *:not(:first-child) {
-        border-radius: 0;
-        border-left: 1px solid var(--border-default-grey);
-      }
+            > *:last-child {
+                padding: 0 0 0 0.25rem;
+            }
+
+            > *:last-child:first-child {
+                padding: 0;
+            }
+
+            > *:not(:first-child) {
+                border-radius: 0;
+                border-left: 1px solid var(--border-default-grey);
+            }
+        }
     }
-  }
 
-  &.ol-bar.ol-bar--column,
-  .ol-control.ol-active > .ol-bar.ol-bar--column {
-    &,
-    .ol-bar:not(.ol-bar--row) {
-      display: flex;
-      flex-direction: column;
-    }
+    &.ol-bar.ol-bar--column,
+    .ol-control.ol-active > .ol-bar.ol-bar--column {
+        &,
+        .ol-bar:not(.ol-bar--row) {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .fr-btn:not(:empty) {
-      padding: 0.5rem 1rem;
-    }
+        .fr-btn:not(:empty) {
+            padding: 0.5rem 1rem;
+        }
 
-    &.ol-bar--separator {
-      > *:not(:first-child) {
-        border-radius: 0;
-        border-top: 1px solid var(--border-default-grey);
-      }
+        &.ol-bar--separator {
+            > *:not(:first-child) {
+                border-radius: 0;
+                border-top: 1px solid var(--border-default-grey);
+            }
+        }
     }
-  }
 }
 
 .ol-control.ol-bar.ol-bar--row {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 .ol-control.ol-bar.ol-bar--column {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .ol-control.ol-bar.ol-left.ol-top .ol-option-bar {
-  border-radius: 0.25rem;
-  top: calc(100% + 0.5rem);
-  left: -0.25rem;
+    border-radius: 0.25rem;
+    top: calc(100% + 0.5rem);
+    left: -0.25rem;
 }
 
 .ol-control.ol-bar {
-  background-color: var(--background-raised-grey);
+    background-color: var(--background-raised-grey);
 
-  .ol-control {
-    &,
-    &:hover,
-    &:active {
-      background-color: var(--background-raised-grey);
+    .ol-control {
+        &,
+        &:hover,
+        &:active {
+            background-color: var(--background-raised-grey);
+        }
     }
-  }
 }
 
 // Cas mobile
 .ol-touch .ol-control.ol-bar.ol-top {
-  &.ol-left,
-  &.ol-right {
-    top: 0.5rem;
-  }
+    &.ol-left,
+    &.ol-right {
+        top: 0.5rem;
+    }
 }
 
 .ol-control.ol-bar {
-  top: unset;
-  left: unset;
-  transform: unset;
+    top: unset;
+    left: unset;
+    transform: unset;
 
-  .ol-control.ol-toggle.ol-active > button {
-    --hover: var(--background-open-blue-france-hover);
-    --active: var(--background-open-blue-france-active);
-    @include mix.button-state($background: var(--background-open-blue-france));
-  }
+    .ol-control.ol-toggle.ol-active > button {
+        --hover: var(--background-open-blue-france-hover);
+        --active: var(--background-open-blue-france-active);
+        @include mix.button-state($background: var(--background-open-blue-france));
+    }
 }

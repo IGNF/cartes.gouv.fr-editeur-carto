@@ -8,101 +8,99 @@ import { getOidc, getUserInfo } from "../oidc.js";
 
 // Menu
 const account = charte.getHeaderMenu({
-  icon: "fr-icon-account-fill",
-  action: "connect",
-  text: "Mon espace",
+    icon: "fr-icon-account-fill",
+    action: "connect",
+    text: "Mon espace",
 });
 
 /* User menu */
 account.addMenu([
-  {
-    type: "description",
-    label: "Nom utilisateur",
-    action: "user",
-    info: "nobody@email.com",
-  },
-  {
-    type: "link",
-    label: "Tableau de bord",
-    action: "board",
-    href: "/tableau-de-bord",
-    icon: "fr-icon-dashboard-3-line",
-  },
-  {
-    type: "link",
-    label: "Mon compte",
-    action: "account",
-    href: "/mon-compte",
-    icon: "fr-icon-user-line",
-  },
-  {
-    type: "option",
-    action: "disconnect",
-    label: "Se déconnecter",
-    title: "Se déconnecter",
-    href: "#",
-    icon: "fr-icon-logout-box-r-line",
-  },
+    {
+        type: "description",
+        label: "Nom utilisateur",
+        action: "user",
+        info: "nobody@email.com",
+    },
+    {
+        type: "link",
+        label: "Tableau de bord",
+        action: "board",
+        href: "/tableau-de-bord",
+        icon: "fr-icon-dashboard-3-line",
+    },
+    {
+        type: "link",
+        label: "Mon compte",
+        action: "account",
+        href: "/mon-compte",
+        icon: "fr-icon-user-line",
+    },
+    {
+        type: "option",
+        action: "disconnect",
+        label: "Se déconnecter",
+        title: "Se déconnecter",
+        href: "#",
+        icon: "fr-icon-logout-box-r-line",
+    },
 ]);
 
 (async () => {
-  const oidc = await getOidc();
+    const oidc = await getOidc();
 
-  // oidc-spa exports Keycloak-specific utilities:
-  const { createKeycloakUtils, isKeycloak } = await import("oidc-spa/keycloak");
+    // oidc-spa exports Keycloak-specific utilities:
+    const { createKeycloakUtils, isKeycloak } = await import("oidc-spa/keycloak");
 
-  const keycloakUtils = isKeycloak({ issuerUri: oidc.issuerUri })
-    ? createKeycloakUtils({ issuerUri: oidc.issuerUri })
-    : undefined;
+    const keycloakUtils = isKeycloak({ issuerUri: oidc.issuerUri }) ? createKeycloakUtils({ issuerUri: oidc.issuerUri }) : undefined;
 
-  if (oidc.isUserLoggedIn) {
-    // The user is logged in.
+    if (oidc.isUserLoggedIn) {
+        // The user is logged in.
 
-    // Call when the user clicks logout.
-    // You can also redirect to a custom URL with:
-    // { redirectTo: "specific URL", url: "/bye" }
-    // oidc.logout({ redirectTo: "/" });
+        // Call when the user clicks logout.
+        // You can also redirect to a custom URL with:
+        // { redirectTo: "specific URL", url: "/bye" }
+        // oidc.logout({ redirectTo: "/" });
 
-    const decodedIdToken = oidc.getDecodedIdToken();
+        const decodedIdToken = oidc.getDecodedIdToken();
 
-    console.log(decodedIdToken);
+        console.log(decodedIdToken);
 
-    charte.setConnected(true);
-    charte.getHeaderMenu({ action: "connect" }).setMenu("user", {
-      label: decodedIdToken.preferred_username,
-      info: decodedIdToken.email,
-    });
-  }
+        charte.setConnected(true);
+        charte.getHeaderMenu({ action: "connect" }).setMenu("user", {
+            label: decodedIdToken.preferred_username,
+            info: decodedIdToken.email,
+        });
+    }
 })();
 
 // Bouton de connexion
 charte.getHeaderButton({
-  type: "button",
-  label: "Se connecter",
-  icon: "fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-hidden",
-  "data-action": "login",
-  "aria-controls": loginDialog.getId(),
-  "data-fr-opened": false,
+    type: "button",
+    label: "Se connecter",
+    icon: "fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-hidden",
+    "data-action": "login",
+    "aria-controls": loginDialog.getId(),
+    "data-fr-opened": false,
 });
 
 // Attend que le DSFR soit prêt pour la duplication du header
 document.documentElement.addEventListener("dsfr.start", () => {
-  // Bouton de déconnexion
-  let disconnect = account.getMenu("disconnect");
-  disconnect.forEach((btn) => {
-    btn.link.addEventListener("click", async () => {
-      const oidc = await getOidc();
-      oidc.logout({ redirectTo: "specific url", url: "/" });
+    // Bouton de déconnexion
+    let disconnect = account.getMenu("disconnect");
+    disconnect.forEach((btn) => {
+        btn.link.addEventListener("click", async () => {
+            const oidc = await getOidc();
+            oidc.logout({ redirectTo: "specific url", url: "/" });
+        });
     });
-  });
 
-  // const header = document.querySelector("header");
-  // const loginBtn = header.querySelectorAll('button[data-action="login"]');
-  // loginBtn.forEach((btn) => {
-  //   btn.addEventListener("click", Action.open);
-  // });
+    // const header = document.querySelector("header");
+    // const loginBtn = header.querySelectorAll('button[data-action="login"]');
+    // loginBtn.forEach((btn) => {
+    //   btn.addEventListener("click", Action.open);
+    // });
 
-  // api.whoami(setUser);
+    // api.whoami(setUser);
 });
 
 export default account;

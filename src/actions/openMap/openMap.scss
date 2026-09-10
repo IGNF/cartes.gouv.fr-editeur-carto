@@ -1,58 +1,58 @@
-@use '../../css/mixins.scss' as mix;
+@use "../../css/mixins.scss" as mix;
 
 .map-list {
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  input {
-    padding-right: 2.5rem;
-    margin-bottom: 1.5rem;
-  }
-  input + [class^='fr-icon-'] {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-  }
-
-  .map-list__list {
-    // padding: 0.3rem;
-    max-height: calc(100vh - 30rem);
-    overflow: auto;
-  }
-
-  .ol-map-card {
-    cursor: pointer;
+    width: 100%;
+    position: relative;
     display: flex;
-    flex-direction: row;
-    padding: 0.75rem 1rem;
-    gap: 0.5rem;
-    width: auto;
-    color: var(--text-default-grey);
-    --active-tint: var(--active);
+    flex-direction: column;
 
-    &__info {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      overflow: hidden;
-      align-items: start;
+    input {
+        padding-right: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    input + [class^="fr-icon-"] {
+        position: absolute;
+        top: 0.5rem;
+        right: 1rem;
     }
 
-    &__title {
-      text-wrap: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .map-list__list {
+        // padding: 0.3rem;
+        max-height: calc(100vh - 30rem);
+        overflow: auto;
     }
 
-    &__details {
-      font-weight: 400;
-      color: var(--text-mention-grey);
-    }
+    .ol-map-card {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        padding: 0.75rem 1rem;
+        gap: 0.5rem;
+        width: auto;
+        color: var(--text-default-grey);
+        --active-tint: var(--active);
 
-    &[aria-current='true'] {
-      @include mix.button-state($text-color: initial, $background: var(--background-default-grey-hover));
+        &__info {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            overflow: hidden;
+            align-items: start;
+        }
+
+        &__title {
+            text-wrap: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &__details {
+            font-weight: 400;
+            color: var(--text-mention-grey);
+        }
+
+        &[aria-current="true"] {
+            @include mix.button-state($text-color: initial, $background: var(--background-default-grey-hover));
+        }
     }
-  }
 }

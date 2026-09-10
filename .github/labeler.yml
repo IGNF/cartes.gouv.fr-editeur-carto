@@ -1,18 +1,17 @@
 enable:
-  issues: true
-  prs: true
-  
-tooling:
-  - .github/**/*
-  - .gitignore
-  - .vscode/**/*
+    issues: true
+    prs: true
 
+tooling:
+    - .github/**/*
+    - .gitignore
+    - .vscode/**/*
 
 documentation:
-  - docs/*
+    - docs/*
 
 enhancement:
-  - src/**/*
+    - src/**/*
 
 quality:
-  - tests/**/*
+    - tests/**/*

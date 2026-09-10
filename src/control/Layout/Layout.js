@@ -1,10 +1,9 @@
-
-import Dialog from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js';
-import TabNav from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNav.js';
-import legendTabNavItem from './legend.js';
-import titleTabNavItem from './title.js';
-import styleTabNavItem from './style.js';
-import './layout.scss';
+import Dialog from "geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js";
+import TabNav from "geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNav.js";
+import legendTabNavItem from "./legend.js";
+import titleTabNavItem from "./title.js";
+import styleTabNavItem from "./style.js";
+import "./layout.scss";
 
 /**
  * @typedef {Object} LayoutTabNavItemOptions
@@ -35,102 +34,101 @@ import './layout.scss';
  * Panneau latéral basé sur Dialog, avec navigation par onglets.
  */
 class Layout extends Dialog {
+    /**
+     * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap utilisée par les onglets.
+     * @param {LayoutOptions} [options] Options de construction.
+     */
+    constructor(storymap, options) {
+        super(options);
 
-  /**
-   * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap utilisée par les onglets.
-   * @param {LayoutOptions} [options] Options de construction.
-   */
-  constructor(storymap, options) {
-    super(options);
+        this.storymap = storymap;
+        this.labelTabNav = options.labelTabNav;
 
-    this.storymap = storymap;
-    this.labelTabNav = options.labelTabNav;
-
-    if (storymap) {
-      this.setMap(storymap.getCarte().getMap());
-    }
-  }
-
-  /**
-   * @param {LayoutOptions} [options] Options de construction.
-   */
-  _initialize(options = {}) {
-    if (!Array.isArray(options.items) || options.items.length === 0) {
-      options.items = [legendTabNavItem, titleTabNavItem, styleTabNavItem];
+        if (storymap) {
+            this.setMap(storymap.getCarte().getMap());
+        }
     }
 
-    super._initialize(options);
-  }
-  
-  /**
-   * @param {LayoutOptions} [options] Options de construction.
-   */
-  _initContainer(options) {
-    super._initContainer(options);
-    this.element.classList.add('layout-dialog');
-  }
+    /**
+     * @param {LayoutOptions} [options] Options de construction.
+     */
+    _initialize(options = {}) {
+        if (!Array.isArray(options.items) || options.items.length === 0) {
+            options.items = [legendTabNavItem, titleTabNavItem, styleTabNavItem];
+        }
 
-  /**
-   * Retourne l'instance storymap liée au layout.
-   * @returns {import("mcutils/StoryMap.js").default}
-   */
-  getStorymap() {
-    return this.storymap;
-  }
-
-  /**
-   * Met à jour la storymap utilisée par le layout.
-   * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap.
-   */
-  setStorymap(storymap) {
-    this.storymap && this.storymap.getCarte()?.getMap()?.removeControl(this);
-    this.storymap = storymap;
-    this.storymap && this.setMap(storymap.getCarte().getMap());
-  }
-
-  /**
-   * Remplace tous les onglets de la navigation.
-   * @param {Array<LayoutTabNavItemOptions>} items Liste des onglets.
-   * @param {String} [label] Label ARIA de la navigation.
-   */
-  setItems(items = [], label) {
-    const nextItems = Array.isArray(items) ? items : [items];
-    this.setTabNav(nextItems, label ?? this.labelTabNav);
-  }
-
-  /**
-   * Ajoute un onglet dans la navigation.
-   * @param {LayoutTabNavItemOptions} item Onglet à ajouter.
-   */
-  addItem(item) {
-    if (!item) {
-      return;
+        super._initialize(options);
     }
 
-    this.addTabNavItem(item);
-  }
-
-  /**
-   * Ajoute plusieurs onglets sans effacer les existants.
-   * @param {Array<LayoutTabNavItemOptions>} items Onglets à ajouter.
-   */
-  addItems(items = []) {
-    if (!Array.isArray(items)) {
-      this.addItem(items);
-      return;
+    /**
+     * @param {LayoutOptions} [options] Options de construction.
+     */
+    _initContainer(options) {
+        super._initContainer(options);
+        this.element.classList.add("layout-dialog");
     }
 
-    items.forEach(item => this.addItem(item));
-  }
+    /**
+     * Retourne l'instance storymap liée au layout.
+     * @returns {import("mcutils/StoryMap.js").default}
+     */
+    getStorymap() {
+        return this.storymap;
+    }
 
-  /**
-   * Retourne la navigation tertiaire typée si disponible.
-   * @returns {TabNav|null}
-   */
-  getNavigation() {
-    const tabNav = this.getTabNav();
-    return tabNav instanceof TabNav ? tabNav : null;
-  }
+    /**
+     * Met à jour la storymap utilisée par le layout.
+     * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap.
+     */
+    setStorymap(storymap) {
+        this.storymap && this.storymap.getCarte()?.getMap()?.removeControl(this);
+        this.storymap = storymap;
+        this.storymap && this.setMap(storymap.getCarte().getMap());
+    }
+
+    /**
+     * Remplace tous les onglets de la navigation.
+     * @param {Array<LayoutTabNavItemOptions>} items Liste des onglets.
+     * @param {String} [label] Label ARIA de la navigation.
+     */
+    setItems(items = [], label) {
+        const nextItems = Array.isArray(items) ? items : [items];
+        this.setTabNav(nextItems, label ?? this.labelTabNav);
+    }
+
+    /**
+     * Ajoute un onglet dans la navigation.
+     * @param {LayoutTabNavItemOptions} item Onglet à ajouter.
+     */
+    addItem(item) {
+        if (!item) {
+            return;
+        }
+
+        this.addTabNavItem(item);
+    }
+
+    /**
+     * Ajoute plusieurs onglets sans effacer les existants.
+     * @param {Array<LayoutTabNavItemOptions>} items Onglets à ajouter.
+     */
+    addItems(items = []) {
+        if (!Array.isArray(items)) {
+            this.addItem(items);
+            return;
+        }
+
+        items.forEach((item) => this.addItem(item));
+    }
+
+    /**
+     * Retourne la navigation tertiaire typée si disponible.
+     * @returns {TabNav|null}
+     */
+    getNavigation() {
+        const tabNav = this.getTabNav();
+        return tabNav instanceof TabNav ? tabNav : null;
+    }
 }
 
 export default Layout;
