@@ -1,0 +1,240 @@
+import carte from "../../carte.js";
+
+import Bar from "ol-ext/control/Bar.js";
+import Toggle from "ol-ext/control/Toggle.js";
+import styleDialog from "../../control/StyleDialog/styleDialog.js";
+import switcher from "../../mcutils/layerSwitcher.js";
+import VectorSource from "ol/source/Vector.js";
+import drawToggle from "./drawToggle.js";
+import catalog from "./catalog.js";
+import charte from "../../charte/charte.js";
+
+import Action from "../../actions/Action.js";
+import notification from "../../control/Notification/notification.js";
+
+import "./edit-bar.scss";
+import rightPanel from "../../dialogs/rightPanel.js";
+import Snap from "../../mcutils/interaction/Snap.js";
+// import { getCurrentStyle } from "../../mcutils/currentStyle.js";
+import Button from "ol-ext/control/Button.js";
+import Charte from "../../charte/objects/Charte.js";
+
+// TODO : mieux gérer les toggle d'édition / mesure
+// et leur lien avec l'interaction de sélection
+
+/**
+ * @type {Toggle}
+ */
+let toggle: any;
+// Fonction temporaire pour les toggle
+// (les toggle n'envoient pas d'événement au click)
+function onToggleAction(this: any) {
+    // Désactive le toggle précédent
+    if (toggle && toggle !== this) {
+        toggle !== drawToggle && toggle.setActive(false);
+    }
+    toggle = this;
+    const e = new CustomEvent("click", {
+        detail: {
+            target: toggle.button_,
+        },
+    });
+    Action.open(e);
+}
+
+rightPanel.onClose(() => {
+    closeToggle(toggle);
+}, false);
+
+/**
+ * Ferme le toggle à la fermeture du dialog
+ * @param {Event} e
+ * @param {Toggle} toggle
+ */
+function closeToggle(toggle: any) {
+    if (toggle?.getActive()) {
+        toggle.setActive(false);
+    }
+}
+
+// Interaction de select (revient à un état de base)
+const selectToggle = new Button({
+    classButton: "fr-btn fr-btn--tertiary-no-outline ri-cursor-line",
+    attributes: {
+        "aria-label": "Sélecteur",
+    },
+    // interaction: carte.getSelect(),
+    active: true,
+    handleClick: function () {
+        // Ferme les panneaux au click
+        rightPanel.close();
+        drawToggle.getActive() && drawToggle.setActive(false);
+        !catalog.getCollapsed() && catalog.setCollapsed(true);
+        !switcher.getCollapsed() && switcher._showLayerSwitcherButton?.click();
+
+        // Réactive l'intéraction de sélection si elle est désactivée
+        carte.getSelect().clear?.();
+        carte.getSelect().setActive(true);
+    },
+});
+
+// Barre ajout de donnée
+const catalogToggle = new Toggle({
+    classButton: "fr-btn fr-btn--tertiary-no-outline ri-map-2-line",
+    attributes: {
+        "aria-label": "Importer une donnée depuis cartes.gouv",
+        "aria-controls": catalog.getContainer()?.querySelector("dialog")?.id,
+    },
+});
+
+// Écouteur sur change:active, car onToggle n'est pas appelé via setActive
+catalogToggle.on("change:active", function (this: any, e: any) {
+    if (toggle && toggle !== this) {
+        toggle !== drawToggle && toggle.setActive(false);
+    }
+    toggle = this;
+    catalog.setCollapsed(!e?.active);
+});
+
+catalog.buttonCatalogClose.addEventListener("click", () => {
+    console.log("catalog.getCollapsed()", catalog.getCollapsed());
+    catalogToggle.setActive(!catalog.getCollapsed());
+    console.log("catalogToggle.getActive", catalogToggle.getActive());
+});
+
+const file = new Toggle({
+    classButton: "fr-btn fr-btn--tertiary-no-outline ri-file-upload-line",
+    attributes: {
+        "data-action": "import-local",
+        "aria-controls": rightPanel.getId(),
+        "aria-label": "Importer une donnée locale",
+    },
+    onToggle: onToggleAction,
+});
+
+const addDataBar = new Bar({
+    toggleOne: true,
+    controls: [catalogToggle, file],
+});
+
+// Interaction Snap
+let snap = new Snap({ source: switcher.getSelectedLayer()?.getSource() });
+
+/* Update drawing interaction source on layer switch */
+switcher.on("layerswitcher:change:selected", (e) => {
+    if (e.layer?.getSource() instanceof VectorSource) {
+        drawToggle.toggleInteractions.forEach((toggle) => {
+            toggle.getInteraction().setSource?.(e.layer?.getSource());
+        });
+
+        // Ajoute aussi une interaction de snap
+        snap && carte.getMap().removeInteraction(snap);
+        snap = new Snap({ source: e.layer.getSource() });
+        carte.getMap().addInteraction(snap);
+    } else {
+        // Enlève la source du dessin
+        drawToggle.toggleInteractions.forEach((toggle) => {
+            snap && carte.getMap().removeInteraction(snap);
+            toggle.getInteraction().setSource?.();
+        });
+    }
+});
+
+const measureToggle = new Toggle({
+    classButton: "fr-btn fr-btn--tertiary-no-outline ri-ruler-line ",
+    attributes: {
+        "data-action": "measure",
+        "aria-controls": rightPanel.getId(),
+        "aria-label": "Mesurer",
+    },
+    onToggle: onToggleAction,
+});
+
+// Barre d'interaction
+const interactionBar = new Bar({
+    // toggleOne: true, // Ne fonctionne pas en liant les contrôles ol-ext et geopf
+    controls: [drawToggle, measureToggle],
+});
+
+// Barre d'édition
+const editDataBar = new Bar({
+    controls: [interactionBar],
+});
+
+drawToggle.getDialog().on("dialog:open", () => {
+    if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
+        notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    }
+});
+drawToggle.on("drawstart", (e) => {
+    if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource) && e.target.type_ !== "Point") {
+        notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    }
+});
+drawToggle.on("drawend", (e) => {
+    if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
+        notification.error("La couche sélectionnée n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+        e.preventDefault();
+        drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
+    } else {
+        // e.feature?.setIgnStyle(getCurrentStyle(e.feature));
+        if (e.feature) {
+            // for (const st in getCurrentStyle(e.feature)) {
+            //   e.feature.setIgnStyle(st, getCurrentStyle(e.feature)[st]);
+            // }
+        }
+    }
+});
+
+// Gère les intéractions entre les deux dialogues
+rightPanel.on("dialog:open", () => {
+    drawToggle.getActive() && drawToggle.setActive(false);
+    // switcher.setCollapsed(true); // Ne fonctionne pas
+    !switcher.getCollapsed() && switcher._showLayerSwitcherButton?.click();
+});
+
+drawToggle.getDialog().on("dialog:open", () => {
+    rightPanel.close();
+    // switcher.setCollapsed(true); // Ne fonctionne pas
+    !switcher.getCollapsed() && switcher._showLayerSwitcherButton?.click();
+});
+
+catalog.on("change:collapsed", () => {
+    if (catalog.getCollapsed() === false) {
+        // On ouvre le catalogue donc on ferme les autres
+        rightPanel.close();
+
+        !switcher.getCollapsed() && switcher._showLayerSwitcherButton?.click();
+        drawToggle.getActive() && drawToggle.setActive(false);
+    }
+});
+
+switcher.on("change:collapsed", () => {
+    if (switcher.getCollapsed() === false) {
+        // On ouvre le layerswitcher donc on ferme les autres
+        rightPanel.close();
+        drawToggle.getActive() && drawToggle.setActive(false);
+    }
+});
+
+// Barre principale
+const mainbar = new Bar({
+    className: "ol-bar--separator edit-bar",
+    toggleOne: true,
+    controls: [selectToggle, addDataBar, editDataBar],
+});
+
+// Passage en mode mise en page : retourne à l'état initial
+charte.on("change:mode", (e) => {
+    const mode = e.target.get(e.key);
+    if (mode === Charte.modes.STORYMAP) {
+        // Passage en mode mise en page : simule un clic sur l'outil "sélection"
+        selectToggle.button_.click();
+    }
+});
+
+carte.addControl("mainBar", mainbar);
+carte.addControl("styleDialog", styleDialog);
+carte.addControl("catalog", catalog);
+
+mainbar.setPosition("right");

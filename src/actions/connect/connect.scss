@@ -1,130 +1,130 @@
-@use '../../css/mixins.scss' as mix;
+@use "../../css/mixins.scss" as mix;
 
 .intro-dialog {
-  padding: 1.5rem;
-  z-index: 100;
-  border: 0;
-  right: auto;
-  top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0px 6px 18px 0px rgba(0, 0, 18, 0.16);
-  max-width: calc(100% - 1rem);
-  max-height: 620px;
-  left: 1rem;
-  right: 1rem;
-  height: auto;
-  overflow: auto;
-
-  @include mix.respond-from('sm') {
-    width: 30rem;
-    max-height: 536px;
-
-    left: 3rem;
+    padding: 1.5rem;
+    z-index: 100;
+    border: 0;
     right: auto;
-    padding: 2.5rem;
-  }
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0px 6px 18px 0px rgba(0, 0, 18, 0.16);
+    max-width: calc(100% - 1rem);
+    max-height: 620px;
+    left: 1rem;
+    right: 1rem;
+    height: auto;
+    overflow: auto;
 
-  @include mix.respond-from('md') {
-    left: 7.5rem;
-  }
+    @include mix.respond-from("sm") {
+        width: 30rem;
+        max-height: 536px;
 
-  .fr-icon.intro {
-    font-size: 56px;
-    display: flex;
-    width: 5.5rem;
-    height: 5.5rem;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 50%;
-    background: #fde793;
-
-    &:before {
-      mask-size: 1em;
-      width: 1em;
-      height: 1em;
-      color: #161616;
+        left: 3rem;
+        right: auto;
+        padding: 2.5rem;
     }
-  }
 
-  & > div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    @include mix.respond-from("md") {
+        left: 7.5rem;
+    }
 
-  .disconnected {
-    display: none;
-  }
-  button.connected:last-child {
-    margin-left: 1rem;
-  }
+    .fr-icon.intro {
+        font-size: 56px;
+        display: flex;
+        width: 5.5rem;
+        height: 5.5rem;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 50%;
+        background: #fde793;
+
+        &:before {
+            mask-size: 1em;
+            width: 1em;
+            height: 1em;
+            color: #161616;
+        }
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .disconnected {
+        display: none;
+    }
+    button.connected:last-child {
+        margin-left: 1rem;
+    }
 }
 
-[data-role='map'][inert],
+[data-role="map"][inert],
 .map[inert] {
-  // position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    z-index: 10;
-    inset: 0;
-    pointer-events: none;
+    // position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: 10;
+        inset: 0;
+        pointer-events: none;
 
-    background: hsla(0, 0%, 9%, 0.64);
+        background: hsla(0, 0%, 9%, 0.64);
 
-    @include mix.respond-from('sm') {
-      background: linear-gradient(90deg, var(--background-alt-grey) 0 320px, hsla(0, 0%, 9%, 0.64) 320px 100%);
+        @include mix.respond-from("sm") {
+            background: linear-gradient(90deg, var(--background-alt-grey) 0 320px, hsla(0, 0%, 9%, 0.64) 320px 100%);
+        }
+        @include mix.respond-from("lg") {
+            background: linear-gradient(90deg, var(--background-alt-grey) 0 480px, hsla(0, 0%, 9%, 0.64) 480px 100%);
+        }
     }
-    @include mix.respond-from('lg') {
-      background: linear-gradient(90deg, var(--background-alt-grey) 0 480px, hsla(0, 0%, 9%, 0.64) 480px 100%);
-    }
-  }
 
-  &.inert-legacy {
-    .ol-overlaycontainer-stopevent {
-      display: none;
+    &.inert-legacy {
+        .ol-overlaycontainer-stopevent {
+            display: none;
+        }
     }
-  }
 }
 
 .menu-info {
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
 
-    @include mix.respond-from('sm') {
-      gap: 2.5rem;
-      margin-bottom: 2.5rem;
-    }
-    > p {
-      margin-bottom: 0;
-    }
-  }
-
-  &__title {
-    p {
-      margin: 0;
+        @include mix.respond-from("sm") {
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+        > p {
+            margin-bottom: 0;
+        }
     }
 
-    h1 {
-      margin-bottom: 0.5rem;
-    }
-  }
+    &__title {
+        p {
+            margin: 0;
+        }
 
-  .intro-dialog__header {
-    display: none;
-  }
+        h1 {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .intro-dialog__header {
+        display: none;
+    }
 }
 
 /* Connected */
 [data-disconnected] {
-  .menu-info .disconnected {
-    display: inline-flex;
-  }
-  .menu-info .connected {
-    display: none;
-  }
+    .menu-info .disconnected {
+        display: inline-flex;
+    }
+    .menu-info .connected {
+        display: none;
+    }
 }

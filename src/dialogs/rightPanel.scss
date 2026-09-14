@@ -1,8 +1,8 @@
-@use '../css/mixins.scss' as mix;
+@use "../css/mixins.scss" as mix;
 
 dialog#right-panel-action {
-  @include mix.respond-from('sm') {
-    // Aligne avec la barre d'outil
-    top: calc(120px + 1.625rem);
-  }
+    @include mix.respond-from("sm") {
+        // Aligne avec la barre d'outil
+        top: calc(120px + 1.625rem);
+    }
 }

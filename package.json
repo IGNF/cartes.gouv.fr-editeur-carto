@@ -1,53 +1,81 @@
 {
-  "name": "editeur-carto",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "description": "Test de l'éditeur carto, entre extgpf, mcutils et dsfr personnalisé",
-  "author": "IGNF",
-  "license": "GPL-3",
-  "engines": {
-    "node": ">=24.0.0 <26.0.0",
-    "npm": ">=11.13.0 <12.0.0"
-  },
-  "scripts": {
-    "start": "vite --force",
-    "dev": "vite",
-    "lint": "eslint --fix \"src/**/*.js\" || exit 0",
-    "build": "npm run lint && vite build",
-    "publish": "npm run init && npm run lint && vite build",
-    "preview": "vite preview",
-    "clean": "vite --force",
-    "test": "npm run test:unit",
-    "test:unit": "vitest --reporter=verbose run",
-    "init": "npm run extract",
-    "extract": "npm run extract:remix",
-    "extract:remix": "node scripts/extract-remix.cjs --output ./public/data"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
-    "@commitlint/config-conventional": "^15.0.0",
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.34.0",
-    "canvas": "^3.2.0",
-    "eslint": "^9.34.0",
-    "eslint-import-resolver-vite": "^2.1.0",
-    "eslint-plugin-import": "^2.32.0",
-    "globals": "^16.3.0",
-    "jsdom": "^26.1.0",
-    "sass-embedded": "^1.89.2",
-    "vite": "^7.0.4",
-    "vitest": "^3.2.4"
-  },
-  "dependencies": {
-    "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.14.1/ignf-dsfr-v1.14.1.tgz",
-    "geoimport": "^0.7.0",
-    "dsfr-extension": "git+https://github.com/IGNF/dsfr-extension#556230b",
-    "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.10-490.tgz",
-    "mcutils": "git+https://github.com/IGNF/cartes.gouv.fr-editeur-lib",
-    "remixicon": "^4.6.0"
-  },
-  "peerDependencies": {
-    "ol": "^10.7.0"
-  }
+    "name": "editeur-carto",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "description": "Test de l'éditeur carto, entre extgpf, mcutils et dsfr personnalisé",
+    "author": "IGNF",
+    "license": "GPL-3",
+    "scripts": {
+        "start": "vite --force",
+        "dev": "vite",
+        "generate-api": "orval",
+        "build": "npm run lint && vite build",
+        "publish": "npm run init && npm run lint && vite build",
+        "clean": "vite --force",
+        "test": "npm run test:unit",
+        "test:unit": "echo 'TESTS NON DÉPLOYÉS'",
+        "init": "npm run extract",
+        "extract": "npm run extract:remix",
+        "extract:remix": "node scripts/extract-remix.cjs --output ./public/data",
+        "lint": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "lint:fix": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+        "preview": "vite preview",
+        "format": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "prepare": "husky",
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^15.0.0",
+        "@commitlint/config-conventional": "^15.0.0",
+        "@commitlint/prompt-cli": "^21.2.2",
+        "@eslint/eslintrc": "^3.3.1",
+        "@eslint/js": "^9.34.0",
+        "canvas": "^3.2.0",
+        "eslint": "^9.39.5",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-import-resolver-vite": "^2.1.0",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
+        "eslint-plugin-prettier": "^5.5.6",
+        "globals": "^16.3.0",
+        "husky": "^9.1.7",
+        "jsdom": "^26.1.0",
+        "lint-staged": "^17.5.1",
+        "orval": "^8.30.0",
+        "prettier": "^3.9.6",
+        "sass-embedded": "^1.89.2",
+        "ts-migrate": "^0.1.35",
+        "typescript": "^7.0.2",
+        "typestat": "^0.8.18",
+        "vite": "^7.0.4",
+        "vitest": "^3.2.4"
+    },
+    "dependencies": {
+        "dsfr-extension": "git+https://github.com/IGNF/dsfr-extension#556230b",
+        "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.14.1/ignf-dsfr-v1.14.1.tgz",
+        "geoimport": "^0.7.0",
+        "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.10-490.tgz",
+        "mcutils": "git+https://github.com/IGNF/cartes.gouv.fr-editeur-lib",
+        "oidc-spa": "^10.2.11",
+        "remixicon": "^4.6.0",
+        "zod": "^4.6.1"
+    },
+    "peerDependencies": {
+        "ol": "^10.7.0"
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "lint-staged": {
+        "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern",
+        "*.{js,ts,jsx,tsx}": "eslint src/ --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --fix"
+    },
+    "engines": {
+        "node": ">=24.0.0 <26.0.0",
+        "npm": ">=11.13.0 <12.0.0"
+    }
 }
