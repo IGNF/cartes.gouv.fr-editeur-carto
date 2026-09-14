@@ -4,7 +4,7 @@ import contentHTML from "./modal.html?raw";
 import Dialog from "../Dialog/AbstractDialog.js";
 
 class Modal extends Dialog {
-    constructor(options) {
+    constructor(options: any) {
         super(options);
 
         // Ajoute un écouteur d'événement sur la fermeture de la modale
@@ -39,7 +39,7 @@ class Modal extends Dialog {
         // this.selectors.CLOSE_EVENT = 'dsfr.conceal';
     }
 
-    addButton(button) {
+    addButton(button: any) {
         super.addButton(button);
         // Enlève la classe 'fr-hidden' sur le footer au besoin
         const footer = this.querySelector(this.selectors.FOOTER);
@@ -54,7 +54,7 @@ class Modal extends Dialog {
      * @param {Dialog} dialog
      * @override
      */
-    _close(dialog) {
+    _close(dialog: any) {
         // Laisse le DSFR gérer la fermeture de la modale
         dialog.closeBtn.click();
     }
@@ -106,7 +106,7 @@ class Modal extends Dialog {
      * @param {function(Modal)} onOpen Fonction à l'ouverture du dialog.
      * @param {boolean} force Force l'ouverture de la modale même si l'action est déjà liée à un evenement
      */
-    setOnOpen(onOpen, force = false) {
+    setOnOpen(onOpen: any, force = false) {
         super.setOnOpen(onOpen);
 
         // Vérifie si la modale était ouverte (elle s'ouvre avant

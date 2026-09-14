@@ -11,7 +11,7 @@ import Action from "../../actions/Action.js";
 import "./step-bar.scss";
 import { shareMapBtn } from "../file-bar/file-bar.js";
 
-let onToggleMode = function () {
+let onToggleMode = function (this: any) {
     let toggle = this;
     const currentMode = charte.getMode();
     const action = this.button_.getAttribute("data-action");

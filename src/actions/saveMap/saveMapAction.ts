@@ -8,13 +8,13 @@ import { addMessage } from "../../utils/message.js";
 import savingContent from "./saving.html?raw";
 import Alert from "../../control/Alert/Alert.js";
 
-let GPFThemes = [];
+let GPFThemes: any = [];
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
-let dialog;
+let dialog: any;
 
 /**
  * Fonction à l'ouverture du dialog.
@@ -23,7 +23,7 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
     const metadata = carte.get("atlas") || {};
     console.log("metadata", metadata);
@@ -38,7 +38,7 @@ function onOpen(e) {
         addThemes(GPFThemes, select);
         select.value = metadata.theme_id || "";
     } else {
-        api.getThemes((themes) => {
+        api.getThemes((themes: any) => {
             GPFThemes = themes;
             if (themes.length) {
                 addThemes(themes, select);
@@ -52,7 +52,7 @@ function onOpen(e) {
     inputDescription.value = metadata.description || "";
 }
 
-function addThemes(themes, select) {
+function addThemes(themes: any, select: any) {
     Object.keys(themes).forEach((key) => {
         let { id, name } = themes[key];
         let option = ol_ext_element.create("option", {
@@ -113,7 +113,7 @@ function saveMap() {
     // Post the map
     const postMap = function () {
         // Do something when post
-        function onpost(response) {
+        function onpost(response: any) {
             if (response.status == 401) {
                 // Connect and iterate
                 console.error("Unauthorized, please login to save the map");

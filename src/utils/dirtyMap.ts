@@ -1,4 +1,3 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../c... Remove this comment to see the full error message
 import carte from "../carte.js";
 
 // Prevent unload

@@ -117,7 +117,7 @@ const MCUTILS_OPERATOR_TO_OPERATOR_KEY = Object.values(ConditionalOperator).redu
  * @param {ConditionalOperatorKey|String} operatorKey Clé d'opérateur à valider.
  * @returns {Boolean} `true` si la clé existe dans la liste des opérateurs, sinon `false`.
  */
-export function isConditionalOperator(operatorKey) {
+export function isConditionalOperator(operatorKey: any) {
     return OPERATOR_VALUES.has(operatorKey);
 }
 
@@ -127,7 +127,7 @@ export function isConditionalOperator(operatorKey) {
  * @param {McutilsOperator|String} mcutilsOperator Valeur d'opérateur mcutils à valider.
  * @returns {Boolean} `true` si la valeur est un opérateur mcutils valide, sinon `false`.
  */
-export function isMcutilsOperator(mcutilsOperator) {
+export function isMcutilsOperator(mcutilsOperator: any) {
     return MCUTILS_OPERATOR_VALUES.has(mcutilsOperator);
 }
 
@@ -137,7 +137,7 @@ export function isMcutilsOperator(mcutilsOperator) {
  * @param {ConditionalOperatorKey|String} operatorKey Clé de l'opérateur recherché.
  * @returns {ConditionalOperatorDefinition|undefined} Définition de l'opérateur, ou `undefined` s'il n'existe pas.
  */
-export function getConditionalOperatorInfo(operatorKey) {
+export function getConditionalOperatorInfo(operatorKey: any) {
     return Object.values(ConditionalOperator).find((operator) => operator.key === operatorKey);
 }
 
@@ -161,7 +161,7 @@ export function getConditionalOperatorOptions() {
  * @param {McutilsOperator|String} mcutilsOperator Valeur d'opérateur issue de mcutils (ex: `=`, `contain`, `regexp`).
  * @returns {ConditionalOperatorKey|undefined} Clé interne correspondante, ou `undefined` si aucun mapping n'existe.
  */
-export function fromMcutilsOperator(mcutilsOperator) {
+export function fromMcutilsOperator(mcutilsOperator: any) {
     return MCUTILS_OPERATOR_TO_OPERATOR_KEY[mcutilsOperator];
 }
 
@@ -171,7 +171,7 @@ export function fromMcutilsOperator(mcutilsOperator) {
  * @param {ConditionalOperatorKey|String} operatorKey Clé interne de l'opérateur.
  * @returns {McutilsOperator|undefined} Opérateur mcutils correspondant, ou `undefined` si aucun mapping n'est défini.
  */
-export function toMcutilsOperator(operatorKey) {
+export function toMcutilsOperator(operatorKey: any) {
     return getConditionalOperatorInfo(operatorKey)?.mcutilsOperator;
 }
 

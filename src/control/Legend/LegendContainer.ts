@@ -17,6 +17,10 @@ import itemHtml from "./legend-item.html?raw";
  * Gestionnaire de légende pour la storymap
  */
 class LegendContainer extends BaseObject {
+    _legendList: any;
+    _sortable: any;
+    _story: any;
+    content: any;
     /**
      * @param {*} options
      */
@@ -29,19 +33,19 @@ class LegendContainer extends BaseObject {
             html: html.replace(/-ID/g, "-" + getUid()),
             "aria-label": "Configuration de la légende",
         });
-        this.content.addEventListener("submit", (e) => {
+        this.content.addEventListener("submit", (e: any) => {
             e.preventDefault();
         });
 
         // Gestion des événements (when ready)
-        this.getItem("visible").addEventListener("change", (e) => {
+        this.getItem("visible").addEventListener("change", (e: any) => {
             this.showLegend(e.target.checked);
         });
-        this.getItem("title").addEventListener("input", (e) => {
+        this.getItem("title").addEventListener("input", (e: any) => {
             const legend = this._story.getCarte().getControl("legend").getLegend();
             legend.setTitle(e.target.value);
         });
-        this.getItem("lineHeight").addEventListener("input", (e) => {
+        this.getItem("lineHeight").addEventListener("input", (e: any) => {
             const legend = this._story.getCarte().getControl("legend").getLegend();
             legend.set("lineHeight", parseInt(e.target.value));
             e.preventDefault();
@@ -54,12 +58,12 @@ class LegendContainer extends BaseObject {
             filter: ".not-draggable",
             animation: 200,
             // Call event function on drag and drop
-            onEnd: (e) => {
+            onEnd: (e: any) => {
                 if (e.oldIndex === e.newIndex) return;
                 const items = carte.getControl("legend").getLegend().getItems();
                 const item = items.removeAt(e.oldIndex);
                 items.insertAt(e.newIndex, item);
-                this.content.querySelectorAll(".legend-item").forEach((elt, i) => {
+                this.content.querySelectorAll(".legend-item").forEach((elt: any, i: any) => {
                     elt.dataset.sortableId = i;
                 });
             },
@@ -68,7 +72,7 @@ class LegendContainer extends BaseObject {
         // Add legend items
         this.content.querySelector(".add-item-btn").addEventListener("click", () => {
             symbolLibAction.open(styleLibDialog, {
-                onSelect: (symbol) => {
+                onSelect: (symbol: any) => {
                     const legend = carte.getControl("legend").getLegend();
                     legend.addItem(
                         new legendItem({
@@ -81,7 +85,7 @@ class LegendContainer extends BaseObject {
             });
         });
         // Add legend title
-        this.content.querySelector(".add-title-btn").addEventListener("click", (e) => {
+        this.content.querySelector(".add-title-btn").addEventListener("click", (e: any) => {
             const legend = carte.getControl("legend").getLegend();
             legend.addItem({ title: "Titre de la section" });
             this.refreshList();
@@ -93,7 +97,7 @@ class LegendContainer extends BaseObject {
      * @param {string} attr Attribut à récupérer
      * @returns {HTMLElement}
      */
-    getItem(attr) {
+    getItem(attr: any) {
         return this.content.querySelector('[data-attr="' + attr + '"]');
     }
 
@@ -101,7 +105,7 @@ class LegendContainer extends BaseObject {
      * @param {import("mcutils/StoryMap.js").default} story StoryMap à utiliser
      * @param {boolean} show Afficher la légende ou non
      */
-    showLegend(show) {
+    showLegend(show: any) {
         const carte = this._story.getCarte();
         // Show control on carte
         carte.showControl("legend", show);
@@ -111,11 +115,11 @@ class LegendContainer extends BaseObject {
         checkbox.checked = show;
         // const showControls = checkbox.ariaControlsElements;
         const showControls = checkbox.getAttribute("aria-controls").split(" ");
-        showControls.forEach((el, i) => {
+        showControls.forEach((el: any, i: any) => {
             const element = document.getElementById(el);
             showControls[i] = element;
         });
-        showControls.forEach((el) => {
+        showControls.forEach((el: any) => {
             el.disabled = !show;
         });
     }
@@ -138,7 +142,7 @@ class LegendContainer extends BaseObject {
         this.getItem("lineHeight").value = legend.get("lineHeight") || "";
 
         this._legendList.innerHTML = "";
-        legend.getItems().forEach((item, i) => {
+        legend.getItems().forEach((item: any, i: any) => {
             const prop = item.getProperties();
             const elt = element.create("div", {
                 className: "legend-item" + (prop.feature ? "" : " legend-title"),
@@ -177,14 +181,14 @@ class LegendContainer extends BaseObject {
             // Update button
             elt.querySelector(".update-legend-item-btn").addEventListener("click", () => {
                 symbolLibAction.open(styleLibDialog, {
-                    onSelect: (symbol) => {
+                    onSelect: (symbol: any) => {
                         item.set("feature", symbol._feature.clone());
                         this.refreshList();
                     },
                 });
             });
             // Boutons de déplacement
-            elt.querySelectorAll("[data-direction]").forEach((btn) => {
+            elt.querySelectorAll("[data-direction]").forEach((btn: any) => {
                 btn.addEventListener("click", () => {
                     const items = legend.getItems();
                     const inc = btn.dataset.direction === "up" ? -1 : 1;

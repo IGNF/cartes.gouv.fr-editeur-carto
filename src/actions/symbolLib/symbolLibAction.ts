@@ -15,9 +15,17 @@ import "./symbolLib.scss";
 import symbolLibHTML from "./symbolLib.html?raw";
 import symbolLibItem from "./symbolLibItem.html?raw";
 
-let sortable = null;
+let sortable: any = null;
 
 class SymbolLibAction extends Action {
+    _onSelect: any;
+    editStyle: any;
+    popup: any;
+    selectedSymbol: any;
+    styleObj: any;
+    symbolLib: any;
+    typeGeom: any;
+    uid: any;
     constructor(options = {}) {
         // Affichage des symboles disponibles
         options.onOpen = () => {
@@ -33,7 +41,7 @@ class SymbolLibAction extends Action {
      *  @param {Object} [options.styleObj] - style object to add to the library (default: none)
      *  @param {Collection} [options.symbolLib] - symbol library to edit (default: carte.getSymbolLib())
      */
-    open(dialog, options = {}) {
+    open(dialog: any, options = {}) {
         // Initialize editStyle if not already done
         if (!this.editStyle) {
             this.editStyle = new EditStyle({
@@ -46,7 +54,7 @@ class SymbolLibAction extends Action {
             this.editStyle.on("rollback-style", () => {
                 this.setSymbols();
             });
-            this.editStyle.on("apply-style", (e) => {
+            this.editStyle.on("apply-style", (e: any) => {
                 const style = this.editStyle.styleForm.styleObj.getFlatStyle();
                 const style2 = this.editStyle.labelForm.styleObj.getFlatStyle();
                 Object.keys(style2).forEach((key) => {
@@ -100,10 +108,10 @@ class SymbolLibAction extends Action {
      * @param {HTMLElement} [elt] - element of the symbol to select
      * @param {SymbolLib} [item] - symbol to select
      */
-    selectItem(elt, item) {
+    selectItem(elt: any, item: any) {
         const modal = symbolLibAction.getDialog();
         const symbolList = modal.getDialogContent().querySelector(".symbol-lib-item-list");
-        symbolList.querySelectorAll(".symbol-lib-item").forEach((elt) => elt.classList.remove("selected"));
+        symbolList.querySelectorAll(".symbol-lib-item").forEach((elt: any) => elt.classList.remove("selected"));
         if (item) {
             this.selectedSymbol = item;
             elt.classList.add("selected");
@@ -116,7 +124,7 @@ class SymbolLibAction extends Action {
     /** Add a symbol to the library
      * @param {SymbolLib} symbol - symbol to add
      */
-    addSymbol(symbol) {
+    addSymbol(symbol: any) {
         const currentSymbol = new SymbolLib({
             type: symbol.getType(),
             name: "",
@@ -146,18 +154,18 @@ class SymbolLibAction extends Action {
             filter: ".not-draggable",
             animation: 200,
             // Call event function on drag and drop
-            onEnd: (e) => {
+            onEnd: (e: any) => {
                 if (e.oldIndex === e.newIndex) return;
                 const item = symbolLib.removeAt(e.oldIndex);
                 symbolLib.insertAt(e.newIndex, item);
-                symbolList.querySelectorAll(".symbol-lib-item").forEach((elt, i) => {
+                symbolList.querySelectorAll(".symbol-lib-item").forEach((elt: any, i: any) => {
                     elt.dataset.sortableId = i;
                 });
             },
         });
         // Items
         let hasSelection = false;
-        symbolLib.forEach((item, i) => {
+        symbolLib.forEach((item: any, i: any) => {
             // Filter by geometry type
             if (this.typeGeom && item.getType() !== this.typeGeom) return;
             // Create item element
@@ -187,18 +195,18 @@ class SymbolLibAction extends Action {
             // Title
             elt.querySelector('[data-attr="title"]').innerText = item.get("name") || "";
             // Open button
-            elt.querySelector(".open-symbol-lib-btn").addEventListener("click", (e) => {
+            elt.querySelector(".open-symbol-lib-btn").addEventListener("click", (e: any) => {
                 this.showEditStyle(item);
                 e.stopPropagation();
             });
             // delete button
-            elt.querySelector(".delete-symbol-lib-btn").addEventListener("click", (e) => {
+            elt.querySelector(".delete-symbol-lib-btn").addEventListener("click", (e: any) => {
                 symbolLib.remove(item);
                 this.setSymbols();
                 e.stopPropagation();
             });
             // edit button
-            elt.querySelector(".symbol-lib-container__mask input").addEventListener("keydown", (e) => {
+            elt.querySelector(".symbol-lib-container__mask input").addEventListener("keydown", (e: any) => {
                 if (e.key === "Enter") {
                     elt.querySelector(".validate-symbol-lib-name-btn").click();
                 }
@@ -220,7 +228,7 @@ class SymbolLibAction extends Action {
                 elt.querySelector('[data-attr="title"]').innerText = item.get("name") || "";
             });
             // Boutons de déplacement
-            elt.querySelectorAll("[data-direction]").forEach((btn) => {
+            elt.querySelectorAll("[data-direction]").forEach((btn: any) => {
                 btn.addEventListener("click", () => {
                     const inc = btn.dataset.direction === "up" ? -1 : 1;
                     const oldIndex = parseInt(elt.dataset.sortableId);
@@ -260,7 +268,7 @@ class SymbolLibAction extends Action {
     }
     /** Show the edit style form
      */
-    showEditStyle(item) {
+    showEditStyle(item: any) {
         const modal = symbolLibAction.getDialog();
         const typeGeom = item ? item.getType() : this.typeGeom || "Point";
         const flatStyle = item ? ignStyleToFlatStyle(item.getIgnStyle(), typeGeom) : ignStyleToFlatStyle(defaultIgnStyle, "Point");
@@ -282,7 +290,7 @@ class SymbolLibAction extends Action {
                 className: "dialog-colorpicker ol-ext-colorpicker" + (window.EyeDropper ? " eyedropper" : ""),
             });
             modal.getDialog().appendChild(cpicker);
-            this.popup.forEach((p) => {
+            this.popup.forEach((p: any) => {
                 cpicker.appendChild(p);
             });
         }

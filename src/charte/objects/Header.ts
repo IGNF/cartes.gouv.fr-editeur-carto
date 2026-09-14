@@ -4,6 +4,16 @@ import getUid from "../../utils/getUid.js";
 
 /** Header */
 class Header extends BaseObject {
+    brand: any;
+    container: any;
+    element: any;
+    footer: any;
+    headerService: any;
+    links: any;
+    logoContainer: any;
+    navbar: any;
+    title: any;
+    tools: any;
     constructor() {
         super();
         const header =
@@ -113,7 +123,7 @@ class Header extends BaseObject {
      *
      * @param {boolean} compact Si vrai, passe en mode compact
      */
-    setCompact(compact) {
+    setCompact(compact: any) {
         // Déplace le header en fonction du mode
         if (compact) {
             this.navbar.before(this.headerService);
@@ -129,7 +139,7 @@ class Header extends BaseObject {
     /** Set service information
      * @param {ServiceOptions} options
      */
-    setService(options) {
+    setService(options: any) {
         if (options.service) {
             this.title.querySelector("p").innerHTML = options.service;
         }
@@ -166,7 +176,7 @@ class Header extends BaseObject {
      *
      * @param {BadgeOptions} options Options du badge
      */
-    setBadge(options) {
+    setBadge(options: any) {
         this.title.querySelector("p > span")?.remove();
         if (options.text) {
             const badge = ol_ext_element.create("span", {
@@ -182,7 +192,7 @@ class Header extends BaseObject {
      *
      * @param {OperatorLogo} operator Logo opérateur
      */
-    setOperator(operator) {
+    setOperator(operator: any) {
         this.logoContainer.parentElement.querySelector(".fr-header--operator")?.remove();
         if (operator.logo) {
             // Conteneur de l'image

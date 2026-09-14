@@ -89,7 +89,7 @@ const catalog = new Catalog({
 });
 
 // N'utilise pas catalog.addLayer car ne prend pas en compte le thumbnail
-catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} */ e) {
+catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (this: any, /** @type {CatalogEvent} */ e) {
     const { name, service } = e;
     const id = this.getLayerId(name, service);
     if (!id) {
@@ -155,7 +155,7 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
 });
 
 // addToMap est faux, on appelle nous même la méthode removeLayer
-catalog.on(catalog.REMOVE_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} */ e) {
+catalog.on(catalog.REMOVE_CATALOG_LAYER_EVENT, function (this: any, /** @type {CatalogEvent} */ e) {
     this.removeLayer(e.name, e.service);
 });
 

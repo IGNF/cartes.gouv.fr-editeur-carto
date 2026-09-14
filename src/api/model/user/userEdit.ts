@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { UserPublic } from "./userPublic";
+import type { UserPublic } from "./userPublic.ts";
 
 export type UserEdit = UserPublic & {
     /** Unique, ne doit pas être déjà utilisé (Erreur 400) */

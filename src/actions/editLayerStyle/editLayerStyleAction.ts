@@ -14,17 +14,17 @@ import StyleObj from "../../control/LayerStyle/StyleObj.js";
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
-let dialog;
+let dialog: any;
 /**
  * @type {LayerStyleContainer}
  * Conteneur des styles de la couche
  */
-let layerContainer;
+let layerContainer: any;
 /**
  * @type {EditStyle}
  * Édition d'un style
  */
-let editStyle;
+let editStyle: any;
 
 /**
  * Fonction appelée lors du clic sur le bouton d'ajout de style conditionnel
@@ -68,7 +68,7 @@ function createMainContent() {
  * @returns {HTMLElement}
  * @param {import("../../control/LayerStyle/EditStyle.js").EditStyleOptions} options
  */
-function createEditStyleContent(options) {
+function createEditStyleContent(options: any) {
     const editStyle = new EditStyle(options);
     return editStyle;
 }
@@ -77,7 +77,7 @@ function createEditStyleContent(options) {
  * Gère la visibilité du contenu.
  * @param {Boolean} visible Si vrai, affiche le contenu principal et cache l'éditeur de style. Sinon, fais l'inverse.
  */
-function setMainContentVisibility(visible) {
+function setMainContentVisibility(visible: any) {
     dialog?.querySelector(".edit-layer-style-content")?.classList.toggle("fr-hidden", !visible);
     editStyle?.setVisible(!visible);
 }
@@ -89,7 +89,7 @@ function setMainContentVisibility(visible) {
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
     setMainContentVisibility(true);
 
@@ -107,7 +107,7 @@ function onOpen(e) {
     layerContainer.setLayer(editLayerStyleAction.layer);
 
     // Écouteurs d'événements
-    layerContainer.on("open-style", (/** @type {import("../../control/LayerStyle/StyleContainer.js").StyleContainerEvent} */ e) => {
+    layerContainer.on("open-style", (/** @type {import("../../control/LayerStyle/StyleContainer.js").StyleContainerEvent} */ e: any) => {
         setMainContentVisibility(false);
         openStyle(e.layer, e.styleObj);
     });
@@ -117,7 +117,7 @@ function onOpen(e) {
         setMainContentVisibility(true);
     });
     // Écouteur d'événement à la gestion de la librairie de symboles
-    function onLibSymbolEvent(e) {
+    function onLibSymbolEvent(e: any) {
         const type = editStyle.getStyleForm().styleObj.get("type");
         let styleObj = null;
         if (e.type === "lib:addsymbol") {
@@ -136,7 +136,7 @@ function onOpen(e) {
         symbolLibAction.open(styleLibDialog, {
             styleObj: styleObj,
             typeGeom: type,
-            onSelect: (symbol) => {
+            onSelect: (symbol: any) => {
                 // Get style from forms
                 const style = ignStyleToFlatStyle(symbol.getIgnStyle());
                 const styleObj = editStyle.getStyleObj();
@@ -155,7 +155,7 @@ function onOpen(e) {
  * @param {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche à modifier
  * @param {import("../../control/LayerStyle/StyleObj.js").default} styleObj Objet de style
  */
-function openStyle(layer, styleObj) {
+function openStyle(layer: any, styleObj: any) {
     editStyle.setStyleObj(styleObj);
 }
 

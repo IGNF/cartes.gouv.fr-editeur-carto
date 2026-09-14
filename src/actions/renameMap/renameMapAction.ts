@@ -6,7 +6,7 @@ import content from "./renameMap.html?raw";
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
-let dialog;
+let dialog: any;
 
 /**
  * Fonction à l'ouverture du dialog.
@@ -15,7 +15,7 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
     let input = dialog.querySelector('[data-field="title"]');
     input.value = carte.getTitle(true);

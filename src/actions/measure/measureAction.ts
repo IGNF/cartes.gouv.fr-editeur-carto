@@ -16,7 +16,7 @@ let dialog;
  * @param {import('../../control/Dialog/Dialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
     let bar = createBar(dialog.getDialogContent());
     carte.removeControl("measure-bar");
@@ -31,7 +31,7 @@ function onClose() {
     let bar = carte.getControl("measure-bar");
     if (bar) {
         let controls = bar.getActiveControls();
-        controls.forEach((control) => {
+        controls.forEach((control: any) => {
             control.setActive(false);
         });
         carte.removeControl("measure-bar");

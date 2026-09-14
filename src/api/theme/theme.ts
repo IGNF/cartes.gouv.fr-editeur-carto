@@ -9,7 +9,7 @@ import { apiURL } from "../../env";
 
 import type { Theme } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getThemesResponse200 = {
     data: Theme[];

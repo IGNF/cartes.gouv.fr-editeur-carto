@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { MapList } from "./mapList";
+import type { MapList } from "./mapList.ts";
 
 /**
  * Description d'une carte avec ses métadonnées et les liens de modification / visualisation

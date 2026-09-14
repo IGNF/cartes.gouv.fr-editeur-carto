@@ -26,7 +26,7 @@ class StyleForm extends ExtendedFlatStyleForm {
      * @param {Feature|Array<Feature>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
      * @override
      */
-    setGeom(featureOrGeomName) {
+    setGeom(featureOrGeomName: any) {
         super.setGeom(featureOrGeomName);
         //
         if (this.isSelectGeomTypeShown()) {
@@ -74,7 +74,7 @@ class StyleForm extends ExtendedFlatStyleForm {
      * @abstract
      * @protected
      */
-    _addCustomInputs(options) {
+    _addCustomInputs(options: any) {
         this._addPointInputs(options);
         this._addLineStringInputs(options);
         this._addPolygonInputs(options);
@@ -274,7 +274,7 @@ class StyleForm extends ExtendedFlatStyleForm {
         this.addBreak("fill-patern");
 
         /* Disable pattern options when no patter */
-        inputPattern.input.addEventListener("change", (e) => {
+        inputPattern.input.addEventListener("change", (e: any) => {
             if (e.target.value) {
                 inputFillColor.disable(false);
                 inputFillSize.input.disabled = false;

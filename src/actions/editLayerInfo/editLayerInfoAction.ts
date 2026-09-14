@@ -9,17 +9,17 @@ import "./editLayerInfo.scss";
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialogue utilisé par l'action.
  */
-let dialog;
+let dialog: any;
 
 /**
  * @type {Object} Options de configuration de la couche
  */
-let options;
+let options: any;
 
 /**
  * @type {import("ol/layer/Layer.js").default} Couche à modifier
  */
-let layer;
+let layer: any;
 
 /**
  * Fonction à l'ouverture du dialogue.
@@ -27,7 +27,7 @@ let layer;
  *
  * @param {import("ol/events/Event.js").default} e Événement générique openlayer
  */
-function onOpen(e) {
+function onOpen(this: any, e: any) {
     dialog = e.target;
     const inputs = getInstances(dialog.getDialogContent());
 
@@ -36,7 +36,7 @@ function onOpen(e) {
 
     /** @type {HTMLFormElement} */
     const form = dialog.querySelector("form");
-    form.addEventListener("submit", (e) => saveInfo(e));
+    form.addEventListener("submit", (e: any) => saveInfo(e));
 
     inputs.title.value = getTitle(options, layer);
     inputs.description.value = getDescription(options, layer);
@@ -68,7 +68,7 @@ function onOpen(e) {
     }
 
     // Écouteurs d'événements
-    inputs.title.addEventListener("change", (e) => {
+    inputs.title.addEventListener("change", (e: any) => {
         if (e.target.value === "") {
             addMessage(e.target, "Le nom de la couche est obligatoire.", { type: "error" });
             return;
@@ -77,7 +77,7 @@ function onOpen(e) {
         }
     });
 
-    inputs.thumbnail.addEventListener("change", (e) => {
+    inputs.thumbnail.addEventListener("change", (e: any) => {
         if (e.target.value && !e.target.value.startsWith("https://")) {
             addMessage(e.target, "Le lien doit être un lien https.", { type: "error" });
             return;
@@ -94,7 +94,7 @@ function onOpen(e) {
  * "Désactive" les éléments du formulaire (hors nom) et passe les inputs en readonly
  * @param {Boolean} bool Vrai si les éléments doivent être désactivé visuellement, faux sinon
  */
-function setDisabled(bool) {
+function setDisabled(bool: any) {
     // Récupère les inputs
     const inputs = getInstances(dialog.getDialogContent());
 
@@ -102,7 +102,7 @@ function setDisabled(bool) {
      * Modifie l'apparence d'un input
      * @param {HTMLInputElement|HTMLTextAreaElement} input Input à modifier
      */
-    const setInputDisabled = (input) => {
+    const setInputDisabled = (input: any) => {
         input.readOnly = bool;
         bool ? input.parentElement.classList.add("fr-input-group--disabled") : input.parentElement.classList.remove("fr-input-group--disabled");
     };
@@ -120,7 +120,7 @@ function setDisabled(bool) {
  * @param {import("ol/layer/Layer.js").default} layer Couche à modifier
  * @returns {String} Titre de la couche
  */
-function getTitle(config, layer) {
+function getTitle(config: any, layer: any) {
     return config?.title ?? layer.get("title") ?? "";
 }
 
@@ -131,7 +131,7 @@ function getTitle(config, layer) {
  * @param {import("ol/layer/Layer.js").default} layer Couche à modifier
  * @returns {String} Description de la couche
  */
-function getDescription(config, layer) {
+function getDescription(config: any, layer: any) {
     return config?.description ?? layer.get("description") ?? "";
 }
 
@@ -141,10 +141,10 @@ function getDescription(config, layer) {
  * @param {HTMLElement} element Élément à traiter
  * @returns {String[]} Liste des URLs extraites
  */
-function extractLinksFromElement(element) {
+function extractLinksFromElement(element: any) {
     if (!element) return [];
-    const links = [];
-    element.querySelectorAll("a").forEach((link) => {
+    const links: any = [];
+    element.querySelectorAll("a").forEach((link: any) => {
         if (link.href) {
             links.push(link.href);
         }
@@ -159,7 +159,7 @@ function extractLinksFromElement(element) {
  * @param {Object} layerOptions Options de la couche
  * @returns {String} Description formatée de la couche
  */
-function getCatalogDescription(switcher, layerOptions) {
+function getCatalogDescription(switcher: any, layerOptions: any) {
     // Créé l'info comme dans le panel
     const obj = {
         id: layerOptions.div?.id,
@@ -216,7 +216,7 @@ function getCatalogDescription(switcher, layerOptions) {
  * @param {import("ol/layer/Layer.js").default} layer Couche à modifier
  * @returns {String} Crédits / copyrights de la couche
  */
-function getAttributions(layer) {
+function getAttributions(layer: any) {
     const sourceAttribution = layer.getSource()?.getAttributions();
     const attribution = typeof sourceAttribution === "function" ? sourceAttribution() : sourceAttribution;
     return attribution ?? layer.get("copyright") ?? "";
@@ -229,7 +229,7 @@ function getAttributions(layer) {
  * @param {import("ol/layer/Layer.js").default} layer Couche à modifier
  * @returns {String} Logo de la couche
  */
-function getThumbnail(config, layer) {
+function getThumbnail(config: any, layer: any) {
     /** @type {String} */
     let thumbnail = config?.thumbnail ?? layer.get("thumbnail") ?? layer.get("logo") ?? "";
     if (thumbnail && !thumbnail.startsWith("https://")) {
@@ -243,7 +243,7 @@ function getThumbnail(config, layer) {
  * Ceux-ci sont rajoutés à l'objet en fonction de l'attribut "data-field".
  * @param {import('../../control/Dialog/AbstractDialog.js').default} dialog Dialogue utilisé par l'action.
  */
-function getInstances(dialog) {
+function getInstances(dialog: any) {
     return {
         /** @type {HTMLInputElement} */ title: dialog.querySelector("[data-field=title]"),
         /** @type {HTMLTextAreaElement} */ description: dialog.querySelector("[data-field=description]"),
@@ -258,7 +258,7 @@ function getInstances(dialog) {
  * @param {import('../../control/Dialog/AbstractDialog.js').default} dialog Dialogue utilisé par l'action
  * @returns {NodeList} Liste des inputs
  */
-function getErrorInputs(dialog) {
+function getErrorInputs(dialog: any) {
     return dialog.querySelectorAll(".fr-input-group--error > .fr-input");
 }
 
@@ -266,7 +266,7 @@ function getErrorInputs(dialog) {
  * Fonction permettant de sauvegarder les informations dans la couche
  * @param {SubmitEvent} e
  */
-function saveInfo(e) {
+function saveInfo(e: any) {
     e.preventDefault();
 
     // Récupère les inputs

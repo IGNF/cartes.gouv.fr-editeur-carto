@@ -9,7 +9,7 @@ import { apiURL } from "../../env";
 
 import type { Notification } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getNotificationsResponse200 = {
     data: Notification[];

@@ -6,9 +6,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from "./getUsers200Item.ts";
 export * from "./getUsers200Item";
+export * from "./getUsersParams.ts";
 export * from "./getUsersParams";
+export * from "./userEdit.ts";
 export * from "./userEdit";
+export * from "./userMeEdit.ts";
 export * from "./userMeEdit";
+export * from "./userPublic.ts";
 export * from "./userPublic";
+export * from "./userView.ts";
 export * from "./userView";

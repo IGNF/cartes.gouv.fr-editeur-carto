@@ -18,7 +18,7 @@ import {
     getGetMapsUsersResponseMock,
     getPatchMapByEditIdResponseMock,
     getPostMapResponseMock,
-} from "./map.faker";
+} from "./map.faker.ts";
 
 export {
     getGetMapsResponseMock,
@@ -28,7 +28,7 @@ export {
     getGetMapEditByEditIdResponseMock,
     getDeleteMapByEditIdResponseMock,
     getPatchMapByEditIdResponseMock,
-} from "./map.faker";
+} from "./map.faker.ts";
 
 export const getGetMapsMockHandler = (
     overrideResponse?: MapResearch | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<MapResearch> | MapResearch),

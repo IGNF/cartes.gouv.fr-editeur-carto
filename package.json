@@ -37,6 +37,7 @@
         "eslint-config-prettier": "^10.1.8",
         "eslint-import-resolver-vite": "^2.1.0",
         "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
         "eslint-plugin-prettier": "^5.5.6",
         "globals": "^16.3.0",
         "husky": "^9.1.7",
@@ -47,6 +48,7 @@
         "sass-embedded": "^1.89.2",
         "ts-migrate": "^0.1.35",
         "typescript": "^7.0.2",
+        "typestat": "^0.8.18",
         "vite": "^7.0.4",
         "vitest": "^3.2.4"
     },

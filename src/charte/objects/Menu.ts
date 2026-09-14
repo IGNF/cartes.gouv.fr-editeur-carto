@@ -4,6 +4,9 @@ import getUid from "../../utils/getUid.js";
 
 /** Menu */
 class Menu extends BaseObject {
+    _action: any;
+    _menuList: any;
+    element: any;
     /**
      * @param {Objet} options
      *  @param {string} options.type menu type description|link|option
@@ -13,7 +16,7 @@ class Menu extends BaseObject {
      *  @param {string} options.icon
      *  @param {string} options.action
      */
-    constructor(options) {
+    constructor(options: any) {
         super();
         const nav = (this.element = ol_ext_element.create("DIV", {
             className: "fr-nav__item",
@@ -64,7 +67,7 @@ class Menu extends BaseObject {
      * @param {string|Element} action
      * @private
      */
-    _getMenu(action) {
+    _getMenu(action: any) {
         let li = action;
         if (typeof action === "string") {
             li = this._menuList.querySelector('li[data-action="' + action + '"]');
@@ -80,9 +83,9 @@ class Menu extends BaseObject {
      * @param {string} action
      * @returns {Array<Element>}
      */
-    getMenu(action) {
+    getMenu(action: any) {
         const parent = document.querySelectorAll('nav[role="navigation"] [data-action="' + this._action + '"]');
-        const info = [];
+        const info: any = [];
         parent.forEach((p) => {
             const li = p.querySelector('li[data-action="' + action + '"]');
             const m = this._getMenu(li);
@@ -94,7 +97,7 @@ class Menu extends BaseObject {
     /** SetMenu info
      * @private
      */
-    _setMenu(action, options) {
+    _setMenu(action: any, options: any) {
         let m = action;
         if (typeof action === "string") {
             m = this._getMenu(action);
@@ -145,13 +148,13 @@ class Menu extends BaseObject {
      *  @param {string} options.info
      *  @param {Object} options.data
      */
-    setMenu(action, options) {
+    setMenu(action: any, options: any) {
         this.getMenu(action).forEach((m) => this._setMenu(m, options));
     }
     /** Add a new menu
      * @param { MenuOptions|Array<MenuOptions> }
      */
-    addMenu(options) {
+    addMenu(options: any) {
         if (Array.isArray(options)) {
             options.forEach((o) => this.addMenu(o));
             return;

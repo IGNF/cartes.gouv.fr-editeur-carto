@@ -48,12 +48,14 @@ const EditStyleEventType = {
  * sont des instances de ce type.
  */
 export class EditStyleEvent extends BaseEvent {
+    layer: any;
+    styleObj: any;
     /**
      * @param {EditStyleEventType} type Type d'événement.
      * @param {StyleObj} styleObj Style à modifier
      * @param {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche OpenLayers à styliser
      */
-    constructor(type, styleObj, layer) {
+    constructor(type: any, styleObj: any, layer: any) {
         super(type);
 
         /**
@@ -76,10 +78,21 @@ export class EditStyleEvent extends BaseEvent {
  * Représente le conteneur d'édition d'un style.
  */
 class EditStyle extends BaseObject {
+    _headerPreview: any;
+    _uid: any;
+    conditionsForm: any;
+    element: any;
+    forms: any;
+    header: any;
+    labelForm: any;
+    styleForm: any;
+    styleName: any;
+    styleObjKey: any;
+    tabnav: any;
     /**
      * @param {EditStyleOptions} options
      */
-    constructor(options) {
+    constructor(options: any) {
         options ??= {};
         super(options);
 
@@ -137,7 +150,7 @@ class EditStyle extends BaseObject {
      * @protected
      * @param {EditStyleOptions} options Options du constructeur
      */
-    _initContainer(options) {
+    _initContainer(options: any) {
         const container = (this.element = document.createElement("div"));
         container.className = options.className ?? "";
         container.classList.add("edit-style__container");
@@ -184,7 +197,7 @@ class EditStyle extends BaseObject {
         // })
 
         // Option 2 : Modifier l'image à chaque fois que le style est màj
-        this.styleForm.on("change:styleObj", (e) => {
+        this.styleForm.on("change:styleObj", (e: any) => {
             /** @type {StyleObj} */
             const styleObj = e.target.get(e.key);
 
@@ -205,7 +218,7 @@ class EditStyle extends BaseObject {
      * @param {EditStyleOptions} options Options du constructeur
      * @returns {HTMLElement} header
      */
-    _createHeaderElement(options) {
+    _createHeaderElement(options: any) {
         const header = document.createElement("div");
         header.className = "edit-style__header";
 
@@ -263,7 +276,7 @@ class EditStyle extends BaseObject {
      * @param {HTMLElement} contentContainer Conteneur du contenu lié aux onglets
      * @returns {TabNav} Navigation tertiaire
      */
-    _createTabNavElement(contentContainer) {
+    _createTabNavElement(contentContainer: any) {
         // Navigation tertiaire
         const tabnav = (this.tabnav = new TabNav({
             items: [
@@ -322,9 +335,9 @@ class EditStyle extends BaseObject {
     /**
      * @param {StyleObj} styleObj
      */
-    setStyleObj(styleObj) {
+    setStyleObj(styleObj: any) {
         // Enlève les écouteurs d'événements déjà en place
-        this.styleObjKey.forEach((key) => unByKey(key));
+        this.styleObjKey.forEach((key: any) => unByKey(key));
         if (styleObj instanceof StyleObj) {
             this.set("styleObj", styleObj);
             this.setDefault(styleObj.isDefault);
@@ -337,7 +350,7 @@ class EditStyle extends BaseObject {
 
             // Partage le même objet : pas besoin d'envoyer des infos
             const formStyleObj = styleObj.clone();
-            this.forms.forEach((form) => {
+            this.forms.forEach((form: any) => {
                 form.styleObj = formStyleObj;
             });
 
@@ -357,7 +370,7 @@ class EditStyle extends BaseObject {
      * @param {Boolean} bool Si vrai, cache ou désactive certains éléments tel que
      * le choix de la géométrie et les conditions. Sinon, les affiche
      */
-    setDefault(bool) {
+    setDefault(bool: any) {
         /** @type {import("geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js").default} */
         const conditions = this.tabnav.items.getArray().at(-1);
         const isCondition = conditions.getButton().textContent === "Conditions";
@@ -384,7 +397,7 @@ class EditStyle extends BaseObject {
     /**
      * @param {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer
      */
-    setLayer(layer) {
+    setLayer(layer: any) {
         if (layer instanceof BaseVector || layer instanceof VectorStyle) {
             this.set("layer", layer);
             this.getConditionsForm().layer = layer;
@@ -444,7 +457,7 @@ class EditStyle extends BaseObject {
         return this.element;
     }
 
-    setVisible(visible) {
+    setVisible(visible: any) {
         this.set("visible", !!visible);
         this.getElement().classList.toggle("fr-hidden", !visible);
     }

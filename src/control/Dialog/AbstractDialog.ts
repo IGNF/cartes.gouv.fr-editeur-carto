@@ -1,63 +1,68 @@
 import ol_ext_element from "ol-ext/util/element.js";
 import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 import BaseObject from "ol/Object.js";
+import type { Button, ButtonCallback } from "../../types/Button.js";
+import type Action from "../../actions/Action.js";
+import type { EventsKey } from "ol/events.js";
 
-/**
- * Bouton à insérer dans le dialog
- *
- * @typedef {Object} DialogButton
- * @property {string} [label] - Label du bouton.
- * @property {string} [title] - Titre du bouton.
- * @property {string} [icon] - Icône du bouton.
- * @property {string} [kind] - Type du bouton : 0 pour primaire,
- * 3 pour tertiaire sans contour. Par défaut, tertiaire sans contour.
- * @property {string} [className] - Classe à ajouter au bouton.
- * @property {Function} [callback] - Fonction au clic sur le bouton.
- */
+export type DialogCallback = ButtonCallback;
+export type DialogOnOpen = (dialog: AbstractDialog) => void;
+export type DialogOnClose = (dialog: AbstractDialog) => void;
 
-/**
- * Définition d'un dialog
- *
- * @typedef {Object} DialogOptions
- * @property {string} id - Id du dialog.
- * @property {string} className - Classe à ajouter à la modale.
- * @property {string} [icon] - Icône du titre. Par défaut, aucune icône.
- * @property {DialogOnOpen} [onOpen] - Fonction appelée à l'ouverture du dialog.
- * @property {DialogOnClose} [onClose] - Fonction appelée à la fermeture du dialog.
- * Cette fonction est aussi appellée en cas de changement du contenu.
- * @property {Element} [parent] - Élément HTML du dialog. Par défaut, l'ajoute
- * au body.
- * @property {string|Element} [html] - Contenu html du dialog.
- */
+export interface DialogButton extends Button {
+    click?: DialogCallback;
+}
 
-/**
- * Callback exécuté à l'ouverture du dialog.
- *
- * @callback DialogOnOpen
- * @param {Dialog} dialog - Instance du dialog qui vient de s'ouvrir.
- */
+export interface DialogOptions {
+    id: string;
+    className: string;
+    dialogClass?: string;
+    title?: string;
+    icon?: string;
+    content?: string | HTMLElement | null;
+    buttons?: DialogButton[];
+    onOpen?: DialogOnOpen;
+    onClose?: DialogOnClose;
+    parent?: Element;
+    html?: string | Element;
+    [attribute: `aria-${string}`]: string | undefined;
+}
 
-/**
- * Callback exécuté à la fermeture du dialog.
- *
- * @callback DialogOnClose
- * @param {Dialog} dialog - Instance du dialog qui vient de se fermer.
- */
+export interface DialogContentOptions {
+    title?: string;
+    icon?: string;
+    content?: string | HTMLElement | null;
+    buttons?: DialogButton[];
+}
 
-/**
- * Événement à l'ouverture du dialog.
- *
- * @event Dialog#dialog:open
- * @type {object}
- * @property {Dialog} target - Objet dialog.
- */
+export interface DialogEvent {
+    target: AbstractDialog;
+}
 
-/**
- * Événement à la fermeture du dialog.
- *
- * @event Dialog#dialog:close
- * @property {Dialog} target - Objet dialog.
- */
+export type DialogEventName = "dialog:open" | "dialog:change:content" | "dialog:close";
+
+type DialogEventListener = (event: DialogEvent) => unknown;
+type DialogOnSignature<Return> = {
+    (type: DialogEventName, listener: DialogEventListener): Return;
+    (type: DialogEventName[], listener: DialogEventListener): Return extends void ? void : Return[];
+};
+
+export interface DialogSelectors {
+    TITLE: string;
+    BUTTON_GROUP: string;
+    BUTTONS: string;
+    BTN_CLOSE: string;
+    ICON: string;
+    CONTENT: string;
+    OPEN_EVENT: "dialog:open";
+    CHANGE_CONTENT: "dialog:change:content";
+    CLOSE_EVENT: "dialog:close";
+}
+
+type DialogInternalOptions = Partial<DialogOptions> & {
+    className: string;
+    parent: Element;
+};
 
 const dsfrPrefix = "fr-icon";
 const dsfrClasses = ["fr-icon", "fr-icon--sm"];
@@ -77,14 +82,29 @@ const dialogs = {};
  * @abstract
  */
 class AbstractDialog extends BaseObject {
+    declare on: BaseObject["on"] & DialogOnSignature<EventsKey>;
+    declare once: BaseObject["once"] & DialogOnSignature<EventsKey>;
+    declare un: BaseObject["un"] & DialogOnSignature<void>;
+    action: Action | undefined;
+    closeBtn: HTMLElement | null = null;
+    dialog!: HTMLDialogElement;
+    dialogClass: string;
+    dialogContent!: HTMLElement;
+    dialogIcon!: HTMLElement;
+    dialogTitle!: HTMLElement;
+    onCloseFn: (event: unknown) => void = () => {};
+    onOpenFn: (event: unknown) => void = () => {};
+    options!: DialogInternalOptions;
+    selectors!: DialogSelectors;
+
     /**
      * Renvoie le dialog correspondant à l'id donné
-     * @param {string} id Id du dialog
-     * @returns {AbstractDialog} Instance du dialog avec l'id correspondant
-     * @throws {Error} Si aucun dialogue n'existe
+     * @param id Id du dialog
+     * @returns Instance du dialog avec l'id correspondant
+     * @throws Si aucun dialogue n'existe
      * @static
      */
-    static getDialog(id) {
+    static getDialog(id: any) {
         if (id in dialogs) {
             return dialogs[id];
         } else {
@@ -93,11 +113,11 @@ class AbstractDialog extends BaseObject {
     }
 
     /**
-     *
-     * @param {*} id
+     * Ajoute un dialogue au registre interne.
+     * @param id Id du dialogue
      * @private
      */
-    #addDialog(id) {
+    #addDialog(id: any) {
         if (!id) {
             throw new Error("Un id doit être donné au dialogue");
         } else if (id in dialogs) {
@@ -108,10 +128,10 @@ class AbstractDialog extends BaseObject {
     }
 
     /**
-     *
-     * @param {DialogOptions} options
+     * Crée un dialogue.
+     * @param options Options du dialogue
      */
-    constructor(options) {
+    constructor(options: any) {
         super();
 
         // Abstract class
@@ -179,10 +199,10 @@ class AbstractDialog extends BaseObject {
     /**
      * Créé le dialog en instanciant les éléments utiles
      *
-     * @param {Object} options Options de création du panneau
+     * @param options Options de création du panneau
      */
-    _createDialog(options) {
-        this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE);
+    _createDialog(options: any) {
+        this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE) as HTMLElement;
         if (this.closeBtn) {
             this.closeBtn.setAttribute("aria-controls", this.getId());
             // Permet de laisser les sous-classes surcharger
@@ -193,9 +213,9 @@ class AbstractDialog extends BaseObject {
         }
 
         // Titre et contenu du dialog
-        this.dialogTitle = this.querySelector(this.selectors.TITLE);
-        this.dialogIcon = this.querySelector(this.selectors.ICON);
-        this.dialogContent = this.querySelector(this.selectors.CONTENT);
+        this.dialogTitle = this.querySelector(this.selectors.TITLE) as HTMLElement;
+        this.dialogIcon = this.querySelector(this.selectors.ICON) as HTMLElement;
+        this.dialogContent = this.querySelector(this.selectors.CONTENT) as HTMLElement;
 
         if (options.title) {
             this.dialogTitle.innerHTML = options.title;
@@ -212,17 +232,17 @@ class AbstractDialog extends BaseObject {
 
     /**
      * Retourne l'élement dialog de l'objet.
-     * @returns {HTMLDialogElement} Élément dialog
+     * @returns Élément dialog
      */
-    getDialog() {
+    getDialog(): HTMLDialogElement {
         return this.dialog;
     }
 
     /**
      * Retourne l'id du dialog.
-     * @returns {string} id du dialog
+     * @returns Id du dialog
      */
-    getId() {
+    getId(): string {
         return this.dialog.id;
     }
 
@@ -230,10 +250,10 @@ class AbstractDialog extends BaseObject {
      * Sélectionne le premier élément du dialog correspondant
      * au sélecteur CSS.
      *
-     * @param {string} selector Sélecteur CSS.
-     * @returns {Element} Premier élément correspondant au sélecteur.
+     * @param selector Sélecteur CSS
+     * @returns Premier élément correspondant au sélecteur
      */
-    querySelector(selector) {
+    querySelector(selector: string): Element | null {
         return this.dialog.querySelector(selector);
     }
 
@@ -241,10 +261,10 @@ class AbstractDialog extends BaseObject {
      * Sélectionne tous les éléments du dialog correspondant
      * au selecteur CSS.
      *
-     * @param {string} selector Sélecteur CSS
-     * @returns {NodeList} Liste des élements correspondant au sélecteur
+     * @param selector Sélecteur CSS
+     * @returns Liste des élements correspondant au sélecteur
      */
-    querySelectorAll(selector) {
+    querySelectorAll(selector: string): NodeListOf<Element> {
         return this.dialog.querySelectorAll(selector);
     }
 
@@ -254,11 +274,11 @@ class AbstractDialog extends BaseObject {
      * Si aucune icône n'est fournie, cache l'élément si celui-ci
      * est l'icône du dialog.
      *
-     * @param {string} icon Icône à ajouter
-     * @param {Element} element Élément auquel ajouter l'icône.
+     * @param icon Icône à ajouter
+     * @param element Élément auquel ajouter l'icône.
      * Par défaut, l'ajoute à l'icône du dialog.
      */
-    setIcon(icon, element = this.dialogIcon) {
+    setIcon(icon: string, element: Element = this.dialogIcon) {
         let classes;
         if (!icon && element === this.dialogIcon) {
             element.classList.add("fr-hidden");
@@ -288,14 +308,14 @@ class AbstractDialog extends BaseObject {
     /**
      * Enlève les classes d'un élément commençant par un préfix.
      *
-     * @param {Element} element Élément sur lequel enlever les classes
-     * @param {string} prefix Préfix de la classe à enlever
+     * @param element Élément sur lequel enlever les classes
+     * @param prefix Préfix de la classe à enlever
      */
-    _removeClasses(element, prefix) {
+    _removeClasses(element: Element, prefix: string) {
         if (!(element instanceof Element)) return;
         for (let i = element.classList.length - 1; i > 0; i--) {
             const c = element.classList[i];
-            if (c.startsWith(prefix)) {
+            if (c?.startsWith(prefix)) {
                 element.classList.remove(c);
             }
         }
@@ -305,14 +325,14 @@ class AbstractDialog extends BaseObject {
      * Fonction utilitaire pour paramétrer facilement le dialog.
      * Les sous-fonctions sont à développer.
      *
-     * @param {Object} options Élements du dialog
-     * @param {string} options.title Titre
-     * @param {string} options.icon Icône
-     * @param {string|Element} options.content Contenu du dialog.
+     * @param options Élements du dialog
+     * @param options.title Titre
+     * @param options.icon Icône
+     * @param options.content Contenu du dialog.
      * Les interactions ne sont pas implémentées dans cette classe.
-     * @param {DialogButton[]} options.buttons Boutons à ajouter.
+     * @param options.buttons Boutons à ajouter.
      */
-    setContent(options) {
+    setContent(options: any) {
         this.setDialogTitle(options.title);
         this.setIcon(options.icon);
         this.setDialogContent(options.content);
@@ -321,7 +341,7 @@ class AbstractDialog extends BaseObject {
 
     /**
      * Retourne le titre du dialog (contenu).
-     * @returns {string} Contenu du titre
+     * @returns Contenu du titre
      */
     getDialogTitle() {
         return this.dialogTitle ? this.dialogTitle.textContent : "";
@@ -329,10 +349,10 @@ class AbstractDialog extends BaseObject {
 
     /**
      * Ajoute un titre au dialog.
-     * @param {string} title Titre à remplacer
+     * @param title Titre à remplacer
      */
-    setDialogTitle(title) {
-        if (this.dialogTitle && typeof title === "string") {
+    setDialogTitle(title: string) {
+        if (this.dialogTitle) {
             this.dialogTitle.textContent = title;
         }
     }
@@ -340,7 +360,7 @@ class AbstractDialog extends BaseObject {
     /**
      * Retourne le contenu du dialog.
      *
-     * @returns {Element}
+     * @returns Élément contenant le contenu du dialog
      */
     getDialogContent() {
         return this.dialogContent;
@@ -349,9 +369,9 @@ class AbstractDialog extends BaseObject {
     /**
      * Ajoute un contenu au dialog.
      *
-     * @param {Element|string|null} content Contenu du dialog
+     * @param content Contenu du dialog
      */
-    setDialogContent(content) {
+    setDialogContent(content: Element | string | null) {
         if (!this.dialogContent) return;
 
         this.dialogContent.innerHTML = "";
@@ -366,10 +386,14 @@ class AbstractDialog extends BaseObject {
     /**
      * Ajoute un bouton au dialog.
      *
-     * @param {DialogButton} button bouton à ajouter au dialog.
+     * @param button Bouton à ajouter au dialog
      */
-    addButton(button) {
+    addButton(button: DialogButton) {
         let buttonGroup = this.querySelector(this.selectors.BUTTON_GROUP);
+
+        if (!buttonGroup) {
+            return;
+        }
 
         if (!button) {
             buttonGroup.replaceChildren();
@@ -386,7 +410,7 @@ class AbstractDialog extends BaseObject {
 
                 switch (attr) {
                     case "className":
-                        (value || "").split(" ").forEach((v) => btn.classList.add(v));
+                        (value || "").split(" ").forEach((v: any) => btn.classList.add(v));
                         break;
 
                     case "label":
@@ -436,11 +460,14 @@ class AbstractDialog extends BaseObject {
     /**
      * Ajoute des boutons au dialog.
      *
-     * @param {DialogButton[]} buttons Array de boutons à ajoute
+     * @param buttons Boutons à ajouter
      */
-    setButtons(buttons) {
+    setButtons(buttons: DialogButton[]) {
         if (Array.isArray(buttons)) {
             let buttonGroup = this.querySelector(this.selectors.BUTTON_GROUP);
+            if (!buttonGroup) {
+                return;
+            }
             buttonGroup.replaceChildren();
             buttons.forEach((button) => {
                 this.addButton(button);
@@ -453,19 +480,19 @@ class AbstractDialog extends BaseObject {
     /**
      * Retourne les boutons du groupe de bouton.
      *
-     * @returns {NodeList} Liste des boutons.
+     * @returns Liste des boutons
      */
-    getButtons() {
-        return this.querySelectorAll(this.selectors.BUTTONS);
+    getButtons(): NodeListOf<HTMLButtonElement> {
+        return this.querySelectorAll(this.selectors.BUTTONS) as NodeListOf<HTMLButtonElement>;
     }
 
     /**
      * Retourne le bouton du groupe de bouton à un indice donné.
      *
-     * @param {number} index Indice du bouton.
-     * @returns {HTMLButtonElement} Bouton à l'indice donnée.
+     * @param index Indice du bouton
+     * @returns Bouton à l'indice donné
      */
-    getButton(index) {
+    getButton(index: number): HTMLButtonElement | null {
         let buttons = this.getButtons();
         return buttons.item(index);
     }
@@ -474,19 +501,19 @@ class AbstractDialog extends BaseObject {
      * Méthode utilitaire pour récupérer le bouton de fermeture du
      * dialog
      *
-     * @returns {HTMLButtonElement} Bouton de fermeture du dialog
+     * @returns Bouton de fermeture du dialog
      */
-    getCloseButton() {
-        return this.querySelector(this.selectors.BTN_CLOSE);
+    getCloseButton(): HTMLButtonElement {
+        return this.querySelector(this.selectors.BTN_CLOSE) as HTMLButtonElement;
     }
 
     /**
      * Fonction de fermeture du dialog.
      * Peut-être override dans les sous-classes.
      *
-     * @param {Dialog} dialog
+     * @param dialog Dialogue à fermer
      */
-    _close(dialog) {
+    _close(dialog: any) {
         dialog.getDialog().close();
     }
 
@@ -494,7 +521,7 @@ class AbstractDialog extends BaseObject {
      * Ferme le dialog en simulant un click sur le bouton de fermeture.
      * Envoie un événement de fermeture.
      *
-     * @param {Dialog} self
+     * @param self Dialogue à fermer
      *
      * @fires Dialog#dialog:close
      */
@@ -526,9 +553,9 @@ class AbstractDialog extends BaseObject {
      * Ajoute ou remplace la fonction lancée à l'ouverture
      * du dialog.
      *
-     * @param {Fonction} onOpen Fonction à l'ouverture du dialog.
+     * @param onOpen Fonction à l'ouverture du dialog
      */
-    setOnOpen(onOpen) {
+    setOnOpen(onOpen: any) {
         this.un(this.selectors.OPEN_EVENT, this.onOpenFn);
         if (typeof onOpen === "function") {
             this.onOpenFn = onOpen.bind(this);
@@ -540,9 +567,9 @@ class AbstractDialog extends BaseObject {
      * Ajoute ou remplace la fonction lancée à la fermeture
      * du dialog.
      *
-     * @param {Fonction} onClose Fonction à la fermeture du dialog.
+     * @param onClose Fonction à la fermeture du dialog
      */
-    setOnClose(onClose) {
+    setOnClose(onClose: any) {
         this.un([this.selectors.CLOSE_EVENT, this.selectors.CHANGE_CONTENT], this.onCloseFn);
         if (typeof onClose === "function") {
             this.onCloseFn = onClose.bind(this);
@@ -551,7 +578,7 @@ class AbstractDialog extends BaseObject {
         }
     }
 
-    onOpen(callback, once) {
+    onOpen(callback: any, once: any) {
         if (once) {
             this.once(this.selectors.OPEN_EVENT, callback.bind(this));
         } else {
@@ -559,7 +586,7 @@ class AbstractDialog extends BaseObject {
         }
     }
 
-    onClose(callback, once) {
+    onClose(callback: any, once: any) {
         if (once) {
             this.once(this.selectors.CLOSE_EVENT, callback.bind(this));
         } else {
@@ -568,10 +595,10 @@ class AbstractDialog extends BaseObject {
     }
 
     /** Lie une action à une modale
-     * @param {import('../../actions/Action').default} action
-     * @param {boolean} force Force l'ouverture de la modale même si l'action est déjà liée à un evenement
+     * @param action Action à lier
+     * @param force Force l'ouverture de la modale même si l'action est déjà liée à un evenement
      */
-    setAction(action, force) {
+    setAction(action: any, force: any) {
         if (this.action && action) {
             this.dispatchEvent(this.selectors.CHANGE_CONTENT);
         }

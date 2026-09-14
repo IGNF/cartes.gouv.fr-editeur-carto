@@ -20,7 +20,7 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
 
     let form = dialog.querySelector("form");
@@ -28,7 +28,7 @@ function onOpen(e) {
 
     let input = dialog.querySelector('input[type="file"]');
     input.accept = importLocal.accepted.join(",");
-    input.addEventListener("change", (e) => removeMessage(e.target));
+    input.addEventListener("change", (e: any) => removeMessage(e.target));
 }
 
 /**
@@ -36,7 +36,7 @@ function onOpen(e) {
  *
  * @param {SubmitEvent} e Événement submit du formulaire.
  */
-async function submitForm(e) {
+async function submitForm(e: any) {
     e.preventDefault();
     let form = e.target;
     let input = form.querySelector("input");
@@ -84,7 +84,7 @@ async function submitForm(e) {
  * @param {boolean} [append] Optionnel. Ajoute le message d'erreur si vrai.
  * Par défaut : `false`
  */
-function handleError(err, form, file, append = false) {
+function handleError(err: any, form: any, file: any, append = false) {
     let options = {
         append: append,
     };

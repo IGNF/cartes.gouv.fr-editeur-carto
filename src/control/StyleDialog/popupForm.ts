@@ -17,6 +17,9 @@ let currentCoord = false;
  * @property {Boolean} [generalType = true] Vrai par défaut. Si vrai, le type de géométrie n'influe pas sur le formulaire et seul 3 inputs sont ajoutés. Sinon, les propriétés flat-style sont précédés du type de géométrie et ne sont affichés que si le type de géométrie est donné.
  */
 class PopupForm extends FlatStyleForm {
+    carte: any;
+    feature: any;
+    layer: any;
     /**
      * @param {PopupFromOptions} options Options du constructeur
      */
@@ -27,7 +30,7 @@ class PopupForm extends FlatStyleForm {
         this.carte = options.carte;
         if (this.carte && currentCoord === false) {
             currentCoord = null;
-            this.carte.on("layer:featureInfo", (e) => {
+            this.carte.on("layer:featureInfo", (e: any) => {
                 // currentFeature = e.feature
                 currentCoord = e.coordinate;
             });
@@ -38,7 +41,7 @@ class PopupForm extends FlatStyleForm {
      * @param {PopupFromOptions} options Options du constructeur
      * @override
      */
-    _initialize(options) {
+    _initialize(options: any) {
         super._initialize(options);
     }
 
@@ -80,7 +83,7 @@ class PopupForm extends FlatStyleForm {
             property: "popup-url",
             type: "url",
         });
-        let tout = null;
+        let tout: any = null;
         ["popup-titre", "popup-desc", "popup-link"].forEach((key) => {
             // Enable tab key for all inputs except the description
             if (key === "popup-desc") {
@@ -101,7 +104,7 @@ class PopupForm extends FlatStyleForm {
                 });
             }
             // Update feature popup content on input change
-            this.inputs[key].addEventListener("input", (e) => {
+            this.inputs[key].addEventListener("input", (e: any) => {
                 if (this.feature) {
                     this.setPopupContent(this.feature, key, e.target.value);
                     if (this.carte) {
@@ -122,7 +125,7 @@ class PopupForm extends FlatStyleForm {
      * @private
      *
      */
-    setPopupContent(f, key, value) {
+    setPopupContent(f: any, key: any, value: any) {
         const content = f.getPopupContent() || {};
         content[key.split("-")[1]] = value;
         content.active = false;
@@ -138,7 +141,7 @@ class PopupForm extends FlatStyleForm {
      * @param {Object} options Options de l'input
      * @private
      */
-    _addInput(options) {
+    _addInput(options: any) {
         const type = options.type;
         options.type = options.type.replace(/^(url|text)$/, "input");
         const input = this.addInput(options);
@@ -180,7 +183,7 @@ class PopupForm extends FlatStyleForm {
      * Définit le contenu du formulaire à partir d'une feature
      * @param {import('ol/Feature.js').default
      */
-    setFeature(feature) {
+    setFeature(feature: any) {
         this.feature = feature;
         const options = feature?.getPopupContent() || {};
         ["titre", "desc", "img", "link", "url"].forEach((key) => {
@@ -192,7 +195,7 @@ class PopupForm extends FlatStyleForm {
      * Définit le contenu du formulaire à partir d'une feature
      * @param {import('ol/Feature.js').default
      */
-    setLayer(layer) {
+    setLayer(layer: any) {
         this.layer = layer;
         const options = layer?.getPopupContent() || {};
         ["titre", "desc", "img", "link", "url"].forEach((key) => {

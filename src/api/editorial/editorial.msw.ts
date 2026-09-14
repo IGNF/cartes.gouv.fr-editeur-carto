@@ -15,14 +15,14 @@ import {
     getGetEditorialCategoriesResponseMock,
     getGetEditorialFollowersResponseMock,
     getGetEditorialMegamenuResponseMock,
-} from "./editorial.faker";
+} from "./editorial.faker.ts";
 
 export {
     getGetEditorialFollowersResponseMock,
     getGetEditorialMegamenuResponseMock,
     getGetEditorialCategoriesResponseMock,
     getGetEditorialArticlesByCategoryResponseMock,
-} from "./editorial.faker";
+} from "./editorial.faker.ts";
 
 export const getGetEditorialFollowersMockHandler = (
     overrideResponse?:

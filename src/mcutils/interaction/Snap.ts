@@ -40,7 +40,9 @@ const circle = [
  * @extends {Snap}
  */
 class SnapInteraction extends Snap {
-    constructor(options) {
+    overlay_: any;
+    showOverlay_: any;
+    constructor(options: any) {
         super(options);
 
         this.overlay_ = new VectorLayer({
@@ -80,7 +82,7 @@ class SnapInteraction extends Snap {
     /** show overlay
      * @param {boolean} b
      */
-    showOverlay(b) {
+    showOverlay(b: any) {
         if (b) {
             if (!this.showOverlay_) {
                 this.overlay_.setMap(this.getMap());
@@ -95,7 +97,7 @@ class SnapInteraction extends Snap {
     /** Add overlay
      * @param {import("ol/Map").default} map
      */
-    setMap(map) {
+    setMap(map: any) {
         super.setMap(map);
         if (!map) {
             this.overlay_.setMap();

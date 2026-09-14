@@ -37,7 +37,7 @@ if (prOidc instanceof Error) {
     alert("Our auth is down, sorry :(");
 
     // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
-    (await Promise) < never > (() => {});
+    (await Promise)<never>(() => {});
 }
 
 export async function getOidc() {

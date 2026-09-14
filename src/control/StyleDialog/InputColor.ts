@@ -7,16 +7,24 @@ import "./InputColor.scss";
  * Input de type couleur pour le formulaire de style
  */
 class InputColor extends Color {
-    constructor(options) {
+    _elt: any;
+    _paletteColor: any;
+    _selectPalette: any;
+    addPaletteColor: any;
+    element: any;
+    input: any;
+    on: any;
+    setColor: any;
+    constructor(options: any) {
         options = options || {};
         options.position = options.position || "fixed";
         options.paletteLabel = "Palette";
         options.pickerLabel = "Mélangeur";
         super(options);
         // Dispatch change event on color change
-        this.input.addEventListener("change", (e) => this.setColor(e.target.value));
+        this.input.addEventListener("change", (e: any) => this.setColor(e.target.value));
         // Style des boutons
-        this.element.querySelectorAll("button").forEach((btn) => {
+        this.element.querySelectorAll("button").forEach((btn: any) => {
             btn.className = "fr-btn fr-btn--tertiary";
             if (btn.innerText === "OK") {
                 btn.textContent = "Valider";
@@ -29,7 +37,7 @@ class InputColor extends Color {
         this.element.ariaExpanded = false;
         this.element.role = "button";
         this.element.setAttribute("aria-controls", this._elt.popup.id);
-        this.on("collapse", (e) => {
+        this.on("collapse", (e: any) => {
             this.element.ariaExpanded = e.visible;
         });
 
@@ -67,7 +75,7 @@ class InputColor extends Color {
         });
         palette.appendChild(document.createElement("hr"));
         Color.customColorList.forEach(
-            function (c) {
+            function (this: any, c: any) {
                 this._addCustomColor(this.getColorFromID(c));
             }.bind(this)
         );
@@ -110,7 +118,7 @@ class InputColor extends Color {
      * @private
      * @param {string} key
      */
-    _handleColorByKey(key) {
+    _handleColorByKey(key: any) {
         // 0 = transparent
         if (key === "0" && !this.element.classList.contains("ol-nopacity")) {
             this.setColor([0, 0, 0, 0]);
@@ -119,9 +127,9 @@ class InputColor extends Color {
         if (!/^Arrow/.test(key)) return false;
         // Arrow key
         var col = 0,
-            colors = [];
+            colors: any = [];
         Object.keys(this._paletteColor).forEach(
-            function (c) {
+            function (this: any, c: any) {
                 var p = this._paletteColor[c];
                 if (p.element.classList.contains("ol-select")) {
                     col = colors.length;
@@ -159,7 +167,7 @@ class InputColor extends Color {
      * @private
      * @param {string} color
      */
-    _addCustomColor(color) {
+    _addCustomColor(color: any) {
         super._addCustomColor(color);
         while (Color.customColorList.getLength() > 6) {
             Color.customColorList.removeAt(0);

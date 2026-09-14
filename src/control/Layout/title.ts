@@ -35,7 +35,7 @@ const defaultValues = {
  * Récupère les instances d'un élément
  * @param {HTMLElement} element Élément depuis lequel récupérer les instances.
  */
-const getInstances = (element) => {
+const getInstances = (element: any) => {
     return {
         /** @type {HTMLFieldSetElement} */ titleFieldset: element.querySelector(`#${IDS.TITLE_FIELDSET}`),
         /** @type {HTMLInputElement} */ titleToggle: element.querySelector(`#${IDS.TITLE_TOGGLE}`),
@@ -226,7 +226,7 @@ function initContent() {
  * @param {HTMLElement} container Conteneur du formulaire
  * @param {import("mcutils/StoryMap.js").default} story StoryMap à lier au formulaire
  */
-function addEvents(container, story) {
+function addEvents(container: any, story: any) {
     const refs = getInstances(container);
 
     // Active / désactive le formulaire d'ajout du titre
@@ -288,7 +288,7 @@ function addEvents(container, story) {
     });
 
     // Message d'erreur si le logo n'a pas pu se télécharger
-    story?.element?.logo?.addEventListener("error", (e) => {
+    story?.element?.logo?.addEventListener("error", (e: any) => {
         const src = e.target.src;
         if (src === window.location.href) {
             // Correspond à la balise <img src>, donc pas de logo
@@ -305,7 +305,7 @@ function addEvents(container, story) {
  * Initialise les valeurs du formulaire depuis l'etat courant de la story.
  * @param {import("mcutils/StoryMap.js").default} story StoryMap à utiliser
  */
-function initForm(story) {
+function initForm(story: any) {
     const refs = getInstances(titleTabNavItem.getContent());
     if (!refs.titleToggle || !refs.imageToggle) {
         return;

@@ -18,6 +18,9 @@ import "./ConditionsForm.scss";
  */
 
 class ConditionsForm extends ExtendedFlatStyleForm {
+    _datalist: any;
+    conditionContainers: any;
+    footer: any;
     /**
      * @param {ConditionsFormOptions} options Options du constructeur
      */
@@ -44,7 +47,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     /**
      * @param {Layer} layer Couche à utiliser
      */
-    set layer(layer) {
+    set layer(layer: any) {
         this.set("layer", layer);
 
         // Enlève les anciens attributs
@@ -77,7 +80,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
             });
         }
 
-        this.conditionContainers.forEach((container) => {
+        this.conditionContainers.forEach((container: any) => {
             container.layer = layer;
         });
     }
@@ -128,7 +131,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
      * @param {ConditionsFormOptions} options Options du constructeur
      * @override
      */
-    _initialize(options) {
+    _initialize(options: any) {
         /** @type {Collection<ConditionContainer>} */
         this.conditionContainers = new Collection();
 
@@ -153,7 +156,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
             usecase: this.styleObj.conditions.usecase,
             conditions: new Collection(),
         };
-        this.conditionContainers.forEach((container) => {
+        this.conditionContainers.forEach((container: any) => {
             result.conditions.push(container.condition);
         });
         return result;
@@ -191,10 +194,10 @@ class ConditionsForm extends ExtendedFlatStyleForm {
         // Pas de super._initEvents car pas nécessaire
 
         // Ajoute un écouteur d'événement sur la collection
-        this.conditionContainers.on("add", (e) => {
+        this.conditionContainers.on("add", (e: any) => {
             e.element.layer = this.layer;
             this.getElement().appendChild(e.element.getElement());
-            let key = e.element.on("delete-condition", (ev) => {
+            let key = e.element.on("delete-condition", (ev: any) => {
                 // Enlève l'élément de la collection et n'écoute plus l'événement
                 this.conditionContainers.remove(ev.target);
                 unByKey(key);
@@ -202,7 +205,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
         });
 
         // Enlève l'élément du DOM
-        this.conditionContainers.on("remove", (e) => {
+        this.conditionContainers.on("remove", (e: any) => {
             e.element.getElement().remove();
         });
     }
@@ -211,7 +214,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
      * Ajoute une condition au formulaire
      * @param {import('./Condition.js').default|import('./Condition.js').ConditionOptions} condition Condition à ajouter
      */
-    addConditionContainer(condition) {
+    addConditionContainer(condition: any) {
         const conditionOptions = condition
             ? {
                   attribute: condition?.attribute ?? condition?.attr ?? "",

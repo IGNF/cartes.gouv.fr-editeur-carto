@@ -25,10 +25,10 @@ import Charte from "../../charte/objects/Charte.js";
 /**
  * @type {Toggle}
  */
-let toggle;
+let toggle: any;
 // Fonction temporaire pour les toggle
 // (les toggle n'envoient pas d'événement au click)
-function onToggleAction() {
+function onToggleAction(this: any) {
     // Désactive le toggle précédent
     if (toggle && toggle !== this) {
         toggle !== drawToggle && toggle.setActive(false);
@@ -51,7 +51,7 @@ rightPanel.onClose(() => {
  * @param {Event} e
  * @param {Toggle} toggle
  */
-function closeToggle(toggle) {
+function closeToggle(toggle: any) {
     if (toggle?.getActive()) {
         toggle.setActive(false);
     }
@@ -88,7 +88,7 @@ const catalogToggle = new Toggle({
 });
 
 // Écouteur sur change:active, car onToggle n'est pas appelé via setActive
-catalogToggle.on("change:active", function (e) {
+catalogToggle.on("change:active", function (this: any, e: any) {
     if (toggle && toggle !== this) {
         toggle !== drawToggle && toggle.setActive(false);
     }

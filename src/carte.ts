@@ -18,20 +18,20 @@ carte._interactions.modify = modify;
 carte.getMap().addControl(notification);
 
 // Copy/paste feature with Ctrl+C / Ctrl+V
-modify.on(["cut", "delete"], (e) => {
+modify.on(["cut", "delete"], (e: any) => {
     const features = e.features || e.deleted;
     // undo notification
     notification.info(features.length + (features.length > 1 ? " objets supprimés." : " objet supprimé."), () => {
         notification.hide();
-        features.forEach((f) => {
+        features.forEach((f: any) => {
             f.layer.getSource().addFeature(f.feature);
         });
     });
 });
 
 // Paste feature with Ctrl+V
-modify.on(["paste"], (e) => {
-    const features = [];
+modify.on(["paste"], (e: any) => {
+    const features: any = [];
     const layer = switcher.getSelectedLayer();
     // Check layer
     if (!layer || layer.get("type") !== "Vector") {
@@ -39,7 +39,7 @@ modify.on(["paste"], (e) => {
         return;
     }
     // copy features
-    e.features.forEach((f) => {
+    e.features.forEach((f: any) => {
         const feature = f.feature.clone();
         features.push({ layer: layer, feature: feature });
         layer.getSource().addFeature(feature);
@@ -55,13 +55,13 @@ modify.on(["paste"], (e) => {
 });
 
 // Duplicate feature
-modify.on(["duplicate"], (e) => {
+modify.on(["duplicate"], (e: any) => {
     const features = e.features || [];
     // undo notification
     const info = features.length + (features.length > 1 ? " objets copiés." : " objet copié.");
     notification.info(info, () => {
         notification.hide();
-        features.forEach((f) => {
+        features.forEach((f: any) => {
             f.layer.getSource().removeFeature(f.feature);
         });
     });

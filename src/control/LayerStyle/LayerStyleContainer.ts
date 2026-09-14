@@ -36,6 +36,16 @@ import { toMcutilsOperator } from "./ConditionalOperator.js";
  * Représente le conteneur de styles d'une couche.
  */
 class LayerStyleContainer extends BaseObject {
+    _defaultLineStringStyle: any;
+    _defaultPointStyle: any;
+    _defaultPolygonStyle: any;
+    _geomRegexProperties: any;
+    _sortable: any;
+    _sortableId: any;
+    conditionalStyles: any;
+    element: any;
+    styles: any;
+    stylesObjsKey: any;
     /**
      * @param {LayerStyleContainerOptions} options
      */
@@ -121,25 +131,25 @@ class LayerStyleContainer extends BaseObject {
      */
     _initEvents() {
         // À l'ajout d'un style, on écoute différents événements
-        this.styles.on("add", (e) => {
+        this.styles.on("add", (e: any) => {
             // Ouverture du style (dispatchEvent : géré au niveau de l'action)
-            let key = e.element.on("open-style", (e) => this.dispatchEvent(e));
+            let key = e.element.on("open-style", (e: any) => this.dispatchEvent(e));
             // Enregistre la clé pour pouvoir supprimer l'événement ensuite
             this.stylesObjsKey[e.element.ol_uid] ??= {};
             this.stylesObjsKey[e.element.ol_uid]["open-style"] = key;
 
             // Suppression du style
-            key = e.element.on("delete-style", (e) => this.onDeleteStyle(e));
+            key = e.element.on("delete-style", (e: any) => this.onDeleteStyle(e));
             // Enregistre la clé pour pouvoir supprimer l'événement ensuite
             this.stylesObjsKey[e.element.ol_uid]["delete-style"] = key;
 
             // Demande de déplacement clavier
-            key = e.element.on("move-style", (e) => this.onMoveStyle(e));
+            key = e.element.on("move-style", (e: any) => this.onMoveStyle(e));
             this.stylesObjsKey[e.element.ol_uid]["move-style"] = key;
         });
 
         // Suppression d'un style
-        this.styles.on("remove", (e) => {
+        this.styles.on("remove", (e: any) => {
             // Supprime tous les écouteurs d'événements
             Object.keys(this.stylesObjsKey[e.element.ol_uid]).forEach((event) => {
                 unByKey(this.stylesObjsKey[e.element.ol_uid][event]);
@@ -153,7 +163,7 @@ class LayerStyleContainer extends BaseObject {
         });
 
         // Ajout de style conditionnel
-        this.conditionalStyles.on("add", (e) => {
+        this.conditionalStyles.on("add", (e: any) => {
             // Ajoute un écouteur d'événement générique
             // Envoyé par le bouton appliquer
             let key = e.element.on("change", () => {
@@ -182,7 +192,7 @@ class LayerStyleContainer extends BaseObject {
      * Méthode appelée à la suppression d'un style conditionnel
      * @param {import("ol/events/Event.js").default} e Événement openlayer
      */
-    onDeleteStyle(e) {
+    onDeleteStyle(e: any) {
         const elem = e.target;
         if (elem instanceof StyleContainer) {
             const removed = this.conditionalStyles.remove(elem.getStyleObj());
@@ -203,14 +213,14 @@ class LayerStyleContainer extends BaseObject {
      * @param {import("./StyleObj.js").StyleObjCondition} condition Conditions de style obk
      * @returns Condition au format macarte
      */
-    conditionToIgnCondition(condition) {
+    conditionToIgnCondition(condition: any) {
         const result = {
             all: condition.all,
             usecase: condition.usecase,
             conditions: [],
         };
 
-        condition.conditions.forEach((cond) => {
+        condition.conditions.forEach((cond: any) => {
             result.conditions.push({
                 attr: cond.attribute,
                 op: toMcutilsOperator(cond.operator),
@@ -225,10 +235,10 @@ class LayerStyleContainer extends BaseObject {
      * Modifie le style conditionnel d'une couche
      * @param {Array<StyleObj>} styles
      */
-    _setConditionStyle(styles) {
+    _setConditionStyle(styles: any) {
         // Transforme les conditions en objet exploitables par la couche
-        const conditions = [];
-        styles.forEach((style) => {
+        const conditions: any = [];
+        styles.forEach((style: any) => {
             const condition = {
                 title: style.name,
                 condition: this.conditionToIgnCondition(style.conditions),
@@ -252,7 +262,7 @@ class LayerStyleContainer extends BaseObject {
      * @param {HTMLElement} elementDraggable - Element HTML (DOM) Container
      * @private
      */
-    _createDraggableElement(elementDraggable) {
+    _createDraggableElement(elementDraggable: any) {
         if (!elementDraggable) {
             return;
         }
@@ -268,7 +278,7 @@ class LayerStyleContainer extends BaseObject {
             filter: ".not-draggable",
             animation: 200,
             // Call event function on drag and drop
-            onEnd: (e) => {
+            onEnd: (e: any) => {
                 this._onEndDragElement(e);
             },
         });
@@ -278,7 +288,7 @@ class LayerStyleContainer extends BaseObject {
      * Méthode appelée suite à la modification d'ordre des couches
      * @param {import("sortablejs").SortableEvent} e Événement envoyé à la fin de l'événement
      */
-    _onEndDragElement(e) {
+    _onEndDragElement(e: any) {
         // Indices sont les mêmes : on ne fait rien
         if (e.oldIndex !== e.newIndex) {
             const item = this.styles.item(e.oldIndex);
@@ -296,7 +306,7 @@ class LayerStyleContainer extends BaseObject {
      * Méthode appelée à la demande de déplacement d'un style.
      * @param {import("./StyleContainer.js").StyleContainerMoveEvent} e Événement openlayers
      */
-    onMoveStyle(e) {
+    onMoveStyle(e: any) {
         // Éléments sur lequel on vient de cliquer
         const oppositeDirection = e.direction === "down" ? "up" : "down";
         const moveElement = e.target.getElement()?.querySelector(`[data-direction=${e.direction}]`);
@@ -339,7 +349,7 @@ class LayerStyleContainer extends BaseObject {
     /**
      * @param {Layer} layer
      */
-    setLayer(layer) {
+    setLayer(layer: any) {
         this.set("layer", layer);
         this.clearContent();
         if (layer instanceof BaseVector || layer instanceof VectorStyle) {
@@ -351,7 +361,7 @@ class LayerStyleContainer extends BaseObject {
      * @private
      * @param {Layer} layer
      */
-    addLayerStyles(layer) {
+    addLayerStyles(layer: any) {
         // Récupère les styles avant de vider les collections
         const result = this.getLayerStyle(layer);
         this.conditionalStyles.clear();
@@ -398,7 +408,7 @@ class LayerStyleContainer extends BaseObject {
      * @returns {{defaultStyles: Array<StyleObj>, conditionalStyles:Array<StyleObj>}} Objet avec les styles par défaut et conditionnels
      * @private
      */
-    getLayerStyle(layer) {
+    getLayerStyle(layer: any) {
         const defaults = this._getDefaultStyles(layer);
         const conditional = this._getConditionalStyles(layer);
         return {
@@ -415,7 +425,7 @@ class LayerStyleContainer extends BaseObject {
      * @returns {Array<StyleObj>} Tableau de styles par défaut
      * @private
      */
-    _getDefaultStyles(layer) {
+    _getDefaultStyles(layer: any) {
         // TODO : récupérer les styles par défauts
         if (!layer) {
             return [];
@@ -436,13 +446,13 @@ class LayerStyleContainer extends BaseObject {
      * @returns {Array<StyleObj>} Tableau de styles par défaut
      * @private
      */
-    _getConditionalStyles(layer) {
+    _getConditionalStyles(layer: any) {
         // Récupère les styles conditionnels
         /** @type {Array<VectorStyleConditionStyle>} */
         const conditionsStyles = layer.getConditionStyle();
-        const styles = [];
+        const styles: any = [];
         // Les transforme en objet StyleObj
-        conditionsStyles.forEach((style) => {
+        conditionsStyles.forEach((style: any) => {
             const title = style.title;
             const conditions = style.condition;
             const type = style.symbol?._type || "Point";
@@ -467,7 +477,7 @@ class LayerStyleContainer extends BaseObject {
      * @param {StyleObj} [styleObj] Si donné, le prend en référence.
      * Sinon, se base sur le style par défaut de la couche.
      */
-    addConditionalStyle(styleObj) {
+    addConditionalStyle(styleObj: any) {
         if (!(styleObj instanceof StyleObj)) {
             styleObj = this.#getStyleObj(this.getLayer());
         }
@@ -499,7 +509,7 @@ class LayerStyleContainer extends BaseObject {
      * @returns {StyleObj} Objet de type StyleObj
      * @private
      */
-    #getStyleObj(layer, type) {
+    #getStyleObj(layer: any, type: any) {
         // Nom du style
         const names = {
             Point: "Point (défaut)",
@@ -532,7 +542,7 @@ class LayerStyleContainer extends BaseObject {
             // Filtre seulement les propriétés passant les expressions régulières
             const obj = Object.entries(flatStyle).filter(([key]) => {
                 const regexes = this._geomRegexProperties[type];
-                return regexes.some((regex) => regex.test(key));
+                return regexes.some((regex: any) => regex.test(key));
             });
             flatStyleGeom = Object.fromEntries(obj);
         }

@@ -60,7 +60,7 @@ geoimport.init({
  * @throws {errors.MissingFileError} Fichier manquant
  * @throws {errors.UnsupportedExtensionError} Extension non supportée
  */
-function checkFile(file) {
+function checkFile(file: any) {
     // Input du fichier
     if (!file) {
         throw new errors.MissingFileError();
@@ -79,7 +79,7 @@ function checkFile(file) {
  * @param {File} file
  * @returns {string}
  */
-function getDriver(file) {
+function getDriver(file: any) {
     switch (file.type) {
         case "application/geo+json":
         case "application/vnd.geo+json":
@@ -123,7 +123,7 @@ function getDriver(file) {
  *
  * @param {File} file
  */
-async function importFile(file) {
+async function importFile(file: any) {
     try {
         // Gestion des fichiers CSV/GeoJSON par la méthode mcutils directement
         if (/^(CSV|GeoJSON)$/.test(getDriver(file))) {
@@ -138,7 +138,7 @@ async function importFile(file) {
                 try {
                     loadFile(
                         file,
-                        (e) => {
+                        (e: any) => {
                             try {
                                 // Problème à l'import
                                 if (e.features.layer === 0 || e.error) {
@@ -165,7 +165,7 @@ async function importFile(file) {
         const r = await geoimport.info(file);
 
         // Gère les autres couches (dont multicouches type géopackage)
-        const promises = r.layers.map(async (layer) => {
+        const promises = r.layers.map(async (layer: any) => {
             // Lis le fichier avec geoimport
             const json = await geoimport.toGeoJSON(file, { layerName: layer.name, writeBbox: true });
 
@@ -223,7 +223,7 @@ async function importFile(file) {
  * @param {HTMLFormElement} form Formulaire de l'ajout de fichier.
  * @returns {VectorStyle} Couche vectorielle
  */
-function processFile(result, metadata) {
+function processFile(result: any, metadata: any) {
     const name = result.name;
     if (result.features) {
         // let layer = new VectorLayer({

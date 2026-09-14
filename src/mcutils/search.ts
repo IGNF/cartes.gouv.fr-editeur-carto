@@ -17,7 +17,7 @@ const parcel = new ParcelAdvancedSearch();
  *
  * @param {import("ol/Feature").default} feature Feature à ajouter à la couche
  */
-function addFeatureToLayer(feature) {
+function addFeatureToLayer(feature: any) {
     /**
      * @type {import("geopf-extensions-openlayers/src/index.js").LayerSwitcher}
      */

@@ -23,7 +23,7 @@ import type {
     PostMapFileByEditIdBody,
 } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getMapsResponse200 = {
     data: MapResearch;

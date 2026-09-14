@@ -19,6 +19,10 @@ import { ignStyleToFlatStyle } from "./styleToFlatStyle.js";
  */
 
 class ExtendedFlatStyleForm extends FlatStyleForm {
+    footer: any;
+    header: any;
+    preview: any;
+    selectGeomType: any;
     /**
      * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
      */
@@ -57,7 +61,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
             footer.appendChild(btn);
         }
         // TODO selection de style depuis la bibliothèque
-        const onselect = (symbol) => {
+        const onselect = (symbol: any) => {
             const style = ignStyleToFlatStyle(symbol.getIgnStyle());
             this.setFlatStyle(style);
             this.styleObj.setFlatStyle(style);
@@ -128,7 +132,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         return this.header;
     }
 
-    setGeom(featureOrGeomName) {
+    setGeom(featureOrGeomName: any) {
         super.setGeom(featureOrGeomName);
 
         delete this.getContent().dataset.conditionStyle;
@@ -157,7 +161,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     /** Show error message
      * @param {String} message Message to show
      */
-    showError(message) {
+    showError(message: any) {
         this.getContent().dataset.conditionStyle = "";
         this.getContent().querySelector(".style-form-container .fr-alert").innerHTML =
             `<p>
@@ -170,7 +174,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     /**
      * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
      */
-    _initialize(options) {
+    _initialize(options: any) {
         super._initialize(options);
 
         options.preview ??= false;
@@ -191,7 +195,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
      * Gère le lien entre le formulaire de style et l'objet styleObj
      * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
      */
-    _initEvents(options) {
+    _initEvents(options: any) {
         super._initEvents(options);
 
         this.on("style", (e) => {
@@ -199,7 +203,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
             // this.updatePreview();
         });
 
-        this.styleObj.on("change:image", (e) => {
+        this.styleObj.on("change:image", (e: any) => {
             const image = e.target.get(e.key);
             this.preview.lastChild.replaceWith(image);
         });
@@ -240,7 +244,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
      * @param {Object} flatStyle - Le style flat utilisé pour initialiser les inputs
      * @override
      */
-    setFlatStyle(flatStyle) {
+    setFlatStyle(flatStyle: any) {
         super.setFlatStyle(flatStyle);
 
         const styleo = this.styleObj.get("flatStyle");
@@ -305,7 +309,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
      * Par défaut, n'en sélectionne pas.
      * @returns {HTMLElement} Élément HTML à ajouter
      */
-    _addSelectGeomType(type) {
+    _addSelectGeomType(type: any) {
         const selectGroup = document.createElement("div");
         selectGroup.className = "style-form__select-geom fr-select-group";
 
@@ -320,7 +324,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         select.name = "select-geom-type";
 
         // Transforme le type en option valable
-        let mappedType;
+        let mappedType: any;
         switch (type) {
             case "Point":
             case "MultiPoint":

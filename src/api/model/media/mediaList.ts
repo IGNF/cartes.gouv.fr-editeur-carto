@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { Media } from "./media";
+import type { Media } from "./media.ts";
 
 /**
  * Liste de médias

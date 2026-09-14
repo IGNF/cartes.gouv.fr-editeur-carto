@@ -39,11 +39,13 @@ const ConditionContainerEventType = {
  * Événement de base du conteneur de condition.
  */
 export class ConditionContainerEvent extends BaseEvent {
+    condition: any;
+    layer: any;
     /**
      * @param {string} type Type d'événement
      * @param {ConditionContainerEventOptions} [options] Options de l'événement
      */
-    constructor(type, options = {}) {
+    constructor(type: any, options = {}) {
         super(type);
         this.condition = options.condition;
         this.layer = options.layer;
@@ -102,6 +104,17 @@ export class ConditionContainerDeleteEvent extends ConditionContainerEvent {
  * @fires ConditionContainer#delete-condition
  */
 class ConditionContainer extends BaseObject {
+    _styleObjChangeKey: any;
+    _uid: any;
+    attributeInput: any;
+    attributes: any;
+    deleteBtn: any;
+    element: any;
+    fieldset: any;
+    messagesEl: any;
+    operatorSelect: any;
+    title: any;
+    valueInput: any;
     /**
      * @param {ConditionContainerOptions} options
      */
@@ -177,7 +190,7 @@ class ConditionContainer extends BaseObject {
      * Modifie le nom de la condition
      * @param {String} title Titre de la condition
      */
-    setTitle(title) {
+    setTitle(title: any) {
         if (typeof title === "string" && title !== "") {
             this.title.textContent = title;
         }
@@ -258,13 +271,13 @@ class ConditionContainer extends BaseObject {
      * @protected
      */
     _initEvents() {
-        this.attributeInput.addEventListener("change", (e) => {
+        this.attributeInput.addEventListener("change", (e: any) => {
             this.condition.attribute = e.target.value;
         });
-        this.operatorSelect.addEventListener("change", (e) => {
+        this.operatorSelect.addEventListener("change", (e: any) => {
             this.condition.operator = e.target.value;
         });
-        this.valueInput.addEventListener("change", (e) => {
+        this.valueInput.addEventListener("change", (e: any) => {
             this.condition.value = e.target.value;
         });
     }
@@ -274,7 +287,7 @@ class ConditionContainer extends BaseObject {
      * @param {ConditionContainerOptions} options Options du constructeur
      * @returns {HTMLFieldSetElement} Fieldset contenant les champs Attribut, Opérateur et Valeur.
      */
-    _createInputs(options) {
+    _createInputs(options: any) {
         const fieldsetId = `condition-fieldset-${this._uid}`;
         const messagesId = `condition-fieldset-messages-${this._uid}`;
 
@@ -362,7 +375,7 @@ class ConditionContainer extends BaseObject {
      * @param {Boolean} [inlineGrow=false] Ajoute la classe inline-grow si vrai.
      * @returns {HTMLDivElement} Élément de fieldset prêt à être ajouté dans le conteneur.
      */
-    _createInputFieldsetElement(labelText, inputId, inputNode, inline = true, inlineGrow = false) {
+    _createInputFieldsetElement(labelText: any, inputId: any, inputNode: any, inline = true, inlineGrow = false) {
         const fieldsetElement = document.createElement("div");
         fieldsetElement.className = "fr-fieldset__element";
         if (inline) {
@@ -387,7 +400,7 @@ class ConditionContainer extends BaseObject {
         // Autocomplete list
         const listId = inputNode.getAttribute("list-attr");
         if (listId) {
-            let values = [];
+            let values: any = [];
             let currentValue = "";
             function fillValues() {
                 const rex = new RegExp(inputNode.value, "i");
@@ -426,7 +439,7 @@ class ConditionContainer extends BaseObject {
             // Hide on blur
             inputNode.addEventListener("blur", () => (inputNode.ariaExpanded = "false"));
             // filter on key down
-            inputNode.addEventListener("keyup", (e) => {
+            inputNode.addEventListener("keyup", (e: any) => {
                 switch (e.key) {
                     case "ArrowDown":
                     case "ArrowUp": {
@@ -486,7 +499,7 @@ class ConditionContainer extends BaseObject {
      * @param {HTMLSelectElement} selectNode Liste déroulante à injecter.
      * @returns {HTMLDivElement} Élément de fieldset prêt à être ajouté dans le conteneur.
      */
-    _createSelectFieldsetElement(labelText, selectId, selectNode) {
+    _createSelectFieldsetElement(labelText: any, selectId: any, selectNode: any) {
         const fieldsetElement = document.createElement("div");
         fieldsetElement.className = "fr-fieldset__element fr-fieldset__element--inline";
 

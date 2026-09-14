@@ -2,7 +2,7 @@ import carte from "../../carte.js";
 import "./dropMap.css";
 
 // Drop zone
-let dragtout;
+let dragtout: any;
 const dropZone = document.body.querySelector('[data-role="map"]') || document.body.querySelector('[data-role="storymap"]');
 
 // Show drop zone on file drag
@@ -42,7 +42,7 @@ dropZone.addEventListener("drop", (e) => {
 /** Load file on drop
  * @param {FileList} files
  */
-function loadFiles(files) {
+function loadFiles(files: any) {
     const file = files[0];
     // Only .carte files
     if (file.name.endsWith(".carte")) {

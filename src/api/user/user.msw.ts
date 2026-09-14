@@ -10,9 +10,9 @@ import type { RequestHandlerOptions } from "msw";
 
 import type { GetUsers200Item, UserPublic, UserView } from "../model";
 
-import { getGetMeResponseMock, getGetUserByPublicidResponseMock, getGetUsersResponseMock, getPatchMeResponseMock } from "./user.faker";
+import { getGetMeResponseMock, getGetUserByPublicidResponseMock, getGetUsersResponseMock, getPatchMeResponseMock } from "./user.faker.ts";
 
-export { getGetMeResponseMock, getPatchMeResponseMock, getGetUserByPublicidResponseMock, getGetUsersResponseMock } from "./user.faker";
+export { getGetMeResponseMock, getPatchMeResponseMock, getGetUserByPublicidResponseMock, getGetUsersResponseMock } from "./user.faker.ts";
 
 export const getGetMeMockHandler = (
     overrideResponse?: UserView | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserView> | UserView),

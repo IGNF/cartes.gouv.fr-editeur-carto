@@ -17,7 +17,7 @@ import {
     getPostMediaFileByIdResponseMock,
     getPostMediaResponseMock,
     getPutMediaAttributeResponseMock,
-} from "./media.faker";
+} from "./media.faker.ts";
 
 export {
     getGetUserMediasResponseMock,
@@ -26,7 +26,7 @@ export {
     getDeleteMediaByIdResponseMock,
     getPutMediaAttributeResponseMock,
     getPostMediaFileByIdResponseMock,
-} from "./media.faker";
+} from "./media.faker.ts";
 
 export const getGetUserMediasMockHandler = (
     overrideResponse?: MediaList | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<MediaList> | MediaList),

@@ -62,7 +62,7 @@ const ignToFlat = Object.fromEntries(Object.entries(flatToIgn).map((key) => key.
  * @param {string} typeGeom
  * @returns {string}
  */
-function geomToFlat(typeGeom) {
+function geomToFlat(typeGeom: any) {
     const flatStyleType = {
         Point: "point",
         MultiPoint: "point",
@@ -80,7 +80,7 @@ function geomToFlat(typeGeom) {
  * @param {String} value
  * @returns {String}
  */
-function camelToKebabCase(value) {
+function camelToKebabCase(value: any) {
     if (typeof value !== "string") {
         return "";
     }
@@ -92,7 +92,7 @@ function camelToKebabCase(value) {
  * @param {Object} flatStyle Objet de flat style
  * @returns {Object} style IGN (mcutils)
  */
-function flatToIgnStyle(flatStyle, typeGeom) {
+function flatToIgnStyle(flatStyle: any, typeGeom: any) {
     flatStyle = flatStyle || {};
     const ignStyle = {};
     // Transforme chaque clé flat style en clé(s) ign style correspondante(s).
@@ -119,7 +119,7 @@ function flatToIgnStyle(flatStyle, typeGeom) {
  * @param {String} key Propriété flat style (openlayer)
  * @returns {String} Propriété correspondante IGN (mcutils)
  */
-function flatToIgnKey(key) {
+function flatToIgnKey(key: any) {
     return flatToIgn[key] || key;
 }
 
@@ -130,7 +130,7 @@ function flatToIgnKey(key) {
  * @param {String} value Valeur associée
  * @returns {Array<IGNKeyValue>} Propriété et valeur associée pour le style IGN
  */
-function flatToIGNKeyValue(key, value) {
+function flatToIGNKeyValue(key: any, value: any) {
     if (key === "undefined") {
         return [];
     }
@@ -159,7 +159,7 @@ function flatToIGNKeyValue(key, value) {
  * @param {ol.Feature} feature - La feature dont on extrait le style
  * @returns {Object} Objet représentant le flat style
  */
-function styleToFlatStyle(feature) {
+function styleToFlatStyle(feature: any) {
     const flatStyle = createDefaultStyle() || {};
     // Extraction du style de la feature, parmi ce qui est modifié
     const st = getCurrentStyle(feature);
@@ -183,7 +183,7 @@ function styleToFlatStyle(feature) {
  * @param {Object} ignStyle - objet ignStyle
  * @returns {Object} Objet représentant le flat style
  */
-function ignStyleToFlatStyle(ignStyle, typeGeom) {
+function ignStyleToFlatStyle(ignStyle: any, typeGeom: any) {
     ignStyle = ignStyle || {};
     const flatStyle = {};
     Object.keys(ignStyle).forEach((ignKey) => {

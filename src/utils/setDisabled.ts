@@ -18,7 +18,6 @@ function setDisabled(inputOrId: any, disabled: any) {
         return;
     }
 
-    // @ts-expect-error TS(2345): Argument of type 'unknown' is not assignable to pa... Remove this comment to see the full error message
     const groupClassName = Array.from(parent.classList).find((className) => /^fr-[a-z0-9-]+-group$/.test(className));
 
     if (!groupClassName) {

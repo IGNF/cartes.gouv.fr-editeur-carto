@@ -5,15 +5,15 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { MapResearchActivesItem } from "./mapResearchActivesItem";
-import type { MapResearchItem } from "./mapResearchItem";
-import type { MapResearchOrganization } from "./mapResearchOrganization";
-import type { MapResearchPremiumsItem } from "./mapResearchPremiumsItem";
-import type { MapResearchSharesItem } from "./mapResearchSharesItem";
-import type { MapResearchTheme } from "./mapResearchTheme";
-import type { MapResearchTypesItem } from "./mapResearchTypesItem";
-import type { MapResearchUsersItem } from "./mapResearchUsersItem";
-import type { MapResearchValidesItem } from "./mapResearchValidesItem";
+import type { MapResearchActivesItem } from "./mapResearchActivesItem.ts";
+import type { MapResearchItem } from "./mapResearchItem.ts";
+import type { MapResearchOrganization } from "./mapResearchOrganization.ts";
+import type { MapResearchPremiumsItem } from "./mapResearchPremiumsItem.ts";
+import type { MapResearchSharesItem } from "./mapResearchSharesItem.ts";
+import type { MapResearchTheme } from "./mapResearchTheme.ts";
+import type { MapResearchTypesItem } from "./mapResearchTypesItem.ts";
+import type { MapResearchUsersItem } from "./mapResearchUsersItem.ts";
+import type { MapResearchValidesItem } from "./mapResearchValidesItem.ts";
 
 /**
  * Recherche des cartes

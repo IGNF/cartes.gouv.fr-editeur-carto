@@ -10,9 +10,9 @@ import type { RequestHandlerOptions } from "msw";
 
 import type { Theme } from "../model";
 
-import { getGetThemesResponseMock } from "./theme.faker";
+import { getGetThemesResponseMock } from "./theme.faker.ts";
 
-export { getGetThemesResponseMock } from "./theme.faker";
+export { getGetThemesResponseMock } from "./theme.faker.ts";
 
 export const getGetThemesMockHandler = (
     overrideResponse?: Theme[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Theme[]> | Theme[]),

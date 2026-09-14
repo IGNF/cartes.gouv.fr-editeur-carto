@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { OffsetParameter } from "../offsetParameter";
+import type { OffsetParameter } from "../offsetParameter.ts";
 
 export type GetMapsParams = {
     /**

@@ -41,6 +41,9 @@ class Alert extends ControlExtended {
 
     static CONTAINER_ID = "alerts-container";
 
+    closeButton: any;
+    options: any;
+
     /**
      * Retourne le conteneur des alertes (créé à la demande).
      * @returns {HTMLElement}
@@ -65,7 +68,7 @@ class Alert extends ControlExtended {
      * @param {Boolean} [removeSameAlert=false] Si vrai, retire les ayant le même id.
      * @returns {Alert}
      */
-    static addAlert(alertOrOptions, removeSameAlert = false) {
+    static addAlert(alertOrOptions: any, removeSameAlert = false) {
         const alert = alertOrOptions instanceof Alert ? alertOrOptions : new Alert(alertOrOptions || {});
 
         // Retire les alertes ayant le même id
@@ -97,7 +100,7 @@ class Alert extends ControlExtended {
      * @param {string} id
      * @returns {boolean}
      */
-    static removeAlert(id) {
+    static removeAlert(id: any) {
         if (!id) {
             return false;
         }
@@ -114,7 +117,7 @@ class Alert extends ControlExtended {
     /**
      * @param {AlertOptions} options Options du constructeur
      */
-    constructor(options) {
+    constructor(options: any) {
         const opts = options || {};
         const element = document.createElement("div");
 
@@ -134,7 +137,7 @@ class Alert extends ControlExtended {
      * @protected
      * @param {AlertOptions} options
      */
-    _initialize(options) {
+    _initialize(options: any) {
         const alertId = options?.id || getUid("alert", this.element);
 
         this.options = {
@@ -155,7 +158,7 @@ class Alert extends ControlExtended {
      * @protected
      * @param {AlertOptions} options
      */
-    _initContainer(options) {
+    _initContainer(options: any) {
         void options;
         // Récupère les paramètres utiles
         const { className, id, type, icon, title, size, description, closable = true, closeLabel = "Masquer le message", onClick } = this.options;
@@ -213,11 +216,11 @@ class Alert extends ControlExtended {
 
             if (typeof onClick === "function") {
                 // Fonction de fermeture personnalisée.
-                this.closeButton.onclick = (event) => {
+                this.closeButton.onclick = (event: any) => {
                     onClick(event, this);
                 };
             } else {
-                const onclick = function () {
+                const onclick = function (this: any) {
                     const alert = this.parentNode;
                     alert.parentNode.removeChild(alert);
                 };
@@ -241,7 +244,7 @@ class Alert extends ControlExtended {
      * @param {AlertType | undefined} type
      * @returns {'alert'|'status'}
      */
-    getAriaRole(type) {
+    getAriaRole(type: any) {
         if (type === Alert.TYPES.ERROR || type === Alert.TYPES.WARNING) {
             return "alert";
         }

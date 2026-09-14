@@ -8,7 +8,7 @@ import "./login.scss";
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
-let dialog;
+let dialog: any;
 
 /**
  * Fonction à l'ouverture du dialog.
@@ -17,13 +17,13 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
     let form = dialog.querySelector("form");
     form.addEventListener("submit", login);
 }
 
-function login(e) {
+function login(e: any) {
     e.preventDefault();
 
     let form = e.target;
@@ -34,14 +34,14 @@ function login(e) {
     const rememberMe = formData.get("remember");
 
     // Helper: update error messages
-    function setError(fieldId, message) {
+    function setError(fieldId: any, message: any) {
         const fieldGroup = form.querySelector(`#${fieldId}-messages`);
         const input = form.querySelector(`#${fieldId}`);
         fieldGroup.innerHTML = `<p class="fr-error-text">${message}</p>`;
         input?.setAttribute("aria-invalid", "true");
     }
 
-    function clearError(fieldId) {
+    function clearError(fieldId: any) {
         const fieldGroup = form.querySelector(`#${fieldId}-messages`);
         const input = form.querySelector(`#${fieldId}`);
         fieldGroup.innerHTML = "";
@@ -67,7 +67,7 @@ function login(e) {
     if (hasError) return;
 
     api.rememberMe(!!rememberMe);
-    api.login(username, password, (e) => {
+    api.login(username, password, (e: any) => {
         if (e) {
             dialog.close();
         } else {

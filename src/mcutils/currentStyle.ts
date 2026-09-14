@@ -17,7 +17,7 @@ const typeGeom = {
     MultiPolygon: "Polygon",
 };
 
-function initCurrentStyle(defaultStyle) {
+function initCurrentStyle(defaultStyle: any) {
     const ptStyle = new Feature({
         geometry: new Point([0, 0]),
     }).getIgnStyle(true);
@@ -47,7 +47,7 @@ function initCurrentStyle(defaultStyle) {
 initCurrentStyle(currentStyle);
 
 // Change le style courant à la sélection
-carte.getSelect().on("select", (e) => {
+carte.getSelect().on("select", (e: any) => {
     // const features = carte.getSelect().getFeatures().getArray();
     if (e?.selected?.length) {
         updateCurrentStyle(e.selected[0]);
@@ -59,7 +59,7 @@ carte.getSelect().on("select", (e) => {
  * @param {Feature} [f] Feature dont le style doit être récupéré
  * @returns {Object} Copie du style courant
  */
-function getCurrentStyle(f) {
+function getCurrentStyle(f: any) {
     const type = f?.getGeometry()?.getType();
     const style = type ? Object.assign({}, currentStyle[typeGeom[type]]) : Object.assign({}, currentStyle);
     // Retire le zIndex
@@ -71,7 +71,7 @@ function getCurrentStyle(f) {
  * Met à jour le style courant
  * @param {Feature} [f] Feature dont le style doit être récupéré
  */
-function updateCurrentStyle(f) {
+function updateCurrentStyle(f: any) {
     const type = f?.getGeometry()?.getType();
     if (type) {
         // Modifie seulement ce qui doit l'être

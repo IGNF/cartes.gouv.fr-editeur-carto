@@ -5,7 +5,6 @@
  * Fonctionne via des écouteurs d'événements génériques openlayers.
  */
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../s... Remove this comment to see the full error message
 import story, { carte } from "../story.js";
 
 // Paramètre de la story map, utilisé aussi pour le format et le

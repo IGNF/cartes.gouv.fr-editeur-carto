@@ -26,7 +26,7 @@ class LabelForm extends ExtendedFlatStyleForm {
      * @param {LabelFormOptions} options Options du constructeur
      * @override
      */
-    _initialize(options) {
+    _initialize(options: any) {
         super._initialize(options);
 
         options.generalType ??= true;
@@ -44,7 +44,7 @@ class LabelForm extends ExtendedFlatStyleForm {
      * @abstract
      * @protected
      */
-    _addCustomInputs(options) {
+    _addCustomInputs(options: any) {
         this._addLabelInputs();
         if (options.generalType === false) {
             this._addLabelInputs("Point");
@@ -74,7 +74,7 @@ class LabelForm extends ExtendedFlatStyleForm {
      * @param {import('ol/Feature.js').default|Array<import('ol/Feature.js').default>|import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} featureOrGeomName Feature ou type de géométrie
      * @override Affiche l'input par défaut si pas de géométrie donné.
      */
-    setGeom(featureOrGeomName) {
+    setGeom(featureOrGeomName: any) {
         super.setGeom(featureOrGeomName);
         const textElements = this.getContent().querySelectorAll("[data-property^=text]");
         if (!this.get("generalType") && this.getGeom()) {
@@ -89,7 +89,7 @@ class LabelForm extends ExtendedFlatStyleForm {
      * @param {"Point"|"LineString"|"Polygon"} [type] Si donné, ajoute un préfixe aux propriétés flat-style
      * @private
      */
-    _addLabelInputs(type) {
+    _addLabelInputs(type: any) {
         // Ajoute un préfix si nécessaire
         let prefix = "";
         switch (type) {
@@ -113,7 +113,7 @@ class LabelForm extends ExtendedFlatStyleForm {
             type: "textarea",
         });
         // Update label value on keyup with a delay to avoid too many updates
-        let tout,
+        let tout: any,
             value = label.value;
         label.addEventListener("keyup", () => {
             if (label.value === value) return;

@@ -8,7 +8,7 @@ import carte from "../carte.js";
  * @param {PointerEvent} e Événement générique au clic
  * @param {import ("geopf-extensions-openlayers/src/index.js").LayerSwitcher} layerSwitcher Gestionnaire de couche
  */
-function addLayer(e, layerSwitcher) {
+function addLayer(e: any, layerSwitcher: any) {
     let layer = new VectorStyle({
         source: new VectorSource(),
         description: "Dessin personnalisé",

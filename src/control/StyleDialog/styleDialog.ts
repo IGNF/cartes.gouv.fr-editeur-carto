@@ -78,7 +78,7 @@ styleDialog.getForms().forEach((form) => {
     form.on("reset", () => {
         // Réinitialise le style par défaut
         const features = carte.getSelect().getFeatures();
-        const keys = [];
+        const keys: any = [];
         Object.keys(form.inputs).forEach((k) => {
             if (k === "fill-pattern-config") {
                 keys.push("fillPattern");
@@ -89,7 +89,7 @@ styleDialog.getForms().forEach((form) => {
             }
         });
         const layers = {};
-        features.forEach((f) => {
+        features.forEach((f: any) => {
             const style = f.getIgnStyle();
             keys.forEach((key) => delete style[key]);
             f.setIgnStyle(style);
@@ -106,7 +106,7 @@ styleDialog.getForms().forEach((form) => {
         if (e.property) {
             // Récupère les résultats
             const results = flatToIGNKeyValue(e.property, e.value);
-            features.forEach((f) => {
+            features.forEach((f: any) => {
                 // Une clé peut correspondre à plusieurs clé IGN
                 // D'où le fait d'avoir un forEach
                 results.forEach(({ key, value }) => {
@@ -123,7 +123,7 @@ styleDialog.getForms().forEach((form) => {
             });
         } else {
             // Appliquer le style à la ou les features sélectionnées
-            features.forEach((f) => {
+            features.forEach((f: any) => {
                 if (e.typeGeom) {
                     const rex = new RegExp(e.typeGeom);
                     if (!rex.test(f.getGeometry().getType())) return;
@@ -136,7 +136,7 @@ styleDialog.getForms().forEach((form) => {
         }
     });
     // Add from symbol library
-    form.on(["lib:addsymbol", "lib:getsymbol"], (e) => {
+    form.on(["lib:addsymbol", "lib:getsymbol"], (e: any) => {
         let styleObj = null;
         let type = styleDialog.getForms()[0]?.styleObj.get("type") || null;
         if (e.type === "lib:addsymbol") {
@@ -158,7 +158,7 @@ styleDialog.getForms().forEach((form) => {
         symbolLibAction.open(styleLibDialog, {
             styleObj: styleObj,
             typeGeom: type,
-            onSelect: (symbol) => {
+            onSelect: (symbol: any) => {
                 // Get style from forms
                 const style = ignStyleToFlatStyle(symbol.getIgnStyle());
                 styleDialog.getForms().forEach((frm) => {

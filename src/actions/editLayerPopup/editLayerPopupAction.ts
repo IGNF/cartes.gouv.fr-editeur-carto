@@ -12,7 +12,7 @@ import "./editLayerPopup.scss";
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(this: any, e: any) {
     const dialog = e.target;
 
     // Ajoute / modifie du contenu
@@ -22,7 +22,7 @@ function onOpen(e) {
     if (!this.popupForm) {
         this.popupForm = new PopupForm();
         dialog.getDialogContent().innerHTML = "";
-        this.popupForm.on("style", (e) => {
+        this.popupForm.on("style", (e: any) => {
             this.popupForm.setPopupContent(editLayerPopupAction.layer, e.property, e.value);
         });
     }

@@ -20,7 +20,7 @@ import type {
     UserView,
 } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getMeResponse200 = {
     data: UserView;

@@ -6,20 +6,20 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export * from "./alreadyReportedResponse";
-export * from "./deletedResponse";
-export * from "./badRequestResponse";
-export * from "./notConnectedResponse";
-export * from "./notFoundResponse";
-export * from "./forbiddenResponse";
-export * from "./invalidResponse";
-export * from "./limitParameter";
-export * from "./offsetParameter";
-export * from "./editorial";
-export * from "./login";
-export * from "./map";
-export * from "./media";
-export * from "./notifications";
-export * from "./organization";
-export * from "./theme";
-export * from "./user";
+export * from "./alreadyReportedResponse.ts";
+export * from "./deletedResponse.ts";
+export * from "./badRequestResponse.ts";
+export * from "./notConnectedResponse.ts";
+export * from "./notFoundResponse.ts";
+export * from "./forbiddenResponse.ts";
+export * from "./invalidResponse.ts";
+export * from "./limitParameter.ts";
+export * from "./offsetParameter.ts";
+export * from "./editorial/index.ts";
+export * from "./login/index.ts";
+export * from "./map/index.ts";
+export * from "./media/index.ts";
+export * from "./notifications/index.ts";
+export * from "./organization/index.ts";
+export * from "./theme/index.ts";
+export * from "./user/index.ts";

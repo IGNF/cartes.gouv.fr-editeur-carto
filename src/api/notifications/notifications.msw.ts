@@ -10,9 +10,9 @@ import type { RequestHandlerOptions } from "msw";
 
 import type { Notification } from "../model";
 
-import { getGetNotificationsResponseMock } from "./notifications.faker";
+import { getGetNotificationsResponseMock } from "./notifications.faker.ts";
 
-export { getGetNotificationsResponseMock } from "./notifications.faker";
+export { getGetNotificationsResponseMock } from "./notifications.faker.ts";
 
 export const getGetNotificationsMockHandler = (
     overrideResponse?: Notification[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Notification[]> | Notification[]),

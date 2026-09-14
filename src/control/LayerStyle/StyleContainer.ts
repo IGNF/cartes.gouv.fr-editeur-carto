@@ -41,12 +41,14 @@ const StyleContainerEventType = {
  * sont des instances de ce type.
  */
 export class StyleContainerEvent extends BaseEvent {
+    layer: any;
+    styleObj: any;
     /**
      * @param {StyleContainerEventType} type The event type.
      * @param {StyleObj} styleObj Style géré par ce conteneur
      * @param {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche OpenLayers à styliser
      */
-    constructor(type, styleObj, layer) {
+    constructor(type: any, styleObj: any, layer: any) {
         super(type);
 
         /**
@@ -70,10 +72,11 @@ export class StyleContainerEvent extends BaseEvent {
  * Événement émis lors d'une demande de déplacement d'un style.
  */
 export class StyleContainerMoveEvent extends BaseEvent {
+    direction: any;
     /**
      * @param {StyleContainerMoveDirection} direction Options de déplacement
      */
-    constructor(direction) {
+    constructor(direction: any) {
         super(StyleContainerEventType.MOVE);
 
         /**
@@ -107,6 +110,11 @@ export class StyleContainerMoveEvent extends BaseEvent {
  * Représente le conteneur HTML lié à un StyleObj.
  */
 class StyleContainer extends BaseObject {
+    _styleObjChangeKey: any;
+    _uid: any;
+    element: any;
+    preview: any;
+    titleElement: any;
     /**
      * @param {StyleContainerOptions} options
      */
@@ -180,7 +188,7 @@ class StyleContainer extends BaseObject {
      */
     _initEvents() {
         // Modifie le conteneur au changement de nom
-        this.getStyleObj().on("change:name", (e) => {
+        this.getStyleObj().on("change:name", (e: any) => {
             this.titleElement.textContent = this.titleElement.title = e.target.get(e.key);
         });
     }
@@ -311,7 +319,7 @@ class StyleContainer extends BaseObject {
         mask.appendChild(validateBtn);
 
         // Ajoute un événement pour les raccourcis
-        const keydownEvent = (/** @type {KeyboardEvent} */ e) => {
+        const keydownEvent = (/** @type {KeyboardEvent} */ e: any) => {
             if (e.key === "Enter") {
                 validateBtn.click();
             } else if (e.key === "Escape") {
@@ -342,7 +350,7 @@ class StyleContainer extends BaseObject {
     /**
      * @param {StyleObj} styleObj
      */
-    setStyleObj(styleObj) {
+    setStyleObj(styleObj: any) {
         if (!(styleObj instanceof StyleObj)) {
             throw new TypeError("StyleContainer.styleObj doit être une instance de StyleObj");
         }
@@ -369,7 +377,7 @@ class StyleContainer extends BaseObject {
      *
      * @property {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche OpenLayers
      */
-    setLayer(layer) {
+    setLayer(layer: any) {
         this.set("layer", layer);
     }
 
@@ -377,7 +385,7 @@ class StyleContainer extends BaseObject {
      *
      * @param {StyleObj} styleObj Objet de style
      */
-    _createSymbol(styleObj) {
+    _createSymbol(styleObj: any) {
         if (!(styleObj instanceof StyleObj)) {
             return document.createElement("canvas");
         }

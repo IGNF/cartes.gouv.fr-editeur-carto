@@ -11,7 +11,7 @@ import modal from "../../dialogs/modal.js";
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
-let dialog;
+let dialog: any;
 
 // Interactions sur la carte
 let interactions = {};
@@ -23,7 +23,7 @@ let interactions = {};
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
     setInert();
     dialog.getButtons().item(0).style = "margin-left: 1rem;";
@@ -43,7 +43,7 @@ function setInert() {
             carte
                 .getMap()
                 .getInteractions()
-                .forEach((i) => {
+                .forEach((i: any) => {
                     // Pour ne réactiver que les interactions active plus tard
                     interactions[i.ol_uid] = i.getActive();
                     i.setActive(false);
@@ -63,7 +63,7 @@ function unsetInert() {
         carte
             .getMap()
             .getInteractions()
-            .forEach((i) => {
+            .forEach((i: any) => {
                 // Réactive les interactions
                 const active = interactions[i.ol_uid];
                 i.setActive(active);
@@ -88,7 +88,7 @@ const connectActionTest = new Action({
             kind: 1,
             markup: "a",
             href: "#",
-            callback: (e) => {
+            callback: (e: any) => {
                 closeDialog(e);
                 carte.dispatchEvent("read");
                 Action.open(modal, "open-map");
@@ -99,7 +99,7 @@ const connectActionTest = new Action({
             className: "create fr-icon-arrow-right-s-line fr-btn--icon-right",
             kind: 0,
             close: true,
-            callback: (e) => {
+            callback: (e: any) => {
                 closeDialog(e);
                 carte.dispatchEvent("read");
             },

@@ -87,7 +87,7 @@ function normalizeImageOptions(options = {}, defaultSmall = true) {
  * @param {{ size: Array<Number>, margin: Number, small: Boolean, displayText: Boolean }} next
  * @returns {Boolean}
  */
-function isSameImageOptions(previous, next) {
+function isSameImageOptions(previous: any, next: any) {
     if (!previous) {
         return false;
     }
@@ -109,9 +109,9 @@ function isSameImageOptions(previous, next) {
  * @param {Number} cy Centre Y de base
  * @returns {{ cx: Number, cy: Number }}
  */
-function computeCenteredPoint(styles, cx, cy) {
-    let extent = null;
-    styles.forEach((s) => {
+function computeCenteredPoint(styles: any, cx: any, cy: any) {
+    let extent: any = null;
+    styles.forEach((s: any) => {
         const img = s.getImage?.();
         if (img?.getAnchor) {
             const anchor = img.getAnchor();
@@ -144,7 +144,7 @@ function computeCenteredPoint(styles, cx, cy) {
  * @param {Number} width
  * @param {Number} height
  */
-function drawGridCross(ctx, width, height) {
+function drawGridCross(ctx: any, width: any, height: any) {
     const cx = width / 2;
     const cy = height / 2;
     const gap = 3; // demi-espace au centre (carré vide de 6px de côté)
@@ -177,6 +177,7 @@ function drawGridCross(ctx, width, height) {
  * Objet permettant d'enregistrer un style avec zéro à plusieurs conditions.
  */
 class StyleObj extends BaseObject {
+    _imageOptions: any;
     /**
      * @param {StyleObjOptions} options
      */
@@ -276,7 +277,7 @@ class StyleObj extends BaseObject {
      * @param {String} [flatStyleProperty] Si donné, renvoie la valeur correspondante.
      * @returns {Object|any} Valeur d'une propriété flatStyle ou copie de l'objet flatStyle.
      */
-    getFlatStyle(flatStyleProperty) {
+    getFlatStyle(flatStyleProperty: any) {
         const flatStyle = this.get("flatStyle") || {};
         if (flatStyleProperty === undefined) {
             return { ...flatStyle };
@@ -290,7 +291,7 @@ class StyleObj extends BaseObject {
      * @param {String} prop Propriété flatStyle
      * @param {any} value Valeur correspondante
      */
-    setFlatStyleProperty(prop, value) {
+    setFlatStyleProperty(prop: any, value: any) {
         this.setFlatStyle({ [prop]: value });
     }
 
@@ -301,7 +302,7 @@ class StyleObj extends BaseObject {
      * @param {Boolean} [reset=false] Si vrai, modifie l'entièreté du flatStyle.
      * Sinon, ajoute les propriétés au flatStyle actuel
      */
-    setFlatStyle(flatStyle, reset = false) {
+    setFlatStyle(flatStyle: any, reset = false) {
         if (!flatStyle || typeof flatStyle !== "object" || Array.isArray(flatStyle)) {
             throw new TypeError("flatStyle doit être un objet");
         }
@@ -316,7 +317,7 @@ class StyleObj extends BaseObject {
     /**
      * @param {StyleObjConditionOptions} conditions
      */
-    setConditions(conditions) {
+    setConditions(conditions: any) {
         // Récupère les informations
         const all = conditions.all !== undefined ? !!conditions.all : true;
         const usecase = conditions.usecase !== undefined ? !!conditions.usecase : false;
@@ -326,7 +327,7 @@ class StyleObj extends BaseObject {
         /** @type {Collection<Condition>} */
         const conditionsObject = new Collection();
 
-        sourceConditions.forEach((element) => {
+        sourceConditions.forEach((element: any) => {
             let condition;
             if (element instanceof Condition) {
                 // Clone la condition pour éviter les références partagées.
@@ -359,14 +360,14 @@ class StyleObj extends BaseObject {
      * @param {Condition|import("./Condition.js").ConditionOptions} condition
      * Condition à ajouter
      */
-    addCondition(condition) {
+    addCondition(condition: any) {
         this.conditions = [...this.conditions, this._toCondition(condition)];
     }
 
     /**
      * @param {Number} index
      */
-    removeCondition(index) {
+    removeCondition(index: any) {
         const currentConditions = this.conditions;
         if (!Number.isInteger(index) || index < 0 || index >= currentConditions.length) {
             return;
@@ -379,8 +380,8 @@ class StyleObj extends BaseObject {
      * @param {Object} feature
      * @returns {Boolean}
      */
-    isValidForFeature(feature) {
-        return this.conditions.every((condition) => condition.isValid(feature));
+    isValidForFeature(feature: any) {
+        return this.conditions.every((condition: any) => condition.isValid(feature));
     }
 
     /**
@@ -390,7 +391,7 @@ class StyleObj extends BaseObject {
      * @returns {HTMLCanvasElement}
      * @private
      */
-    _renderToCanvas(canvas, imageOptions) {
+    _renderToCanvas(canvas: any, imageOptions: any) {
         const [width, height] = imageOptions.size;
         const margin = Math.max(0, imageOptions.margin);
 
@@ -412,7 +413,7 @@ class StyleObj extends BaseObject {
         }
 
         // Créé la feature
-        let feature;
+        let feature: any;
         switch (this.type) {
             case "Point":
                 feature = new Feature(new Point([cx, cy]));
@@ -496,7 +497,7 @@ class StyleObj extends BaseObject {
 
         // Dessine sur le canvas
         ctx.save();
-        style.forEach((s) => {
+        style.forEach((s: any) => {
             ctx.save();
             vectorContext.setStyle(s);
             vectorContext.drawGeometry(s.getGeometry()(feature));
@@ -550,7 +551,7 @@ class StyleObj extends BaseObject {
     /**
      * @private
      */
-    _toCondition(condition) {
+    _toCondition(condition: any) {
         if (condition instanceof Condition) {
             return condition;
         }
@@ -567,7 +568,7 @@ class StyleObj extends BaseObject {
             usecase: this.conditions?.usecase,
             conditions:
                 this.conditions?.conditions instanceof Collection
-                    ? this.conditions.conditions.getArray().map((condition) => ({
+                    ? this.conditions.conditions.getArray().map((condition: any) => ({
                           attribute: condition.attribute,
                           operator: condition.operator,
                           value: condition.value,

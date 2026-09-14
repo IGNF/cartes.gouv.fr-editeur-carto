@@ -18,6 +18,12 @@ class Charte extends BaseObject {
         PREVIEW: "preview",
     });
 
+    _actions: any;
+    element: any;
+    footer: any;
+    header: any;
+    mode: any;
+
     /**
      * Constructeur de la classe Charte
      * Initialise le header, le main et le footer de la page
@@ -37,7 +43,7 @@ class Charte extends BaseObject {
      * @param {Object} options Options de création de l'élément
      * @returns {HTMLElement} L'élément trouvé ou créé
      */
-    getElement(role, options) {
+    getElement(role: any, options: any) {
         options = options || {};
         options["data-role"] = role;
         options.parent = this.element;
@@ -62,7 +68,7 @@ class Charte extends BaseObject {
      *  @param {string} options.action Action associée au menu
      * @returns {Menu} Le menu trouvé ou créé
      */
-    getHeaderMenu(options) {
+    getHeaderMenu(options: any) {
         options = options || {};
         // Existing menu
         if (options.action) {
@@ -87,7 +93,7 @@ class Charte extends BaseObject {
      *  @param {string} options.action Action associée au bouton
      * @returns {HTMLElement} Le bouton créé ou trouvé
      */
-    getHeaderButton(options) {
+    getHeaderButton(options: any) {
         options = options || {};
         options.parent = this.header.tools;
 
@@ -123,7 +129,7 @@ class Charte extends BaseObject {
      * Définit l'état de connexion de l'utilisateur et met à jour l'interface
      * @param {boolean} connected Vrai si connecté, faux sinon
      */
-    setConnected(connected) {
+    setConnected(connected: any) {
         let btnsConnect = this.header.element.querySelectorAll("[data-action='login']");
         let connectAccesses = this.header.element.querySelectorAll("[data-action='connect']");
         for (let index = 0; index < connectAccesses.length; index++) {
@@ -147,20 +153,20 @@ class Charte extends BaseObject {
     /** Définit les informations du service
      * @param {ServiceOptions} options Options du service
      */
-    setService(options) {
+    setService(options: any) {
         this.header.setService(options);
     }
     /** Définit la description du service
      * @param {string} desc Description du service
      */
-    setDescription(desc) {
+    setDescription(desc: any) {
         this.footer.description.innerHTML = desc;
         this._updateFooter();
     }
     /** Ajoute un logo de partenaire
      * @param {FooterPartner} options Options d'un partenaire
      */
-    addPartner(options) {
+    addPartner(options: any) {
         this.footer.addPartner(options);
         this._updateFooter();
     }
@@ -168,14 +174,14 @@ class Charte extends BaseObject {
      * Ajoute un lien de contenu au footer
      * @param {FooterContentLink} options Contenu d'un lien pour le footer
      */
-    addContentLink(options) {
+    addContentLink(options: any) {
         this.footer.addContentLink(options);
         this._updateFooter();
     }
     /** Ajoute un lien en bas de page
      * @param {FooterBottomLink} options Option d'un lien de bas de page
      */
-    addFooterLink(options) {
+    addFooterLink(options: any) {
         this.footer.addLink(options);
         this._updateFooter();
     }
@@ -184,7 +190,7 @@ class Charte extends BaseObject {
      * @param {Object} options Options du bouton
      *  @param {string} options.icon Icône du bouton
      */
-    addFooterButton(title, options) {
+    addFooterButton(title: any, options: any) {
         this.footer.addButton(title, options);
         this._updateFooter();
     }
@@ -194,7 +200,7 @@ class Charte extends BaseObject {
      *
      * @param {boolean} compact Si vrai, passe en mode compact
      */
-    setCompact(compact) {
+    setCompact(compact: any) {
         this.header.setCompact(compact);
         this.footer.setCompact(compact);
         document.body.classList.toggle("compact", compact);
@@ -219,7 +225,7 @@ class Charte extends BaseObject {
      * // Passage en mode mise en page
      * charte.setMode(Charte.modes.STORYMAP);
      */
-    setMode(mode) {
+    setMode(mode: any) {
         // Vérifie si le mode est valide
         if (!Object.values(Charte.modes).includes(mode)) {
             throw new Error(`Mode invalide (utilisez Charte.modes): ${mode}`);

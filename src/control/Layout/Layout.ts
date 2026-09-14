@@ -34,11 +34,13 @@ import "./layout.scss";
  * Panneau latéral basé sur Dialog, avec navigation par onglets.
  */
 class Layout extends Dialog {
+    labelTabNav: any;
+    storymap: any;
     /**
      * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap utilisée par les onglets.
      * @param {LayoutOptions} [options] Options de construction.
      */
-    constructor(storymap, options) {
+    constructor(storymap: any, options: any) {
         super(options);
 
         this.storymap = storymap;
@@ -63,7 +65,7 @@ class Layout extends Dialog {
     /**
      * @param {LayoutOptions} [options] Options de construction.
      */
-    _initContainer(options) {
+    _initContainer(options: any) {
         super._initContainer(options);
         this.element.classList.add("layout-dialog");
     }
@@ -80,7 +82,7 @@ class Layout extends Dialog {
      * Met à jour la storymap utilisée par le layout.
      * @param {import("mcutils/StoryMap.js").default} storymap Instance storymap.
      */
-    setStorymap(storymap) {
+    setStorymap(storymap: any) {
         this.storymap && this.storymap.getCarte()?.getMap()?.removeControl(this);
         this.storymap = storymap;
         this.storymap && this.setMap(storymap.getCarte().getMap());
@@ -91,7 +93,7 @@ class Layout extends Dialog {
      * @param {Array<LayoutTabNavItemOptions>} items Liste des onglets.
      * @param {String} [label] Label ARIA de la navigation.
      */
-    setItems(items = [], label) {
+    setItems(items = [], label: any) {
         const nextItems = Array.isArray(items) ? items : [items];
         this.setTabNav(nextItems, label ?? this.labelTabNav);
     }
@@ -100,7 +102,7 @@ class Layout extends Dialog {
      * Ajoute un onglet dans la navigation.
      * @param {LayoutTabNavItemOptions} item Onglet à ajouter.
      */
-    addItem(item) {
+    addItem(item: any) {
         if (!item) {
             return;
         }

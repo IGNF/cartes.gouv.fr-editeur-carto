@@ -28,7 +28,7 @@ import type {
     PutOrganizationMemberRoleBody,
 } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getOrganizationsRolesResponse200 = {
     data: GetOrganizationsRoles200Item[];

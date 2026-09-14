@@ -17,7 +17,7 @@ class Condition extends BaseObject {
      * options permettent de créer une
      * @param {ConditionOptions} options Options à vérifier
      */
-    static isValid(options) {
+    static isValid(options: any) {
         try {
             new Condition(options);
             return true;
@@ -84,7 +84,7 @@ class Condition extends BaseObject {
      * @param {import("ol/Feature.js").default} feature Feature openlayer.
      * @returns {Boolean} Vrai si la condition est validée, faux sinon.
      */
-    isValid(feature) {
+    isValid(feature: any) {
         const attribute = feature.get(this.attribute);
         return this._applyOperator(attribute, this.operator, this.value);
     }
@@ -94,7 +94,7 @@ class Condition extends BaseObject {
      * @param {import("ol/Feature.js").default} feature Feature openlayer
      * @private
      */
-    _getFeatureValue(feature, attribute) {
+    _getFeatureValue(feature: any, attribute: any) {
         if (!feature) {
             return undefined;
         }
@@ -110,7 +110,7 @@ class Condition extends BaseObject {
      * @returns {Boolean} Vrai si la condition est vérifiée
      * @private
      */
-    _applyOperator(left, operator, right) {
+    _applyOperator(left: any, operator: any, right: any) {
         switch (operator) {
             case "EQ":
                 return left === right;
@@ -162,7 +162,7 @@ class Condition extends BaseObject {
      * @returns {Boolean} Vrai si la valeur correspond à un booléen.
      * @private
      */
-    _toBoolean(value) {
+    _toBoolean(value: any) {
         if (typeof value === "string") {
             return ["true", "1", "yes", "oui"].includes(value.trim().toLowerCase());
         }

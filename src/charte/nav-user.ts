@@ -87,7 +87,7 @@ charte.getHeaderButton({
 document.documentElement.addEventListener("dsfr.start", () => {
     // Bouton de déconnexion
     let disconnect = account.getMenu("disconnect");
-    disconnect.forEach((btn) => {
+    disconnect.forEach((btn: any) => {
         btn.link.addEventListener("click", async () => {
             const oidc = await getOidc();
             oidc.logout({ redirectTo: "specific url", url: "/" });

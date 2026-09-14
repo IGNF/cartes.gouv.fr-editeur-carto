@@ -42,7 +42,6 @@ function addMessage(input: any, message: any, options: any) {
     options.closest = options.closest ? options.closest : "div";
     options.type = Object.keys(messageClasses).includes(options.type) ? options.type : "error";
     // Classe à ajouter au message
-    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     let msgClass = messageClasses[options.type];
     // switch (options.type) {
     //   case 'warning': {
@@ -81,7 +80,6 @@ function addMessage(input: any, message: any, options: any) {
     if (!options.append) msg.replaceChildren();
     const p = document.createElement("p");
     p.classList.add("fr-message", `fr-message${msgClass}`);
-    // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
     p.id = getUid(`fr-message${msgClass}`);
     p.textContent = message;
     msg.appendChild(p);

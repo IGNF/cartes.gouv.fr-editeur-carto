@@ -15,10 +15,11 @@ import "./Beta.scss";
  * est en version bêta.
  */
 class Beta extends Control {
+    badge: any;
     /**
      * @param {Options} [options] Options du contrôle.
      */
-    constructor(options) {
+    constructor(options: any) {
         options = options ? options : {};
 
         super({

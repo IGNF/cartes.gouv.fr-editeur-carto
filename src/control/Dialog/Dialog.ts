@@ -9,7 +9,7 @@ class Dialog extends AbstractDialog {
     /**
      * @param {./DialogOptions} [dialogClass]
      */
-    constructor(options) {
+    constructor(options: any) {
         // Default options
         options = Object.assign(options || {});
         options.dialogClass = options.dialogClass || "ign-dialog";

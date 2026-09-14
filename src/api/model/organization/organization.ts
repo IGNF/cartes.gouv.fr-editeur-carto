@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { OrganizationMembersItem } from "./organizationMembersItem";
+import type { OrganizationMembersItem } from "./organizationMembersItem.ts";
 
 export interface Organization {
     /** Identifiant de l'organisation */

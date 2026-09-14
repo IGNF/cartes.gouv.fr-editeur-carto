@@ -9,7 +9,7 @@ import { apiURL } from "../../env";
 
 import type { Login, NotConnectedResponse, PostLogin401, PostLogin429, PostLoginParams, RefreshToken401, RefreshTokenParams } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type refreshTokenResponse200 = {
     data: Login;

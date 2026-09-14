@@ -9,6 +9,7 @@ export default defineConfig({
                 path: "src/api/model",
                 splitByTags: true,
             },
+            tsconfig: "./tsconfig.json",
             formatter: "prettier",
             client: "fetch",
             baseUrl: {
@@ -21,7 +22,7 @@ export default defineConfig({
                     usePrefetch: true,
                 },
                 mutator: {
-                    path: "src/api/fetchWithAuth.js",
+                    path: "src/api/fetchWithAuth.ts",
                     name: "fetchWithAuth",
                 },
             },

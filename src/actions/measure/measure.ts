@@ -24,7 +24,7 @@ let isochrone = new Toggle({
     classButton: "fr-btn fr-btn--tertiary fr-btn--icon-left ",
 });
 
-function createBar(target) {
+function createBar(target: any) {
     let bar = new Bar({
         className: "dsfr-btn-group fr-btns-group fr-btns-group--icon-left",
         target: target,

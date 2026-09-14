@@ -10,9 +10,9 @@ import type { RequestHandlerOptions } from "msw";
 
 import type { Login } from "../model";
 
-import { getPostLoginResponseMock, getRefreshTokenResponseMock } from "./login.faker";
+import { getPostLoginResponseMock, getRefreshTokenResponseMock } from "./login.faker.ts";
 
-export { getRefreshTokenResponseMock, getPostLoginResponseMock } from "./login.faker";
+export { getRefreshTokenResponseMock, getPostLoginResponseMock } from "./login.faker.ts";
 
 export const getRefreshTokenMockHandler = (
     overrideResponse?: Login | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Login> | Login),

@@ -26,7 +26,7 @@ import type {
     TooLargeResponse,
 } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getUserMediasResponse200 = {
     data: MediaList;

@@ -16,7 +16,7 @@ import Action from "../../actions/Action.js";
 // Variables utiles
 let title = carte.get("title");
 
-let exportMap = function (e) {
+let exportMap = function (e: any) {
     const data = carte.write(e.shiftKey);
     data.param.titre = data.param.titre || carte.getTitle();
 
@@ -148,7 +148,7 @@ let mapTitle = new TextButton({
 });
 
 // Fonction pour mettrre à jour le titre
-function setTitle(e) {
+function setTitle(e: any) {
     let title = carte.getTitle();
     if (e.key === "title") {
         title = carte.get("title");
@@ -186,7 +186,7 @@ const handleFocusOut = () => {
  * Ferme le menu si on clique en dehors (souris)
  * @param {MouseEvent} e Événement mouseDown
  */
-const closeOnOutsideClick = (e) => {
+const closeOnOutsideClick = (e: any) => {
     if (!btnBar.element.contains(e.target) && !fileToggle.element.contains(e.target)) {
         fileToggle.setActive(false);
         document.removeEventListener("mousedown", closeOnOutsideClick);
@@ -194,7 +194,7 @@ const closeOnOutsideClick = (e) => {
 };
 
 // Ajoute un écouteur d'événement pour fermer la barre automatiquement si on clique ailleurs
-fileToggle.on("change:active", (e) => {
+fileToggle.on("change:active", (e: any) => {
     if (e.target.getActive()) {
         // Met le focus sur le premier élément
         openMapBtn.button_.focus();

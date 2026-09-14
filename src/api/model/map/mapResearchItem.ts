@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { Bbox } from "./bbox";
+import type { Bbox } from "./bbox.ts";
 
 /**
  * Carte renvoyée dans les résultats de recherche. Cet objet est construit depuis une requête SQL, et non directement depuis le normalizer d'entité Map.

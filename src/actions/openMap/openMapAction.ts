@@ -36,7 +36,7 @@ const buttonConnect = [
         "data-action": "login",
         "aria-controls": loginDialog.getId(),
         "data-fr-opened": false,
-        callback: (e) => {
+        callback: (e: any) => {
             Action.open(e);
             loginDialog.once(loginDialog.selectors.CLOSE_EVENT, () => {
                 Action.open(modal, "open-map");
@@ -49,7 +49,7 @@ const buttonConnect = [
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
-let dialog;
+let dialog: any;
 
 /**
  * Fonction à l'ouverture du dialog.
@@ -58,14 +58,14 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
 
     const load = () => {
         dialog.setDialogContent(loadingContent);
         dialog.setButtons();
         if (api.isConnected()) {
-            api.getMaps({}, (e) => getUserMaps(e, dialog));
+            api.getMaps({}, (e: any) => getUserMaps(e, dialog));
         } else {
             dialog.setDialogContent(connectContent);
             dialog.setButtons(buttonConnect);
@@ -97,7 +97,7 @@ function onOpen(e) {
  *
  * @param {*} e event renvoyé par l'API getMaps
  */
-function getUserMaps(e) {
+function getUserMaps(e: any) {
     const maps = e.maps;
 
     if (e.error) {
@@ -117,7 +117,7 @@ function getUserMaps(e) {
     */
         // Filter liste des cartes en fonction du champ de recherche
         const filtermap = function () {
-            content.querySelectorAll(".ol-map-card").forEach((card) => {
+            content.querySelectorAll(".ol-map-card").forEach((card: any) => {
                 const title = card.querySelector(".ol-map-card__title").textContent;
                 const rex = new RegExp(filterInput.value, "i");
                 if (rex.test(title)) {
@@ -128,7 +128,7 @@ function getUserMaps(e) {
             });
         };
 
-        let tout;
+        let tout: any;
         const filterInput = ol_ext_element.create("input", {
             className: "fr-input",
             id: "map-filter",
@@ -149,7 +149,7 @@ function getUserMaps(e) {
             parent: content,
         });
 
-        maps.forEach((map) => {
+        maps.forEach((map: any) => {
             if (map.type === "macarte") {
                 let card = createMapCard({
                     title: map.title,
@@ -178,7 +178,7 @@ function getUserMaps(e) {
  * @param {string} id Id de la carte à modifier (pour la récupérer)
  * @returns {ChildNode}
  */
-function createMapCard({ title, timestamp, img, id }) {
+function createMapCard({ title, timestamp, img, id }: any) {
     let src = img ? img : defaultImagePath;
     let mapTitle = title ? title : "";
     let date = new Date(timestamp);
@@ -214,14 +214,14 @@ function createMapCard({ title, timestamp, img, id }) {
     return card;
 }
 
-function selectCard(e) {
+function selectCard(e: any) {
     if (e.type === "click" || (e.type === "keyup" && (e.code === "Enter" || e.code === "Space"))) {
         // Active le bouton d'ouverture
         dialog.getButton(0).disabled = false;
 
         // Déselctionne les autres éléments s'il y'en a
         let currents = dialog.querySelectorAll('[aria-current="true"]');
-        currents.forEach((card) => {
+        currents.forEach((card: any) => {
             card.ariaCurrent = false;
         });
 
@@ -238,7 +238,7 @@ function openMap() {
 
     let mapId = card.dataset.mapId;
 
-    api.getMap(mapId, (e) => {
+    api.getMap(mapId, (e: any) => {
         carte.getMap().getLayers().clear();
         setTimeout(() => {
             carte.load(e);

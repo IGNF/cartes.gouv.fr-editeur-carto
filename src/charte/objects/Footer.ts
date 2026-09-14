@@ -4,6 +4,15 @@ import getUid from "../../utils/getUid.js";
 
 /** Footer complet avec tous les éléments du DSFR */
 class Footer extends BaseObject {
+    container: any;
+    contentLink: any;
+    copy: any;
+    description: any;
+    element: any;
+    links: any;
+    logo: any;
+    partnerList: any;
+    partnerMainList: any;
     constructor() {
         super();
         this.element = ol_ext_element.create("FOOTER", {
@@ -144,7 +153,7 @@ class Footer extends BaseObject {
      * Définit le texte du logo
      * @param {string} html Contenu HTML du logo
      */
-    setLogoText(html) {
+    setLogoText(html: any) {
         this.logo.innerHTML = html;
     }
 
@@ -152,7 +161,7 @@ class Footer extends BaseObject {
      * Définit le texte de description
      * @param {string} text Texte de description
      */
-    setDescription(text) {
+    setDescription(text: any) {
         this.description.textContent = text;
     }
 
@@ -161,7 +170,7 @@ class Footer extends BaseObject {
      *
      * @param {boolean} compact Si vrai, passe en mode compact
      */
-    setCompact(compact) {
+    setCompact(compact: any) {
         // Footer
         this.element.classList.toggle("fr-footer--compact", !!compact);
         // Conteneur (fluide ou non)
@@ -173,7 +182,7 @@ class Footer extends BaseObject {
      * Ajoute un lien de contenu
      * @param {FooterContentLink} options Option d'un lien de contenu
      */
-    addContentLink(options) {
+    addContentLink(options: any) {
         const title = options.title || options.href.replace(/^http(s)?:\/\/(www.)?/, "").replace(/\//g, "");
         const linkId = "footer__content-link-" + getUid("content-link");
         return ol_ext_element.create("A", {
@@ -195,7 +204,7 @@ class Footer extends BaseObject {
      * Ajoute un logo de partenaire
      * @param {FooterPartner} options Options d'un partenaire
      */
-    addPartner(options) {
+    addPartner(options: any) {
         const imgElement = ol_ext_element.create("IMG", {
             className: "fr-footer__logo",
             alt: options.alt,
@@ -231,7 +240,7 @@ class Footer extends BaseObject {
      * Ajoute un lien dans la section du bas
      * @param {FooterBottomLink} options Option d'un lien du footer
      */
-    addLink(options) {
+    addLink(options: any) {
         const linkId = "footer__bottom-link-" + getUid("bottom-link");
         ol_ext_element.create("A", {
             id: linkId,
@@ -251,7 +260,7 @@ class Footer extends BaseObject {
      * @param {Object} options Options du bouton
      * @param {string} [options.icon] Classe d'icône DSFR
      */
-    addButton(title, options) {
+    addButton(title: any, options: any) {
         let btnOptions = {
             className: "fr-footer__bottom-link fr-link--icon-left fr-px-2v" + (options.icon ? " " + options.icon : ""),
             text: " " + title + " ",

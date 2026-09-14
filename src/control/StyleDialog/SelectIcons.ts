@@ -126,6 +126,7 @@ selectedIcons = selectedIcons.map((icon) => icon.toLowerCase());
  * @classdesc Input permettant de sélectionner des icônes. Celle-ci sont extraites de remixicon.
  */
 class SelectIcons extends CustomSelectGrid {
+    fonts: any;
     /**
      * Constructeur du contrôle SelectIcons
      * @param {SelectIconsConfig} options Options du contrôle
@@ -138,7 +139,7 @@ class SelectIcons extends CustomSelectGrid {
      * @param {SelectIconsConfig} options Options du contrôle
      * @override
      */
-    _initialize(options) {
+    _initialize(options: any) {
         super._initialize(options);
 
         /**
@@ -159,7 +160,7 @@ class SelectIcons extends CustomSelectGrid {
             " ": "Sans icône",
         };
 
-        this.fonts = this.fonts.filter((f) => fonts[f]);
+        this.fonts = this.fonts.filter((f: any) => fonts[f]);
 
         // // Version avec recherche (prend toutes les icônes en compte)
         // Object.entries(glyphs).forEach(([key, elem]) => {
@@ -184,12 +185,12 @@ class SelectIcons extends CustomSelectGrid {
      * @param {SelectIconsConfig} options Options du contrôle
      * @override
      */
-    _initContainer(options) {
+    _initContainer(options: any) {
         super._initContainer(options);
         this.element.classList.add("input-style--icon");
     }
 
-    selectOption(index, silent = false) {
+    selectOption(index: any, silent = false) {
         super.selectOption(index, silent);
 
         // Gère le label de l'input
@@ -205,7 +206,7 @@ class SelectIcons extends CustomSelectGrid {
      * @param {Number} index Indice de l'élément (utile pour les raccourcis claviers)
      * @override
      */
-    addChoice(value, label, index) {
+    addChoice(value: any, label: any, index: any) {
         const option = super.addChoice(value, label, index);
         if (typeof label === "object") {
             // Icônes via une font

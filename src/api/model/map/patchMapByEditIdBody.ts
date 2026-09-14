@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { MapAdd } from "./mapAdd";
+import type { MapAdd } from "./mapAdd.ts";
 
 export type PatchMapByEditIdBody = MapAdd & {
     /** Demande à modifier l'id de modification */

@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { UserEdit } from "./userEdit";
+import type { UserEdit } from "./userEdit.ts";
 
 export type UserMeEdit = UserEdit & {
     current_password?: string;

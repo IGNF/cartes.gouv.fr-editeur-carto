@@ -34,7 +34,7 @@ import {
     getPutOrganizationAttributeResponseMock,
     getPutOrganizationJoinLinkRoleResponseMock,
     getPutOrganizationMemberRoleResponseMock,
-} from "./organization.faker";
+} from "./organization.faker.ts";
 
 export {
     getGetOrganizationsRolesResponseMock,
@@ -50,7 +50,7 @@ export {
     getAddMemberToOrganizationResponseMock,
     getDeleteOrganizationMemberResponseMock,
     getPutOrganizationMemberRoleResponseMock,
-} from "./organization.faker";
+} from "./organization.faker.ts";
 
 export const getGetOrganizationsRolesMockHandler = (
     overrideResponse?:

@@ -4,7 +4,7 @@ import charte from "./charte.js";
  * Set the user from an API event
  * @param {Event} e
  */
-function setUser(e) {
+function setUser(e: any) {
     let error = e.error;
     let type = e.type;
     if (e && !error && type !== "logout") {

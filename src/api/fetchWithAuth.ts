@@ -1,6 +1,6 @@
 import { getAuthHeader } from "../oidc";
 
-export const fetchWithAuth = async (url, options) => {
+export const fetchWithAuth = async (url: any, options: any) => {
     const header = await getAuthHeader();
     const response = await fetch(url, {
         ...options,

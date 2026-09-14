@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { Bbox } from "./bbox";
+import type { Bbox } from "./bbox.ts";
 
 /**
  * Objet carte à envoyer lors d'ajout / modification d'une carte

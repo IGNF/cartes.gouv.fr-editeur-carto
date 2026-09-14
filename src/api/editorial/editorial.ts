@@ -9,7 +9,7 @@ import { apiURL } from "../../env";
 
 import type { Article, GetEditorialCategories200Item, GetEditorialFollowers200, GetEditorialMegamenu200, NotFoundResponse } from "../model";
 
-import { fetchWithAuth } from ".././fetchWithAuth.js";
+import { fetchWithAuth } from ".././fetchWithAuth.ts";
 
 export type getEditorialFollowersResponse200 = {
     data: GetEditorialFollowers200;

@@ -5,7 +5,7 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { LimitParameter } from "../limitParameter";
+import type { LimitParameter } from "../limitParameter.ts";
 
 export type GetMapsUsersParams = {
     /**

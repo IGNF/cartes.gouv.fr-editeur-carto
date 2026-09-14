@@ -6,7 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from "./article.ts";
 export * from "./article";
+export * from "./getEditorialCategories200Item.ts";
 export * from "./getEditorialCategories200Item";
+export * from "./getEditorialFollowers200.ts";
 export * from "./getEditorialFollowers200";
+export * from "./getEditorialMegamenu200.ts";
 export * from "./getEditorialMegamenu200";

@@ -2,7 +2,13 @@ import Notification from "ol-ext/control/Notification.js";
 import "./notification.scss";
 
 class NotificationExtended extends Notification {
-    constructor(options) {
+    _listener: any;
+    element: any;
+    get: any;
+    hide: any;
+    set: any;
+    show: any;
+    constructor(options: any) {
         options = options || {};
         options.className = (options.className ? options.className + " " : "") + "gpf-notification";
         // Call parent constructor
@@ -33,7 +39,7 @@ class NotificationExtended extends Notification {
      * @param {function} [cancelFn] do something when cancel button is clicked
      * @param {Number} [duration] duration in ms, if -1 never hide, default duration
      */
-    _show(type, what, cancelFn, duration) {
+    _show(type: any, what: any, cancelFn: any, duration: any) {
         // Contenu toujours affiché
         const divContent = document.createElement("div");
         divContent.className = "info-container";
@@ -90,15 +96,15 @@ class NotificationExtended extends Notification {
         notification.contentElement.appendChild(btnGroup);
     }
 
-    info(what, cancelFn, duration) {
+    info(what: any, cancelFn: any, duration: any) {
         this._show("info", what, cancelFn, duration || this.get("duration"));
     }
 
-    warning(what, cancelFn, duration) {
+    warning(what: any, cancelFn: any, duration: any) {
         this._show("warning", what, cancelFn, duration || this.get("duration"));
     }
 
-    error(what, cancelFn, duration) {
+    error(what: any, cancelFn: any, duration: any) {
         this._show("error", what, cancelFn, duration || this.get("duration"));
     }
 }

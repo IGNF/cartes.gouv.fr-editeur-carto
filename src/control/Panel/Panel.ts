@@ -50,7 +50,8 @@ const sizeClasses = {
  * Panneau d'action diverses.
  */
 class Panel extends Dialog {
-    constructor(options) {
+    navigation: any;
+    constructor(options: any) {
         super(options);
     }
 
@@ -86,7 +87,7 @@ class Panel extends Dialog {
      *
      * @param {Object} options Options de création du panneau
      */
-    _createDialog(options) {
+    _createDialog(options: any) {
         super._createDialog(options);
 
         this.navigation = this.querySelector(this.selectors.NAVIGATION);
@@ -101,7 +102,7 @@ class Panel extends Dialog {
         }
     }
 
-    setContent(options) {
+    setContent(options: any) {
         super.setContent(options);
 
         this.addNavItems(options.items);
@@ -109,7 +110,7 @@ class Panel extends Dialog {
         this.navigation.classList.toggle("fr-hidden", !this.hasNavItem());
     }
 
-    addNavItems(items) {
+    addNavItems(items: any) {
         if (Array.isArray(items)) {
             let navList = this.querySelector(this.selectors.NAVIGATION_LIST);
             navList.replaceChildren();
@@ -125,7 +126,7 @@ class Panel extends Dialog {
      *
      * @param {TabNavItem} item Lien à ajouter
      */
-    addNavItem(item) {
+    addNavItem(item: any) {
         const navList = this.querySelector(this.selectors.NAVIGATION_LIST);
         if (!item) {
             navList.replaceChildren();
@@ -169,7 +170,7 @@ class Panel extends Dialog {
 
         let self = this;
         let clickFn = this._clickItem;
-        button.addEventListener("click", (e) => clickFn(e, self));
+        button.addEventListener("click", (e: any) => clickFn(e, self));
 
         button.onTabOpen = item.onOpen;
         button.onTabClose = item.onClose;
@@ -198,7 +199,7 @@ class Panel extends Dialog {
      *
      * @param {HTMLButtonElement} link Bouton à activer
      */
-    setCurrentLink(link) {
+    setCurrentLink(link: any) {
         const currentLink = this.getCurrentLink();
         // Ne fait rien si l'élément est déjà ouvert
         if (currentLink === link) return;
@@ -239,13 +240,13 @@ class Panel extends Dialog {
      * @param {PointerEvent} e
      * @param {Panel} self
      */
-    _clickItem(e, self) {
+    _clickItem(e: any, self: any) {
         if (self.getCurrentLink() !== e.target) {
             self.setCurrentLink(e.target);
         }
     }
 
-    _tabHandler(e) {
+    _tabHandler(e: any) {
         const dialog = e.target;
         let tab = e.tab;
         let content = e.content;
@@ -268,7 +269,7 @@ class Panel extends Dialog {
         }
     }
 
-    setPosition(position) {
+    setPosition(position: any) {
         if (position === "left") {
             this.dialog.classList.add(panelClasses.PANEL_LEFT);
             this.dialog.classList.remove(panelClasses.PANEL_RIGHT);
@@ -284,7 +285,7 @@ class Panel extends Dialog {
      * Valeur acceptées : 'sm' ou 'md'.
      * Par défaut, n'ajoute aucune classe au panneau.
      */
-    setSize(size) {
+    setSize(size: any) {
         this.dialog.classList.remove(sizeClasses.SM, sizeClasses.MD);
         if (!size) return;
         if (size.toLowerCase() === "sm") {
@@ -306,7 +307,7 @@ class Panel extends Dialog {
      * @param {import('../../actions/Action').default} action
      * @override
      */
-    setAction(action) {
+    setAction(action: any) {
         super.setAction(action);
 
         if (action) this.setSize(action.size);

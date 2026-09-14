@@ -44,12 +44,12 @@ function beforeOpen() {
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+function onOpen(e: any) {
     dialog = e.target;
 
     // Add copy event to buttons
     let copyBtns = dialog.querySelectorAll("button.copy");
-    copyBtns.forEach((btn) => {
+    copyBtns.forEach((btn: any) => {
         btn.addEventListener("click", copy);
     });
     // Enter map info in the dialog
@@ -64,7 +64,7 @@ function onOpen(e) {
 </iframe>`;
 }
 
-function copy(e) {
+function copy(e: any) {
     let dataCopy = e.target.dataset.copy;
     let input = document.getElementById(dataCopy);
 

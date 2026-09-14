@@ -5,8 +5,8 @@
  * Documentation OpenAPI de l'API MaCarte
  * OpenAPI spec version: 1.0.0
  */
-import type { LimitParameter } from "../limitParameter";
-import type { OffsetParameter } from "../offsetParameter";
+import type { LimitParameter } from "../limitParameter.ts";
+import type { OffsetParameter } from "../offsetParameter.ts";
 
 export type GetUserMediasParams = {
     /**
