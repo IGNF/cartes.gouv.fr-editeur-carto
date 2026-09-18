@@ -2,13 +2,11 @@ import Action from "../actions/Action.js";
 import loginDialog from "../dialogs/loginDialog.js";
 import charte from "./charte.js";
 import "./nav-user.scss";
-import { setUser } from "./utils.js";
 import { getOidc, getUserInfo } from "../oidc.js";
-import serviceURL from "mcutils/api/serviceURL.js";
 import { api } from "../api/index";
 
 // Menu
-const account = charte.getHeaderMenu({
+export const account = charte.getHeaderMenu({
   icon: "fr-icon-account-fill",
   action: "connect",
   text: "Mon espace",
@@ -18,9 +16,7 @@ const account = charte.getHeaderMenu({
 account.addMenu([
   {
     type: "description",
-    label: "Nom utilisateur",
     action: "user",
-    info: "nobody@email.com",
   },
   {
     type: "link",
@@ -55,36 +51,17 @@ account.addMenu([
   const keycloakUtils = isKeycloak({ issuerUri: oidc.issuerUri })
     ? createKeycloakUtils({ issuerUri: oidc.issuerUri })
     : undefined;
+  
+  // Pas besoin de vérifier si l'utilisateur est connecté car toujours le cas
+  // avec oidc.withAutoLogin: true
 
-  if (oidc.isUserLoggedIn) {
-    // The user is logged in.
+  const decodedIdToken = oidc.getDecodedIdToken();
 
-    // Call when the user clicks logout.
-    // You can also redirect to a custom URL with:
-    // { redirectTo: "specific URL", url: "/bye" }
-    // oidc.logout({ redirectTo: "/" });
-
-    const decodedIdToken = oidc.getDecodedIdToken();
-
-    const {data, status} = await api.map.getMaps();
-
-    charte.setConnected(true);
-    charte.getHeaderMenu({ action: "connect" }).setMenu("user", {
-      label: decodedIdToken.preferred_username,
-      info: decodedIdToken.email,
-    });
-  }
+  charte.getHeaderMenu({ action: "connect" }).setMenu("user", {
+    label: decodedIdToken.preferred_username,
+    info: decodedIdToken.email,
+  });
 })();
-
-// Bouton de connexion
-charte.getHeaderButton({
-  type: "button",
-  label: "Se connecter",
-  icon: "fr-icon-account-fill fr-btn--icon-left fr-btn--tertiary-no-outline fr-hidden",
-  "data-action": "login",
-  "aria-controls": loginDialog.getId(),
-  "data-fr-opened": false,
-});
 
 // Attend que le DSFR soit prêt pour la duplication du header
 document.documentElement.addEventListener("dsfr.start", () => {
@@ -97,5 +74,3 @@ document.documentElement.addEventListener("dsfr.start", () => {
     });
   });
 });
-
-export default account;

@@ -1,14 +1,14 @@
 import Action from '../Action.js';
 import carte from '../../carte.js';
-import api from 'mcutils/api/api.js';
+import { api } from '../../api';
 import content from './saveMap.html?raw';
-import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj.js'
 import { addMessage } from '../../utils/message.js';
 import savingContent from './saving.html?raw';
 import Alert from '../../control/Alert/Alert.js';
 
 
+/** @type {Array<import('../../api/model/index.js').Theme>} */
 let GPFThemes = [];
 
 /**
@@ -17,6 +17,16 @@ let GPFThemes = [];
  */
 let dialog;
 
+const getPremium = async () => {
+  const { data: user, status } = await api.user.getMe();
+  if (status === 401) {
+    throw Error("Not connected");
+  } else {
+    const isEdugeo = !!(user.roles ?? []).filter(r => /EDUGEO/.test(r)).length;
+    return isEdugeo ? 'edugeo' : 'default';
+  }
+}
+
 /**
  * Fonction à l'ouverture du dialog.
  * 
@@ -24,7 +34,7 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+async function onOpen(e) {
   dialog = e.target
   const metadata = carte.get('atlas') || {};
   console.log('metadata', metadata);
@@ -33,19 +43,25 @@ function onOpen(e) {
   const inputTitle = dialog.querySelector('[data-field="title"]');
   inputTitle.value = metadata.title || '';
 
-  // Theme
-  const select = dialog.querySelector('[data-field="theme"]');
-  if (GPFThemes.length) {
-    addThemes(GPFThemes, select);
-    select.value = metadata.theme_id || '';
-  } else {
-    api.getThemes((themes) => {
-      GPFThemes = themes;
-      if (themes.length) {
-        addThemes(themes, select);
-        select.value = metadata.theme_id || '';
-      }
-    });
+  // // Theme
+  // const select = dialog.querySelector('[data-field="theme"]');
+  // if (GPFThemes.length) {
+  //   addThemes(GPFThemes, select);
+  //   select.value = metadata.theme_id || '';
+  // } else {
+
+  //   const { data: themes } = await api.theme.getThemes();
+  //   GPFThemes = themes;
+  //   if (themes.length) {
+  //     addThemes(themes, select);
+  //     select.value = metadata.theme_id || '';
+  //   }
+  // }
+
+  // Récupère les thèmes mais ne les proposes pas à l'utilisateur
+  if (!GPFThemes.length) {
+    const { data: themes } = await api.theme.getThemes();
+    GPFThemes = themes;
   }
 
   // Description
@@ -53,22 +69,22 @@ function onOpen(e) {
   inputDescription.value = metadata.description || ''; 
 }
 
-function addThemes(themes, select) {
-  Object.keys(themes).forEach(key => {
-    let { id, name } = themes[key]
-    let option = ol_ext_element.create('option', {
-      value: id,
-      html: name,
-    })
-    select.appendChild(option);
-  });
-}
+// function addThemes(themes, select) {
+//   Object.keys(themes).forEach(key => {
+//     let { id, name } = themes[key]
+//     let option = ol_ext_element.create('option', {
+//       value: id,
+//       html: name,
+//     })
+//     select.appendChild(option);
+//   });
+// }
 
 /** Save current Carte to server */
-function saveMap() {
+async function saveMap() {
   // Input values
   const inputName = dialog.querySelector('[data-field="title"]');
-  const select = dialog.querySelector('[data-field="theme"]');
+  // const select = dialog.querySelector('[data-field="theme"]');
   const inputDescription = dialog.querySelector('[data-field="description"]');
   // Check mandatory
   if (!inputName.value) {
@@ -76,17 +92,17 @@ function saveMap() {
     inputName.focus();
     return;
   }
-  if (!select.value) {
-    addMessage(select, 'Le thème est obligatoire...', { type: 'error' });
-    select.focus();
-    return;
-  }
+  // if (!select.value) {
+  //   addMessage(select, 'Le thème est obligatoire...', { type: 'error' });
+  //   select.focus();
+  //   return;
+  // }
 
   let metadata = carte.get('atlas');
   metadata.type = 'macarte';
   metadata.active = true;
   // Premium EDUGEO
-  metadata.premium = api.getPremium();
+  metadata.premium = await getPremium();
   metadata.bbox = transformExtent(
     carte.getMap().getView().calculateExtent(), 
     carte.getMap().getView().getProjection(), 
@@ -96,9 +112,9 @@ function saveMap() {
   if (metadata.title !== inputName.value) {
     toUpdate.title = inputName.value;
   }
-  if (metadata.theme_id !== select.value) {
-    toUpdate.theme_id = select.value;
-    toUpdate.theme = select.options[select.selectedIndex].text;
+  if (metadata.theme_id !== GPFThemes[0]) {
+    toUpdate.theme_id = GPFThemes[0].id;
+    toUpdate.theme = GPFThemes[0].name;
   }
   if (metadata.description !== inputDescription.value) {
     toUpdate.description = inputDescription.value;
@@ -106,8 +122,10 @@ function saveMap() {
   // New Data
   metadata.title = inputName.value;
   metadata.description = inputDescription.value;
-  metadata.theme_id = select.value;
-  metadata.theme = select.options[select.selectedIndex].text;
+  
+  // Test avec un thème autre pour ne pas inclure de thème
+  metadata.theme_id = GPFThemes[0].id;
+  metadata.theme = GPFThemes[0].name;
   metadata.img_url = '';
   metadata.organization_id = '';
   metadata.share = 'public';
@@ -116,10 +134,15 @@ function saveMap() {
   const data = carte.write();
 
   // Post the map
-  const postMap = function() {
+  const postMap = async function() {
     // Do something when post
+    /**
+     * 
+     * @param {import("../../api/map/map.js").postMapFileByEditIdResponse|import("../../api/map/map.js").postMapResponse} response 
+     */
     function onpost(response) {
-      if (response.status == 401) {
+      const{ status, data: responseData } = response;
+      if (status === 401) {
         // Connect and iterate
         console.error('Unauthorized, please login to save the map');
         Alert.addAlert({
@@ -128,7 +151,18 @@ function saveMap() {
           description: "Vous devez être connecté·e pour enregistrer une carte.",
           size: 'sm',
         }, true);
-      } else if (response.status == 418) {
+      }
+      // Pas encore implémenté
+      // else if (status === 418) {
+      //   console.error('Map size limit exceeded');
+      //   Alert.addAlert({
+      //     type: Alert.TYPES.ERROR,
+      //     id: "alert--save-size-limit-exceeded",
+      //     description: "La taille de la carte dépasse la limite autorisée par le serveur.",
+      //     size: 'sm',
+      //   }, true);
+      // }
+      else if (status === 400 || status === 404) {
         console.error('Map size limit exceeded');
         Alert.addAlert({
           type: Alert.TYPES.ERROR,
@@ -136,22 +170,14 @@ function saveMap() {
           description: "La taille de la carte dépasse la limite autorisée par le serveur.",
           size: 'sm',
         }, true);
-      } else if (response.status) {
-        console.error('Error saving map', response);
-        Alert.addAlert({
-          type: Alert.TYPES.ERROR,
-          id: "alert--save-saving-failed",
-          description: "L'enregistrement a échoué. Veuillez essayer à nouveau.",
-          size: 'sm',
-        }, true);
-      } else {
+      } else if (status === 201) {
         // Update id
-        if (response.view_id) {
-          carte.set('id', response.view_id);
+        if (responseData.view_id) {
+          carte.set('id', responseData.view_id);
         }
         // Get save info
         if (!metadata.edit_id) {
-          carte.set('atlas', response);
+          carte.set('atlas', responseData);
         }
         Alert.addAlert({
           type: Alert.TYPES.SUCCESS,
@@ -164,21 +190,22 @@ function saveMap() {
       // Close dialog
       dialog.close();
     }
-    function post() {
+    async function post() {
       console.log('Posting map...', metadata, data);
       dialog.setDialogContent(savingContent);
       dialog.setButtons();
+      // Contenu de la carte au format .carte, envoyé en tant que fichier
+      const file = new Blob([JSON.stringify(data)], { type: 'application/json' });
       // Post or update
       if (metadata.edit_id) {
         if (Object.keys(toUpdate).length) {
-          api.updateMap(metadata.edit_id, toUpdate, () => {
-            api.updateMapFile(metadata.edit_id, data, onpost);
-          });
-        } else {
-          api.updateMapFile(metadata.edit_id, data, onpost);
+          await api.map.patchMapByEditId(metadata.edit_id, toUpdate);
         }
+        const response = await api.map.postMapFileByEditId(metadata.edit_id, { file });
+        onpost(response);
       } else {
-        api.postMap(metadata, data, onpost);
+        const response = await api.map.postMap({ carte: metadata, file });
+        onpost(response);
       }
     }
     // Test size

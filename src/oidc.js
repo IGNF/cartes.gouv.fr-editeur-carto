@@ -2,16 +2,16 @@ import { createOidc } from "oidc-spa/core";
 import { z } from "zod";
 
 console.log(import.meta.env)
-console.log(`${import.meta.env.VITE_IAM_URL}/realms/${import.meta.env.VITE_IAM_REALM}`,
-  import.meta.env.VITE_IAM_CLIENT_ID);
+console.log(`${import.meta.env.IAM_URL}/realms/${import.meta.env.IAM_REALM}`,
+  import.meta.env.IAM_CLIENT_ID);
 
 const prOidc = createOidc({
   // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
   
   implementation: "real",
-  issuerUri: `${import.meta.env.VITE_IAM_URL}/realms/${import.meta.env.VITE_IAM_REALM}`,
+  issuerUri: `${import.meta.env.IAM_URL}/realms/${import.meta.env.IAM_REALM}`,
   // issuerUri: "http://localhost:8000",
-  clientId: import.meta.env.VITE_IAM_CLIENT_ID,
+  clientId: import.meta.env.IAM_CLIENT_ID,
 
   debugLogs: true,
 
@@ -39,7 +39,7 @@ if( prOidc instanceof Error ){
     alert("Our auth is down, sorry :(");
     
     // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
-    await Promise<never>(()=>{});
+    await new Promise(() => {});
 }
 
 export async function getOidc(){

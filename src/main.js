@@ -9,7 +9,6 @@ import carte from './carte.js'
 import './utils/storyToMapChanges.js'
 import './utils/dirtyMap.js';
 
-import api from './mcutils/api.js'
 import introDialog from './dialogs/introDialog.js'
 import connectAction from './actions/connect/connectAction.js'
 import connectActionTest from './actions/alreadyConnected/connectAction.js'
@@ -38,7 +37,8 @@ introDialog.setAction(connectAction);
 introDialog.open();
 
 /* DEBUG */
-window.story = story;
-window.carte = carte;
-window.api = api;
+if (import.meta.env.DEV) {
+  window.story = story;
+  window.carte = carte;
+}
 /**/

@@ -6,6 +6,9 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly API_URL: string
+  readonly IAM_URL: string
+  readonly IAM_REALM: string
+  readonly IAM_CLIENT_ID: string
   // more env variables...
 }
 

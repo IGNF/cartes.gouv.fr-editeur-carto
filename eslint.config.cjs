@@ -1,5 +1,3 @@
-const viteConfig = require("./vite.config.js");
-
 const {
     defineConfig,
     globalIgnores,
@@ -40,15 +38,15 @@ module.exports = defineConfig([
 
         settings: {
             "import/resolver": {
-                vite: {
-                    viteConfig,
+                node: {
+                    extensions: [".js", ".jsx", ".ts", ".tsx"],
                 },
             },
         },
 
         "rules": {
             // Extension des fichiers lors des imports
-            "import/extensions": ["error", "always", {
+            "import/extensions": ["error", "ignorePackages", {
                 js: "always",
                 jsx: "always",
                 ts: "never",
@@ -58,6 +56,18 @@ module.exports = defineConfig([
             // Vérifie que l'import existe"
             "import/no-unresolved": ["error", {
                 ignore: ["\\?raw$", "\\?url$"],
+            }],
+
+            // Vérifie que les symboles importés existent réellement
+            "import/named": "error",
+            "import/default": "error",
+            "import/namespace": "error",
+
+            // Variables / imports manquants ou inutilisés
+            "no-undef": "error",
+            "no-unused-vars": ["warn", {
+                args: "none",
+                ignoreRestSiblings: true,
             }],
 
             /*
@@ -74,6 +84,7 @@ module.exports = defineConfig([
         "**/public/*",
         "**/docs/*",
         // Code TypeScript généré par Orval (non analysable par le parseur JS)
-        "src/api/**"
+        "src/api/**",
+        "**/*.d.ts"
     ])
 ]);

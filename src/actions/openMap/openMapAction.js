@@ -1,10 +1,9 @@
 import Action from '../Action.js';
 import content from './openMap.html?raw';
-import connectContent from './askConnect.html?raw';
 import loadingContent from './loading.html?raw';
 import loginDialog from '../../dialogs/loginDialog.js';
 import cardTemplate from './cardMapTemplate.html?raw';
-import api from 'mcutils/api/api.js';
+import { api } from '../../api';
 import carte from '../../carte.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import './openMap.scss';
@@ -28,23 +27,6 @@ const buttons = [
   }
 ];
 
-const buttonConnect = [
-  {
-    label: 'Se connecter',
-    kind: 1,
-    close: true,
-    'data-action': 'login',
-    'aria-controls': loginDialog.getId(),
-    'data-fr-opened': false,
-    callback: (e) => {
-      Action.open(e);
-      loginDialog.once(loginDialog.selectors.CLOSE_EVENT, () => {
-        Action.open(modal, 'open-map');
-      })
-    }
-  }
-];
-
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action 
@@ -58,17 +40,24 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+async function onOpen(e) {
   dialog = e.target;
 
-  const load = () => {
-    dialog.setDialogContent(loadingContent);
-    dialog.setButtons();
-    if (api.isConnected()) {
-      api.getMaps({}, (e) => getUserMaps(e, dialog));
+
+  // Nombre de fois max où l'on fait des appels à l'API.
+  const maxRefetchCount = 4;
+  let refetchCount = 0;
+  const load = async () => {
+    const { data, status } = await api.map.getMaps({ context: "profile", limit: "all" });
+    if (refetchCount >= maxRefetchCount) {
+      refetchCount = 0;
+      dialog.setDialogContent('<p class="fr-message fr-message--error">Une erreur est survenue.</p>');
+    } else if (status !== 200 && status !== 206) {
+      refetchCount++;
+      load();
     } else {
-      dialog.setDialogContent(connectContent);
-      dialog.setButtons(buttonConnect);
+      refetchCount = 0;
+      getUserMaps(data);
     }
   }
 
@@ -83,88 +72,90 @@ function onOpen(e) {
       label: 'Continuer',
       kind: 1,
       close: false,
-      callback: load
+      callback: () => {
+        dialog.setDialogContent(loadingContent);
+        dialog.setButtons();
+        load();
+      }
     }]);
   } else {
+    dialog.setDialogContent(loadingContent);
+    dialog.setButtons();
     load();
   }
 }
 
 /**
  * 
- * @param {*} e event renvoyé par l'API getMaps
+ * @param {import('../../api/model').MapResearch} data event renvoyé par l'API getMaps
  */
-function getUserMaps(e) {
-  const maps = e.maps;
+function getUserMaps(data) {
+  const { maps } = data;
+  if (!maps.length) {
+    dialog.setDialogContent("<p>Vous n'avez pas de cartes enregistrées</p>");
+    return;
+  }
 
-  if (e.error) {
-    if (e.status === 401) {
-      dialog.setDialogContent('<p class="fr-message fr-message--error">Vous devez être connecté pour accéder à vos cartes</p>')
-    } else {
-      dialog.setDialogContent('<p class="fr-message fr-message--error">Impossible de charger les cartes</p>')
-    }
-  } else if (maps && maps.length) {
-    const content = ol_ext_element.create('div', {
-      className: 'map-list'
-    })
+  const content = ol_ext_element.create('div', {
+    className: 'map-list'
+  })
 
-    /*
-    TODO: ajouter un champ de recherche et
-     outil de filtrage
-    */
-    // Filter liste des cartes en fonction du champ de recherche
-    const filtermap = function () {
-      content.querySelectorAll('.ol-map-card').forEach(card => {
-        const title = card.querySelector('.ol-map-card__title').textContent;
-        const rex = new RegExp(filterInput.value, 'i');
-        if (rex.test(title)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    let tout
-    const filterInput = ol_ext_element.create('input', {
-      className: 'fr-input',
-      id: 'map-filter',
-      placeholder: 'Rechercher',
-      parent: content,
-      on: {
-        // Filter on keyup
-        keyup: () => {
-          if (tout) clearTimeout(tout);
-          tout = setTimeout(filtermap, 300);
-        }
-      }
-    })
-    // Icône de recherche dans le champ de recherche
-    ol_ext_element.create('span', {
-      className: 'fr-icon-search-line fr-icon--sm',
-      "aria-hidden": true,
-      parent: content,
-    })
-
-    maps.forEach(map => {
-      if (map.type === 'macarte') {
-        let card = createMapCard({
-          title: map.title,
-          timestamp: map.updated_at || map.created_at,
-          img: map.img_url,
-          id: map.view_id,
-        })
-
-        content.appendChild(card)
+  /*
+  TODO: ajouter un champ de recherche et
+    outil de filtrage
+  */
+  // Filter liste des cartes en fonction du champ de recherche
+  const filtermap = function () {
+    content.querySelectorAll('.ol-map-card').forEach((/** @type {Element} */ card) => {
+      const title = card.querySelector('.ol-map-card__title').textContent;
+      const rex = new RegExp(filterInput.value, 'i');
+      if (rex.test(title)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
       }
     });
-
-    dialog.setDialogContent(content)
-
-    dialog.setButtons(buttons);
-  } else {
-    dialog.setDialogContent("<p>Vous n'avez pas de cartes enregistrées</p>")
   }
+
+  let tout;
+  const filterInput = ol_ext_element.create('input', {
+    className: 'fr-input',
+    id: 'map-filter',
+    placeholder: 'Rechercher',
+    parent: content,
+    on: {
+      // Filter on keyup
+      keyup: () => {
+        if (tout) clearTimeout(tout);
+        tout = setTimeout(filtermap, 300);
+      }
+    }
+  })
+  // Icône de recherche dans le champ de recherche
+  ol_ext_element.create('span', {
+    className: 'fr-icon-search-line fr-icon--sm',
+    "aria-hidden": true,
+    parent: content,
+  })
+
+  console.log(maps);
+
+  maps.forEach(map => {
+    if (map.type === 'macarte') {
+      let card = createMapCard({
+        title: map.title,
+        timestamp: map.updated_at || map.created_at,
+        img: map.img_url,
+        id: map.view_id,
+      })
+
+      content.appendChild(card)
+    }
+  });
+
+  dialog.setDialogContent(content)
+
+  dialog.setButtons(buttons);
 }
 
 /**
@@ -231,19 +222,19 @@ function selectCard(e) {
   }
 }
 
-
-function openMap() {
+async function openMap() {
   let card = dialog.querySelector('[aria-current="true"]');
 
   let mapId = card.dataset.mapId;
 
-  api.getMap(mapId, (e) => {
+  const { data, status } = await api.map.getMapByViewId(mapId);
+  if (status === 200) {
     carte.getMap().getLayers().clear();
     setTimeout(() => {
-      carte.load(e);
+      carte.load(data);
       dialog.close()
     }, 100)
-  })
+  }
 }
 
 const openMapAction = new Action({
