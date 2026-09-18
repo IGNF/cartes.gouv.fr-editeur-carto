@@ -1,10 +1,11 @@
 import Action from "../actions/Action.js";
 import loginDialog from "../dialogs/loginDialog.js";
-import api from "mcutils/api/api.js";
 import charte from "./charte.js";
 import "./nav-user.scss";
 import { setUser } from "./utils.js";
 import { getOidc, getUserInfo } from "../oidc.js";
+import serviceURL from "mcutils/api/serviceURL.js";
+import { api } from "../api/index";
 
 // Menu
 const account = charte.getHeaderMenu({
@@ -65,7 +66,7 @@ account.addMenu([
 
     const decodedIdToken = oidc.getDecodedIdToken();
 
-    console.log(decodedIdToken);
+    const {data, status} = await api.map.getMaps();
 
     charte.setConnected(true);
     charte.getHeaderMenu({ action: "connect" }).setMenu("user", {
@@ -95,14 +96,6 @@ document.documentElement.addEventListener("dsfr.start", () => {
       oidc.logout({ redirectTo: "specific url", url: "/" });
     });
   });
-
-  // const header = document.querySelector("header");
-  // const loginBtn = header.querySelectorAll('button[data-action="login"]');
-  // loginBtn.forEach((btn) => {
-  //   btn.addEventListener("click", Action.open);
-  // });
-
-  // api.whoami(setUser);
 });
 
 export default account;

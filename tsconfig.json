@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "lib": ["es2022", "dom", "dom.iterable"],
+        "types": ["vite/client"],
+
+        // Projet majoritairement en JS : les .js sont résolus mais pas
+        // type-checkés (ajouter `// @ts-check` en tête d'un fichier pour
+        // activer la vérification au cas par cas).
+        "allowJs": true,
+        "checkJs": false,
+
+        "noEmit": true,
+        "strict": false,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "maxNodeModuleJsDepth": 0
+    },
+    "include": ["src/**/*.js", "src/**/*.ts", "tests/**/*.js", "tests/**/*.ts", "*.js", "*.ts"],
+    "exclude": ["node_modules", "docs", "public", "dist"]
+}

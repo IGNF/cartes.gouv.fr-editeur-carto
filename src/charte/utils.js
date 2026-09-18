@@ -1,10 +1,12 @@
 import charte from './charte.js';
 
+let bearer = "";
+
 /**
  * Set the user from an API event
  * @param {Event} e 
  */
-function setUser(e) {
+export function setUser(e) {
   let error = e.error
   let type = e.type;
   if (e && !error && type !== 'logout') {
@@ -24,8 +26,22 @@ function setUser(e) {
  * 
  * @returns {boolean}
  */
-function isInertAvailable() {
+export function isInertAvailable() {
   return "inert" in HTMLElement.prototype;
 }
 
-export { setUser, isInertAvailable }
+/**
+ * Permet de définir le bearer utilisé par l'appli
+ * @param {string} bearer Bearer à utiliser dans les requêtes
+ */
+export function setBearer(b) {
+  bearer = b;
+}
+
+/**
+ * Retourne le bearer utilisé dans les requêtes
+ * @returns {string} Bearer à utiliser dans les requêtes
+ */
+export function getBearer() {
+  return bearer;
+}

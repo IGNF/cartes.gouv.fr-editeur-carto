@@ -51,6 +51,8 @@ module.exports = defineConfig([
             "import/extensions": ["error", "always", {
                 js: "always",
                 jsx: "always",
+                ts: "never",
+                tsx: "never",
             }],
 
             // Vérifie que l'import existe"
@@ -70,6 +72,8 @@ module.exports = defineConfig([
         "**/www/*",
         "**/todo/*",
         "**/public/*",
-        "**/docs/*"
+        "**/docs/*",
+        // Code TypeScript généré par Orval (non analysable par le parseur JS)
+        "src/api/**"
     ])
 ]);
