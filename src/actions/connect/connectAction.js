@@ -2,7 +2,6 @@ import Action from '../../actions/Action.js';
 import content from './connect.html?raw';
 import './connect.scss';
 
-import introDialog from '../../dialogs/introDialog.js';
 import { isInertAvailable } from '../../charte/utils.js';
 import carte from '../../carte.js';
 import charte from '../../charte/charte.js';

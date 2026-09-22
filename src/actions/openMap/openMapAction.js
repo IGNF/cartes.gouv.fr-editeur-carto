@@ -1,14 +1,12 @@
 import Action from '../Action.js';
 import content from './openMap.html?raw';
 import loadingContent from './loading.html?raw';
-import loginDialog from '../../dialogs/loginDialog.js';
 import cardTemplate from './cardMapTemplate.html?raw';
 import { api } from '../../api';
 import carte from '../../carte.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import './openMap.scss';
 import htmlToNode from '../../utils/htmlToNode.js';
-import modal from '../../dialogs/modal.js';
 
 const defaultImagePath = 'img/alt-image.svg';
 

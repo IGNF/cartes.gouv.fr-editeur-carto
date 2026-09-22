@@ -16,7 +16,6 @@ import VectorSource from 'ol/source/Vector.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
 
 // Pour que les tests fonctionnent
-// eslint-disable-next-line import/namespace -- interop CJS/ESM, "default" n'est pas toujours présent
 const geoimport = geoimportRaw.default ?? geoimportRaw;
 
 /** Liste des formats acceptés */

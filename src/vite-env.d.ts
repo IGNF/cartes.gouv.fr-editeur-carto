@@ -15,3 +15,15 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+// Pour éviter les erreurs typescripts
+interface DashboardEditeurEnv {
+    readonly iamUrl?: string;
+    readonly iamRealm?: string;
+    readonly iamClientId?: string;
+    readonly apiUrl?: string;
+}
+
+interface Window {
+    readonly __DASHBOARD_EDITEUR_ENV?: DashboardEditeurEnv;
+}

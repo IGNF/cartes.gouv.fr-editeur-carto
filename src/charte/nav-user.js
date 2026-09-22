@@ -1,9 +1,6 @@
-import Action from "../actions/Action.js";
-import loginDialog from "../dialogs/loginDialog.js";
 import charte from "./charte.js";
 import "./nav-user.scss";
-import { getOidc, getUserInfo } from "../oidc.js";
-import { api } from "../api/index";
+import { getOidc } from "../oidc";
 
 // Menu
 export const account = charte.getHeaderMenu({
@@ -44,16 +41,6 @@ account.addMenu([
 
 (async () => {
   const oidc = await getOidc();
-
-  // oidc-spa exports Keycloak-specific utilities:
-  const { createKeycloakUtils, isKeycloak } = await import("oidc-spa/keycloak");
-
-  const keycloakUtils = isKeycloak({ issuerUri: oidc.issuerUri })
-    ? createKeycloakUtils({ issuerUri: oidc.issuerUri })
-    : undefined;
-  
-  // Pas besoin de vérifier si l'utilisateur est connecté car toujours le cas
-  // avec oidc.withAutoLogin: true
 
   const decodedIdToken = oidc.getDecodedIdToken();
 

@@ -3,7 +3,7 @@ import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
 
-import "./oidc.js"
+import "./oidc"
 import story from './story.js'
 import carte from './carte.js'
 import './utils/storyToMapChanges.js'
@@ -11,7 +11,6 @@ import './utils/dirtyMap.js';
 
 import introDialog from './dialogs/introDialog.js'
 import connectAction from './actions/connect/connectAction.js'
-import connectActionTest from './actions/alreadyConnected/connectAction.js'
 
 import switcher from './mcutils/layerSwitcher.js';
 import search from './mcutils/search.js';

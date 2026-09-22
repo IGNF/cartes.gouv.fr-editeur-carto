@@ -6,7 +6,7 @@ import StyleObj from '../LayerStyle/StyleObj.js';
 import element from 'ol-ext/util/element.js';
 
 import "./ExtendedFlatStyleForm.scss";
-import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
+// import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
 
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
@@ -58,18 +58,18 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       footer.appendChild(btn);
     }
     // TODO selection de style depuis la bibliothèque
-    const onselect = (symbol) => {
-      const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-      this.setFlatStyle(style);
-      this.styleObj.setFlatStyle(style);
-      this.dispatchEvent({ 
-        type: "style",
-        ignStyle: symbol.getIgnStyle(),
-        flatStyle: style,
-        typeGeom: symbol.getType()
-      });
-      this.updatePreview();
-    }
+    // const onselect = (symbol) => {
+    //   const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+    //   this.setFlatStyle(style);
+    //   this.styleObj.setFlatStyle(style);
+    //   this.dispatchEvent({ 
+    //     type: "style",
+    //     ignStyle: symbol.getIgnStyle(),
+    //     flatStyle: style,
+    //     typeGeom: symbol.getType()
+    //   });
+    //   this.updatePreview();
+    // }
     if (!options.noSymbolLib) {
       // Bouton pour ouvrir la bibliothèque de symboles
       element.create("button", {
