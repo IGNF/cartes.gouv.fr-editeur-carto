@@ -1,20 +1,24 @@
 import { defineConfig } from "vite";
-import path from "path";
 import { oidcSpa } from "oidc-spa/vite-plugin";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ command }) => ({
-  base: "./",
-
   build: {
     outDir: "./docs",
     emptyOutDir: true,
   },
 
-  envPrefix: ["VITE_", "API_URL", "APP_ENV", "IAM_"],
+  envPrefix: ["VITE_", "API_URL", "VIEWER_URL", "REDIRECT_URI", "APP_ENV", "IAM_"],
 
-  plugins: [
-    oidcSpa(),
-  ],
+  plugins: [oidcSpa()],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
+  },
 
   test: {
     globals: true,

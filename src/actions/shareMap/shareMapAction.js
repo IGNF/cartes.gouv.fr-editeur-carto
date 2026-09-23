@@ -1,10 +1,10 @@
 import Action from '../Action.js';
 import carte from '../../carte.js';
-import config from 'mcutils/config/config.js';
 import Alert from '../../control/Alert/Alert.js';
 
 import content from './shareMap.html?raw';
 import './shareMap.scss';
+import { getViewURL } from '@/utils/urls.js';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -50,8 +50,9 @@ function onOpen(e) {
     btn.addEventListener('click', copy)
   });
   // Enter map info in the dialog
-  const url = new URL(config.viewer.replace("$ID", carte.get("id")), window.location.href);
+  // const url = new URL(config.viewer.replace("$ID", carte.get("id")), window.location.href);
   // const url = config.server + 'carte/' + carte.get('id') + '/' + carte.getTitle();
+  const url = getViewURL
   dialog.querySelector('#share-link').value = url;
   dialog.querySelector('#share-iframe').value = `<iframe
   width="600" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"

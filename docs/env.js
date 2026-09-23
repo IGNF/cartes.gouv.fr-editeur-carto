@@ -7,6 +7,8 @@
         iamRealm: undefined,
         iamClientId: undefined,
         apiUrl: undefined,
+        viewerUrl: undefined,
+        redirectUri: undefined,
     };
     // @ts-ignore
     Object.freeze(window.__DASHBOARD_EDITEUR_ENV);

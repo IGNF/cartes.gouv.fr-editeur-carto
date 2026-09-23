@@ -48,11 +48,6 @@ export default defineConfig([
                 tsx: "never",
             }],
 
-            // Vérifie que l'import existe"
-            "import/no-unresolved": ["error", {
-                ignore: ["\\?raw$", "\\?url$"],
-            }],
-
             // Vérifie que les symboles importés existent réellement
             "import/named": "error",
             "import/default": "error",

@@ -6,6 +6,8 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly API_URL: string
+  readonly VIEWER_URL: string
+  readonly REDIRECT_URI: string
   readonly IAM_URL: string
   readonly IAM_REALM: string
   readonly IAM_CLIENT_ID: string
@@ -22,6 +24,8 @@ interface DashboardEditeurEnv {
     readonly iamRealm?: string;
     readonly iamClientId?: string;
     readonly apiUrl?: string;
+    readonly viewerUrl?: string;
+    readonly redirectUri?: string;
 }
 
 interface Window {

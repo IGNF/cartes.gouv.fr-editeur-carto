@@ -7,7 +7,6 @@ import StoryMap from 'mcutils/StoryMap.js';
 import Carte from 'mcutils/cgouv/Carte.js';
 
 import charte from './charte/charte.js';
-import config from 'mcutils/config/config.js';
 
 // Extensions géoplateforme
 import 'ol-ext/dist/ol-ext.css'
@@ -17,7 +16,9 @@ import { setLogo, setTitle } from './utils/story.js';
 
 import Gp from "geoportal-access-lib/dist/GpServices-src.js"
 
-loadFonts()
+loadFonts();
+
+const customConfigFile = "https://raw.githubusercontent.com/IGNF/geoportal-configuration/new-url/dist/fullConfig.json"
 
 const story = new StoryMap({
   target: charte.getElement('map'),
@@ -28,7 +29,7 @@ const carte = new Carte({});
 
 // Connecte aux services géoportail
 Gp.Services.getConfig({
-  customConfigFile: config.customConfigFile,
+  customConfigFile: customConfigFile,
   timeOut: 20000,
   onSuccess: () => carte.read(import.meta.env.BASE_URL + 'carte/template.carte'),
   onFailure: (e) => {
