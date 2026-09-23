@@ -5,5 +5,5 @@ import { viewerURL } from "../env"
  * @param id Id de la carte à voir
  */
 export const getViewURL = (id: string): string => {
-  return `${viewerURL}/id?=${id}`;
+  return `${viewerURL}${viewerURL.endsWith("/") ? "" : "/"}?map=${id}`;
 }
