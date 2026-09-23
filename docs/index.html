@@ -14,8 +14,14 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <script>
+    if (window.location.pathname === "/creer-une-carte") {
+      window.history.replaceState(null, "", `/creer-une-carte/${window.location.search}${window.location.hash}`);
+    }
+  </script>
+
   <!-- Chargement du thème -->
-  <script type="module" crossorigin src="/creer-une-carte/assets/index-oHoKjkkB.js"></script>
+  <script type="module" crossorigin src="/creer-une-carte/assets/index-C8UZCUUi.js"></script>
 </head>
 
 <body>

@@ -2,6 +2,10 @@ import { createOidc } from "oidc-spa/core";
 import { z } from "zod";
 import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
 
+console.info("import.meta.env.PROD : ", import.meta.env.PROD)
+console.info("redirectUri : ", redirectUri)
+console.info("import.meta.env.BASE_URL : ", import.meta.env.BASE_URL)
+
 const prOidc = createOidc({
   // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
 
