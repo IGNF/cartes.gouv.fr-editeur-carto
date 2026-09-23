@@ -9,6 +9,7 @@ const prOidc = createOidc({
   // issuerUri: "http://localhost:8000",
   clientId: iamClientId,
   // Permet de gérer la redirection dans le cas de l'appli déployé
+  // (sinon renvoi sur "/", donc sur l'entrée carto)
   BASE_URL: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
 
   debugLogs: true,

@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ command }) => ({
+  base: process.env.BASE_URL || "/creer-une-carte/",
   build: {
     outDir: "./docs",
     emptyOutDir: true,
