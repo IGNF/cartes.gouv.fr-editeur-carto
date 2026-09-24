@@ -4,4 +4,35 @@
   @include mix.respond-from("sm") {
     top : 4rem;
   }
+
+  .GPF-dialog__content {
+    background: var(--background-contrast-grey);
+    padding: 0.75rem;
+
+    .style-form__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .style-form-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 0.75rem;
+      }
+    }
+
+    [id^=tabNavContent] {
+      background: var(--background-default-grey);
+      padding: 0.75rem;
+      
+      .style-form > span.fr-hint-text {
+        margin: 0 -0.75rem;
+        padding: 0.5rem 0.75rem 0;
+        width: calc(100% + 1.5rem);
+        border-top: 1px solid var(--border-default-grey);
+      }
+    }
+  }
 }

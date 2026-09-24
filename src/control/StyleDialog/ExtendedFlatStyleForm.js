@@ -31,6 +31,18 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     const container = this.header = document.createElement("div");
     container.className = "style-form__header";
 
+    const titleElem = document.createElement('div');
+    titleElem.className = 'style-form-title';
+    container.appendChild(titleElem);
+    // Title
+    const span = document.createElement('span');
+    span.className = 'fr-hint-text';
+    titleElem.appendChild(span);
+    // Boutons du titre
+    const btnContainer = document.createElement('div');
+    btnContainer.className = 'btn-container';
+    titleElem.appendChild(btnContainer);
+
     const select = this.selectGeomType = this._addSelectGeomType(options.type);
     container.appendChild(select);
     this.showSelectGeomType(options.selectGeomType);
@@ -47,15 +59,9 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     })
 
     // Restaure style
-    const footer = this.footer = document.createElement("div");
-    footer.className = "style-form__footer";
     if (options.hasreset) {
-      const btn = document.createElement("button");
-      btn.innerHTML = "Revenir au style par défaut";
-      btn.className = "fr-btn reset fr-icon-corner-up-left-fill fr-btn--icon-left fr-btn--tertiary";
-      btn.type = "button";
+      const btn = this.addTitleButton('Revenir au style par défaut', 'fr-icon-arrow-go-back-line');
       btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
-      footer.appendChild(btn);
     }
     // TODO selection de style depuis la bibliothèque
     const onselect = (symbol) => {
@@ -71,35 +77,23 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       this.updatePreview();
     }
     if (!options.noSymbolLib) {
-      // Bouton pour ouvrir la bibliothèque de symboles
-      element.create("button", {
-        html: "Depuis la bibliothèque",
-        type: "button",
-        className: "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary",
-        click: () =>  {
-          this.dispatchEvent({
-            type: "lib:getsymbol",
-            styleObj: this.styleObj,
-          });
-        },
-        parent: footer
-      });
       // Bouton pour ajouter le style actuel à la bibliothèque
-      element.create("button", {
-        html: "Ajouter à la bibliothèque",
-        type: "button",
-        className: "addToSymbolLib fr-btn reset fr-icon-add-circle-line fr-btn--icon-left fr-btn--tertiary",
-        click: () =>  {
-          this.dispatchEvent({
-            type: "lib:addsymbol",
-            styleObj: this.styleObj,
-          });
-        },
-        parent: footer
+      const addToSymbolLib = this.addTitleButton('Ajouter à la bibliothèque', 'addToSymbolLib fr-icon-add-line');
+      addToSymbolLib.addEventListener("click", () =>  {
+        this.dispatchEvent({
+          type: "lib:addsymbol",
+          styleObj: this.styleObj,
+        });
       });
-    }
-    if (footer.childNodes.length > 0) {
-      this.getContent().appendChild(footer);
+
+      // Bouton pour ouvrir la bibliothèque de symboles
+      const fromSymbolLib = this.addTitleButton('Depuis la bibliothèque', 'fromSymbolLib fr-icon-book-2-line');
+      fromSymbolLib.addEventListener("click", () =>  {
+        this.dispatchEvent({
+          type: "lib:getsymbol",
+          styleObj: this.styleObj,
+        });
+      });
     }
 
     // Alerte pour le style au calque
@@ -113,6 +107,32 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Type du formulaire
     this.setGeom(options.type);
     this._initEvents(options);
+  }
+
+  /**
+   * Ajoute un titre dans le formulaire.
+   * @param {string} title 
+   */
+  setTitle(title) {
+    const titleElem = this.header.querySelector('.style-form-title span');
+    titleElem.innerText = title;
+  }
+
+  /**
+   * Ajoute un bouton dans le titre du formulaire.
+   * @param {string} title 
+   * @param {string} icon 
+   * @returns 
+   */
+  addTitleButton(title, icon) {
+    const btnContainer = this.header.querySelector('.btn-container');
+    if (btnContainer) {
+      const btn = document.createElement('button');
+      btn.className = (icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
+      btn.title = title;
+      btnContainer.appendChild(btn);
+      return btn;
+    }
   }
 
   /** Get form footer

@@ -59,11 +59,13 @@ const styleDialog = new StyleDialog({
       label: "Style",
       title: "Configuration du style"
     },
+    /*
     {
       form: labelForm,
       label: "Texte",
       title: "Configuration du texte"
     },
+    */
     {
       form: popupForm,
       label: "Infobulle",

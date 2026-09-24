@@ -76,9 +76,63 @@ class StyleForm extends ExtendedFlatStyleForm {
    * @protected
    */
   _addCustomInputs(options) {
+    this.setTitle('Propriétés');
+    this._addLabelInfo('Symbole');
     this._addPointInputs(options);
     this._addLineStringInputs(options);
     this._addPolygonInputs(options);
+    // label
+    this._addLabelInfo('Label');
+    this._addLabelInputs();
+    if (options.generalType === false) {
+      this._addLabelInputs("Point");
+      this._addLabelInputs("LineString");
+      this._addLabelInputs("Polygon");
+    }
+  }
+
+  /**
+   * Ajoute un titre dans le formulaire.
+   * @param {string} title 
+   * /
+  _addTitle(title) {
+    const titleElem = this.header.querySelector('.style-form-title');
+    const span = document.createElement('span');
+    span.innerText = title;
+    span.className = 'fr-hint-text';
+    titleElem.appendChild(span);
+    // Boutons du titre
+    const btnContainer = document.createElement('div');
+    btnContainer.className = 'btn-container';
+    titleElem.appendChild(btnContainer);
+  }
+
+  /**
+   * Ajoute un bouton dans le titre du formulaire.
+   * @param {string} title 
+   * @param {string} icon 
+   * @returns 
+   * /
+  addTitleButton(title, icon) {
+    const btnContainer = this.header.querySelector('.btn-container');
+    if (btnContainer) {
+      const btn = document.createElement('button');
+      btn.className = (icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
+      btn.title = title;
+      btnContainer.appendChild(btn);
+      return btn;
+    }
+  }
+
+  /**
+   * Méthode ajoutant un label d'information dans le formulaire.
+   * @private
+   */
+  _addLabelInfo(title) {
+    const span = document.createElement('span');
+    span.innerText = title;
+    span.className = 'fr-hint-text';
+    this.element.appendChild(span);
   }
 
   /**
@@ -285,6 +339,67 @@ class StyleForm extends ExtendedFlatStyleForm {
         inputFillSize.input.disabled = true;
       }
     });
+  }
+
+    /**
+   * Méthode ajoutant les inputs pour les géométries de type `Point`
+   * @param {"Point"|"LineString"|"Polygon"} [type] Si donné, ajoute un préfixe aux propriétés flat-style
+   * @private
+   */
+  _addLabelInputs(type) {
+    // Ajoute un préfix si nécessaire
+    let prefix = "";
+    switch (type) {
+      case 'Point':
+        prefix = "point-";
+        break;
+      case 'LineString':
+        prefix = "line-";
+        break;
+      case 'Polygon':
+        prefix = "fill-";
+        break;
+      default:
+        break;
+    }
+
+    /** @type {HTMLTextAreaElement} */
+    const label = this.addInput({
+      label: "Texte",
+      property: `${prefix}text-value`,
+      type: "textarea"
+    });
+    // Update label value on keyup with a delay to avoid too many updates
+    let tout, value = label.value;
+    label.addEventListener('keyup', () => {
+      if (label.value === value) return;
+      clearTimeout(tout);
+      tout = setTimeout(() => {
+        this.dispatchEvent(new StyleEvent(`${prefix}text-value`, label.value));
+        value = label.value;
+      }, 300);
+    });
+    label.addEventListener('change', () => {
+      clearTimeout(tout);
+    });
+
+    // break
+    this.addBreak(`${prefix}text`,);
+
+    // Couleur et taille du texte
+    this.addInput({
+      label: 'Couleur',
+      property: `${prefix}text-fill-color`,
+      input: new InputColor()
+    });
+
+    this.addInput({
+      label: 'Taille',
+      labelInfo: '(px)',
+      property: `${prefix}text-size`,
+      type: 'number',
+    });
+
   }
 
   /**
