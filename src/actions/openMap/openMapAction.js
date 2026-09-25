@@ -7,6 +7,8 @@ import carte from '../../carte.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import './openMap.scss';
 import htmlToNode from '../../utils/htmlToNode.js';
+import { loadMapFromMapId } from '../../utils/load.js';
+import Alert from '../../control/Alert/Alert';
 
 const defaultImagePath = 'img/alt-image.svg';
 
@@ -221,18 +223,31 @@ function selectCard(e) {
 }
 
 async function openMap() {
-  let card = dialog.querySelector('[aria-current="true"]');
+  const card = dialog.querySelector('[aria-current="true"]');
 
-  let mapId = card.dataset.mapId;
+  const mapId = card.dataset.mapId;
 
-  const { data, status } = await api.map.getMapByViewId(mapId);
-  if (status === 200) {
-    carte.getMap().getLayers().clear();
-    setTimeout(() => {
-      carte.load(data);
-      dialog.close()
-    }, 100)
-  }
+  const loaded = loadMapFromMapId(carte, mapId);
+  loaded.then((bool => {
+    dialog.close();
+    if (bool) {
+      Alert.addAlert({
+        id: "map-loaded--success",
+        type: "success",
+        small: true,
+        description: "La carte a été chargée avec succés.",
+        closable: true,
+      })
+    } else {
+      Alert.addAlert({
+        id: "map-loaded--error",
+        type: "error",
+        small: true,
+        description: "Une erreur est survenue. La carte n'a pas pu être chargée.",
+        closable: true,
+      })
+    }
+  }))
 }
 
 const openMapAction = new Action({

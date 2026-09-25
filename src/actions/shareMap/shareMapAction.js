@@ -1,6 +1,6 @@
 import Action from '../Action.js';
 import carte from '../../carte.js';
-import Alert from '../../control/Alert/Alert.js';
+import Alert from '../../control/Alert/Alert';
 
 import content from './shareMap.html?raw';
 import './shareMap.scss';

@@ -5,7 +5,7 @@ import content from './saveMap.html?raw';
 import { transformExtent } from 'ol/proj.js'
 import { addMessage } from '../../utils/message.js';
 import savingContent from './saving.html?raw';
-import Alert from '../../control/Alert/Alert.js';
+import Alert from '../../control/Alert/Alert';
 
 
 /** @type {Array<import('../../api/model/index.js').Theme>} */

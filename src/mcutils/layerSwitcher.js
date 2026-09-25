@@ -10,7 +10,7 @@ import "./layerSwitcher.scss";
 import BaseEvent from 'ol/events/Event.js';
 import leftPanel from '../dialogs/leftPanel.js';
 import VectorSource from 'ol/source/Vector.js';
-import Alert from '../control/Alert/Alert.js';
+import Alert from '../control/Alert/Alert';
 import editLayerInfoAction from '../actions/editLayerInfo/editLayerInfoAction.js';
 import editLayerPopupAction from '../actions/editLayerPopup/editLayerPopupAction.js';
 
