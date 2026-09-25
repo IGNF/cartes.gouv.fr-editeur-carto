@@ -20,7 +20,9 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "maxNodeModuleJsDepth": 0
+        // Analyse les imports JavaScript directs de dépendances annotées en JSDoc
+        // (notamment mcutils), sans vérifier l'ensemble de node_modules.
+        "maxNodeModuleJsDepth": 2
     },
     "include": ["src/**/*.js", "src/**/*.ts", "tests/**/*.js", "tests/**/*.ts", "*.js", "*.ts"],
     "exclude": ["node_modules", "docs", "public", "dist"]

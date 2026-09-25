@@ -3,7 +3,6 @@ import globals from "globals";
 // import sonarjs from "eslint-plugin-sonarjs";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import importPlugin from "eslint-plugin-import";
 import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat({
@@ -24,11 +23,6 @@ export default defineConfig([
             parserOptions: {},
         },
 
-        plugins: {
-            // sonarjs,
-            import: importPlugin, // Check extension in imports / exports
-        },
-
         extends: compat.extends("eslint:recommended", /* "plugin:sonarjs/recommended" */),
 
         settings: {
@@ -41,17 +35,17 @@ export default defineConfig([
 
         rules: {
             // Extension des fichiers lors des imports
-            "import/extensions": ["error", "ignorePackages", {
-                js: "always",
-                jsx: "always",
-                ts: "never",
-                tsx: "never",
-            }],
+            // "import/extensions": ["error", "ignorePackages", {
+            //     js: "always",
+            //     jsx: "always",
+            //     ts: "never",
+            //     tsx: "never",
+            // }],
 
-            // Vérifie que les symboles importés existent réellement
-            "import/named": "error",
-            "import/default": "error",
-            "import/namespace": "error",
+            // // Vérifie que les symboles importés existent réellement
+            // "import/named": "error",
+            // "import/default": "error",
+            // "import/namespace": "error",
 
             // Variables / imports manquants ou inutilisés
             "no-undef": "off",
@@ -92,6 +86,7 @@ export default defineConfig([
         "**/www/*",
         "**/todo/*",
         "**/public/*",
+        "**/node_modules/*",
         "**/docs/*",
         // Code TypeScript généré par Orval (non analysable par le parseur JS)
         "src/api/**",

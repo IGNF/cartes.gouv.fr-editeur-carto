@@ -1,10 +1,6 @@
-import { createOidc } from "oidc-spa/core";
+import { createOidc, type OidcInitializationError } from "oidc-spa/core";
 import { z } from "zod";
 import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
-
-console.info("import.meta.env.PROD : ", import.meta.env.PROD)
-console.info("redirectUri : ", redirectUri)
-console.info("import.meta.env.BASE_URL : ", import.meta.env.BASE_URL)
 
 const prOidc = createOidc({
   // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
@@ -16,7 +12,7 @@ const prOidc = createOidc({
   // (sinon renvoi sur "/", donc sur l'entrée carto)
   BASE_URL: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
 
-  debugLogs: true,
+  debugLogs: import.meta.env.DEV,
 
   // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
   autoLogin: true,
@@ -25,18 +21,34 @@ const prOidc = createOidc({
     preferred_username: z.string(),
     email: z.string(),
   }),
-});
+}).catch((error) => error as OidcInitializationError);
 
 if (prOidc instanceof Error) {
+  const oidcInitializationError = prOidc;
 
-  alert("L'authentification ne fonctionne pas. Veuillez réessayer ultérieurement.");
+  // Use this to distinguish a misconfiguration from a temporary auth-server outage.
+  // NOTE: below references should use `oidcInitializationError`.
+  console.log(oidcInitializationError.isAuthServerLikelyDown);
+
+  // Developer-only diagnostic with likely cause and fix.
+  // Do not display this to end users.
+  import.meta.env.DEV && console.log(oidcInitializationError.message);
+
+  alert(
+    "L'authentification ne fonctionne pas. Veuillez réessayer ultérieurement.",
+  );
 
   // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
-  await new Promise(() => {});
+  await new Promise<never>(() => {});
 }
 
 export async function getOidc() {
   const oidc = await prOidc;
+
+  if (oidc instanceof Error || !oidc.isUserLoggedIn) {
+    return undefined;
+  }
+
   return oidc;
 }
 
@@ -48,7 +60,7 @@ export async function getOidc() {
 export const getAuthHeader = async () => {
   const oidc = await getOidc();
 
-  if (!oidc.isUserLoggedIn) {
+  if (oidc instanceof Error || !oidc.isUserLoggedIn) {
     return undefined;
   }
 
