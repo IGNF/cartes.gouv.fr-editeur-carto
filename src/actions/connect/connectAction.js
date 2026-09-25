@@ -2,9 +2,7 @@ import Action from '../../actions/Action.js';
 import content from './connect.html?raw';
 import './connect.scss';
 
-import introDialog from '../../dialogs/introDialog.js';
-import api from 'mcutils/api/api.js';
-import { isInertAvailable, setUser } from '../../charte/utils.js';
+import { isInertAvailable } from '../../charte/utils.js';
 import carte from '../../carte.js';
 import charte from '../../charte/charte.js';
 import modal from '../../dialogs/modal.js';
@@ -18,7 +16,6 @@ let dialog;
 // Interactions sur la carte
 let interactions = {};
 
-
 /**
  * Fonction à l'ouverture du dialog.
  * 
@@ -28,22 +25,8 @@ let interactions = {};
  */
 function onOpen(e) {
   dialog = e.target;
-  api.whoami(setUser);
   setInert();
 }
-
-function onConnect(e) {
-  Action.open(e);
-  api.on('login', onLogin);
-}
-
-function onLogin() {
-  dialog.onClose(() => {
-    dialog.setAction(connectAction);
-  }, true)
-  api.un('login', onLogin);
-}
-
 
 /**
  * Bloque les interactions avec la carte
@@ -92,19 +75,6 @@ const connectAction = new Action({
   title: 'Créer votre carte',
   content: content,
   buttons: [{
-    label: 'Connectez-vous pour commencer',
-    className: 'disconnected fr-icon-arrow-right-s-line fr-btn--icon-right',
-    kind: 0,
-    'data-action': 'login',
-    'aria-controls': introDialog.getId(),
-    callback: onConnect
-  }, {
-    label: 'Accéder au service (provisoire)',
-    className: 'disconnected',
-    kind: 1,
-    close: true,
-    callback: closeDialog
-  },{
     label: 'Voir mes cartes',
     className: 'view connected',
     kind: 1,

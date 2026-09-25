@@ -32,14 +32,13 @@
  },
  "layers": [
   {
-   "id": 1,
-   "type": "GeoportalMapBox",
-   "name": "PLAN.IGN",
-   "title": "PLAN.IGN",
+   "id": 3,
+   "type": "GeoportalWMTS",
+   "name": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
+   "title": "Plan IGN",
    "visibility": true,
    "opacity": 1,
    "copyright": "",
-   "selectable": true,
    "reload": 0,
    "reloadId": "",
    "popupContent": {},
@@ -47,10 +46,15 @@
    "blendMode": "",
    "minZoom": null,
    "maxZoom": null,
-   "declutter": "true",
    "crop": {},
+   "extent": [
+    -20026376.393709917,
+    -19971868.880408563,
+    20026376.393709917,
+    19971868.88040853
+   ],
    "thumbnail": "https://data.geopf.fr/annexes/ressources/metadata/thumbnail/vignette-plan-ign.jpg",
-   "catalogId": "PLAN.IGN$GEOPORTAIL:GPP:TMS",
+   "catalogId": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2$GEOPORTAIL:OGC:WMTS",
    "producer": [
     "INSTITUT NATIONAL DE L'INFORMATION GEOGRAPHIQUE ET FORESTIERE (IGN)"
    ]
