@@ -4,7 +4,7 @@ import Alert from '../../control/Alert/Alert';
 
 import content from './shareMap.html?raw';
 import './shareMap.scss';
-import { getViewURL } from '@/utils/urls.js';
+import { getViewURL } from '../../utils/urls.js';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -52,7 +52,7 @@ function onOpen(e) {
   // Enter map info in the dialog
   // const url = new URL(config.viewer.replace("$ID", carte.get("id")), window.location.href);
   // const url = config.server + 'carte/' + carte.get('id') + '/' + carte.getTitle();
-  const url = getViewURL
+  const url = getViewURL(carte.get('id'));
   dialog.querySelector('#share-link').value = url;
   dialog.querySelector('#share-iframe').value = `<iframe
   width="600" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
