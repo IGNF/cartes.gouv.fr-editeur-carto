@@ -7,7 +7,7 @@ import styleForm from './styleForm.js';
 import PopupForm from './popupForm.js';
 import { carte } from "../../story.js";
 import { createDefaultStyle } from "ol/style/flat.js";
-import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle } from './styleToFlatStyle.js';
+import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle, flatToIgnStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
 import "./styleDialog.scss";
@@ -16,6 +16,7 @@ import charte from '../../charte/charte.js';
 import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
 import styleLibDialog from '../../dialogs/styleLibDialog.js';
 import StyleObj from '../LayerStyle/StyleObj.js';
+import SymbolLib from 'mcutils/style/SymbolLib.js';
 
 const forms = [styleForm, labelForm];
 const popupForm = new PopupForm({ carte: carte });
@@ -139,6 +140,7 @@ styleDialog.getForms().forEach(form => {
   })
   // Add from symbol library
   form.on(["lib:addsymbol", "lib:getsymbol"], (e) => {
+    /*
     let styleObj = null;
     let type = styleDialog.getForms()[0]?.styleObj.get('type') || null;
     if (e.type === "lib:addsymbol") {
@@ -156,6 +158,12 @@ styleDialog.getForms().forEach(form => {
         flatStyle: styles,
         type: type,
       });
+      const currentSymbol = new SymbolLib({
+        type: styleObj.get('type'),
+        name: e.name,
+        style: flatToIgnStyle(styleObj.getFlatStyle())
+      });
+      carte.getSymbolLib().push(currentSymbol);
     }
     symbolLibAction.open(styleLibDialog, { 
       styleObj: styleObj,
@@ -175,6 +183,7 @@ styleDialog.getForms().forEach(form => {
         })
       },
     });
+    */
   });
 })
 

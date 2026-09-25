@@ -6,7 +6,9 @@ import StyleObj from '../LayerStyle/StyleObj.js';
 import element from 'ol-ext/util/element.js';
 
 import "./ExtendedFlatStyleForm.scss";
-import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
+import { flatToIgnStyle, ignStyleToFlatStyle } from './styleToFlatStyle.js';
+import getUid from '../../utils/getUid.js';
+import SymbolLib from 'mcutils/style/SymbolLib.js';
 
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
@@ -40,7 +42,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     titleElem.appendChild(span);
     // Boutons du titre
     const btnContainer = document.createElement('div');
-    btnContainer.className = 'btn-container';
+    btnContainer.className = 'style-btn-container';
     titleElem.appendChild(btnContainer);
 
     const select = this.selectGeomType = this._addSelectGeomType(options.type);
@@ -60,8 +62,13 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     // Restaure style
     if (options.hasreset) {
-      const btn = this.addTitleButton('Revenir au style par défaut', 'fr-icon-arrow-go-back-line');
-      btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
+      this.addTitleButton({
+        title: 'Revenir au style par défaut', 
+        icon: 'fr-icon-arrow-go-back-line',
+        onClick: () => {
+          this.dispatchEvent({ type: "reset" });
+        }
+      });
     }
     // TODO selection de style depuis la bibliothèque
     const onselect = (symbol) => {
@@ -78,21 +85,76 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     }
     if (!options.noSymbolLib) {
       // Bouton pour ajouter le style actuel à la bibliothèque
-      const addToSymbolLib = this.addTitleButton('Ajouter à la bibliothèque', 'addToSymbolLib fr-icon-add-line');
-      addToSymbolLib.addEventListener("click", () =>  {
-        this.dispatchEvent({
-          type: "lib:addsymbol",
-          styleObj: this.styleObj,
-        });
+      this.addTitleButton({
+        title: 'Ajouter à la bibliothèque', 
+        icon: 'addToSymbolLib fr-icon-add-line',
+        haspopup: true,
+        onClick: (e) => {
+          const inputGroup = document.createElement('div');
+          inputGroup.className = 'fr-input-group';
+          e.element.appendChild(inputGroup);
+
+          const nameInput = document.createElement('input');
+          nameInput.type = 'text';
+          nameInput.id = 'style-name-input-'+getUid();
+          nameInput.className = 'fr-input';
+          nameInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+              validateButton.click();
+            }
+            if (event.key === 'Escape') {
+              e.hide?.();
+            }
+          });
+          
+          const inputLabel = document.createElement('label');
+          inputLabel.setAttribute('for', nameInput.id);
+          inputLabel.className = 'fr-label';
+          inputLabel.innerText = 'Nom';
+          inputGroup.appendChild(inputLabel);
+
+          inputGroup.appendChild(nameInput);
+          nameInput.focus();
+          // Validation => send event
+          const validateButton = document.createElement('button'); 
+          validateButton.innerText = 'Enregistrer';
+          validateButton.className = 'fr-btn';
+          validateButton.addEventListener('click', () => {
+            if (nameInput.value) {
+              e.hide?.();
+              // Add the symbol to the library
+              const currentSymbol = new SymbolLib({
+                type: this.styleObj.get('type'),
+                name: nameInput.value,
+                style: flatToIgnStyle(this.styleObj.getFlatStyle())
+              });
+              carte.getSymbolLib().push(currentSymbol);
+
+              // Dispatch envent
+              this.dispatchEvent({
+                type: "lib:addsymbol",
+                name: nameInput.value,
+                styleObj: this.styleObj,
+              });
+            }
+          });
+          e.element.appendChild(validateButton);
+        }
       });
 
       // Bouton pour ouvrir la bibliothèque de symboles
-      const fromSymbolLib = this.addTitleButton('Depuis la bibliothèque', 'fromSymbolLib fr-icon-book-2-line');
-      fromSymbolLib.addEventListener("click", () =>  {
-        this.dispatchEvent({
-          type: "lib:getsymbol",
-          styleObj: this.styleObj,
-        });
+      this.addTitleButton({
+        title: 'Bibliothèque de style',
+        icon: 'fromSymbolLib fr-icon-book-2-line',
+        haspopup: true,
+        onClick: () => {
+          const symbolLib = this.symbolLib || carte.getSymbolLib();
+          return;
+          this.dispatchEvent({
+            type: "lib:getsymbol",
+            styleObj: this.styleObj,
+          });
+        }
       });
     }
 
@@ -120,19 +182,91 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
   /**
    * Ajoute un bouton dans le titre du formulaire.
-   * @param {string} title 
-   * @param {string} icon 
+   * @param {*} options 
+   *  @param {string} options.title title of the button
+   *  @param {string} options.icon icon of the button
+   *  @param {boolean} options.haspopup whether the button has a popup
+   *  @param {function} options.onClick click handler for the button
    * @returns 
    */
-  addTitleButton(title, icon) {
-    const btnContainer = this.header.querySelector('.btn-container');
-    if (btnContainer) {
-      const btn = document.createElement('button');
-      btn.className = (icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
-      btn.title = title;
-      btnContainer.appendChild(btn);
-      return btn;
+  addTitleButton(options) {
+    const btnContainer = this.header.querySelector('.style-btn-container');
+    if (!btnContainer) {
+      return;
     }
+    const popupContainer = document.createElement('div');
+    popupContainer.className = 'style-popup';
+    btnContainer.appendChild(popupContainer);
+    // Création du bouton
+    const btn = document.createElement('button');
+    btn.className = (options.icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
+    btn.title = options.title;
+    btn.id = 'style-popup-btn-' + getUid();
+    popupContainer.appendChild(btn);
+    // Has popup
+    if (options.haspopup !== undefined) {
+      // Create popup
+      const popup = document.createElement('div');
+      popup.id = 'style-popup-' + getUid();
+      popup.role = 'dialog';
+      // Set ARIA attributes for accessibility
+      btn.setAttribute('aria-haspopup', 'true');
+      btn.setAttribute('aria-pressed', false);
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', popup.id);
+
+      function hideonclick(event) {
+        if (event && event.target.closest && event.target.closest('.style-popup') === popupContainer) {
+          return;
+        }
+        document.removeEventListener("click", hideonclick);
+        window.removeEventListener("resize", hideonclick);
+        btn.setAttribute('aria-pressed', false);
+        btn.setAttribute('aria-expanded', false);
+      }
+      popupContainer.appendChild(popup);
+      // Title for the popup
+      const popupTitle = document.createElement('span');
+      popupTitle.className = (options.icon||'') + ' style-popup-title';
+      popupTitle.innerText = options.title;
+      popup.appendChild(popupTitle);
+      // container for the popup content
+      const popupContent = document.createElement('div');
+      popupContent.className = 'style-popup-content';
+      popup.appendChild(popupContent);
+      // Click on the button to toggle the popup
+      btn.addEventListener("click", (event) => {
+        popupContent.innerHTML = '';
+        // Pressed ?
+        const isPressed = btn.getAttribute('aria-pressed') === 'false';
+        btn.setAttribute('aria-pressed', isPressed);
+        btn.setAttribute('aria-expanded', isPressed);
+        if (isPressed) {
+          document.addEventListener("click", hideonclick);
+          window.addEventListener("resize", hideonclick);
+          var rect = btn.getBoundingClientRect();
+          popup.style.top = rect.top + "px";
+          popup.style.left = rect.right + "px";
+          if (typeof options.onClick === "function") {
+            options.onClick({
+              event: event,
+              isPressed: isPressed,
+              element: popupContent,
+              hide: hideonclick
+            });
+          }
+        } else {
+          hideonclick();
+        }
+      });
+    } else {
+      if (typeof options.onClick === "function") {
+        btn.addEventListener("click", (event) => {
+          options.onClick(event);
+        });
+      }
+    }
+    return btn;
   }
 
   /** Get form footer

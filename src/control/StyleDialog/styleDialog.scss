@@ -5,6 +5,10 @@
     top : 4rem;
   }
 
+  .fr-nav.fr-tabnav {
+    margin-bottom: 0;
+  }
+
   .GPF-dialog__content {
     background: var(--background-contrast-grey);
     padding: 0.75rem;
@@ -20,6 +24,53 @@
         align-items: center;
         width: 100%;
         margin-bottom: 0.75rem;
+      }
+
+      .style-btn-container {
+        position: relative;
+        display: inline-block;
+      
+        .style-popup {
+          position: relative;
+          display: inline-block;
+
+          &>div {
+            display: none;
+            position: fixed;
+            background: var(--background-default-grey);
+            box-shadow: 0 2px 6px 0 var(--shadow-color);
+            z-index: 10;
+            top: 0;
+            width: max-content;
+            
+            & > .style-popup-title {
+              padding: 0.25rem 0.5rem ;
+              border-bottom: 1px solid var(--border-default-grey);
+              margin: 0 0 0.25rem 0;
+              display: block;
+
+              &:before {
+                --icon-size: 1rem;
+                margin-right: 0.5rem;
+              }
+            }
+            .style-popup-content { 
+              padding: 0.5rem;
+
+              .fr-btn {
+                margin: 0.5rem 0 0;
+                width: 100%;
+                display: inline-block;
+                text-align: center;
+              }
+            }
+          }
+
+          button[aria-pressed="true"] + div {
+            display: block;
+          }
+
+        }
       }
     }
 
