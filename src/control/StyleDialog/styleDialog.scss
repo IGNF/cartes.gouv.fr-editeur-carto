@@ -34,6 +34,48 @@
           position: relative;
           display: inline-block;
 
+          button.fr-icon-search-line { 
+            position: absolute;
+            right: 0.5rem;
+            margin: 0!important;
+            color: var(--grey-425-625);
+            pointer-events: none;
+            &::before {
+              margin: 0!important;
+              padding: 0!important;
+            }
+          }
+          .fr-input-search {
+            padding-right: 2rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .stylelib_list {
+            list-style: none;
+            margin: 0 -0.25rem -0.5rem;
+            padding: 0;
+
+            .stylelib_item {
+              margin: 0;
+              padding: 0.5rem;
+              border-top: 1px solid var(--border-default-grey);
+              &:first-child {
+                border-top: 0
+              }
+
+              &.selected,
+              &:hover {
+                background-color: var(--background-default-grey-hover);
+              }
+
+              canvas {
+                width: 2rem;
+                vertical-align: middle;
+                margin-right: 0.25rem;
+              }
+            }
+          }
+
           &>div {
             display: none;
             position: fixed;

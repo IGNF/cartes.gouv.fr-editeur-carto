@@ -139,51 +139,19 @@ styleDialog.getForms().forEach(form => {
     }
   })
   // Add from symbol library
-  form.on(["lib:addsymbol", "lib:getsymbol"], (e) => {
-    /*
-    let styleObj = null;
-    let type = styleDialog.getForms()[0]?.styleObj.get('type') || null;
-    if (e.type === "lib:addsymbol") {
-      const styles = createDefaultStyle() || {};
-      styleDialog.getForms().forEach(frm => {
-        if (frm.styleObj) {
-          type = type || frm.styleObj.get('type');
-          const st = frm.getFormFlatStyle();
-          Object.keys(st).forEach((key) => {
-            styles[key] = st[key];
-          });
-        }
+  form.on("lib:getsymbol", (e) => {
+    // Get style from forms
+    const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
+    styleDialog.getForms().forEach(frm => {
+      frm.setFlatStyle(style);
+      frm.dispatchEvent({ 
+        type: "style",
+        ignStyle: e.symbol.getIgnStyle(),
+        flatStyle: style,
+        typeGeom: e.symbol.getType()
       });
-      styleObj = new StyleObj({
-        flatStyle: styles,
-        type: type,
-      });
-      const currentSymbol = new SymbolLib({
-        type: styleObj.get('type'),
-        name: e.name,
-        style: flatToIgnStyle(styleObj.getFlatStyle())
-      });
-      carte.getSymbolLib().push(currentSymbol);
-    }
-    symbolLibAction.open(styleLibDialog, { 
-      styleObj: styleObj,
-      typeGeom: type,
-      onSelect: (symbol) => {
-        // Get style from forms
-        const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-        styleDialog.getForms().forEach(frm => {
-          frm.setFlatStyle(style);
-          frm.dispatchEvent({ 
-            type: "style",
-            ignStyle: symbol.getIgnStyle(),
-            flatStyle: style,
-            typeGeom: symbol.getType()
-          });
-          // frm.updatePreview();
-        })
-      },
-    });
-    */
+      // frm.updatePreview();
+    })
   });
 })
 

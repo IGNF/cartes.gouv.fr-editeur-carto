@@ -147,12 +147,111 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         title: 'Bibliothèque de style',
         icon: 'fromSymbolLib fr-icon-book-2-line',
         haspopup: true,
-        onClick: () => {
+        onClick: (e) => {
           const symbolLib = this.symbolLib || carte.getSymbolLib();
-          return;
-          this.dispatchEvent({
-            type: "lib:getsymbol",
-            styleObj: this.styleObj,
+          // Bouton de recherche
+          const searchBt = document.createElement('button');
+          searchBt.className = 'fr-btn fr-icon-search-line fr-btn fr-btn--tertiary-no-outline';
+          e.element.appendChild(searchBt);
+          // input de recherche
+          const searchInput = document.createElement('input');
+          searchInput.type = 'text';
+          searchInput.className = 'fr-input fr-input-search';
+          searchInput.placeholder = 'Rechercher...';
+          searchInput.role = 'combobox';
+          searchInput.setAttribute('aria-expanded', 'false');
+          function getNextElementSibling(item, arrow) {
+            if (!item) {
+              let sibling = (arrow === 'ArrowUp' ? listItem.lastElementChild : listItem.firstElementChild);
+              if (!sibling) {
+                return null;
+              } else if (sibling.style.display !== 'none') {
+                return sibling;
+              } else {
+                return getNextElementSibling(sibling, arrow);
+              }
+            }
+            const fn = (arrow === 'ArrowUp' ? 'previousElementSibling' : 'nextElementSibling')
+            let sibling = item?.[fn] || null;
+            while (sibling && sibling.style.display == 'none') {
+              sibling = sibling?.[fn] || null;
+            }
+            return sibling;
+          }
+          searchInput.addEventListener('keydown', (ke) => {
+            if (/Arrow(Up|Down)/.test(ke.key)) {
+              ke.preventDefault();
+            }
+          });
+          searchInput.addEventListener('keyup', (ke) => {
+            switch (ke.key) {
+              case 'Escape': {
+                e.hide?.();
+                break;
+              }
+              case 'Enter': {
+                // Trigger search
+                listItem.querySelector('.selected')?.click();
+                break;
+              }
+              case 'ArrowUp':
+              case 'ArrowDown': {
+                ke.preventDefault();
+                // Trigger previous item selection
+                const selectedItem = listItem.querySelector('.selected');
+                if (selectedItem) {
+                  selectedItem.classList.remove('selected');
+                }
+                const sibling = getNextElementSibling(selectedItem, ke.key)
+                if (sibling) {
+                  sibling.classList.add('selected');
+                }
+                break;
+              }
+              default: {
+                const selectedItem = listItem.querySelector('.selected');
+                if (selectedItem) {
+                  selectedItem.classList.remove('selected');
+                }
+                const filter = new RegExp(searchInput.value, 'i');
+                Array.from(listItem.children).forEach(item => {
+                  const name = item.querySelector('span.fr-text').innerText.toLowerCase();
+                  item.style.display = filter.test(name) ? '' : 'none';
+                });
+                break;
+              }
+            } 
+          });
+          
+          e.element.appendChild(searchInput);
+          searchInput.focus();
+          // liste des symboles de la bibliothèque
+          const listItem = document.createElement('ul');
+          listItem.id = 'stylelib_list_' + getUid();
+          listItem.className = 'stylelib_list';
+          e.element.appendChild(listItem);
+          searchInput.setAttribute('aria-controls', listItem.id);
+          symbolLib.forEach(symbol => {
+            if (symbol.getType() !== this.getGeom('type')) return;
+            const listItemElement = document.createElement('li');
+            listItemElement.className = 'stylelib_item';
+            listItem.appendChild(listItemElement);
+            // Image du symbole
+            listItemElement.appendChild(symbol.getImage());
+            // Nom du symbole
+            const nameElt = document.createElement('span');
+            nameElt.className = 'fr-text';
+            nameElt.innerText = symbol.get('name');
+            listItemElement.appendChild(nameElt);
+            // Selection du symbole
+            listItemElement.addEventListener('click', () => {
+              e.hide?.();
+              this.dispatchEvent({
+                type: "lib:getsymbol",
+                symbol: symbol,
+                styleObj: this.styleObj,
+              });
+            });
           });
         }
       });
