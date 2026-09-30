@@ -48,13 +48,19 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     const select = this.selectGeomType = this._addSelectGeomType(options.type);
     container.appendChild(select);
     this.showSelectGeomType(options.selectGeomType);
-
-    const preview = this.preview = this._addPreview();
-    container.appendChild(preview);
-    this.showPreview(options.preview);
-
     // Place le header avant le formulaire
     this.getElement().before(container);
+
+    const preview = this.preview = this._addPreview();
+    const previewContainer = document.createElement('div');
+    previewContainer.className = 'style-form__panel';
+    const previewLabel = document.createElement('span');
+    previewLabel.textContent = 'Aperçu';
+    previewLabel.className = 'fr-hint-text';
+    previewContainer.appendChild(previewLabel);
+    previewContainer.appendChild(preview);
+    this.getElement().before(previewContainer);
+    this.showPreview(options.preview);
 
     this.styleObj = new StyleObj({
       flatStyle: this.flatStyle,
@@ -159,7 +165,8 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
           searchInput.className = 'fr-input fr-input-search';
           searchInput.placeholder = 'Rechercher...';
           searchInput.role = 'combobox';
-          searchInput.setAttribute('aria-expanded', 'false');
+          searchInput.setAttribute('aria-label', 'Rechercher');
+          searchInput.setAttribute('aria-expanded', 'true');
           function getNextElementSibling(item, arrow) {
             if (!item) {
               let sibling = (arrow === 'ArrowUp' ? listItem.lastElementChild : listItem.firstElementChild);
@@ -192,6 +199,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
               case 'Enter': {
                 // Trigger search
                 listItem.querySelector('.selected')?.click();
+                searchInput.setAttribute('aria-activedescendant', '');
                 break;
               }
               case 'ArrowUp':
@@ -205,10 +213,12 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
                 const sibling = getNextElementSibling(selectedItem, ke.key)
                 if (sibling) {
                   sibling.classList.add('selected');
+                  searchInput.setAttribute('aria-activedescendant', sibling.id);
                 }
                 break;
               }
               default: {
+                searchInput.setAttribute('aria-activedescendant', '');
                 const selectedItem = listItem.querySelector('.selected');
                 if (selectedItem) {
                   selectedItem.classList.remove('selected');
@@ -235,6 +245,8 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
             if (symbol.getType() !== this.getGeom('type')) return;
             const listItemElement = document.createElement('li');
             listItemElement.className = 'stylelib_item';
+            listItemElement.id = 'stylelib_item_' + getUid();
+            listItemElement.setAttribute('role', 'option');
             listItem.appendChild(listItemElement);
             // Image du symbole
             listItemElement.appendChild(symbol.getImage());
@@ -454,7 +466,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     this.styleObj.on("change:image", (e) => {
       const image = e.target.get(e.key);
-      this.preview.lastChild.replaceWith(image);
+      this.preview.querySelector('canvas').replaceWith(image);
     })
   }
 
@@ -485,7 +497,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     if (this.isPreviewShown()) {
       // Met à jour la preview
       const image = this.styleObj?.getImage({ small: false });
-      this.preview.lastChild.replaceWith(image);
+      this.preview.querySelector('canvas').replaceWith(image);
     }
   }
 
@@ -533,7 +545,11 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    */
   showPreview(show = false) {
     this.set("showPreview", show);
-    this.preview.classList.toggle("fr-hidden", !show)
+    if (show) {
+      this.getElement().parentElement.dataset.hasPreview = '';
+    } else {
+      delete this.getElement().parentElement.dataset.hasPreview;
+    }
   }
 
   /**
@@ -627,7 +643,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const label = document.createElement("label");
     label.className = "fr-label";
-    label.textContent = "Aperçu";
+    label.textContent = "Prévisualisation";
     preview.appendChild(label);
 
     let image = document.createElement("canvas");
@@ -638,7 +654,10 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       image.height = 72;
     }
 
-    preview.appendChild(image);
+    const imageContainer = document.createElement('div');
+    imageContainer.className = "style-image-container";
+    imageContainer.appendChild(image)
+    preview.appendChild(imageContainer);
 
     return preview;
   }

@@ -3,7 +3,8 @@
 dialog[data-action-id='edit-layer-style'] {
   > .GPF-dialog__content {
     background-color: var(--background-alt-grey);
-    padding: 0;
+    padding: 0!important;
+    margin: 0;
   }
   @include mix.respond-from('sm') {
     top: 4rem;

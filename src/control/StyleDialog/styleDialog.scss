@@ -1,10 +1,57 @@
 @use '../../css/mixins.scss' as mix;
 
-.GPF-dialog[id^=style-dialog] {
-  @include mix.respond-from("sm") {
+.GPF-dialog[id^=layer-style-dialog] {
+  min-width: 480px;
+}
+
+.GPF-dialog[id*=style-dialog] {
+    @include mix.respond-from("sm") {
     top : 4rem;
   }
 
+  .style-form-container {
+    display: block;
+
+    .style-form__panel {
+      float: left;
+      display: none;
+      width: 200px;
+      overflow: hidden;
+      margin-right: 0.75rem;
+
+      canvas {
+        margin: 0.5rem auto;
+        display: block;
+      }
+    }
+    &[data-has-preview] {
+      .style-form__panel {
+        display: block;
+      }
+      
+      .style-form {
+        width: calc(100% - 200px - 0.75rem);
+      }
+    }
+    .fr-input-group {
+      max-width: 100%;
+    }
+
+    .style-form__panel > span.fr-hint-text,
+    .style-form > span.fr-hint-text {
+      margin: 0 -0.75rem;
+      padding: 0.5rem 0.75rem 0;
+      width: calc(100% + 1.5rem);
+      border-top: 1px solid var(--border-default-grey);
+    }
+    .style-form__preview {
+      margin: 0.5rem 0;
+     
+      .style-image-container {
+        border: 1px solid var(--border-default-grey);
+      }
+    }
+  }
   .fr-nav.fr-tabnav {
     margin-bottom: 0;
   }
@@ -119,13 +166,6 @@
     [id^=tabNavContent] {
       background: var(--background-default-grey);
       padding: 0.75rem;
-      
-      .style-form > span.fr-hint-text {
-        margin: 0 -0.75rem;
-        padding: 0.5rem 0.75rem 0;
-        width: calc(100% + 1.5rem);
-        border-top: 1px solid var(--border-default-grey);
-      }
     }
   }
 }

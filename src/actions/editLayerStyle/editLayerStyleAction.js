@@ -121,6 +121,13 @@ function onOpen(e) {
   });
   // Écouteur d'événement à la gestion de la librairie de symboles
   function onLibSymbolEvent(e) {
+    // Get style from forms
+    const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
+    const styleObj = editStyle.getStyleObj();
+    styleObj.set('type', e.symbol.getType());
+    styleObj.set('flatStyle', style);
+    editStyle.setStyleObj(styleObj);
+    /*
     const type = editStyle.getStyleForm().styleObj.get('type');
     let styleObj = null;
     if (e.type === "lib:addsymbol") {
@@ -148,9 +155,10 @@ function onOpen(e) {
         editStyle.setStyleObj(styleObj);
       },
     });
+    */
   }
-  editStyle.getStyleForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
-  editStyle.getLabelForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
+  editStyle.getStyleForm().on("lib:getsymbol", onLibSymbolEvent);
+  // editStyle.getLabelForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
 
 }
 

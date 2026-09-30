@@ -275,10 +275,12 @@ class EditStyle extends BaseObject {
         label: "Style",
         content: this.styleForm.getContent(),
       },
+      /*
       {
         label: "Texte",
         content: this.labelForm.getContent(),
       },
+      */
       {
         label: "Conditions",
         content: this.conditionsForm.getContent(),
