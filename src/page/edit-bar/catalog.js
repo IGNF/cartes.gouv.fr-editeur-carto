@@ -146,7 +146,7 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
     layer.config.thumbnail = config.thumbnail || "default";
     layer.config.producer = config.producer || "";
     layer.config.catalogId = id;
-    carte.addLayer(layer);
+    carte.addLayer(layer, false);
     this.layersListOnMap[name + ":" + service] = layer;
   }
 });
