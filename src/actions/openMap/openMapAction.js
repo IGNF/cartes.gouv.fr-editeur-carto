@@ -138,8 +138,6 @@ function getUserMaps(data) {
     parent: content,
   })
 
-  console.log(maps);
-
   maps.forEach(map => {
     if (map.type === 'macarte') {
       let card = createMapCard({

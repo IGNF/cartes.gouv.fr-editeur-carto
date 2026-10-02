@@ -2,11 +2,11 @@ import Action from '../Action.js';
 import carte from '../../carte.js';
 import { api } from '../../api';
 import content from './saveMap.html?raw';
+import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj.js'
 import { addMessage } from '../../utils/message.js';
 import savingContent from './saving.html?raw';
 import Alert from '../../control/Alert/Alert';
-
 
 /** @type {Array<import('../../api/model/index.js').Theme>} */
 let GPFThemes = [];
@@ -37,26 +37,25 @@ const getPremium = async () => {
 async function onOpen(e) {
   dialog = e.target
   const metadata = carte.get('atlas') || {};
-  console.log('metadata', metadata);
   
   // Title
   const inputTitle = dialog.querySelector('[data-field="title"]');
   inputTitle.value = metadata.title || '';
 
-  // // Theme
-  // const select = dialog.querySelector('[data-field="theme"]');
-  // if (GPFThemes.length) {
-  //   addThemes(GPFThemes, select);
-  //   select.value = metadata.theme_id || '';
-  // } else {
+  // Theme
+  const select = dialog.querySelector('[data-field="theme"]');
+  if (GPFThemes.length) {
+    addThemes(GPFThemes, select);
+    select.value = metadata.theme_id || '';
+  } else {
 
-  //   const { data: themes } = await api.theme.getThemes();
-  //   GPFThemes = themes;
-  //   if (themes.length) {
-  //     addThemes(themes, select);
-  //     select.value = metadata.theme_id || '';
-  //   }
-  // }
+    const { data: themes } = await api.theme.getThemes();
+    GPFThemes = themes;
+    if (themes.length) {
+      addThemes(themes, select);
+      select.value = metadata.theme_id || '';
+    }
+  }
 
   // Récupère les thèmes mais ne les proposes pas à l'utilisateur
   if (!GPFThemes.length) {
@@ -69,34 +68,34 @@ async function onOpen(e) {
   inputDescription.value = metadata.description || ''; 
 }
 
-// function addThemes(themes, select) {
-//   Object.keys(themes).forEach(key => {
-//     let { id, name } = themes[key]
-//     let option = ol_ext_element.create('option', {
-//       value: id,
-//       html: name,
-//     })
-//     select.appendChild(option);
-//   });
-// }
+function addThemes(themes, select) {
+  Object.keys(themes).forEach(key => {
+    const { id, name } = themes[key]
+    const option = ol_ext_element.create('option', {
+      value: id,
+      html: name,
+    })
+    select.appendChild(option);
+  });
+}
 
 /** Save current Carte to server */
 async function saveMap() {
   // Input values
   const inputName = dialog.querySelector('[data-field="title"]');
-  // const select = dialog.querySelector('[data-field="theme"]');
+  const select = dialog.querySelector('[data-field="theme"]');
   const inputDescription = dialog.querySelector('[data-field="description"]');
   // Check mandatory
   if (!inputName.value) {
-    addMessage(inputName, 'Le nom de la carte est obligatoire...', { type: 'error' });
+    addMessage(inputName, 'Le nom de la carte est obligatoire', { type: 'error' });
     inputName.focus();
     return;
   }
-  // if (!select.value) {
-  //   addMessage(select, 'Le thème est obligatoire...', { type: 'error' });
-  //   select.focus();
-  //   return;
-  // }
+  if (!select.value) {
+    addMessage(select, 'Le thème est obligatoire', { type: 'error' });
+    select.focus();
+    return;
+  }
 
   let metadata = carte.get('atlas');
   metadata.type = 'macarte';
@@ -112,9 +111,9 @@ async function saveMap() {
   if (metadata.title !== inputName.value) {
     toUpdate.title = inputName.value;
   }
-  if (metadata.theme_id !== GPFThemes[0]) {
-    toUpdate.theme_id = GPFThemes[0].id;
-    toUpdate.theme = GPFThemes[0].name;
+  if (metadata.theme_id !== select.value) {
+    toUpdate.theme_id = select.value;
+    toUpdate.theme = select.options[select.selectedIndex].text;
   }
   if (metadata.description !== inputDescription.value) {
     toUpdate.description = inputDescription.value;
@@ -124,8 +123,8 @@ async function saveMap() {
   metadata.description = inputDescription.value;
   
   // Test avec un thème autre pour ne pas inclure de thème
-  metadata.theme_id = GPFThemes[0].id;
-  metadata.theme = GPFThemes[0].name;
+  metadata.theme_id = select.value;
+  metadata.theme = select.options[select.selectedIndex].text;
   metadata.img_url = '';
   metadata.organization_id = '';
   metadata.share = 'public';
