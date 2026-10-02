@@ -12,7 +12,14 @@ export default defineConfig(({ command }) => ({
     emptyOutDir: true,
   },
 
-  envPrefix: ["VITE_", "API_URL", "VIEWER_URL", "REDIRECT_URI", "APP_ENV", "IAM_"],
+  envPrefix: [
+    "VITE_",
+    "API_URL",
+    "VIEWER_URL",
+    "REDIRECT_URI",
+    "APP_ENV",
+    "IAM_",
+  ],
 
   plugins: [oidcSpa()],
   resolve: {

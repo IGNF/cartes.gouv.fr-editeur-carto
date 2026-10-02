@@ -7,7 +7,6 @@ import "./oidc"
 import story from './story.js'
 import carte from './carte.js'
 import './utils/storyToMapChanges.js'
-import './utils/dirtyMap.js';
 
 import introDialog from './dialogs/introDialog.js'
 import connectAction from './actions/connect/connectAction.js'
