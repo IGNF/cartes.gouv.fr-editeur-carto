@@ -11,6 +11,12 @@ export default defineConfig(({ command }) => ({
     outDir: "./docs",
     emptyOutDir: true,
   },
+  // Pour DSFR legacy
+  css: {
+    lightningcss: {
+      errorRecovery: true,
+    },
+  },
 
   envPrefix: [
     "VITE_",
