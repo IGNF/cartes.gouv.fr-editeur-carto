@@ -22,7 +22,7 @@ carte.getMap().addControl(notification);
 modify.on(['cut', 'delete'], e => {
   const features = e.features || e.deleted;
   // undo notification
-  notification.info(features.length + (features.length > 1 ? ' objets supprimés.' : ' objet supprimé.'), () => {
+  notification.info(features.length + (features.length > 1 ? ' objets supprimés' : ' objet supprimé'), () => {
     notification.hide();
     features.forEach(f => {
       f.layer.getSource().addFeature(f.feature);
@@ -46,7 +46,7 @@ modify.on(['paste'], e => {
     layer.getSource().addFeature(feature);
   });
   // undo notification
-  const info = features.length + (features.length > 1 ? ' objets copiés.' : ' objet copié.');
+  const info = features.length + (features.length > 1 ? ' objets copiés' : ' objet copié');
   notification.info(info, () => {
     notification.hide();
     features.forEach(f => {
@@ -59,7 +59,7 @@ modify.on(['paste'], e => {
 modify.on(['duplicate'], e => {
   const features = e.features || [];
   // undo notification
-  const info = features.length + (features.length > 1 ? ' objets copiés.' : ' objet copié.');
+  const info = features.length + (features.length > 1 ? ' objets copiés' : ' objet copié');
   notification.info(info, () => {
     notification.hide();
     features.forEach(f => {
