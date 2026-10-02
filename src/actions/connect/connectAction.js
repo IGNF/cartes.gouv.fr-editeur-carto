@@ -6,6 +6,7 @@ import { isInertAvailable } from '../../charte/utils.js';
 import carte from '../../carte.js';
 import charte from '../../charte/charte.js';
 import modal from '../../dialogs/modal.js';
+import dirty, { setDirty } from '../../utils/dirtyMap';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -76,23 +77,26 @@ const connectAction = new Action({
   content: content,
   buttons: [{
     label: 'Voir mes cartes',
-    className: 'view connected',
     kind: 1,
     markup: 'a',
-    href: '#',
-    callback: e => {
-      closeDialog(e);
-      carte.dispatchEvent('read');
-      Action.open(modal, 'open-map');
-    }
+    href: '/tableau-de-bord/editeur/cartes',
   }, {
     label: 'Créer une carte',
-    className: 'create connected fr-icon-arrow-right-s-line fr-btn--icon-right',
+    className: 'fr-icon-arrow-right-s-line fr-btn--icon-right',
     kind: 0,
     close: true,
     callback: e => {
       closeDialog(e);
-      carte.dispatchEvent('read');
+      
+      // Active les notifications de changement de carte après être entré dans la carte
+      carte.on('change', () => setDirty(true));
+      carte.getMap().getLayerGroup().on('change', () => setDirty(true));
+      carte.on(['read', 'save'], () => setDirty(false));
+
+      /** Map has changed */
+      carte.hasChanged = function () {
+        return dirty;
+      }
     }
   }],
   onOpen: onOpen
