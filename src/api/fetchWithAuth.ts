@@ -2,7 +2,6 @@ import { getAuthHeader } from "../oidc.js";
 
 export const fetchWithAuth = async <T>(url: string, options?: RequestInit): Promise<T> => {
     const header = await getAuthHeader();
-    console.log(header, url)
     const response = await fetch(url, {
         ...options,
 
