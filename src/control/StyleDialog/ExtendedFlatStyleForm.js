@@ -44,13 +44,15 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     const btnContainer = document.createElement('div');
     btnContainer.className = 'style-btn-container';
     titleElem.appendChild(btnContainer);
-
-    const select = this.selectGeomType = this._addSelectGeomType(options.type);
-    container.appendChild(select);
-    this.showSelectGeomType(options.selectGeomType);
     // Place le header avant le formulaire
     this.getElement().before(container);
 
+    // Sélecteur de type de géométrie
+    const select = this.selectGeomType = this._addSelectGeomType(options.type);
+    container.appendChild(select);
+    this.showSelectGeomType(options.selectGeomType);
+
+    // La preview
     const preview = this.preview = this._addPreview();
     const previewContainer = document.createElement('div');
     previewContainer.className = 'style-form__panel';

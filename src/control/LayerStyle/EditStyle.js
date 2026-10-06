@@ -159,6 +159,10 @@ class EditStyle extends BaseObject {
 
     options.visible === false && this.setVisible(false);
 
+    // Footer
+    const footer = this.footer = this._createFooterElement(options);
+    container.appendChild(footer);
+
     return container;
   }
 
@@ -227,18 +231,35 @@ class EditStyle extends BaseObject {
     const name = document.createElement("span");
     name.className = "style-title__name fr-text--sm";
 
+    header.appendChild(saveStyleBtn);
+    header.appendChild(preview);
+    header.appendChild(name);
+
+    return header;
+  }
+
+    /**
+   * Créé le header
+   * @param {EditStyleOptions} options Options du constructeur
+   * @returns {HTMLElement} header
+   */
+  _createFooterElement(options) {
+    const footer = document.createElement("div");
+    footer.className = "edit-style__footer";
+
+    const btns = document.createElement("div");
+    btns.className = "fr-btns-group fr-btns-group--inline fr-btns-group--sm fr-btns-group--icon-left";
+    footer.appendChild(btns);
+
     // Bouton appliquer
     const applyBtn = document.createElement("button");
     applyBtn.className = "apply-btn fr-btn fr-btn--sm";
     applyBtn.addEventListener("click", this.applyStyle.bind(this));
     applyBtn.textContent = "Appliquer";
 
-    header.appendChild(saveStyleBtn);
-    header.appendChild(preview);
-    header.appendChild(name);
-    header.appendChild(applyBtn);
+    btns.appendChild(applyBtn);
 
-    return header;
+    return footer;
   }
 
   /**
@@ -255,7 +276,9 @@ class EditStyle extends BaseObject {
 
     const tabNav = this._createTabNavElement(tabNavContent);
 
-    content.appendChild(tabNav.getElement());
+    // content.appendChild(tabNav.getElement());
+    this.header.appendChild(tabNav.getElement());
+
     content.appendChild(tabNavContent);
 
 
@@ -272,7 +295,7 @@ class EditStyle extends BaseObject {
     // Navigation tertiaire
     const tabnav = this.tabnav = new TabNav({
       items: [{
-        label: "Style",
+        label: "Propriétés",
         content: this.styleForm.getContent(),
       },
       /*

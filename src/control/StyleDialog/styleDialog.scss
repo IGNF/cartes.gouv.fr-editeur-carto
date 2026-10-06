@@ -12,6 +12,10 @@
   .style-form-container {
     display: block;
 
+    .input-style__option-value {
+      position: relative;
+    }
+
     .style-form__panel {
       float: left;
       display: none;
@@ -160,6 +164,47 @@
           }
 
         }
+      }
+    }
+
+    .edit-style__header {
+      .fr-tabnav ul {
+        border: 1px solid var(--border-default-grey);
+        border-radius: 0.25rem;
+        background-image: none;
+
+        &:has(> li.fr-hidden) {
+          display: none;
+        }
+
+        li {
+          box-shadow: 0 0 0 0;
+        }
+        button {
+          padding: 0 0.5rem;
+          border-radius: 0.25rem;
+          border: 0;
+          box-shadow: none;
+          background-image: none;
+
+          
+          &[aria-selected="true"] {
+            box-shadow: 0 0 0 1px currentColor;
+            z-index: 1;
+          }
+        }
+      }
+    }
+
+    .edit-style__footer {
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem 0.75rem 0;
+      background-color: var(--background-default-grey);
+
+      div {
+        flex-direction: row-reverse;
+        justify-content: flex-start;
       }
     }
 

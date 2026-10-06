@@ -23,11 +23,10 @@
     display: none;
   }
   &[data-condition-style] {
-    .style-form {
-      display: none;
-    }
+    .style-form,
+    .style-form__header,
     .style-form__footer {
-      display: none;
+      display: none!important;
     }
     .fr-alert {
       display: block;
