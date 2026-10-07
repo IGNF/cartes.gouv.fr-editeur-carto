@@ -31,11 +31,10 @@ const carte = new Carte({});
 Gp.Services.getConfig({
   customConfigFile: customConfigFile,
   timeOut: 20000,
-  onSuccess: () => carte.read(import.meta.env.BASE_URL + 'carte/template.carte'),
+  onSuccess: () => { },
   onFailure: (e) => {
     console.error(e);
     // Impossible d'importer la couche du catalogue
-    carte.read(import.meta.env.BASE_URL + 'carte/template_error.carte');
   }
 });
 

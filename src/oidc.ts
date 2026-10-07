@@ -28,6 +28,7 @@ if (prOidc instanceof Error) {
 
   // Use this to distinguish a misconfiguration from a temporary auth-server outage.
   // NOTE: below references should use `oidcInitializationError`.
+  // @ts-ignore car renvoi une erreur de type puisqu'on est censé être toujours loggé
   console.log(oidcInitializationError.isAuthServerLikelyDown);
 
   // Developer-only diagnostic with likely cause and fix.
