@@ -75,11 +75,11 @@ if (editId) {
         },
         true,
       );
-
-      carte.read(
-        `${import.meta.env.BASE_URL}${import.meta.env.BASE_URL.endsWith("/") ? "" : "/"}carte/template.carte`,
-      );
     })
     // Réactive les interactions avec la carte
     .finally(() => unsetInert(carte));
+} else {
+  carte.read(
+    `${import.meta.env.BASE_URL}${import.meta.env.BASE_URL.endsWith("/") ? "" : "/"}carte/template.carte`,
+  );
 }
