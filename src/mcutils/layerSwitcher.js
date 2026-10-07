@@ -84,7 +84,7 @@ const switcher = new LayerSwitcher({
               Alert.addAlert({
                 id: alertId,
                 description: "Le style de cette couche n'est pas modifiable",
-                size: "sm",
+                small: true,
                 type: Alert.TYPES.WARNING,
               }, true)
             }

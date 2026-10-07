@@ -5,6 +5,7 @@ import './actions/actions.js'
 
 import "./oidc"
 import story from './story.js'
+import "./init/loadMap"
 import carte from './carte.js'
 import './utils/storyToMapChanges.js'
 

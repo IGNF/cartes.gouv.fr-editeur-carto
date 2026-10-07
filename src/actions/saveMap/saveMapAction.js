@@ -148,7 +148,7 @@ async function saveMap() {
           type: Alert.TYPES.ERROR,
           id: "alert--save-login-needed",
           description: "Vous devez être connecté·e pour enregistrer une carte.",
-          size: 'sm',
+          small: true
         }, true);
       }
       // Pas encore implémenté
@@ -158,7 +158,7 @@ async function saveMap() {
       //     type: Alert.TYPES.ERROR,
       //     id: "alert--save-size-limit-exceeded",
       //     description: "La taille de la carte dépasse la limite autorisée par le serveur.",
-      //     size: 'sm',
+      //     small: true
       //   }, true);
       // }
       else if (status === 400 || status === 404) {
@@ -167,7 +167,7 @@ async function saveMap() {
           type: Alert.TYPES.ERROR,
           id: "alert--save-size-limit-exceeded",
           description: "La taille de la carte dépasse la limite autorisée par le serveur.",
-          size: 'sm',
+          small: true
         }, true);
       } else if (status === 201) {
         // Update id
@@ -182,7 +182,7 @@ async function saveMap() {
           type: Alert.TYPES.SUCCESS,
           id: "alert--save-success",
           description: "Carte enregistrée",
-          size: 'sm',
+          small: true,
         }, true);
         carte.dispatchEvent('save')
       }
