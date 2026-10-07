@@ -70,13 +70,15 @@ if (editId) {
         {
           type: Alert.TYPES.ERROR,
           id: "alert--load-error",
-          description:
-            "Impossible de charger la carte. Veuillez réessayer plus tard",
           title: "Une erreur est survenue",
+          description: `Impossible de charger la carte dont l'id est "${editId}". Veuillez réessayer plus tard`,
         },
         true,
       );
-      alert("Impossible de charger la carte.");
+
+      carte.read(
+        `${import.meta.env.BASE_URL}${import.meta.env.BASE_URL.endsWith("/") ? "" : "/"}carte/template.carte`,
+      );
     })
     // Réactive les interactions avec la carte
     .finally(() => unsetInert(carte));
