@@ -7,8 +7,8 @@
  */
 
 export type GetOrganizationsRoles200Item = {
-  /** clé du rôle */
-  key?: string;
-  /** Nom du rôle */
-  value?: string;
+    /** clé du rôle */
+    key?: string;
+    /** Nom du rôle */
+    value?: string;
 };

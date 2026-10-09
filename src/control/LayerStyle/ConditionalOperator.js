@@ -26,93 +26,82 @@
  * Liste des opérateurs pour une condition
  */
 const ConditionalOperator = Object.freeze({
-    EQ : {
-        key : "EQ",
-        label : "=",
-        filterName : "PropertyIsEqualTo",
-        mcutilsOperator : "=",
+    EQ: {
+        key: "EQ",
+        label: "=",
+        filterName: "PropertyIsEqualTo",
+        mcutilsOperator: "=",
     },
-    NEQ : {
-        key : "NEQ",
-        label : "!=",
-        filterName : "PropertyIsNotEqualTo",
-        mcutilsOperator : "!=",
+    NEQ: {
+        key: "NEQ",
+        label: "!=",
+        filterName: "PropertyIsNotEqualTo",
+        mcutilsOperator: "!=",
     },
-    GT : {
-        key : "GT",
-        label : ">",
-        filterName : "PropertyIsGreaterThan",
-        mcutilsOperator : ">",
+    GT: {
+        key: "GT",
+        label: ">",
+        filterName: "PropertyIsGreaterThan",
+        mcutilsOperator: ">",
     },
-    GTE : {
-        key : "GTE",
-        label : ">=",
-        filterName : "PropertyIsGreaterThanOrEqualTo",
-        mcutilsOperator : ">=",
+    GTE: {
+        key: "GTE",
+        label: ">=",
+        filterName: "PropertyIsGreaterThanOrEqualTo",
+        mcutilsOperator: ">=",
     },
-    LT : {
-        key : "LT",
-        label : "<",
-        filterName : "PropertyIsLessThan",
-        mcutilsOperator : "<",
+    LT: {
+        key: "LT",
+        label: "<",
+        filterName: "PropertyIsLessThan",
+        mcutilsOperator: "<",
     },
-    LTE : {
-        key : "LTE",
-        label : "<=",
-        filterName : "PropertyIsLessThanOrEqualTo",
-        mcutilsOperator : "<=",
+    LTE: {
+        key: "LTE",
+        label: "<=",
+        filterName: "PropertyIsLessThanOrEqualTo",
+        mcutilsOperator: "<=",
     },
-    STARTS_WITH : {
-        key : "STARTS_WITH",
-        label : "Commence par...",
-        filterName : "PropertyStartsWith",
-        mcutilsOperator : undefined,
+    STARTS_WITH: {
+        key: "STARTS_WITH",
+        label: "Commence par...",
+        filterName: "PropertyStartsWith",
+        mcutilsOperator: undefined,
     },
-    ENDS_WITH : {
-        key : "ENDS_WITH",
-        label : "Fini par...",
-        filterName : "PropertyEndsWith",
-        mcutilsOperator : undefined,
+    ENDS_WITH: {
+        key: "ENDS_WITH",
+        label: "Fini par...",
+        filterName: "PropertyEndsWith",
+        mcutilsOperator: undefined,
     },
-    IN : {
-        key : "IN",
-        label : "Contient",
-        filterName : "PropertyIsIn",
-        mcutilsOperator : "contain",
+    IN: {
+        key: "IN",
+        label: "Contient",
+        filterName: "PropertyIsIn",
+        mcutilsOperator: "contain",
     },
-    NOT_IN : {
-        key : "NOT_IN",
-        label : "Ne contient pas",
-        filterName : "PropertyIsNotIn",
-        mcutilsOperator : "!contain",
+    NOT_IN: {
+        key: "NOT_IN",
+        label: "Ne contient pas",
+        filterName: "PropertyIsNotIn",
+        mcutilsOperator: "!contain",
     },
-        LIKE : {
-        key : "LIKE",
-        label : "Comme...",
-        filterName : "PropertyIsLike",
-        mcutilsOperator : "regexp",
+    LIKE: {
+        key: "LIKE",
+        label: "Comme...",
+        filterName: "PropertyIsLike",
+        mcutilsOperator: "regexp",
     },
-    NOT : {
-        key : "NOT",
-        label : "N'est pas...",
-        filterName : "Not",
-        mcutilsOperator : "!regexp",
+    NOT: {
+        key: "NOT",
+        label: "N'est pas...",
+        filterName: "Not",
+        mcutilsOperator: "!regexp",
     },
 });
 
 const OPERATOR_VALUES = new Set(Object.values(ConditionalOperator).map((operator) => operator.key));
-const MCUTILS_OPERATOR_VALUES = new Set([
-    "=",
-    "!=",
-    "<",
-    "<=",
-    ">=",
-    ">",
-    "contain",
-    "!contain",
-    "regexp",
-    "!regexp",
-]);
+const MCUTILS_OPERATOR_VALUES = new Set(["=", "!=", "<", "<=", ">=", ">", "contain", "!contain", "regexp", "!regexp"]);
 const MCUTILS_OPERATOR_TO_OPERATOR_KEY = Object.values(ConditionalOperator).reduce((operatorsByMcutilsOperator, operator) => {
     if (!operator.mcutilsOperator) {
         return operatorsByMcutilsOperator;
@@ -128,7 +117,7 @@ const MCUTILS_OPERATOR_TO_OPERATOR_KEY = Object.values(ConditionalOperator).redu
  * @param {ConditionalOperatorKey|String} operatorKey Clé d'opérateur à valider.
  * @returns {Boolean} `true` si la clé existe dans la liste des opérateurs, sinon `false`.
  */
-export function isConditionalOperator (operatorKey) {
+export function isConditionalOperator(operatorKey) {
     return OPERATOR_VALUES.has(operatorKey);
 }
 
@@ -138,7 +127,7 @@ export function isConditionalOperator (operatorKey) {
  * @param {McutilsOperator|String} mcutilsOperator Valeur d'opérateur mcutils à valider.
  * @returns {Boolean} `true` si la valeur est un opérateur mcutils valide, sinon `false`.
  */
-export function isMcutilsOperator (mcutilsOperator) {
+export function isMcutilsOperator(mcutilsOperator) {
     return MCUTILS_OPERATOR_VALUES.has(mcutilsOperator);
 }
 
@@ -148,7 +137,7 @@ export function isMcutilsOperator (mcutilsOperator) {
  * @param {ConditionalOperatorKey|String} operatorKey Clé de l'opérateur recherché.
  * @returns {ConditionalOperatorDefinition|undefined} Définition de l'opérateur, ou `undefined` s'il n'existe pas.
  */
-export function getConditionalOperatorInfo (operatorKey) {
+export function getConditionalOperatorInfo(operatorKey) {
     return Object.values(ConditionalOperator).find((operator) => operator.key === operatorKey);
 }
 
@@ -157,7 +146,7 @@ export function getConditionalOperatorInfo (operatorKey) {
  *
  * @returns {Array<ConditionalOperatorOption>} Liste des options d'opérateurs.
  */
-export function getConditionalOperatorOptions () {
+export function getConditionalOperatorOptions() {
     return Object.values(ConditionalOperator).map(({ key, label, filterName, mcutilsOperator }) => ({
         key,
         label,
@@ -172,7 +161,7 @@ export function getConditionalOperatorOptions () {
  * @param {McutilsOperator|String} mcutilsOperator Valeur d'opérateur issue de mcutils (ex: `=`, `contain`, `regexp`).
  * @returns {ConditionalOperatorKey|undefined} Clé interne correspondante, ou `undefined` si aucun mapping n'existe.
  */
-export function fromMcutilsOperator (mcutilsOperator) {
+export function fromMcutilsOperator(mcutilsOperator) {
     return MCUTILS_OPERATOR_TO_OPERATOR_KEY[mcutilsOperator];
 }
 
@@ -182,7 +171,7 @@ export function fromMcutilsOperator (mcutilsOperator) {
  * @param {ConditionalOperatorKey|String} operatorKey Clé interne de l'opérateur.
  * @returns {McutilsOperator|undefined} Opérateur mcutils correspondant, ou `undefined` si aucun mapping n'est défini.
  */
-export function toMcutilsOperator (operatorKey) {
+export function toMcutilsOperator(operatorKey) {
     return getConditionalOperatorInfo(operatorKey)?.mcutilsOperator;
 }
 

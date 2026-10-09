@@ -11,16 +11,16 @@ import type { MapList } from "./mapList";
  * Description d'une carte avec ses métadonnées et les liens de modification / visualisation
  */
 export type MapView = MapList & {
-  /** lien vers le contenu de la carte */
-  data_url: string;
-  /**
-   * lien vers l'édition du contenu de la carte, renvoyé uniquement si l'utilisateur peut éditer la carte
-   * @nullable
-   */
-  data_edit_url?: string | null;
-  /**
-   * utilisateur qui a modifié le contenu, renvoyé uniquement si l'utilisateur peut éditer la carte
-   * @nullable
-   */
-  editor?: string | null;
+    /** lien vers le contenu de la carte */
+    data_url: string;
+    /**
+     * lien vers l'édition du contenu de la carte, renvoyé uniquement si l'utilisateur peut éditer la carte
+     * @nullable
+     */
+    data_edit_url?: string | null;
+    /**
+     * utilisateur qui a modifié le contenu, renvoyé uniquement si l'utilisateur peut éditer la carte
+     * @nullable
+     */
+    editor?: string | null;
 };

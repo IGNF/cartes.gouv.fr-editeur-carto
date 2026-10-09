@@ -10,10 +10,10 @@
  * Agrégat du nombre de cartes par organisation dans les résultats de recherche
  */
 export interface MapResearchOrganization {
-  /** Nom de l'organisation, ou chaîne vide pour les cartes hors organisation */
-  organization: string;
-  /** Identifiant public de l'organisation, ou chaîne vide pour les cartes hors organisation */
-  public_id: string;
-  /** Nombre de cartes */
-  count: number;
+    /** Nom de l'organisation, ou chaîne vide pour les cartes hors organisation */
+    organization: string;
+    /** Identifiant public de l'organisation, ou chaîne vide pour les cartes hors organisation */
+    public_id: string;
+    /** Nombre de cartes */
+    count: number;
 }

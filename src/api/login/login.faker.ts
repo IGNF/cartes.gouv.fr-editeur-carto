@@ -9,30 +9,14 @@ import { faker } from "@faker-js/faker";
 
 import type { Login } from "../model";
 
-export const getRefreshTokenResponseMock = (
-  overrideResponse: Partial<Extract<Login, object>> = {},
-): Login => ({
-  token: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  refresh_token: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  ...overrideResponse,
+export const getRefreshTokenResponseMock = (overrideResponse: Partial<Extract<Login, object>> = {}): Login => ({
+    token: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), undefined]),
+    refresh_token: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), undefined]),
+    ...overrideResponse,
 });
 
-export const getPostLoginResponseMock = (
-  overrideResponse: Partial<Extract<Login, object>> = {},
-): Login => ({
-  token: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  refresh_token: faker.helpers.arrayElement([
-    faker.string.alpha({ length: { min: 10, max: 20 } }),
-    undefined,
-  ]),
-  ...overrideResponse,
+export const getPostLoginResponseMock = (overrideResponse: Partial<Extract<Login, object>> = {}): Login => ({
+    token: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), undefined]),
+    refresh_token: faker.helpers.arrayElement([faker.string.alpha({ length: { min: 10, max: 20 } }), undefined]),
+    ...overrideResponse,
 });

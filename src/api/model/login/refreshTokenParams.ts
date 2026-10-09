@@ -7,5 +7,5 @@
  */
 
 export type RefreshTokenParams = {
-  refresh_token: string;
+    refresh_token: string;
 };

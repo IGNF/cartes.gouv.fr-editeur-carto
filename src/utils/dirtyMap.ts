@@ -5,12 +5,12 @@
 let dirty = false;
 
 /**
- * Permet de 
+ * Permet de
  * @param ev Événement à gérer
  */
 export const beforeUnloadHandler = async (ev: BeforeUnloadEvent) => {
-  ev.preventDefault();
-  ev.returnValue = true;
+    ev.preventDefault();
+    ev.returnValue = true;
 };
 
 /**
@@ -19,13 +19,13 @@ export const beforeUnloadHandler = async (ev: BeforeUnloadEvent) => {
  * @param b Vrai s'il faut demander confirmation à l'utilisateur, faux sinon
  */
 export function setDirty(b: boolean) {
-  if (b === dirty) return;
-  dirty = b;
-  if (b) {
-    window.addEventListener("beforeunload", beforeUnloadHandler);
-  } else {
-    window.removeEventListener("beforeunload", beforeUnloadHandler);
-  }
+    if (b === dirty) return;
+    dirty = b;
+    if (b) {
+        window.addEventListener("beforeunload", beforeUnloadHandler);
+    } else {
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
+    }
 }
 
 export default dirty;

@@ -1,4 +1,4 @@
-export const env = import.meta.env
+export const env = import.meta.env;
 
 const dashboardEnv: DashboardEditeurEnv = (typeof window !== "undefined" && window.__DASHBOARD_EDITEUR_ENV) || {};
 

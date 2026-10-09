@@ -7,5 +7,5 @@
  */
 
 export type GetEditorialMegamenu200 = {
-  html?: string;
+    html?: string;
 };

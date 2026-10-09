@@ -8,6 +8,6 @@
 import type { UserEdit } from "./userEdit";
 
 export type UserMeEdit = UserEdit & {
-  current_password?: string;
-  new_password?: string;
+    current_password?: string;
+    new_password?: string;
 };

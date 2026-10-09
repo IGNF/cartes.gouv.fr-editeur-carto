@@ -1,25 +1,25 @@
-import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js';
+import TabNavItem from "geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js";
 
 /**
  * @returns {HTMLElement}
  */
-function initContent () {
-  const container = document.createElement('div');
-  container.style.padding = '1rem 0.5rem';
+function initContent() {
+    const container = document.createElement("div");
+    container.style.padding = "1rem 0.5rem";
 
-  const badge = document.createElement('p');
-  badge.className = 'fr-badge fr-badge--new';
-  badge.textContent = 'Bientôt disponible';
+    const badge = document.createElement("p");
+    badge.className = "fr-badge fr-badge--new";
+    badge.textContent = "Bientôt disponible";
 
-  container.appendChild(badge);
+    container.appendChild(badge);
 
-  return container;
+    return container;
 }
 
 const styleTabNavItem = new TabNavItem({
-  label: 'Style',
-  title: 'Ouvrir l\'onglet Style',
-  content: initContent(),
+    label: "Style",
+    title: "Ouvrir l'onglet Style",
+    content: initContent(),
 });
 
 export default styleTabNavItem;

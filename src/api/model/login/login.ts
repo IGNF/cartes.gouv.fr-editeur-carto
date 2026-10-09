@@ -7,8 +7,8 @@
  */
 
 export interface Login {
-  /** Jeton JWT à envoyer dans le header Authorization: Bearer xxx */
-  token?: string;
-  /** Jeton pour rafraichir le jeton JWT à envoyer /api/token/refresh */
-  refresh_token?: string;
+    /** Jeton JWT à envoyer dans le header Authorization: Bearer xxx */
+    token?: string;
+    /** Jeton pour rafraichir le jeton JWT à envoyer /api/token/refresh */
+    refresh_token?: string;
 }

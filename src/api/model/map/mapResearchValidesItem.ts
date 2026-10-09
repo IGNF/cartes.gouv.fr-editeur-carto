@@ -7,8 +7,8 @@
  */
 
 export type MapResearchValidesItem = {
-  /** booléen indiquant valide/invalide */
-  valid: boolean;
-  /** Nombre de cartes */
-  count: number;
+    /** booléen indiquant valide/invalide */
+    valid: boolean;
+    /** Nombre de cartes */
+    count: number;
 };

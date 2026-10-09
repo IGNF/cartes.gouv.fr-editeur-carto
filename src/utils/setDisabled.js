@@ -4,30 +4,27 @@
  * @param {HTMLInputElement|string} inputOrId Input ciblé ou son id
  * @param {boolean} disabled Etat disabled à appliquer
  */
-function setDisabled (inputOrId, disabled) {
-  const input = typeof inputOrId === 'string'
-    ? document.getElementById(inputOrId)
-    : inputOrId;
+function setDisabled(inputOrId, disabled) {
+    const input = typeof inputOrId === "string" ? document.getElementById(inputOrId) : inputOrId;
 
-  if (!input || !('disabled' in input)) {
-    return;
-  }
+    if (!input || !("disabled" in input)) {
+        return;
+    }
 
-  input.disabled = disabled;
+    input.disabled = disabled;
 
-  const parent = input.parentElement;
-  if (!parent) {
-    return;
-  }
+    const parent = input.parentElement;
+    if (!parent) {
+        return;
+    }
 
-  const groupClassName = Array.from(parent.classList)
-    .find((className) => /^fr-[a-z0-9-]+-group$/.test(className));
+    const groupClassName = Array.from(parent.classList).find((className) => /^fr-[a-z0-9-]+-group$/.test(className));
 
-  if (!groupClassName) {
-    return;
-  }
+    if (!groupClassName) {
+        return;
+    }
 
-  parent.classList.toggle(`${groupClassName}--disabled`, disabled);
+    parent.classList.toggle(`${groupClassName}--disabled`, disabled);
 }
 
 export default setDisabled;

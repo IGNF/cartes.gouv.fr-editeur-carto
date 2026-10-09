@@ -12,24 +12,22 @@ import type { Theme } from "../model";
 import { fetchWithAuth } from ".././fetchWithAuth";
 
 export type getThemesResponse200 = {
-  data: Theme[];
-  status: 200;
+    data: Theme[];
+    status: 200;
 };
 
 export type getThemesResponseSuccess = getThemesResponse200 & {
-  headers: Headers;
+    headers: Headers;
 };
 export type getThemesResponse = getThemesResponseSuccess;
 
 export const getGetThemesUrl = () => {
-  return `${apiURL}/api/themes`;
+    return `${apiURL}/api/themes`;
 };
 
-export const getThemes = async (
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<getThemesResponse> => {
-  return fetchWithAuth<getThemesResponse>(getGetThemesUrl(), {
-    ...options,
-    method: "GET",
-  });
+export const getThemes = async (options?: Parameters<typeof fetchWithAuth>[1]): Promise<getThemesResponse> => {
+    return fetchWithAuth<getThemesResponse>(getGetThemesUrl(), {
+        ...options,
+        method: "GET",
+    });
 };

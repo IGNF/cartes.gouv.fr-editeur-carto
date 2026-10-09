@@ -8,6 +8,6 @@
 import type { MapAdd } from "./mapAdd";
 
 export type PatchMapByEditIdBody = MapAdd & {
-  /** Demande à modifier l'id de modification */
-  new_edit_id?: boolean;
+    /** Demande à modifier l'id de modification */
+    new_edit_id?: boolean;
 };

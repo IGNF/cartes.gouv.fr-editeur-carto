@@ -7,8 +7,8 @@
  */
 
 export type MapResearchUsersItem = {
-  /** Nom public de l'utilisateur */
-  user: string;
-  /** Nombre de cartes */
-  count: number;
+    /** Nom public de l'utilisateur */
+    user: string;
+    /** Nombre de cartes */
+    count: number;
 };

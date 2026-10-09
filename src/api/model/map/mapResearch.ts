@@ -19,24 +19,24 @@ import type { MapResearchValidesItem } from "./mapResearchValidesItem";
  * Recherche des cartes
  */
 export interface MapResearch {
-  maps: MapResearchItem[];
-  themes: MapResearchTheme[];
-  organizations: MapResearchOrganization[];
-  users: MapResearchUsersItem[];
-  types: MapResearchTypesItem[];
-  premiums: MapResearchPremiumsItem[];
-  actives: MapResearchActivesItem[];
-  valides: MapResearchValidesItem[];
-  shares: MapResearchSharesItem[];
-  /** Mot(s) contenu(s) dans le titre, la description ou le theme des cartes */
-  query: string;
-  /** Nombre de cartes correspondant à la recherche */
-  count: number;
-  /**
-   * Nombre de cartes reçues dans la requête. Peut être null lorsque toutes les cartes sont demandées.
-   * @nullable
-   */
-  limit: number | null;
-  /** Nombre de cartes à passer avant de les inclure dans la requete */
-  offset: number;
+    maps: MapResearchItem[];
+    themes: MapResearchTheme[];
+    organizations: MapResearchOrganization[];
+    users: MapResearchUsersItem[];
+    types: MapResearchTypesItem[];
+    premiums: MapResearchPremiumsItem[];
+    actives: MapResearchActivesItem[];
+    valides: MapResearchValidesItem[];
+    shares: MapResearchSharesItem[];
+    /** Mot(s) contenu(s) dans le titre, la description ou le theme des cartes */
+    query: string;
+    /** Nombre de cartes correspondant à la recherche */
+    count: number;
+    /**
+     * Nombre de cartes reçues dans la requête. Peut être null lorsque toutes les cartes sont demandées.
+     * @nullable
+     */
+    limit: number | null;
+    /** Nombre de cartes à passer avant de les inclure dans la requete */
+    offset: number;
 }

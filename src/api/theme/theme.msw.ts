@@ -15,26 +15,22 @@ import { getGetThemesResponseMock } from "./theme.faker";
 export { getGetThemesResponseMock } from "./theme.faker";
 
 export const getGetThemesMockHandler = (
-  overrideResponse?:
-    | Theme[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Theme[]> | Theme[]),
-  options?: RequestHandlerOptions,
+    overrideResponse?: Theme[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Theme[]> | Theme[]),
+    options?: RequestHandlerOptions
 ) => {
-  return http.get(
-    "*/api/themes",
-    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetThemesResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.get(
+        "*/api/themes",
+        async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getGetThemesResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 export const getThemeMock = () => [getGetThemesMockHandler()];

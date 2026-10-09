@@ -10,86 +10,64 @@ import type { RequestHandlerOptions } from "msw";
 
 import type { Login } from "../model";
 
-import {
-  getPostLoginResponseMock,
-  getRefreshTokenResponseMock,
-} from "./login.faker";
+import { getPostLoginResponseMock, getRefreshTokenResponseMock } from "./login.faker";
 
-export {
-  getRefreshTokenResponseMock,
-  getPostLoginResponseMock,
-} from "./login.faker";
+export { getRefreshTokenResponseMock, getPostLoginResponseMock } from "./login.faker";
 
 export const getRefreshTokenMockHandler = (
-  overrideResponse?:
-    | Login
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<Login> | Login),
-  options?: RequestHandlerOptions,
+    overrideResponse?: Login | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Login> | Login),
+    options?: RequestHandlerOptions
 ) => {
-  return http.post(
-    "*/api/token/refresh",
-    async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getRefreshTokenResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.post(
+        "*/api/token/refresh",
+        async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getRefreshTokenResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 
 export const getPostLoginMockHandler = (
-  overrideResponse?:
-    | Login
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<Login> | Login),
-  options?: RequestHandlerOptions,
+    overrideResponse?: Login | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Login> | Login),
+    options?: RequestHandlerOptions
 ) => {
-  return http.post(
-    "*/api/login",
-    async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getPostLoginResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.post(
+        "*/api/login",
+        async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getPostLoginResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 
 export const getPostLogoutMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
-  options?: RequestHandlerOptions,
+    overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void),
+    options?: RequestHandlerOptions
 ) => {
-  return http.post(
-    "*/api/logout",
-    async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
-      if (typeof overrideResponse === "function") {
-        await overrideResponse(info);
-      }
+    return http.post(
+        "*/api/logout",
+        async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+            if (typeof overrideResponse === "function") {
+                await overrideResponse(info);
+            }
 
-      return new HttpResponse(null, { status: 200 });
-    },
-    options,
-  );
+            return new HttpResponse(null, { status: 200 });
+        },
+        options
+    );
 };
-export const getLoginMock = () => [
-  getRefreshTokenMockHandler(),
-  getPostLoginMockHandler(),
-  getPostLogoutMockHandler(),
-];
+export const getLoginMock = () => [getRefreshTokenMockHandler(), getPostLoginMockHandler(), getPostLogoutMockHandler()];

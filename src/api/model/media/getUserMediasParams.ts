@@ -9,32 +9,32 @@ import type { LimitParameter } from "../limitParameter";
 import type { OffsetParameter } from "../offsetParameter";
 
 export type GetUserMediasParams = {
-  /**
-   * Name contient cette valeur
-   */
-  name?: string;
-  /**
-   * Identifiant du média recherché
-   */
-  id?: number;
-  /**
-   * Identifiant public de l'organisation, renvoie la liste de ses médias
-   */
-  organization_id?: number;
-  /**
-   * Si 'true', limite la recherche aux médias invalidés par les administrateurs
-   */
-  valid?: boolean;
-  /**
-   * tri des medias, parmi ['size', 'date']
-   */
-  sort?: string;
-  /**
-   * Le nombre d'objets à ignorer avant de commencer à collecter l'ensemble de résultats
-   */
-  offset?: OffsetParameter;
-  /**
-   * Nombre maximum d'objets à retourner
-   */
-  limit?: LimitParameter;
+    /**
+     * Name contient cette valeur
+     */
+    name?: string;
+    /**
+     * Identifiant du média recherché
+     */
+    id?: number;
+    /**
+     * Identifiant public de l'organisation, renvoie la liste de ses médias
+     */
+    organization_id?: number;
+    /**
+     * Si 'true', limite la recherche aux médias invalidés par les administrateurs
+     */
+    valid?: boolean;
+    /**
+     * tri des medias, parmi ['size', 'date']
+     */
+    sort?: string;
+    /**
+     * Le nombre d'objets à ignorer avant de commencer à collecter l'ensemble de résultats
+     */
+    offset?: OffsetParameter;
+    /**
+     * Nombre maximum d'objets à retourner
+     */
+    limit?: LimitParameter;
 };

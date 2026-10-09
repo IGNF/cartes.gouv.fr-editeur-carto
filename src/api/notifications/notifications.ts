@@ -12,24 +12,22 @@ import type { Notification } from "../model";
 import { fetchWithAuth } from ".././fetchWithAuth";
 
 export type getNotificationsResponse200 = {
-  data: Notification[];
-  status: 200;
+    data: Notification[];
+    status: 200;
 };
 
 export type getNotificationsResponseSuccess = getNotificationsResponse200 & {
-  headers: Headers;
+    headers: Headers;
 };
 export type getNotificationsResponse = getNotificationsResponseSuccess;
 
 export const getGetNotificationsUrl = () => {
-  return `${apiURL}/api/notifications`;
+    return `${apiURL}/api/notifications`;
 };
 
-export const getNotifications = async (
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<getNotificationsResponse> => {
-  return fetchWithAuth<getNotificationsResponse>(getGetNotificationsUrl(), {
-    ...options,
-    method: "GET",
-  });
+export const getNotifications = async (options?: Parameters<typeof fetchWithAuth>[1]): Promise<getNotificationsResponse> => {
+    return fetchWithAuth<getNotificationsResponse>(getGetNotificationsUrl(), {
+        ...options,
+        method: "GET",
+    });
 };

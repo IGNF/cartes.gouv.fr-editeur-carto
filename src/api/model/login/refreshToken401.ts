@@ -7,6 +7,6 @@
  */
 
 export type RefreshToken401 = {
-  code?: number;
-  message?: string;
+    code?: number;
+    message?: string;
 };

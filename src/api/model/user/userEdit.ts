@@ -8,8 +8,8 @@
 import type { UserPublic } from "./userPublic";
 
 export type UserEdit = UserPublic & {
-  /** Unique, ne doit pas être déjà utilisé (Erreur 400) */
-  email?: string;
-  /** Unique, ne doit pas être déjà utilisé (Erreur 400) */
-  username?: string;
+    /** Unique, ne doit pas être déjà utilisé (Erreur 400) */
+    email?: string;
+    /** Unique, ne doit pas être déjà utilisé (Erreur 400) */
+    username?: string;
 };

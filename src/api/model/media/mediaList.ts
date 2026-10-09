@@ -11,11 +11,11 @@ import type { Media } from "./media";
  * Liste de médias
  */
 export interface MediaList {
-  medias?: Media[];
-  /** Nombre de média correspondant à la recherche */
-  count?: number;
-  /** Nombre de média recues dans la requete */
-  limit?: number;
-  /** Nombre de média à passer avant de ls inclure dans la requete */
-  offset?: number;
+    medias?: Media[];
+    /** Nombre de média correspondant à la recherche */
+    count?: number;
+    /** Nombre de média recues dans la requete */
+    limit?: number;
+    /** Nombre de média à passer avant de ls inclure dans la requete */
+    offset?: number;
 }
