@@ -18,11 +18,11 @@
         "init": "npm run extract",
         "extract": "npm run extract:remix",
         "extract:remix": "node scripts/extract-remix.cjs --output ./public/data",
-        "lint": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "lint:fix": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+        "lint": "eslint src/ --ext js,ts --report-unused-disable-directives --max-warnings 0",
+        "lint:fix": "eslint src/ --ext js,ts --report-unused-disable-directives --max-warnings 0 --fix",
         "preview": "vite preview",
         "format": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:fix": "prettier --list-different --write .",
         "prepare": "husky"
     },
     "devDependencies": {
@@ -70,7 +70,7 @@
     },
     "lint-staged": {
         "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern .",
-        "*.{js,ts,jsx,tsx}": "eslint src/ --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --fix"
+        "*.{js,ts}": "eslint src/ --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --fix"
     },
     "engines": {
         "node": ">=24.0.0 <26.0.0",

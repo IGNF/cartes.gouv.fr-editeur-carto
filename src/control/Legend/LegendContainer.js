@@ -196,10 +196,8 @@ class LegendContainer extends BaseObject {
                     this.refreshList();
                     // focus on bouton déplacé
                     setTimeout(() => {
-                        this._legendList
-                            .querySelectorAll(".legend-item")
-                            [newIndex].querySelector('[data-direction="' + btn.dataset.direction + '"]')
-                            .focus();
+                        const legendItem = this._legendList.querySelectorAll(".legend-item");
+                        legendItem[newIndex].querySelector('[data-direction="' + btn.dataset.direction + '"]').focus();
                     });
                 });
             });

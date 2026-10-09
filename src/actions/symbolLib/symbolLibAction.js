@@ -231,11 +231,8 @@ class SymbolLibAction extends Action {
                     this.setSymbols();
                     // focus on bouton déplacé
                     setTimeout(() => {
-                        modal
-                            .getDialogContent()
-                            .querySelectorAll(".symbol-lib-item")
-                            [newIndex].querySelector('[data-direction="' + btn.dataset.direction + '"]')
-                            .focus();
+                        const symbolItems = modal.getDialogContent().querySelectorAll(".symbol-lib-item");
+                        symbolItems[newIndex].querySelector(`[data-direction="${btn.dataset.direction}"]`).focus();
                     });
                 });
             });

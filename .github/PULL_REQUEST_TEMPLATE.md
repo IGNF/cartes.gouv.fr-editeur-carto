@@ -1,18 +1,15 @@
 ## Pull request checklist
 
-Verifiez que votre Pull Request remplit les conditions suivantes :
+<!-- Verifiez que votre Pull Request remplit les conditions suivantes :
 
 - [ ] Des tests ont été ajoutés pour les changements (corrections de bugs ou features)
 - [ ] De la documentation a été mise à jour ou ajoutée si nécessaire (corrections de bugs ou features)
 - [ ] Un build (`npm run build`) a été lancé localement et s'est correctement déroulé
+-->
 
 ## Type de Pull request
 
-<!-- Attention à ne pas mettre à jour les dépendances, à moins que ce soit l'objet de la PR -->
-
-<!-- Essayer autant que faire se peut de se limiter à un type de changement par PR. -->
-
-Quel type de changement cette Pull Request introduit-elle :
+<!-- Quel type de changement cette Pull Request introduit-elle ?
 
 - [ ] Bugfix
 - [ ] Feature
@@ -21,6 +18,16 @@ Quel type de changement cette Pull Request introduit-elle :
 - [ ] Changement sur le processus de build
 - [ ] Contenu de la documentation
 - [ ] Autres (décrire ci-après) :
+
+-->
+
+<!-- Attention à ne pas mettre à jour les dépendances, à moins que ce soit l'objet de la PR.
+Essayer autant que faire se peut de se limiter à un type de changement par PR.
+
+Ne laisser que les types de PR correspondants, effacer les autres.
+-->
+
+- [x]
 
 ## Quel est le comportement actuel (avant PR) :
 
