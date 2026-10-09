@@ -4,13 +4,13 @@
 ////
 
 .ol-beta {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  margin: 0.5rem;
-  padding: 0.25rem;
-  z-index: 5;
-  background-color: var(--background-contrast-success);
-  filter: drop-shadow(var(--raised-shadow));
-  border-radius: 0.25rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 0.5rem;
+    padding: 0.25rem;
+    z-index: 5;
+    background-color: var(--background-contrast-success);
+    filter: drop-shadow(var(--raised-shadow));
+    border-radius: 0.25rem;
 }

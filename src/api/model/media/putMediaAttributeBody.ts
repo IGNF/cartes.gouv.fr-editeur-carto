@@ -7,6 +7,6 @@
  */
 
 export type PutMediaAttributeBody = {
-  /** valeur à affecter à l'attribut [folder => peut être null] */
-  value?: string;
+    /** valeur à affecter à l'attribut [folder => peut être null] */
+    value?: string;
 };

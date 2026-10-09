@@ -1,57 +1,57 @@
-import Action from '../Action.js';
-import carte from '../../carte.js';
-import content from './renameMap.html?raw';
+import Action from "../Action.js";
+import carte from "../../carte.js";
+import content from "./renameMap.html?raw";
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
- * Dialog utilisé par l'action 
+ * Dialog utilisé par l'action
  */
 let dialog;
 
 /**
  * Fonction à l'ouverture du dialog.
- * 
+ *
  * @param {Event} e Événement générique openlayer
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
 function onOpen(e) {
-  dialog = e.target
-  let input = dialog.querySelector('[data-field="title"]');
-  input.value = carte.getTitle(true);
+    dialog = e.target;
+    let input = dialog.querySelector('[data-field="title"]');
+    input.value = carte.getTitle(true);
 }
 
 function renameMap() {
-  let input = dialog.querySelector('[data-field="title"]');
+    let input = dialog.querySelector('[data-field="title"]');
 
-  if (input.value) {
-    carte.set('title', input.value);
-    carte.getMap().set('title', input.value);
-    if (carte.get('atlas')) {
-      carte.get('atlas').title = input.value;
+    if (input.value) {
+        carte.set("title", input.value);
+        carte.getMap().set("title", input.value);
+        if (carte.get("atlas")) {
+            carte.get("atlas").title = input.value;
+        }
     }
-  }
 
-  dialog.close()
+    dialog.close();
 }
 
 const renameMapAction = new Action({
-  id: 'rename-map',
-  title: 'Renommer',
-  content: content,
-  buttons: [
-    {
-      label: "Enregistrer",
-      kind: 0,
-      callback: renameMap
-    },
-    {
-      label: "Annuler",
-      kind: 1,
-      close: true
-    }
-  ],
-  onOpen: onOpen
+    id: "rename-map",
+    title: "Renommer",
+    content: content,
+    buttons: [
+        {
+            label: "Enregistrer",
+            kind: 0,
+            callback: renameMap,
+        },
+        {
+            label: "Annuler",
+            kind: 1,
+            close: true,
+        },
+    ],
+    onOpen: onOpen,
 });
 
 export default renameMapAction;

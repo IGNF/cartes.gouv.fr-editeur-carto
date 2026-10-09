@@ -7,8 +7,8 @@
  */
 
 export type GetUsersParams = {
-  /**
-   * public_name contient query
-   */
-  query: string;
+    /**
+     * public_name contient query
+     */
+    query: string;
 };

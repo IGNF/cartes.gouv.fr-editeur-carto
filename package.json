@@ -69,7 +69,7 @@
         ]
     },
     "lint-staged": {
-        "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern",
+        "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern .",
         "*.{js,ts,jsx,tsx}": "eslint src/ --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --fix"
     },
     "engines": {

@@ -15,26 +15,22 @@ import { getGetNotificationsResponseMock } from "./notifications.faker";
 export { getGetNotificationsResponseMock } from "./notifications.faker";
 
 export const getGetNotificationsMockHandler = (
-  overrideResponse?:
-    | Notification[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<Notification[]> | Notification[]),
-  options?: RequestHandlerOptions,
+    overrideResponse?: Notification[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Notification[]> | Notification[]),
+    options?: RequestHandlerOptions
 ) => {
-  return http.get(
-    "*/api/notifications",
-    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetNotificationsResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.get(
+        "*/api/notifications",
+        async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getGetNotificationsResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 export const getNotificationsMock = () => [getGetNotificationsMockHandler()];

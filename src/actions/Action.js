@@ -1,9 +1,9 @@
-import Dialog from '../control/Dialog/AbstractDialog.js';
+import Dialog from "../control/Dialog/AbstractDialog.js";
 import ExtGPFDialog from "geopf-extensions-openlayers/src/packages/Controls/Toggle/Dialog.js";
 
 /**
  * Bouton à mettre dans le buttons d'un dialog
- *  
+ *
  * @typedef {Object} FooterButton
  * @property {string} label - Label du bouton.
  * @property {boolean} [kind=0] - Classe du bouton.
@@ -20,13 +20,13 @@ import ExtGPFDialog from "geopf-extensions-openlayers/src/packages/Controls/Togg
 
 /**
  * Action à définir pour un bouton ou un autre élément.
- * 
+ *
  * @typedef {Object} ActionOptions
  * @property {string} title - Titre d'un dialog.
  * @property {string|HTMLElement} content - Contenu d'un dialog.
  * @property {string} [icon] - Icône du titre.
  * @property {FooterButton[]} [buttons] - Boutons d'actions d'un dialog.
- * @property {BeforeOpenFunction} [beforeOpen] - Fonction à appeler avant l'ouverture d'un dialog. Si rien n'est donné, 
+ * @property {BeforeOpenFunction} [beforeOpen] - Fonction à appeler avant l'ouverture d'un dialog. Si rien n'est donné,
  * @property {Function} [onOpen] - Fonction à appeler à l'ouverture d'un dialog.
  * @property {Function} [onClose] - Fonction à appeler à la fermeture d'un dialog.
  * @property {String} [size] - Uniquement pour les panneaux. Définit la taille du panneau.
@@ -34,7 +34,6 @@ import ExtGPFDialog from "geopf-extensions-openlayers/src/packages/Controls/Togg
 
 /* Action list */
 const actions = {};
-
 
 /**
  * Lie une action à un dialog ext-gpf, met à jour son contenu et l'ouvre.
@@ -44,213 +43,210 @@ const actions = {};
  * @returns {boolean} false si le dialog ne possède pas les méthodes requises
  */
 function setExtGpfAction(dialog, action) {
-  action.dialog = dialog;
-  dialog.getElement().dataset.actionId = action.id;
+    action.dialog = dialog;
+    dialog.getElement().dataset.actionId = action.id;
 
-  dialog.setContent({
-    title: action.title,
-    icon: action.icon,
-    content: action.content,
-    items: action.items,
-    footer: action.buttons
-  });
+    dialog.setContent({
+        title: action.title,
+        icon: action.icon,
+        content: action.content,
+        items: action.items,
+        footer: action.buttons,
+    });
 
-  dialog.setOnOpen(action.onOpen);
-  dialog.setOnClose(action.onClose);
-  
-  dialog.show();
-  return true;
+    dialog.setOnOpen(action.onOpen);
+    dialog.setOnClose(action.onClose);
+
+    dialog.show();
+    return true;
 }
 
 /**
  * Classe représentant une action complète pour une modale (titre, contenu, pied de page et action à l'ouverture)
  */
 class Action {
-  /**
-   * @param {ActionOptions} options - Options de configuration de l'action
-   */
-  constructor(options) {
-    if (!options.id) {
-      throw new Error('L\'id de l\'action est obligatoire');
-    }
-    if (actions[options.id]) {
-      throw new Error(`L'action ${options.id} existe déjà`);
-    }
-    this.id = options.id || '';
-    this.title = options.title || '';
-    this.content = options.content || '';
-    this.buttons = options.buttons;
-    this.items = options.items;
-    this.beforeOpen = typeof options.beforeOpen === 'function' ? options.beforeOpen : () => true;
-    this.onOpen = typeof options.onOpen === 'function' ? options.onOpen : () => { };
-    this.onClose = typeof options.onClose === 'function' ? options.onClose : () => { };
-    this.icon = options.icon || '';
-    this.size = options.size;
-    actions[options.id] = this;
-  }
-
-
-  /**
-   * Renvoie l'actipn correspondante à l'id donné
-   * @param {string} id Id de l'action
-   * @returns {Action} Action avec l'id correspondant
-   * @throws {Error} Si aucune action n'existe
-   * @static
-   */
-  static getAction(id) {
-    const action = actions[id];
-    if (!action) {
-      throw new Error(`L'action ${id} n'existe pas`);
-    }
-    return action;
-  }
-
-  /** Open 
-   * @param {Event|Dialog} e - Événement du clic ou dialog
-   * @param {Action} actionId - Id de l'action à ouvrir
-   * @param {boolean} pressed - Si l'action est un toggle, indique si le toggle est activé ou non
-   * @returns {{action: Action, dialog: Dialog|ExtGPFDialog}} Action et dialogue correspondant
-   * @static
-   */
-  static open(e, actionId, pressed = null) {
-    let dialogId;
-    let dialog;
-    let action;
-    const isDialog = e instanceof Dialog || e instanceof ExtGPFDialog;
-    if (isDialog) {
-      // Cas d'une ouverture classique
-      action = Action.getAction(actionId);
-    } else {
-      // Pour gérer le cas du toggle
-      const target = e.target || e.detail.target;
-      dialogId = target.getAttribute('aria-controls');
-      action = Action.getAction(target.dataset.action);
-      pressed = target.ariaPressed;
+    /**
+     * @param {ActionOptions} options - Options de configuration de l'action
+     */
+    constructor(options) {
+        if (!options.id) {
+            throw new Error("L'id de l'action est obligatoire");
+        }
+        if (actions[options.id]) {
+            throw new Error(`L'action ${options.id} existe déjà`);
+        }
+        this.id = options.id || "";
+        this.title = options.title || "";
+        this.content = options.content || "";
+        this.buttons = options.buttons;
+        this.items = options.items;
+        this.beforeOpen = typeof options.beforeOpen === "function" ? options.beforeOpen : () => true;
+        this.onOpen = typeof options.onOpen === "function" ? options.onOpen : () => {};
+        this.onClose = typeof options.onClose === "function" ? options.onClose : () => {};
+        this.icon = options.icon || "";
+        this.size = options.size;
+        actions[options.id] = this;
     }
 
-    if (isDialog) {
-      dialog = e;
-    } else {
-      try {
-        dialog = Dialog.getDialog(dialogId);
-      } catch {
-        // Dialog est de type ExtGPFDialog
-        dialog = ExtGPFDialog.getDialog(dialogId);
-      }
+    /**
+     * Renvoie l'actipn correspondante à l'id donné
+     * @param {string} id Id de l'action
+     * @returns {Action} Action avec l'id correspondant
+     * @throws {Error} Si aucune action n'existe
+     * @static
+     */
+    static getAction(id) {
+        const action = actions[id];
+        if (!action) {
+            throw new Error(`L'action ${id} n'existe pas`);
+        }
+        return action;
     }
 
-    if (!dialog || !action) return;
+    /** Open
+     * @param {Event|Dialog} e - Événement du clic ou dialog
+     * @param {Action} actionId - Id de l'action à ouvrir
+     * @param {boolean} pressed - Si l'action est un toggle, indique si le toggle est activé ou non
+     * @returns {{action: Action, dialog: Dialog|ExtGPFDialog}} Action et dialogue correspondant
+     * @static
+     */
+    static open(e, actionId, pressed = null) {
+        let dialogId;
+        let dialog;
+        let action;
+        const isDialog = e instanceof Dialog || e instanceof ExtGPFDialog;
+        if (isDialog) {
+            // Cas d'une ouverture classique
+            action = Action.getAction(actionId);
+        } else {
+            // Pour gérer le cas du toggle
+            const target = e.target || e.detail.target;
+            dialogId = target.getAttribute("aria-controls");
+            action = Action.getAction(target.dataset.action);
+            pressed = target.ariaPressed;
+        }
 
-    // Empêche la propagation de l'événement
-    if (action.beforeOpen?.() === false) {
-      e?.preventDefault();
-      e?.stopPropagation();
-      e?.stopImmediatePropagation();
-      return;
+        if (isDialog) {
+            dialog = e;
+        } else {
+            try {
+                dialog = Dialog.getDialog(dialogId);
+            } catch {
+                // Dialog est de type ExtGPFDialog
+                dialog = ExtGPFDialog.getDialog(dialogId);
+            }
+        }
+
+        if (!dialog || !action) return;
+
+        // Empêche la propagation de l'événement
+        if (action.beforeOpen?.() === false) {
+            e?.preventDefault();
+            e?.stopPropagation();
+            e?.stopImmediatePropagation();
+            return;
+        }
+
+        // Modifie l'emitter
+        action.emitter = e.target || e.detail?.target;
+
+        if (pressed === false || pressed === "false") {
+            dialog.close();
+        } else if (dialog instanceof Dialog) {
+            dialog.setAction(action, isDialog);
+        } else if (dialog instanceof ExtGPFDialog) {
+            setExtGpfAction(dialog, action);
+        }
+
+        return { action: action, dialog: dialog };
     }
 
-    // Modifie l'emitter
-    action.emitter = e.target || e.detail?.target;
-
-    if (pressed === false || pressed === 'false') {
-      dialog.close();
-    } else if (dialog instanceof Dialog) {
-      dialog.setAction(action, isDialog);
-    } else if (dialog instanceof ExtGPFDialog) {
-      setExtGpfAction(dialog, action);
+    /** @returns {string} */
+    get id() {
+        return this._id;
     }
 
-    return {"action" : action, "dialog" : dialog};
-  }
+    /** @param {string} value */
+    set id(value) {
+        this._id = value;
+    }
 
-  /** @returns {string} */
-  get id() {
-    return this._id;
-  }
+    /** @returns {string} */
+    get title() {
+        return this._title;
+    }
 
-  /** @param {string} value */
-  set id(value) {
-    this._id = value;
-  }
+    /** @param {string} value */
+    set title(value) {
+        this._title = value;
+    }
 
-  /** @returns {string} */
-  get title() {
-    return this._title;
-  }
+    /** @returns {string|HTMLElement} */
+    get content() {
+        return this._content;
+    }
 
-  /** @param {string} value */
-  set title(value) {
-    this._title = value;
-  }
+    /** @param {string|HTMLElement} value */
+    set content(value) {
+        this._content = value;
+    }
 
-  /** @returns {string|HTMLElement} */
-  get content() {
-    return this._content;
-  }
+    /** @returns {ActionButton[]} */
+    get buttons() {
+        return this._buttons;
+    }
 
-  /** @param {string|HTMLElement} value */
-  set content(value) {
-    this._content = value;
-  }
+    /** @param {ActionButton[]} buttons */
+    set buttons(buttons) {
+        if (!Array.isArray(buttons)) return;
+        this._buttons = buttons;
+    }
 
-  /** @returns {ActionButton[]} */
-  get buttons() {
-    return this._buttons;
-  }
+    /** @returns {ActionButton[]} */
+    get items() {
+        return this._items;
+    }
 
-  /** @param {ActionButton[]} buttons */
-  set buttons(buttons) {
-    if (!Array.isArray(buttons)) return;
-    this._buttons = buttons;
-  }
+    /** @param {ActionButton[]} items */
+    set items(items) {
+        if (!Array.isArray(items)) return;
+        this._items = items;
+    }
 
-  /** @returns {ActionButton[]} */
-  get items() {
-    return this._items;
-  }
+    /**
+     * Élément HTML ayant émis l'action
+     * @returns {HTMLElement}
+     */
+    get emitter() {
+        return this._emitter;
+    }
 
-  /** @param {ActionButton[]} items */
-  set items(items) {
-    if (!Array.isArray(items)) return;
-    this._items = items;
-  }
+    /** @param {HTMLElement} value */
+    set emitter(value) {
+        this._emitter = value;
+    }
 
-  /** 
-   * Élément HTML ayant émis l'action
-   * @returns {HTMLElement}
-   */
-  get emitter() {
-    return this._emitter;
-  }
+    /** @returns {import('../control/Dialog/AbstractDialog').default} */
+    getDialog() {
+        return this.dialog;
+    }
 
-  /** @param {HTMLElement} value */
-  set emitter(value) {
-    this._emitter = value;
-  }
+    /**
+     * Ajoute un bouton dans le buttons
+     * @param {ActionButton} button
+     */
+    addButton(button) {
+        this._buttons.push(button);
+    }
 
-
-  /** @returns {import('../control/Dialog/AbstractDialog').default} */
-  getDialog() {
-    return this.dialog;
-  }
-
-  /**
-   * Ajoute un bouton dans le buttons
-   * @param {ActionButton} button
-   */
-  addButton(button) {
-    this._buttons.push(button);
-  }
-
-  /**
-   * Récupère le bouton à un index donné
-   * @param {number} index
-   * @returns {ActionButton|undefined}
-   */
-  getButton(index) {
-    return this._buttons[index];
-  }
+    /**
+     * Récupère le bouton à un index donné
+     * @param {number} index
+     * @returns {ActionButton|undefined}
+     */
+    getButton(index) {
+        return this._buttons[index];
+    }
 }
 
-
-export default Action
+export default Action;

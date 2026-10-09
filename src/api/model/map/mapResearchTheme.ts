@@ -10,8 +10,8 @@
  * Agrégat du nombre de cartes par thème dans les résultats de recherche
  */
 export interface MapResearchTheme {
-  /** Nom du thème, ou 'undefined' pour les cartes sans thème */
-  theme: string;
-  /** Nombre de cartes */
-  count: number;
+    /** Nom du thème, ou 'undefined' pour les cartes sans thème */
+    theme: string;
+    /** Nombre de cartes */
+    count: number;
 }

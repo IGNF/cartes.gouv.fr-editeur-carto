@@ -1,63 +1,63 @@
-@use '../mixins.scss' as mix;
+@use "../mixins.scss" as mix;
 
 .ol-ext-print-dialog {
-  margin: 0;
-  box-sizing: content-box;
+    margin: 0;
+    box-sizing: content-box;
 
-  &.ol-visible {
-    font-size: 1em;
-  }
-  input,
-  select,
-  textarea {
-    font-size: 1em;
-    appearance: auto;
-    border: 1px solid #666;
-    padding: 0.5em;
-  }
+    &.ol-visible {
+        font-size: 1em;
+    }
+    input,
+    select,
+    textarea {
+        font-size: 1em;
+        appearance: auto;
+        border: 1px solid #666;
+        padding: 0.5em;
+    }
 }
 
 .ol-ctrlbar {
-  box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 // Hide permalink control
 .ol-permalink {
-  display: none !important;
+    display: none !important;
 }
 
 .ol-scale-line {
-  right: 4rem;
-  bottom: 0.5rem;
-  filter: drop-shadow(var(--raised-shadow));
+    right: 4rem;
+    bottom: 0.5rem;
+    filter: drop-shadow(var(--raised-shadow));
 
-  // Modifie la position en mobile
-  @media not (pointer: fine) {
-    right: 0.5rem;
-  }
+    // Modifie la position en mobile
+    @media not (pointer: fine) {
+        right: 0.5rem;
+    }
 }
 
 // Temporaire, position de la barre full screen
 .ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
-  bottom: 6.5rem;
+    bottom: 6.5rem;
 }
 
 // Mode mobile
 @media not (pointer: fine) {
-  // .ol-scale-line {
-  //   display: none;
-  // }
+    // .ol-scale-line {
+    //   display: none;
+    // }
 
-  div[id^='GPzoom-'] {
-    display: none;
-  }
+    div[id^="GPzoom-"] {
+        display: none;
+    }
 
-  .ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
-    display: none;
-  }
+    .ol-control.ol-bar.ol-bottom.ol-right.temp-fullscreen-bar {
+        display: none;
+    }
 }
 
 .ol-viewport .ol-control.gpf-simple-menu {
-  background-color: var(--background-default-grey);
-  border-radius: 0;
+    background-color: var(--background-default-grey);
+    border-radius: 0;
 }

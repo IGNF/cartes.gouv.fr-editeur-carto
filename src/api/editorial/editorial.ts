@@ -7,156 +7,120 @@
  */
 import { apiURL } from "../../env";
 
-import type {
-  Article,
-  GetEditorialCategories200Item,
-  GetEditorialFollowers200,
-  GetEditorialMegamenu200,
-  NotFoundResponse,
-} from "../model";
+import type { Article, GetEditorialCategories200Item, GetEditorialFollowers200, GetEditorialMegamenu200, NotFoundResponse } from "../model";
 
 import { fetchWithAuth } from ".././fetchWithAuth";
 
 export type getEditorialFollowersResponse200 = {
-  data: GetEditorialFollowers200;
-  status: 200;
+    data: GetEditorialFollowers200;
+    status: 200;
 };
 
 export type getEditorialFollowersResponse404 = {
-  data: NotFoundResponse;
-  status: 404;
+    data: NotFoundResponse;
+    status: 404;
 };
 
-export type getEditorialFollowersResponseSuccess =
-  getEditorialFollowersResponse200 & {
+export type getEditorialFollowersResponseSuccess = getEditorialFollowersResponse200 & {
     headers: Headers;
-  };
-export type getEditorialFollowersResponseError =
-  getEditorialFollowersResponse404 & {
+};
+export type getEditorialFollowersResponseError = getEditorialFollowersResponse404 & {
     headers: Headers;
-  };
+};
 
-export type getEditorialFollowersResponse =
-  getEditorialFollowersResponseSuccess | getEditorialFollowersResponseError;
+export type getEditorialFollowersResponse = getEditorialFollowersResponseSuccess | getEditorialFollowersResponseError;
 
 export const getGetEditorialFollowersUrl = () => {
-  return `${apiURL}/api/editorial/followers`;
+    return `${apiURL}/api/editorial/followers`;
 };
 
-export const getEditorialFollowers = async (
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<getEditorialFollowersResponse> => {
-  return fetchWithAuth<getEditorialFollowersResponse>(
-    getGetEditorialFollowersUrl(),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
+export const getEditorialFollowers = async (options?: Parameters<typeof fetchWithAuth>[1]): Promise<getEditorialFollowersResponse> => {
+    return fetchWithAuth<getEditorialFollowersResponse>(getGetEditorialFollowersUrl(), {
+        ...options,
+        method: "GET",
+    });
 };
 
 export type getEditorialMegamenuResponse200 = {
-  data: GetEditorialMegamenu200;
-  status: 200;
+    data: GetEditorialMegamenu200;
+    status: 200;
 };
 
 export type getEditorialMegamenuResponse404 = {
-  data: NotFoundResponse;
-  status: 404;
+    data: NotFoundResponse;
+    status: 404;
 };
 
-export type getEditorialMegamenuResponseSuccess =
-  getEditorialMegamenuResponse200 & {
+export type getEditorialMegamenuResponseSuccess = getEditorialMegamenuResponse200 & {
     headers: Headers;
-  };
-export type getEditorialMegamenuResponseError =
-  getEditorialMegamenuResponse404 & {
+};
+export type getEditorialMegamenuResponseError = getEditorialMegamenuResponse404 & {
     headers: Headers;
-  };
+};
 
-export type getEditorialMegamenuResponse =
-  getEditorialMegamenuResponseSuccess | getEditorialMegamenuResponseError;
+export type getEditorialMegamenuResponse = getEditorialMegamenuResponseSuccess | getEditorialMegamenuResponseError;
 
 export const getGetEditorialMegamenuUrl = () => {
-  return `${apiURL}/api/editorial/megamenu`;
+    return `${apiURL}/api/editorial/megamenu`;
 };
 
-export const getEditorialMegamenu = async (
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<getEditorialMegamenuResponse> => {
-  return fetchWithAuth<getEditorialMegamenuResponse>(
-    getGetEditorialMegamenuUrl(),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
+export const getEditorialMegamenu = async (options?: Parameters<typeof fetchWithAuth>[1]): Promise<getEditorialMegamenuResponse> => {
+    return fetchWithAuth<getEditorialMegamenuResponse>(getGetEditorialMegamenuUrl(), {
+        ...options,
+        method: "GET",
+    });
 };
 
 export type getEditorialCategoriesResponse200 = {
-  data: GetEditorialCategories200Item[];
-  status: 200;
+    data: GetEditorialCategories200Item[];
+    status: 200;
 };
 
-export type getEditorialCategoriesResponseSuccess =
-  getEditorialCategoriesResponse200 & {
+export type getEditorialCategoriesResponseSuccess = getEditorialCategoriesResponse200 & {
     headers: Headers;
-  };
-export type getEditorialCategoriesResponse =
-  getEditorialCategoriesResponseSuccess;
+};
+export type getEditorialCategoriesResponse = getEditorialCategoriesResponseSuccess;
 
 export const getGetEditorialCategoriesUrl = () => {
-  return `${apiURL}/api/editorial/categories`;
+    return `${apiURL}/api/editorial/categories`;
 };
 
-export const getEditorialCategories = async (
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<getEditorialCategoriesResponse> => {
-  return fetchWithAuth<getEditorialCategoriesResponse>(
-    getGetEditorialCategoriesUrl(),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
+export const getEditorialCategories = async (options?: Parameters<typeof fetchWithAuth>[1]): Promise<getEditorialCategoriesResponse> => {
+    return fetchWithAuth<getEditorialCategoriesResponse>(getGetEditorialCategoriesUrl(), {
+        ...options,
+        method: "GET",
+    });
 };
 
 export type getEditorialArticlesByCategoryResponse200 = {
-  data: Article[];
-  status: 200;
+    data: Article[];
+    status: 200;
 };
 
 export type getEditorialArticlesByCategoryResponse404 = {
-  data: NotFoundResponse;
-  status: 404;
+    data: NotFoundResponse;
+    status: 404;
 };
 
-export type getEditorialArticlesByCategoryResponseSuccess =
-  getEditorialArticlesByCategoryResponse200 & {
+export type getEditorialArticlesByCategoryResponseSuccess = getEditorialArticlesByCategoryResponse200 & {
     headers: Headers;
-  };
-export type getEditorialArticlesByCategoryResponseError =
-  getEditorialArticlesByCategoryResponse404 & {
+};
+export type getEditorialArticlesByCategoryResponseError = getEditorialArticlesByCategoryResponse404 & {
     headers: Headers;
-  };
+};
 
-export type getEditorialArticlesByCategoryResponse =
-  | getEditorialArticlesByCategoryResponseSuccess
-  | getEditorialArticlesByCategoryResponseError;
+export type getEditorialArticlesByCategoryResponse = getEditorialArticlesByCategoryResponseSuccess | getEditorialArticlesByCategoryResponseError;
 
 export const getGetEditorialArticlesByCategoryUrl = (category: string) => {
-  return `${apiURL}/api/editorial/articles/${category}`;
+    return `${apiURL}/api/editorial/articles/${category}`;
 };
 
 export const getEditorialArticlesByCategory = async (
-  category: string,
-  options?: Parameters<typeof fetchWithAuth>[1],
+    category: string,
+    options?: Parameters<typeof fetchWithAuth>[1]
 ): Promise<getEditorialArticlesByCategoryResponse> => {
-  return fetchWithAuth<getEditorialArticlesByCategoryResponse>(
-    getGetEditorialArticlesByCategoryUrl(category),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
+    return fetchWithAuth<getEditorialArticlesByCategoryResponse>(getGetEditorialArticlesByCategoryUrl(category), {
+        ...options,
+        method: "GET",
+    });
 };

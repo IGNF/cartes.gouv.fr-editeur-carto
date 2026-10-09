@@ -1,12 +1,10 @@
-# La documentaion 
+# La documentaion
 
-
-N'hésitez pas à mettre dans ce dossier toute documentation que vous jugez pertinente à votre projet. Vous pouvez par exemple y décrire les choix techniques et la stack du projet. Mais aussi comment participer au projet. 
+N'hésitez pas à mettre dans ce dossier toute documentation que vous jugez pertinente à votre projet. Vous pouvez par exemple y décrire les choix techniques et la stack du projet. Mais aussi comment participer au projet.
 
 Vous pouvez également indiquez dans cette section les règles d'hygiène de votre projet (comment contribuer? comment écrire mon commit ? quand commit? le choix de gestion des branchs)
 
 ## Comment enrichir ce template
-
 
 Faites une PR sur la branch qui vous intéresse. Les personnes en charge de ce projet ferons une review vous indiquerons si des changements sont nécessaire.
 

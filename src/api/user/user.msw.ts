@@ -10,140 +10,110 @@ import type { RequestHandlerOptions } from "msw";
 
 import type { GetUsers200Item, UserPublic, UserView } from "../model";
 
-import {
-  getGetMeResponseMock,
-  getGetUserByPublicidResponseMock,
-  getGetUsersResponseMock,
-  getPatchMeResponseMock,
-} from "./user.faker";
+import { getGetMeResponseMock, getGetUserByPublicidResponseMock, getGetUsersResponseMock, getPatchMeResponseMock } from "./user.faker";
 
-export {
-  getGetMeResponseMock,
-  getPatchMeResponseMock,
-  getGetUserByPublicidResponseMock,
-  getGetUsersResponseMock,
-} from "./user.faker";
+export { getGetMeResponseMock, getPatchMeResponseMock, getGetUserByPublicidResponseMock, getGetUsersResponseMock } from "./user.faker";
 
 export const getGetMeMockHandler = (
-  overrideResponse?:
-    | UserView
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<UserView> | UserView),
-  options?: RequestHandlerOptions,
+    overrideResponse?: UserView | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserView> | UserView),
+    options?: RequestHandlerOptions
 ) => {
-  return http.get(
-    "*/api/me",
-    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetMeResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.get(
+        "*/api/me",
+        async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getGetMeResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 
 export const getDeleteMeMockHandler = (
-  overrideResponse?:
-    | void
-    | ((
-        info: Parameters<Parameters<typeof http.delete>[1]>[0],
-      ) => Promise<void> | void),
-  options?: RequestHandlerOptions,
+    overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void),
+    options?: RequestHandlerOptions
 ) => {
-  return http.delete(
-    "*/api/me",
-    async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
-      if (typeof overrideResponse === "function") {
-        await overrideResponse(info);
-      }
+    return http.delete(
+        "*/api/me",
+        async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+            if (typeof overrideResponse === "function") {
+                await overrideResponse(info);
+            }
 
-      return new HttpResponse(null, { status: 204 });
-    },
-    options,
-  );
+            return new HttpResponse(null, { status: 204 });
+        },
+        options
+    );
 };
 
 export const getPatchMeMockHandler = (
-  overrideResponse?:
-    | UserView
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0],
-      ) => Promise<UserView> | UserView),
-  options?: RequestHandlerOptions,
+    overrideResponse?: UserView | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<UserView> | UserView),
+    options?: RequestHandlerOptions
 ) => {
-  return http.patch(
-    "*/api/me",
-    async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getPatchMeResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.patch(
+        "*/api/me",
+        async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getPatchMeResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 
 export const getGetUserByPublicidMockHandler = (
-  overrideResponse?:
-    | UserPublic
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<UserPublic> | UserPublic),
-  options?: RequestHandlerOptions,
+    overrideResponse?: UserPublic | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserPublic> | UserPublic),
+    options?: RequestHandlerOptions
 ) => {
-  return http.get(
-    "*/api/users/public/:publicId",
-    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetUserByPublicidResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.get(
+        "*/api/users/public/:publicId",
+        async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getGetUserByPublicidResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 
 export const getGetUsersMockHandler = (
-  overrideResponse?:
-    | GetUsers200Item[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<GetUsers200Item[]> | GetUsers200Item[]),
-  options?: RequestHandlerOptions,
+    overrideResponse?: GetUsers200Item[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetUsers200Item[]> | GetUsers200Item[]),
+    options?: RequestHandlerOptions
 ) => {
-  return http.get(
-    "*/api/users",
-    async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
-      return HttpResponse.json(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetUsersResponseMock(),
-        { status: 200 },
-      );
-    },
-    options,
-  );
+    return http.get(
+        "*/api/users",
+        async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+            return HttpResponse.json(
+                overrideResponse !== undefined
+                    ? typeof overrideResponse === "function"
+                        ? await overrideResponse(info)
+                        : overrideResponse
+                    : getGetUsersResponseMock(),
+                { status: 200 }
+            );
+        },
+        options
+    );
 };
 export const getUserMock = () => [
-  getGetMeMockHandler(),
-  getDeleteMeMockHandler(),
-  getPatchMeMockHandler(),
-  getGetUserByPublicidMockHandler(),
-  getGetUsersMockHandler(),
+    getGetMeMockHandler(),
+    getDeleteMeMockHandler(),
+    getPatchMeMockHandler(),
+    getGetUserByPublicidMockHandler(),
+    getGetUsersMockHandler(),
 ];

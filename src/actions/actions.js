@@ -1,14 +1,14 @@
 /* Action list */
-import './openMap/openMapAction.js';
-import './shareMap/shareMapAction.js';
-import './saveMap/saveMapAction.js';
-import './renameMap/renameMapAction.js';
-import './importLocal/importLocalAction.js';
-import './importFlow/importFlowAction.js';
-import './measure/measureAction.js';
-import './editLayerStyle/editLayerStyleAction.js';
-import './editLayerInfo/editLayerInfoAction.js';
-import './editLayerPopup/editLayerPopupAction.js';
+import "./openMap/openMapAction.js";
+import "./shareMap/shareMapAction.js";
+import "./saveMap/saveMapAction.js";
+import "./renameMap/renameMapAction.js";
+import "./importLocal/importLocalAction.js";
+import "./importFlow/importFlowAction.js";
+import "./measure/measureAction.js";
+import "./editLayerStyle/editLayerStyleAction.js";
+import "./editLayerInfo/editLayerInfoAction.js";
+import "./editLayerPopup/editLayerPopupAction.js";
 
-import './keydown/keydownActions.js';
-import './openMap/dropMap.js';
+import "./keydown/keydownActions.js";
+import "./openMap/dropMap.js";

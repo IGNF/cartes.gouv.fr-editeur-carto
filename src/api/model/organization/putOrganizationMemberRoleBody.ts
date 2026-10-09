@@ -7,6 +7,6 @@
  */
 
 export type PutOrganizationMemberRoleBody = {
-  /** nouveau rôle, parmi ['member', 'editor', 'owner'] */
-  value?: string;
+    /** nouveau rôle, parmi ['member', 'editor', 'owner'] */
+    value?: string;
 };

@@ -7,6 +7,6 @@
  */
 
 export type BadRequestResponse = {
-  code?: number;
-  message?: string;
+    code?: number;
+    message?: string;
 };
