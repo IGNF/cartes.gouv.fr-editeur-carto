@@ -32,19 +32,10 @@ class StyleForm extends ExtendedFlatStyleForm {
     //
     if (this.isSelectGeomTypeShown()) {
       // Modifie l'option sélectionné seulement si on affiche le sélecteur
-      const select = this.header.querySelector("select");
-      const option = select.selectedOptions.item(0);
-      if (option && !this.getGeom().includes(option.value)) {
-        const geomType = this.getGeom();
-        // On modifie l'option sélectionné
-        const options = Array.from(select.options);
-        for (let i = 0; i < options.length; i++) {
-          if (options[i].value === geomType) {
-            options[i].selected = true;
-            break;
-          }
-        }
-      }
+      const select = this.selectGeomType.querySelectorAll('input[type="radio"');
+      select.forEach(input => {
+        input.checked = this.getGeom().includes(input.value);
+      });
     }
     const type = this.getGeom()?.split(' ').at(0);
     if (this.styleObj.get('type') !== type) {

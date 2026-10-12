@@ -219,7 +219,7 @@ class EditStyle extends BaseObject {
 
     // Bouton retour en arrière
     const saveStyleBtn = document.createElement("button");
-    saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-left-line";
+    saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-go-back-line";
     saveStyleBtn.addEventListener("click", this.rollbackStyle.bind(this));
     saveStyleBtn.textContent = saveStyleBtn.title = "Enregistrer le style";
 
@@ -256,8 +256,14 @@ class EditStyle extends BaseObject {
     applyBtn.className = "apply-btn fr-btn fr-btn--sm";
     applyBtn.addEventListener("click", this.applyStyle.bind(this));
     applyBtn.textContent = "Appliquer";
-
     btns.appendChild(applyBtn);
+
+    // Bouton appliquer
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "fr-btn fr-btn--secondary";
+    cancelBtn.addEventListener("click", this.rollbackStyle.bind(this));
+    cancelBtn.textContent = "Annuler";
+    btns.appendChild(cancelBtn);
 
     return footer;
   }
@@ -367,6 +373,7 @@ class EditStyle extends BaseObject {
       const formStyleObj = styleObj.clone();
       this.forms.forEach(form => {
         form.styleObj = formStyleObj;
+        form.setName(styleObj.name, styleObj.isDefault);
       })
 
       // N'affiche le sélecteur que sur la partie style
@@ -448,6 +455,7 @@ class EditStyle extends BaseObject {
       this.getStyleObj().type = editedGeomType;
     }
     this.getStyleObj().setFlatStyle(this.styleForm.styleObj.getFlatStyle());
+    this.getStyleObj().set("name", this.styleForm.getName());
 
     const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());
     if (this.getStyleObj().isDefault) {

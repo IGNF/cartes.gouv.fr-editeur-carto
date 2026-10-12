@@ -47,11 +47,6 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Place le header avant le formulaire
     this.getElement().before(container);
 
-    // Sélecteur de type de géométrie
-    const select = this.selectGeomType = this._addSelectGeomType(options.type);
-    container.appendChild(select);
-    this.showSelectGeomType(options.selectGeomType);
-
     // La preview
     const preview = this.preview = this._addPreview();
     const previewContainer = document.createElement('div');
@@ -63,6 +58,12 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     previewContainer.appendChild(preview);
     this.getElement().before(previewContainer);
     this.showPreview(options.preview);
+
+    // Sélecteur de type de géométrie
+    const select = this.selectGeomType = this._addSelectGeomType(options.type);
+    // container.appendChild(select);
+    this.getElement().before(select);
+    this.showSelectGeomType(options.selectGeomType);
 
     this.styleObj = new StyleObj({
       flatStyle: this.flatStyle,
@@ -153,7 +154,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       // Bouton pour ouvrir la bibliothèque de symboles
       this.addTitleButton({
         title: 'Bibliothèque de style',
-        icon: 'fromSymbolLib fr-icon-book-2-line',
+        icon: 'fromSymbolLib fr-icon-book-open-line',
         haspopup: true,
         onClick: (e) => {
           const symbolLib = this.symbolLib || carte.getSymbolLib();
@@ -291,6 +292,29 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   setTitle(title) {
     const titleElem = this.header.querySelector('.style-form-title span');
     titleElem.innerText = title;
+  }
+
+  /**
+   * Définit le nom du style et son état par défaut.
+   * @param {string} name 
+   * @param {boolean} [disabled=false] 
+   */
+  setName(name, disabled = false) {
+    const nameInput = this.preview.querySelector(".style-name");
+    if (nameInput) {
+      nameInput.value = name || "";
+      nameInput.ariaDisabled = disabled;
+      nameInput.disabled = disabled;
+    }
+  }
+
+  /**
+   * Retourne le nom du style.
+   * @returns string
+   */
+  getName() {
+    const nameInput = this.preview.querySelector(".style-name");
+    return nameInput ? nameInput.value : "";
   }
 
   /**
@@ -577,19 +601,21 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    * @returns {HTMLElement} Élément HTML à ajouter
    */
   _addSelectGeomType(type) {
-    const selectGroup = document.createElement("div");
-    selectGroup.className = "style-form__select-geom fr-select-group";
+    const selectGroup = this.selectGeomType = document.createElement("div");
+    selectGroup.className = "style-form__select-geom";
 
-    const label = document.createElement("label");
-    label.className = "fr-label";
-    label.htmlFor = "select-geom-type";
+    const label = document.createElement("span");
+    label.className = "fr-hint-text";
     label.textContent = "Symbolisation";
+    selectGroup.append(label);
 
+
+/*    
     const select = document.createElement("select");
     select.className = "fr-select";
     select.id = "select-geom-type";
     select.name = "select-geom-type";
-
+*/
     // Transforme le type en option valable
     let mappedType;
     switch (type) {
@@ -611,27 +637,43 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     }
 
     const geomTypes = [
-      { value: "Point", text: "Point" },
-      { value: "LineString", text: "Ligne" },
-      { value: "Polygon", text: "Surface" },
+      { value: "Point", text: "Point", icon: "fr-icon-map-pin-2-line" },
+      { value: "LineString", text: "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
+      { value: "Polygon", text: "Surface", icon: "fr-icon-ign-shape-3-fill" },
     ];
 
-    geomTypes.forEach(geom => {
-      const option = document.createElement("option");
+    const radioName = "geom-type-" + getUid();
+    geomTypes.forEach((geom, i) => {
+      const radio = document.createElement("div");
+      radio.className = "fr-radio-group";
+      selectGroup.appendChild(radio);
+      // radio
+      const option = document.createElement("input");
+      option.type = "radio";
+      option.name = radioName;
+      option.id = option.name + i;
       option.value = geom.value;
-      option.textContent = geom.text;
       if ((mappedType || "Point") === geom.value) {
-        option.selected = true;
+        option.checked = true;
       }
-      select.appendChild(option);
+      radio.appendChild(option);
+      radio.addEventListener("change", evt => {
+        this.setGeom(evt.target.value);
+        this.updatePreview();
+      });
+      // label
+      const label = document.createElement("label");
+      label.className = "fr-label " + geom.icon;
+      label.htmlFor = option.id;
+      label.textContent = geom.text;
+      radio.appendChild(label);
     });
-
+/*
     select.addEventListener("change", evt => {
       this.setGeom(evt.target.value);
       this.updatePreview();
     });
-
-    selectGroup.append(label, select);
+*/
     return selectGroup
   }
 
@@ -660,6 +702,21 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     imageContainer.className = "style-image-container";
     imageContainer.appendChild(image)
     preview.appendChild(imageContainer);
+
+    const inputGroup = document.createElement('div');
+    inputGroup.className = "style-input-group";
+    preview.appendChild(inputGroup);
+
+    const ilabel = document.createElement("label");
+    ilabel.className = "fr-label";
+    ilabel.textContent = "Nom";
+    inputGroup.appendChild(ilabel);
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "style-input-name-" + getUid();
+    input.className = "fr-input style-name";
+    inputGroup.appendChild(input);
 
     return preview;
   }
