@@ -15,6 +15,7 @@ import './css/modes.scss';
 import { setLogo, setTitle } from './utils/story.js';
 
 import Gp from "geoportal-access-lib/dist/GpServices-src.js"
+import { loadMap } from './init/loadMap.js';
 
 loadFonts();
 
@@ -31,9 +32,15 @@ const carte = new Carte({});
 Gp.Services.getConfig({
   customConfigFile: customConfigFile,
   timeOut: 20000,
-  onSuccess: () => { },
+  onSuccess: () => {
+    // Lit la carte au bon moment
+    loadMap()
+  },
   onFailure: (e) => {
     console.error(e);
+    carte.read(
+      `${import.meta.env.BASE_URL}${import.meta.env.BASE_URL.endsWith("/") ? "" : "/"}carte/template_error.carte`,
+    );
     // Impossible d'importer la couche du catalogue
   }
 });
