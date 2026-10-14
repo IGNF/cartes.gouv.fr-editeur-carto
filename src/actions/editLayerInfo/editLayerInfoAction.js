@@ -56,7 +56,7 @@ function onOpen(e) {
 
       const alert = new Alert({
         closable: false,
-        size: 'sm',
+        small: true,
         type: 'warning',
         description: "Les informations des couches du catalogue ne sont pas modifiables, seulement consultable."
       });
