@@ -11,6 +11,7 @@ import GeoportalMapBox from "geopf-extensions-openlayers/src/packages/Layers/Lay
 import Config from "geopf-extensions-openlayers/src/packages/Utils/Config.js";
 import LayerConfig from "geopf-extensions-openlayers/src/packages/Utils/LayerConfigUtils.js";
 import GeopfExtensionsFormat from 'mcutils/cgouv/GeopfExtensionsFormat.js';
+import Alert from '../../control/Alert/Alert';
 
 /**
  * @typedef {Object} CatalogEvent Événément envoyé lors d'un clic sur une couche du catalogue
@@ -148,12 +149,28 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
     layer.config.catalogId = id;
     carte.addLayer(layer, false);
     this.layersListOnMap[name + ":" + service] = layer;
+    // La couche est ajoutée
+    Alert.addAlert({
+      id: "add-catalog-layer--success",
+      closable: true,
+      type: Alert.TYPES.SUCCESS,
+      description: "La couche a été ajoutée à votre carte.",
+      small: true,
+    }, true)
   }
 });
 
 // addToMap est faux, on appelle nous même la méthode removeLayer
 catalog.on(catalog.REMOVE_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} */ e) {
   this.removeLayer(e.name, e.service);
+  // La couche a bien été supprimée
+  Alert.addAlert({
+    id: "remove-catalog-layer--success",
+    closable: true,
+    type: Alert.TYPES.SUCCESS,
+    description: "La couche a été supprimée de votre carte.",
+    small: true,
+  }, true)
 });
 
 window.catalog = catalog;
