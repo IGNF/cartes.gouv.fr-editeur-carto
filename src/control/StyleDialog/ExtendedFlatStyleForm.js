@@ -601,11 +601,11 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    * @returns {HTMLElement} Élément HTML à ajouter
    */
   _addSelectGeomType(type) {
-    const selectGroup = this.selectGeomType = document.createElement("div");
-    selectGroup.className = "style-form__select-geom";
+    const selectGroup = this.selectGeomType = document.createElement("fieldset");
+    selectGroup.className = "style-form__select-geom fr-fieldset";
 
-    const label = document.createElement("span");
-    label.className = "fr-hint-text";
+    const label = document.createElement("legend");
+    label.className = "fr-hint-text fr-fieldset__legend--regular fr-fieldset__legend";
     label.textContent = "Symbolisation";
     selectGroup.append(label);
 
@@ -644,9 +644,13 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const radioName = "geom-type-" + getUid();
     geomTypes.forEach((geom, i) => {
+      const fieldElt = document.createElement("div")
+      fieldElt.className = "fr-fieldset__element";
+      selectGroup.appendChild(fieldElt);
+
       const radio = document.createElement("div");
       radio.className = "fr-radio-group";
-      selectGroup.appendChild(radio);
+      fieldElt.appendChild(radio);
       // radio
       const option = document.createElement("input");
       option.type = "radio";
