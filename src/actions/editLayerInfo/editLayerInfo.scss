@@ -1,3 +1,16 @@
-form#edit-layer-info-form > .fr-alert {
+form#edit-layer-info-form > .fr-notice {
   margin-bottom: 0.5rem;
+  padding: 0.75rem 0;
+
+  > .fr-container {
+    padding: 0 0.75rem;
+  }
+
+  .fr-notice {
+    &__title,
+    &__description,
+    &__link {
+      font-size: 14px;
+    }
+  }
 }
