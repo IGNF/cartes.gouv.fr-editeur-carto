@@ -1,0 +1,2217 @@
+openapi: 3.0.0
+info:
+    title: "MaCarte API"
+    description: "Documentation OpenAPI de l'API MaCarte"
+    version: 1.0.0
+servers:
+    - url: "https://macarte.ign.fr/"
+      description: "Accède aux données de l'environnement Ma Carte"
+paths:
+    /api/editorial/followers:
+        get:
+            tags:
+                - Editorial
+            operationId: getEditorialFollowers
+            responses:
+                "200":
+                    description: "Liste des followers par réseau social"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    facebook: { type: string, example: 65K }
+                                    twitter: { type: string, example: 13K }
+                                    linkedin: { type: string, example: 24K }
+                                    instagram: { type: string, example: 11K }
+                                type: object
+                "404":
+                    $ref: "#/components/responses/NotFound"
+    /api/editorial/megamenu:
+        get:
+            tags:
+                - Editorial
+            operationId: getEditorialMegamenu
+            responses:
+                "200":
+                    description: "Contenu html du megamenu"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    html: { type: string }
+                                type: object
+                "404":
+                    $ref: "#/components/responses/NotFound"
+    /api/editorial/categories:
+        get:
+            tags:
+                - Editorial
+            operationId: getEditorialCategories
+            responses:
+                "200":
+                    description: "Liste des categories des articles de l'editorial"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        {
+                                            key: { description: "clé de la catégorie", type: string },
+                                            value: { description: "Nom de la catégorie", type: string },
+                                        }
+                                    type: object
+    "/api/editorial/articles/{category}":
+        get:
+            tags:
+                - Editorial
+            operationId: getEditorialArticlesByCategory
+            parameters:
+                - name: category
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "Liste des articles de la categorie"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Article"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+    /api/maps:
+        get:
+            tags:
+                - Map
+            operationId: getMaps
+            parameters:
+                - name: context
+                  in: query
+                  description: "Contexte de la recherche. Doit être parmi :\n- 'atlas' : recherche publique parmi les cartes partagées\n- 'organization' : recherche des cartes publiques & atlas de l'organisation\n- 'profile' : recherche parmi les cartes de l'utilisateur (connexion requise)\n\nUne carte partagée a share='atlas', valid=true et active=true.\n\n**Ajouter le header 'Authorization: Bearer xxx' pour le cas 'profile'.** pour ne pas avoir les erreurs 401 et 403."
+                  required: false
+                  schema:
+                      type: string
+                      default: atlas
+                - name: query
+                  in: query
+                  description: "Un ou plusieurs mots que doivent contenir le titre, la description ou le thème. S'il y a plusieurs mots, la recherche les interprète comme un ET."
+                  required: false
+                  schema:
+                      type: string
+                - name: theme
+                  in: query
+                  description: "Thème des cartes <br>\n                    - nom du thème  <br>\n                    - 'undefined' pour avoir les cartes qui n'ont pas de thème <br>\n                    - null pour avoir toutes les cartes, indépendemment du thème\n                "
+                  required: false
+                  schema:
+                      type: string
+                - name: type
+                  in: query
+                  description: "Type des cartes ('macarte', 'storymap')"
+                  required: false
+                  schema:
+                      type: string
+                - name: premium
+                  in: query
+                  description: "Premium des cartes ('default', 'edugeo')"
+                  required: false
+                  schema:
+                      type: string
+                - name: organization
+                  in: query
+                  description: "Identifiant public de l'organisation"
+                  required: false
+                  schema:
+                      type: string
+                - name: user
+                  in: query
+                  description: "Nom public du créateur des cartes"
+                  required: false
+                  schema:
+                      type: string
+                - name: active
+                  in: query
+                  description: "Si context 'profile' : filtre les cartes actives (true) ou non-actives (false). Si context 'atlas', active=true."
+                  required: false
+                  schema:
+                      type: boolean
+                - name: valid
+                  in: query
+                  description: "Si context 'profile' : filtre les cartes valides (true) ou invalides (false). Si context 'atlas', valid=true."
+                  required: false
+                  schema:
+                      type: boolean
+                - name: share
+                  in: query
+                  description: "Si context 'profile' : filtre les cartes publiques ('atlas') ou privées ('private'). Si context 'atlas', share='atlas'."
+                  required: false
+                  schema:
+                      type: string
+                - name: sort
+                  in: query
+                  description: "Tri des cartes ('date', 'rank', 'views')"
+                  required: false
+                  schema:
+                      type: string
+                      default: date
+                - name: limit
+                  in: query
+                  description: "Nombre maximum de cartes à retourner. Peut être 'all' dans le context 'profile'. Si limit > 100, limit sera considérée comme 100."
+                  required: false
+                  schema:
+                      oneOf:
+                          - type: integer
+                          - type: string
+                      default: 25
+                - $ref: "#/components/parameters/offset"
+            responses:
+                "200":
+                    description: "Liste des cartes recherchées selon les critères définis dans la query"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Map_research"
+                "206":
+                    description: "Contenu partiel de la liste des cartes recherchées selon les critères définis dans la query"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Map_research"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+        post:
+            tags:
+                - Map
+            operationId: postMap
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            required:
+                                - carte
+                                - file
+                            properties:
+                                carte:
+                                    $ref: "#/components/schemas/Map_add"
+                                file:
+                                    description: "Contenu de la carte au format .carte"
+                                    type: string
+                                    format: binary
+                            type: object
+            responses:
+                "201":
+                    description: "Attributs de la carte créée"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Map_view"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    /api/maps/users:
+        get:
+            tags:
+                - Map
+            description: "Autocompletion des utilisateurs ayant des cartes publiques correspondant aux critères de recherche"
+            operationId: getMapsUsers
+            parameters:
+                - name: theme
+                  in: query
+                  description: "Thème des cartes (nom du thème ou 'Non défini')"
+                  required: false
+                  schema:
+                      type: string
+                - name: public_name
+                  in: query
+                  description: "string que le public_name des utilisateurs doit inclure"
+                  required: false
+                  schema:
+                      type: string
+                - name: query
+                  in: query
+                  description: "Un ou plusieurs mots que doivent contenir le titre, la description ou le thème. S'il y a plusieurs mots, la recherche les interprète comme un ET."
+                  required: false
+                  schema:
+                      type: string
+                - $ref: "#/components/parameters/limit"
+            responses:
+                "200":
+                    description: "Liste des noms publics des utilisateurs correspondant aux critères de recherche"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                "404":
+                    $ref: "#/components/responses/NotFound"
+    "/api/maps/{view_id}":
+        get:
+            tags:
+                - Map
+            description: "Récupérer les metadata de la carte par son identifiant de visualisation"
+            operationId: getMapByViewId
+            parameters:
+                - $ref: "#/components/parameters/view_id"
+            responses:
+                "200":
+                    description: "Attributs d'une carte pour visualisation"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Map_view"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+    "/api/maps/{edit_id}/edit":
+        get:
+            tags:
+                - Map
+            description: "Récupérer les metadata de la carte par son identifiant d'édition"
+            operationId: getMapEditByEditId
+            parameters:
+                - $ref: "#/components/parameters/edit_id"
+            responses:
+                "200":
+                    description: "Attributs d'une carte pour edition"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Map_view"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+            security:
+                - bearer: []
+    "/api/maps/{view_id}/file":
+        get:
+            tags:
+                - Map
+            description: "Récupérer les data de la carte par son identifiant de visualisation"
+            operationId: getMapFileByViewId
+            parameters:
+                - $ref: "#/components/parameters/view_id"
+            responses:
+                "200":
+                    description: "Contenu d'une carte"
+                    content:
+                        application/json:
+                            schema: {}
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+    "/api/maps/{edit_id}/edit/file":
+        get:
+            tags:
+                - Map
+            description: "Récupérer les data de la carte par son identifiant d'édition"
+            operationId: getMapFileByEditId
+            parameters:
+                - $ref: "#/components/parameters/edit_id"
+            responses:
+                "200":
+                    description: "Contenu d'une carte"
+                    content:
+                        application/json:
+                            schema: {}
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+            security:
+                - bearer: []
+    "/api/maps/{edit_id}":
+        delete:
+            tags:
+                - Map
+            operationId: deleteMapByEditId
+            parameters:
+                - $ref: "#/components/parameters/edit_id"
+            responses:
+                "204":
+                    $ref: "#/components/responses/Deleted"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+        patch:
+            tags:
+                - Map
+            operationId: patchMapByEditId
+            parameters:
+                - $ref: "#/components/parameters/edit_id"
+            requestBody:
+                description: "Attributs de la carte, ne renseigner que les champs à modifier.\n__new_edit_id__ : boolean, si true → génère un nouvel identifiant de modification pour la carte."
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            allOf:
+                                - $ref: "#/components/schemas/Map_add"
+                                - properties: { new_edit_id: { description: "Demande à modifier l'id de modification", type: boolean } }
+                                  type: object
+            responses:
+                "200":
+                    description: "Attributs d'une carte pour visualisation"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Map_view"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/maps/{edit_id}/file":
+        post:
+            tags:
+                - Map
+            operationId: postMapFileByEditId
+            parameters:
+                - $ref: "#/components/parameters/edit_id"
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            required:
+                                - file
+                            properties:
+                                file:
+                                    description: "Contenu de la carte au format .carte"
+                                    type: string
+                                    format: binary
+                            type: object
+            responses:
+                "200":
+                    description: "Contenu d'une carte"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    /api/me:
+        get:
+            tags:
+                - User
+            operationId: getMe
+            responses:
+                "200":
+                    description: "Attributs de l'utilisateur connecté"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User_view"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+            security:
+                - bearer: []
+        delete:
+            tags:
+                - User
+            description: "Supprime en douceur (https://phpreaction.com/support/suppression-en-douceur-soft-delete/) le compte de l'utilisateur connecté"
+            operationId: deleteMe
+            responses:
+                "204":
+                    description: "L'utilisateur a été supprimé"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+            security:
+                - bearer: []
+        patch:
+            tags:
+                - User
+            description: "Le paramètre **current_password** est nécessaire pour modifier les paramètres username, email et new_password\nusername, email et public_name sont uniques, la réponse 400 '... already used' peut être renvoyée"
+            operationId: patchMe
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User_me_edit"
+            responses:
+                "200":
+                    description: "Attributs de l'utilisateur"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User_view"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+            security:
+                - bearer: []
+    /api/medias:
+        get:
+            tags:
+                - Media
+            description: "Renvoie les medias de l'utilisateur connecté"
+            operationId: getUserMedias
+            parameters:
+                - name: name
+                  in: query
+                  description: "Name contient cette valeur"
+                  required: false
+                  schema:
+                      type: string
+                - name: id
+                  in: query
+                  description: "Identifiant du média recherché"
+                  required: false
+                  schema:
+                      type: integer
+                - name: organization_id
+                  in: query
+                  description: "Identifiant public de l'organisation, renvoie la liste de ses médias"
+                  required: false
+                  schema:
+                      type: integer
+                - name: valid
+                  in: query
+                  description: "Si 'true', limite la recherche aux médias invalidés par les administrateurs"
+                  required: false
+                  schema:
+                      type: boolean
+                - name: sort
+                  in: query
+                  description: "tri des medias, parmi ['size', 'date']"
+                  required: false
+                  schema:
+                      type: string
+                      default: date
+                - $ref: "#/components/parameters/offset"
+                - $ref: "#/components/parameters/limit"
+            responses:
+                "200":
+                    description: "liste des medias"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Media_list"
+                "206":
+                    description: "Contenu partiel des medias"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Media_list"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+            security:
+                - bearer: []
+        post:
+            tags:
+                - Media
+            description: "Ajoute un media à l'utilisateur connecté ou à l'organisation d'identifiant organization_id si renseigné"
+            operationId: postMedia
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            required:
+                                - file
+                            properties:
+                                file:
+                                    description: "image à ajouter à la bibliothèque, le fichier doit faire moins de 2 Mo"
+                                    type: string
+                                    format: binary
+                                folder:
+                                    description: "Dossier où ajouter l'image"
+                                    type: string
+                                    default: "Non classé"
+                                name:
+                                    description: "Nom du fichier"
+                                    type: string
+                                organization_id:
+                                    description: "Id de l'organization"
+                                    type: string
+                                    nullable: true
+                            type: object
+            responses:
+                "201":
+                    description: "Attributs du media créé"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Media"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "413":
+                    $ref: "#/components/responses/TooLarge"
+            security:
+                - bearer: []
+    /api/medias/folders:
+        get:
+            tags:
+                - Media
+            description: "Renvoie les dossiers d'images de l'utilisateur"
+            operationId: getUserMediaFolders
+            parameters:
+                - name: organization_id
+                  in: query
+                  description: "Identifiant public de l'organisation. Si renseigné, renvoie les folders de l'organisation, pas de l'utilisateur connecté"
+                  required: false
+                  schema:
+                      type: string
+                      nullable: true
+            responses:
+                "200":
+                    description: "liste des dossiers d'images"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+            security:
+                - bearer: []
+    "/api/image/{filename}":
+        get:
+            tags:
+                - Media
+            description: "Renvoie l'image au format binaire, l'extension n'est pas prise en compte (ex : abc1234).\nPréfixer le filename par 'thumb_' pour recevoir la miniature (200px sur la plus grande dimension)."
+            operationId: getImageByFilename
+            parameters:
+                - name: filename
+                  in: path
+                  description: "Nom du fichier"
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "Fichier binaire de l'image"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+    "/api/medias/{id}":
+        delete:
+            tags:
+                - Media
+            description: "Supprime un media de l'utilisateur connecté. Un média non valide ne peut pas être supprimé"
+            operationId: deleteMediaById
+            parameters:
+                - $ref: "#/components/parameters/id"
+            responses:
+                "204":
+                    $ref: "#/components/responses/Deleted"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "451":
+                    $ref: "#/components/responses/Invalid"
+            security:
+                - bearer: []
+    "/api/medias/{id}/{attribute}":
+        put:
+            tags:
+                - Media
+            description: "Affecte value à l'attribut du media d'identifiant id (attribute dans ['folder', 'name'])"
+            operationId: putMediaAttribute
+            parameters:
+                - $ref: "#/components/parameters/id"
+                - name: attribute
+                  in: path
+                  description: "Attribut à modifier : doit etre parmi ['folder', 'name']"
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                value:
+                                    description: "valeur à affecter à l'attribut [folder => peut être null]"
+                                    type: string
+                            type: object
+            responses:
+                "200":
+                    description: "Attributs du media modifié"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    id: { description: "identifiant du média modifié", type: integer }
+                                    attribute: { description: "attribut modifié", type: string }
+                                    value: { description: "nouvelle valeur affectée à l'attribut", type: string }
+                                type: object
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/medias/{id}/file":
+        post:
+            tags:
+                - Media
+            description: "Modifie l'image associée au media"
+            operationId: postMediaFileById
+            parameters:
+                - $ref: "#/components/parameters/id"
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            required:
+                                - file
+                            properties:
+                                file:
+                                    description: "image à associer à la bibliothèque, le fichier doit faire moins de 2 Mo"
+                                    type: string
+                                    format: binary
+                            type: object
+            responses:
+                "200":
+                    description: "Attributs du media modifié"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    id: { description: "identifiant du média modifié", type: integer }
+                                    attribute: { description: "attribut modifié", type: string }
+                                    view_url: { description: "url de l'image", type: string }
+                                    thumb_url: { description: "url de la vignette", type: string }
+                                type: object
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+                "413":
+                    $ref: "#/components/responses/TooLarge"
+            security:
+                - bearer: []
+    /api/notifications:
+        get:
+            tags:
+                - Notifications
+            operationId: getNotifications
+            responses:
+                "200":
+                    description: "Liste des notifications actives"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Notification"
+    /api/organizations/roles:
+        get:
+            tags:
+                - Organization
+            operationId: getOrganizationsRoles
+            responses:
+                "200":
+                    description: "Liste des rôles"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties: { key: { description: "clé du rôle", type: string }, value: { description: "Nom du rôle", type: string } }
+                                    type: object
+    /api/organizations/me:
+        get:
+            tags:
+                - Organization
+            operationId: getOrganizationsMe
+            responses:
+                "200":
+                    description: "Liste des organisations dont l'utilisateur est membre"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        {
+                                            public_id: { description: "identifiant de l'organisation", type: string },
+                                            name: { description: "Nom de l'organisation", type: string },
+                                            profile_picture: { description: "Logo de l'organisation", type: string },
+                                            cover_picture: { description: "Image de couverture", type: string },
+                                            user_role: { description: "Rôle de l'utilisateur dans l'organisation", type: string },
+                                            active: { description: "l'utilisateur est actif dans l'organisation", type: boolean },
+                                        }
+                                    type: object
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+            security:
+                - bearer: []
+    "/api/organizations/{id}/activate":
+        get:
+            tags:
+                - Organization
+            description: "Active l'utilisateur invité dans l'organisation"
+            operationId: getOrganizationsByIdActivate
+            parameters:
+                - $ref: "#/components/parameters/id"
+            responses:
+                "200":
+                    description: "Attributs de l'organisation"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Organization"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+            security:
+                - bearer: []
+    "/api/organizations/{id}":
+        get:
+            tags:
+                - Organization
+            description: "Récupérer les données de l'organisation. NB : si pas membre, seul un décompte des membres est fourni."
+            operationId: getOrganizationsById
+            parameters:
+                - $ref: "#/components/parameters/id"
+            responses:
+                "200":
+                    description: "Attributs de l'organisation, les membres ne sont renvoyés que si l'utilisateur connecté fait partie de l'organisation"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Organization"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+        delete:
+            tags:
+                - Organization
+            description: "Supprime l'organisation d'identifiant id"
+            operationId: deleteOrganization
+            parameters:
+                - $ref: "#/components/parameters/id"
+            responses:
+                "204":
+                    $ref: "#/components/responses/Deleted"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    /api/organizations:
+        post:
+            tags:
+                - Organization
+            description: "Créer une organisation - L'utilisateur connecté devient un propriétaire"
+            operationId: postOrganization
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            required:
+                                - name
+                            properties:
+                                name:
+                                    description: "Nom de l'organisation (obligatoire)"
+                                    type: string
+                                presentation:
+                                    description: "Présentation de l'organisation"
+                                    type: string
+                                    nullable: true
+                                profile_picture:
+                                    description: "Image / logo de l'organisation"
+                                    type: string
+                                    format: uri
+                                    nullable: true
+                                cover_picture:
+                                    description: "Image de couverture"
+                                    type: string
+                                    format: uri
+                                    nullable: true
+                            type: object
+            responses:
+                "201":
+                    description: "Attributs de l'organisation"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Organization"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+            security:
+                - bearer: []
+    "/api/organizations/{id}/{attribute}":
+        put:
+            tags:
+                - Organization
+            description: "Affecte value à l'attribut de l'organisation d'identifiant public_id"
+            operationId: putOrganizationAttribute
+            parameters:
+                - $ref: "#/components/parameters/id"
+                - name: attribute
+                  in: path
+                  description: "Attribut à modifier : parmi ['name', 'presentation', 'profile_picture', 'cover_picture', 'mail_pattern']"
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                value:
+                                    description: "valeur à affecter à l'attribut [name => non null]"
+                                    type: string
+                            type: object
+            responses:
+                "200":
+                    description: "L'organisation a été modifiée"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    id: { description: "identifiant de l'organisation modifiée", type: integer }
+                                    attribute: { description: "attribut modifié", type: string }
+                                    value: { description: "nouvelle valeur affectée à l'attribut", type: string }
+                                type: object
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/organizations/{id}/join-link/{role}":
+        put:
+            tags:
+                - Organization
+            description: "Modifie le lien d'accès à l'organisation"
+            operationId: putOrganizationJoinLinkRole
+            parameters:
+                - $ref: "#/components/parameters/id"
+                - name: role
+                  in: path
+                  description: "rôle que donne le lien, parmi ['member', 'editor']"
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                value:
+                                    description: "true : crée le lien, false : supprime le lien"
+                                    type: boolean
+                            type: object
+            responses:
+                "200":
+                    description: "clé / nouvelle valeur de l'attribut modifié"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    id: { description: "identifiant de l'organisation modifiée", type: integer }
+                                    attribute: { description: "attribut modifié", type: string }
+                                    value: { description: "nouvelle valeur affectée à l'attribut", type: string }
+                                type: object
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/organizations/join/{id}":
+        get:
+            tags:
+                - Organization
+            description: "L'utilisateur s'ajoute à l'organisation via le jeton id"
+            operationId: joinOrganizationById
+            parameters:
+                - $ref: "#/components/parameters/id"
+            responses:
+                "200":
+                    description: "Attributs de l'organisation"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Organization"
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/organizations/links/{id}":
+        get:
+            tags:
+                - Organization
+            description: "Récupère les liens d'invitation de l'organisation. Seuls les propriétaires peuvent accéder à cette ressource."
+            operationId: getOrganizationLinksById
+            parameters:
+                - $ref: "#/components/parameters/id"
+            responses:
+                "200":
+                    description: "Les liens d'invitation de l'organisation"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    link_as_member: { description: "lien d'invitation en tant que membre, null si absent", type: string, nullable: true }
+                                    link_as_editor: { description: "lien d'invitation en tant qu'éditeur, null si absent", type: string, nullable: true }
+                                    mail_pattern: { description: "pattern mail de l'organisation, null si absent", type: string, nullable: true }
+                                type: object
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/organizations/{id}/members/{userId}":
+        post:
+            tags:
+                - Organization
+            description: "Ajoute un membre à l'organisation"
+            operationId: addMemberToOrganization
+            parameters:
+                - $ref: "#/components/parameters/id"
+                - name: userId
+                  in: path
+                  description: "Identifiant (public_id) de l'utilisateur"
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                role:
+                                    description: "rôle de l'utilisateur, parmi ['member', 'editor', 'owner']"
+                                    type: string
+                            type: object
+            responses:
+                "200":
+                    description: "Description du rôle de l'utilisateur"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    organization_id: { description: "Identifiant public de l'organisation", type: string }
+                                    user_id: { description: "Identifiant public de l'utilisateur", type: string }
+                                    user_public_name: { description: "Nom public de l'utilisateur", type: string }
+                                    user_role: { description: "Rôle de l'utilisateur dans l'organisation", type: string }
+                                    mail_sent:
+                                        {
+                                            description: "si false, l'opération a été effectuée, mais le mail d'information n'a pas été envoyé à l'utilisateur",
+                                            type: boolean,
+                                        }
+                                type: object
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+        delete:
+            tags:
+                - Organization
+            description: "Enlève un membre de l'organisation. Un utilisateur peut se retirer lui-même, sinon un owner doit effectuer cette action."
+            operationId: deleteOrganizationMember
+            parameters:
+                - $ref: "#/components/parameters/id"
+                - name: userId
+                  in: path
+                  description: "Identifiant (public_id) de l'utilisateur"
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "204":
+                    $ref: "#/components/responses/Deleted"
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    "/api/organizations/{id}/members/{userId}/role":
+        put:
+            tags:
+                - Organization
+            description: "Modifie le rôle d'un membre dans l'organisation"
+            operationId: putOrganizationMemberRole
+            parameters:
+                - $ref: "#/components/parameters/id"
+                - name: userId
+                  in: path
+                  description: "Identifiant (public_id) de l'utilisateur"
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                value:
+                                    description: "nouveau rôle, parmi ['member', 'editor', 'owner']"
+                                    type: string
+                            type: object
+            responses:
+                "200":
+                    description: "Description du rôle de l'utilisateur"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    organization_id: { description: "Identifiant public de l'organisation", type: string }
+                                    user_id: { description: "Identifiant public de l'utilisateur", type: string }
+                                    user_public_name: { description: "Nom public de l'utilisateur", type: string }
+                                    user_role: { description: "Rôle de l'utilisateur dans l'organisation", type: string }
+                                    mail_sent:
+                                        {
+                                            description: "si false, l'opération a été effectuée, mais le mail d'information n'a pas été envoyé à l'utilisateur",
+                                            type: boolean,
+                                        }
+                                type: object
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+                "403":
+                    $ref: "#/components/responses/Forbidden"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+            security:
+                - bearer: []
+    /api/token/refresh:
+        post:
+            tags:
+                - Login
+            operationId: refreshToken
+            parameters:
+                - name: refresh_token
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "Jeton JWT et refresh"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Login"
+                "401":
+                    description: "An authentication exception occurred"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    code: { type: integer, example: 401 }
+                                    message: { type: string, example: "An authentication exception occurred" }
+                                type: object
+    /api/login:
+        post:
+            tags:
+                - Login
+            operationId: postLogin
+            parameters:
+                - name: username
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                - name: password
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "Jeton Jwt et rafraichissement"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Login"
+                "401":
+                    description: "Erreur dans le nom d'utilisateur ou le mot de passe"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    code: { type: integer, example: 401 }
+                                    message: { type: string, example: "Bad credentials" }
+                                type: object
+                "429":
+                    description: "Trop de tentatives de connexion échouées"
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    code: { type: integer, example: 429 }
+                                    message: { type: string, example: "5 tentatives de connexion échouées, allez sur /debloquer-mon-compte" }
+                                type: object
+    /api/logout:
+        post:
+            tags:
+                - Login
+            operationId: postLogout
+            responses:
+                "200":
+                    description: logout
+                "401":
+                    $ref: "#/components/responses/NotConnected"
+            security:
+                - bearer: []
+    /api/themes:
+        get:
+            tags:
+                - Theme
+            operationId: getThemes
+            responses:
+                "200":
+                    description: "Liste des themes"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Theme"
+    "/api/users/public/{publicId}":
+        get:
+            tags:
+                - User
+            operationId: getUserByPublicid
+            parameters:
+                - name: publicId
+                  in: path
+                  description: "Identifiant public (immuable) de l'utilisateur"
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "Attributs publics de l'utilisateur"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User_public"
+                "404":
+                    $ref: "#/components/responses/NotFound"
+    /api/users:
+        get:
+            tags:
+                - User
+            description: "Recherche d'utilisateurs par autocompletion"
+            operationId: getUsers
+            parameters:
+                - name: query
+                  in: query
+                  description: "public_name contient query"
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "Liste des utilisateurs correspondants"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        {
+                                            public_name: { type: string, example: my_public_name },
+                                            public_id: { type: string, example: 1aBc },
+                                            profile_picture: { type: string, format: uri },
+                                        }
+                                    type: object
+                "400":
+                    $ref: "#/components/responses/BadRequest"
+components:
+    schemas:
+        Article:
+            properties:
+                id:
+                    description: "Identifiant de l'article"
+                    type: integer
+                category:
+                    description: "Catégorie de l'article"
+                    type: string
+                position:
+                    description: "Ordre d'affichage de l'article"
+                    type: number
+                title:
+                    description: "Titre de l'article"
+                    type: string
+                content:
+                    description: "Contenu de l'article"
+                    type: string
+                tags:
+                    description: "Tags de l'article"
+                    type: array
+                    items:
+                        type: string
+                updated_at:
+                    description: "Date de mise à jour de l'article"
+                    type: string
+                    format: date-time
+                updated_by:
+                    description: "Nom public de l'utilisateur qui a modifié l'article"
+                    type: string
+                img_url:
+                    description: "Url de l'image d'illustration de l'article"
+                    type: string
+                    format: uri
+                link_text:
+                    description: "Article de la catégorie news : texte du lien"
+                    type: string
+                link_url:
+                    description: "Article de la catégorie news : destination du lien"
+                    type: string
+                    format: uri
+            type: object
+        Bbox:
+            description: "Emprise visible de la carte (haut, droite, bas, gauche)"
+            type: array
+            items:
+                type: number
+            maxItems: 4
+            minItems: 4
+        Map_add:
+            description: "Objet carte à envoyer lors d'ajout / modification d'une carte"
+            required:
+                - title
+                - theme_id
+                - type
+                - premium
+                - active
+                - bbox
+            properties:
+                title:
+                    description: "Titre de la carte"
+                    type: string
+                description:
+                    description: "Description de la carte"
+                    type: string
+                    nullable: true
+                theme_id:
+                    description: "identifiant du theme"
+                    type: integer
+                type:
+                    description: "Type de la carte ('macarte', 'mesadresses', statistic', storymap')"
+                    type: string
+                premium:
+                    description: "Premium de la carte ('default', 'edugeo')"
+                    type: string
+                organization_id:
+                    description: "Identifiant public de l'organisation."
+                    type: string
+                active:
+                    description: "Carte active (par ex : terminée ou non)"
+                    type: boolean
+                share:
+                    description: "Publication de la carte ('atlas', 'public', 'private').\nSi 'organization' est rempli, la valeur sera 'private' sauf si l'utilisateur connecté est owner"
+                    type: string
+                    default: public
+                bbox:
+                    $ref: "#/components/schemas/Bbox"
+                img_url:
+                    description: "Url de l'image illustrant la carte. Peut être une chaîne vide."
+                    type: string
+                    nullable: true
+                creator_id:
+                    description: "Identifiant public du créateur (si la carte est dans une organisation)"
+                    type: string
+            type: object
+        Map_list:
+            description: "Description d'une carte avec ses métadonnées"
+            required:
+                - title
+                - title_url
+                - description
+                - theme
+                - theme_id
+                - organization
+                - organization_id
+                - organization_name
+                - type
+                - premium
+                - active
+                - valid
+                - created_at
+                - updated_at
+                - nb_view
+                - img_url
+                - share
+                - bbox
+                - user
+                - user_id
+                - author
+                - author_id
+                - view_id
+                - view_url
+            properties:
+                title:
+                    description: "Titre de la carte"
+                    type: string
+                title_url:
+                    description: "Titre de la carte, adapté pour etre utilisé dans les url"
+                    type: string
+                description:
+                    description: "Description de la carte"
+                    type: string
+                    nullable: true
+                theme:
+                    description: "Thème lié à la carte"
+                    type: string
+                    nullable: true
+                theme_id:
+                    description: "Id du thème"
+                    type: integer
+                    nullable: true
+                organization:
+                    description: "Nom de l'organisation"
+                    type: string
+                    nullable: true
+                organization_id:
+                    description: "Identifiant de l'organisation"
+                    type: string
+                organization_name:
+                    description: "Nom de l'organisation"
+                    type: string
+                type:
+                    description: "Type de la carte ('macarte', 'mesadresses', statistic', storymap')"
+                    type: string
+                premium:
+                    description: "Premium de la carte ('default', 'edugeo')"
+                    type: string
+                active:
+                    description: "Carte active"
+                    type: boolean
+                valid:
+                    description: "Carte valide"
+                    type: boolean
+                created_at:
+                    description: "Date de création de la carte"
+                    type: string
+                    format: date-time
+                updated_at:
+                    description: "Dernière date de mise à jour de la carte"
+                    type: string
+                    format: date-time
+                nb_view:
+                    description: "Nombre total de vues"
+                    type: integer
+                img_url:
+                    description: "URI de l'image. Peut être une chaîne vide."
+                    type: string
+                    nullable: true
+                share:
+                    description: "Publication de la carte ('atlas', 'public', 'private')"
+                    type: string
+                bbox:
+                    $ref: "#/components/schemas/Bbox"
+                view_id:
+                    description: "Id utilisé pour la visualisation"
+                    type: string
+                view_url:
+                    description: "Lien vers la visualisation de la carte"
+                    type: string
+                    format: uri
+                edit_id:
+                    description: "Id utilisé pour l'édition, renvoyé uniquement si l'utilisateur peut éditer la carte"
+                    type: string
+                    nullable: true
+                user:
+                    description: "Nom public du dernier éditeur de la carte"
+                    type: string
+                user_id:
+                    description: "Identifiant public du dernier éditeur de la carte"
+                    type: string
+                author:
+                    description: "Nom public de l'auteur de la carte"
+                    type: string
+                author_id:
+                    description: "Identifiant public de l'auteur de la carte"
+                    type: string
+            type: object
+        Map_view:
+            description: "Description d'une carte avec ses métadonnées et les liens de modification / visualisation"
+            allOf:
+                - $ref: "#/components/schemas/Map_list"
+                - required:
+                      - data_url
+                  properties:
+                      data_url:
+                          description: "lien vers le contenu de la carte"
+                          type: string
+                          format: uri
+                      data_edit_url:
+                          description: "lien vers l'édition du contenu de la carte, renvoyé uniquement si l'utilisateur peut éditer la carte"
+                          type: string
+                          format: uri
+                          nullable: true
+                      editor:
+                          description: "utilisateur qui a modifié le contenu, renvoyé uniquement si l'utilisateur peut éditer la carte"
+                          type: string
+                          nullable: true
+                  type: object
+        Media:
+            description: media
+            properties:
+                id:
+                    description: "identifiant du media"
+                    type: integer
+                name:
+                    description: "nom de l'image originale"
+                    type: string
+                fileName:
+                    description: "nom du fichier enregistré"
+                    type: string
+                owner:
+                    description: "username de l'utilisateur qui a chargé le media"
+                    type: string
+                organization_id:
+                    description: "id de l'organisation à qui appartient le media"
+                    type: string
+                organization:
+                    description: "nom de l'organisation à qui appartient le media"
+                    type: string
+                uploaded_at:
+                    description: "date du chargement de l'image"
+                    type: string
+                    format: date-time
+                size:
+                    description: "Taille de l'image (en octet)"
+                    type: integer
+                folder:
+                    description: "Nom du fichier contenant le media"
+                    type: string
+                valid:
+                    description: "Validité de l'image"
+                    type: boolean
+                view_url:
+                    description: "Url de l'image"
+                    type: string
+                    format: uri
+                thumb_url:
+                    description: "Url de la vignette de l'image"
+                    type: string
+                    format: uri
+            type: object
+        Media_list:
+            description: "Liste de médias"
+            properties:
+                medias:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Media"
+                count:
+                    description: "Nombre de média correspondant à la recherche"
+                    type: integer
+                limit:
+                    description: "Nombre de média recues dans la requete"
+                    type: integer
+                offset:
+                    description: "Nombre de média à passer avant de ls inclure dans la requete"
+                    type: integer
+            type: object
+        Notification:
+            description: Notifications
+            properties:
+                id:
+                    type: integer
+                description:
+                    type: string
+                scope:
+                    description: "Applicatifs où afficher la notification"
+                    type: string
+                showFrom:
+                    type: string
+                    format: date-time
+                showUntil:
+                    type: string
+                    format: date-time
+                repeatibility:
+                    description: "Nombre de fois à afficher la notification"
+                    type: integer
+            type: object
+        Organization:
+            properties:
+                public_id:
+                    description: "Identifiant de l'organisation"
+                    type: string
+                name:
+                    description: "Nom de l'organisation"
+                    type: string
+                presentation:
+                    description: "Présentation / Description de l'organisation"
+                    type: string
+                    nullable: true
+                profile_picture:
+                    description: "URL de l'image / logo de l'organisation"
+                    type: string
+                    format: uri
+                    nullable: true
+                cover_picture:
+                    description: "URL de l'image / logo de couverture de l'organisation"
+                    type: string
+                    format: uri
+                    nullable: true
+                created_at:
+                    description: "Date de création de l'organisation"
+                    type: string
+                    format: date-time
+                updated_at:
+                    description: "Date de modification de l'organisation"
+                    type: string
+                    format: date-time
+                premium:
+                    description: "Premium l'organisation parmi [null, 'edugeo']"
+                    type: string
+                    nullable: true
+                nb_members:
+                    description: "Nombre de membres dans l'organisation"
+                    type: integer
+                nb_shared_maps:
+                    description: "Nombre de cartes de l'organisation partagées dans l'atlas"
+                    type: integer
+                nb_views:
+                    description: "Nombre de vues sur l'ensemble des cartes de l'organisation"
+                    type: integer
+                locked:
+                    description: "L'organisation est bloquée par un admin"
+                    type: boolean
+                media_size_limit:
+                    description: "Taille globale autorisée pour les images de l'organisation (en octets)"
+                    type: integer
+                medias_size:
+                    description: "Taille globale des images de l'organisation (en octets)"
+                    type: integer
+                members:
+                    description: "Membres de l'organisation"
+                    type: array
+                    items:
+                        properties:
+                            public_name:
+                                description: "Nom public de l'utilisateur"
+                                type: string
+                            public_id:
+                                description: "Identifiant public de l'utilisateur"
+                                type: string
+                            registered_at:
+                                description: "Date où l'utilisateur a été ajouté"
+                                type: string
+                                format: date-time
+                            role:
+                                description: "Role de l'utilisateur dans l'organisation ('member'|'editor'|'owner')"
+                                type: string
+                            promoted_at:
+                                description: "Date où l'utilisateur a été promu"
+                                type: string
+                                format: date-time
+                            active:
+                                description: "L'utilisateur est actif dans l'organisation"
+                                type: boolean
+                            profile_picture:
+                                description: "Url de l'image de profil"
+                                type: string
+                                format: uri
+                        type: object
+            type: object
+        MapResearchItem:
+            description: "Carte renvoyée dans les résultats de recherche. Cet objet est construit depuis une requête SQL, et non directement depuis le normalizer d'entité Map."
+            required:
+                - type
+                - title
+                - description
+                - updated_at
+                - nb_view
+                - img_url
+                - organization_id
+                - organization_name
+                - user
+                - user_id
+                - theme
+                - theme_id
+                - share
+                - premium
+                - valid
+                - active
+                - title_url
+                - view_id
+                - view_url
+                - bbox
+            properties:
+                type:
+                    description: "Type de la carte ('macarte', 'storymap')"
+                    type: string
+                title:
+                    description: "Titre de la carte"
+                    type: string
+                description:
+                    description: "Description de la carte"
+                    type: string
+                    nullable: true
+                updated_at:
+                    description: "Dernière date de mise à jour de la carte"
+                    type: string
+                    format: date-time
+                nb_view:
+                    description: "Nombre total de vues"
+                    type: integer
+                img_url:
+                    description: "URL de l'image illustrant la carte. Peut être une chaîne vide."
+                    type: string
+                    nullable: true
+                organization_id:
+                    description: "Identifiant public de l'organisation"
+                    type: string
+                    nullable: true
+                organization_name:
+                    description: "Nom de l'organisation"
+                    type: string
+                    nullable: true
+                user:
+                    description: "Nom public de l'auteur de la carte"
+                    type: string
+                user_id:
+                    description: "Identifiant public de l'auteur de la carte"
+                    type: string
+                theme:
+                    description: "Thème lié à la carte"
+                    type: string
+                    nullable: true
+                theme_id:
+                    description: "Id du thème"
+                    type: integer
+                    nullable: true
+                share:
+                    description: "Publication de la carte ('atlas', 'public', 'private')"
+                    type: string
+                premium:
+                    description: "Premium de la carte ('default', 'edugeo')"
+                    type: string
+                    nullable: true
+                valid:
+                    description: "Carte valide"
+                    type: boolean
+                active:
+                    description: "Carte active"
+                    type: boolean
+                title_url:
+                    description: "Titre de la carte, adapté pour être utilisé dans les URLs"
+                    type: string
+                view_id:
+                    description: "Id utilisé pour la visualisation"
+                    type: string
+                view_url:
+                    description: "Lien vers la visualisation de la carte"
+                    type: string
+                    format: uri
+                bbox:
+                    $ref: "#/components/schemas/Bbox"
+                edit_id:
+                    description: "Id utilisé pour l'édition, renvoyé uniquement en contexte profile"
+                    type: string
+                    nullable: true
+                edit_url:
+                    description: "Lien vers l'édition de la carte, renvoyé uniquement en contexte profile"
+                    type: string
+                    format: uri
+                    nullable: true
+            type: object
+        MapResearchTheme:
+            description: "Agrégat du nombre de cartes par thème dans les résultats de recherche"
+            required:
+                - theme
+                - count
+            properties:
+                theme:
+                    description: "Nom du thème, ou 'undefined' pour les cartes sans thème"
+                    type: string
+                count:
+                    description: "Nombre de cartes"
+                    type: integer
+            type: object
+        MapResearchOrganization:
+            description: "Agrégat du nombre de cartes par organisation dans les résultats de recherche"
+            required:
+                - organization
+                - public_id
+                - count
+            properties:
+                organization:
+                    description: "Nom de l'organisation, ou chaîne vide pour les cartes hors organisation"
+                    type: string
+                public_id:
+                    description: "Identifiant public de l'organisation, ou chaîne vide pour les cartes hors organisation"
+                    type: string
+                count:
+                    description: "Nombre de cartes"
+                    type: integer
+            type: object
+        Map_research:
+            description: "Recherche des cartes"
+            required:
+                - maps
+                - themes
+                - organizations
+                - users
+                - types
+                - premiums
+                - actives
+                - valides
+                - shares
+                - query
+                - count
+                - limit
+                - offset
+            properties:
+                maps:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/MapResearchItem"
+                themes:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/MapResearchTheme"
+                organizations:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/MapResearchOrganization"
+                users:
+                    type: array
+                    items:
+                        required:
+                            - user
+                            - count
+                        properties:
+                            user:
+                                description: "Nom public de l'utilisateur"
+                                type: string
+                            count:
+                                description: "Nombre de cartes"
+                                type: integer
+                        type: object
+                types:
+                    type: array
+                    items:
+                        required:
+                            - type
+                            - count
+                        properties:
+                            type:
+                                description: "Nom du type"
+                                type: string
+                            count:
+                                description: "Nombre de cartes"
+                                type: integer
+                        type: object
+                premiums:
+                    type: array
+                    items:
+                        required:
+                            - premium
+                            - count
+                        properties:
+                            premium:
+                                description: "Nom du premium"
+                                type: string
+                            count:
+                                description: "Nombre de cartes"
+                                type: integer
+                        type: object
+                actives:
+                    type: array
+                    items:
+                        required:
+                            - active
+                            - count
+                        properties:
+                            active:
+                                description: "booléen indiquant active/inactive"
+                                type: boolean
+                            count:
+                                description: "Nombre de cartes"
+                                type: integer
+                        type: object
+                valides:
+                    type: array
+                    items:
+                        required:
+                            - valid
+                            - count
+                        properties:
+                            valid:
+                                description: "booléen indiquant valide/invalide"
+                                type: boolean
+                            count:
+                                description: "Nombre de cartes"
+                                type: integer
+                        type: object
+                shares:
+                    type: array
+                    items:
+                        required:
+                            - share
+                            - count
+                        properties:
+                            share:
+                                description: "Publication de la carte"
+                                type: string
+                            count:
+                                description: "Nombre de cartes"
+                                type: integer
+                        type: object
+                query:
+                    description: "Mot(s) contenu(s) dans le titre, la description ou le theme des cartes"
+                    type: string
+                count:
+                    description: "Nombre de cartes correspondant à la recherche"
+                    type: integer
+                limit:
+                    description: "Nombre de cartes reçues dans la requête. Peut être null lorsque toutes les cartes sont demandées."
+                    type: integer
+                    nullable: true
+                offset:
+                    description: "Nombre de cartes à passer avant de les inclure dans la requete"
+                    type: integer
+            type: object
+        Theme:
+            description: Theme
+            properties:
+                id:
+                    description: "Id du thème"
+                    type: integer
+                name:
+                    description: "Nom complet du thème"
+                    type: string
+            type: object
+        Login:
+            properties:
+                token:
+                    description: "Jeton JWT à envoyer dans le header Authorization: Bearer xxx"
+                    type: string
+                refresh_token:
+                    description: "Jeton pour rafraichir le jeton JWT à envoyer /api/token/refresh"
+                    type: string
+            type: object
+        User_public:
+            properties:
+                public_id:
+                    description: "identifiant public de l'utilisateur, ne sera jamais modifié"
+                    type: string
+                public_name:
+                    description: "Unique, ne doit pas être déjà utilisé (Erreur 400)"
+                    type: string
+                twitter_account:
+                    description: "Nom de compte Twitter"
+                    type: string
+                facebook_account:
+                    description: "Nom de compte Facebook"
+                    type: string
+                linkedin_account:
+                    description: "Nom de compte LinkedIn"
+                    type: string
+                presentation:
+                    description: "Présentation publique"
+                    type: string
+                profile_picture:
+                    description: "Url de l'image de profil"
+                    type: string
+                    format: uri
+                cover_picture:
+                    description: "Url de l'image de couverture"
+                    type: string
+                    format: uri
+            type: object
+        User_edit:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/User_public"
+                - properties:
+                      email:
+                          description: "Unique, ne doit pas être déjà utilisé (Erreur 400)"
+                          type: string
+                          format: email
+                      username:
+                          description: "Unique, ne doit pas être déjà utilisé (Erreur 400)"
+                          type: string
+                  type: object
+        User_me_edit:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/User_edit"
+                - properties:
+                      current_password:
+                          type: string
+                      new_password:
+                          type: string
+                  type: object
+        User_view:
+            type: object
+            allOf:
+                - $ref: "#/components/schemas/User_edit"
+                - properties:
+                      locked:
+                          description: "Compte bloqué"
+                          type: boolean
+                      id:
+                          type: integer
+                      medias_limit_size:
+                          description: "Taille globale limite des images uploadées (en octet)"
+                          type: integer
+                      medias_size:
+                          description: "Taille globale des images uploadées (en octet)"
+                          type: integer
+                      roles:
+                          description: "Rôle(s) de l'utilisateur"
+                          type: array
+                          items:
+                              type: string
+                  type: object
+    responses:
+        Already_reported:
+            description: "La ressource est déjà existante"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 208
+                            message:
+                                type: string
+                                example: "La ressource est déjà existante"
+                        type: object
+        Deleted:
+            description: "La ressource a été supprimée"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 204
+                            message:
+                                type: string
+                                example: "La ressource a été supprimée"
+                        type: object
+        BadRequest:
+            description: "La requête n'est pas correcte"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 400
+                            message:
+                                type: string
+                                example: "La requête n'est pas correcte"
+                        type: object
+        NotConnected:
+            description: "Vous devez être connecté"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 401
+                            message:
+                                type: string
+                                example: "Vous devez être connecté"
+                        type: object
+        NotFound:
+            description: "La ressource n'existe pas"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 404
+                            message:
+                                type: string
+                                example: "La ressource n'existe pas"
+                        type: object
+        Forbidden:
+            description: "Vous n'avez pas accès à cette ressource"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 403
+                            message:
+                                type: string
+                                example: "Vous n'avez pas accès à cette ressource"
+                        type: object
+        Invalid:
+            description: "Vous ne pouvez pas accéder à la ressource pour des raisons légales"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 451
+                            message:
+                                type: string
+                                example: "Vous ne pouvez pas accéder à la ressource pour des raisons légales"
+                        type: object
+        TooLarge:
+            description: "L'objet joint est trop volumineux"
+            content:
+                application/json:
+                    schema:
+                        properties:
+                            code:
+                                type: integer
+                                example: 413
+                            message:
+                                type: string
+                                example: "L'objet joint est trop volumineux"
+                        type: object
+    parameters:
+        id:
+            name: id
+            in: path
+            description: "Identifiant de la ressource"
+            required: true
+            schema:
+                oneOf:
+                    - type: integer
+                    - type: string
+        view_id:
+            name: view_id
+            in: path
+            description: "Identifiant de visualisation de la carte"
+            required: true
+            schema:
+                oneOf:
+                    - type: integer
+                    - type: string
+        edit_id:
+            name: edit_id
+            in: path
+            description: "Identifiant d'édition de la carte"
+            required: true
+            schema:
+                oneOf:
+                    - type: integer
+                    - type: string
+        limit:
+            name: limit
+            in: query
+            description: "Nombre maximum d'objets à retourner"
+            required: false
+            schema:
+                type: integer
+                default: 15
+        offset:
+            name: offset
+            in: query
+            description: "Le nombre d'objets à ignorer avant de commencer à collecter l'ensemble de résultats"
+            required: false
+            schema:
+                type: integer
+                default: 0
+    securitySchemes:
+        bearer:
+            type: http
+            bearerFormat: JWT
+            scheme: bearer
+tags:
+    - name: Editorial
+      description: Editorial
+    - name: Map
+      description: Map
+    - name: User
+      description: User
+    - name: Media
+      description: Media
+    - name: Notifications
+      description: Notifications
+    - name: Organization
+      description: Organization
+    - name: Login
+      description: Login
+    - name: Theme
+      description: Theme

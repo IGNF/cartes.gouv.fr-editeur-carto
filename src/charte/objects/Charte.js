@@ -29,6 +29,7 @@ class Charte extends BaseObject {
     this.footer = new Footer();
     this.mode = this.setMode(Charte.modes.EDITOR);
 
+    /** @type {Object<string, Menu>} */
     this._actions = {};
   }
 
@@ -110,40 +111,6 @@ class Charte extends BaseObject {
     return ol_ext_element.create(options.type, btnOptions);
   }
 
-  /**
-   * Vérifie si l'utilisateur est connecté (uniquement via le dataset du body,
-   * pas via l'API)
-   * @returns {boolean} Vrai si l'utilisateur est connecté, faux sinon
-   */
-  isConnected() {
-    return document.body.dataset.disconnected === undefined;
-  }
-
-  /**
-   * Définit l'état de connexion de l'utilisateur et met à jour l'interface
-   * @param {boolean} connected Vrai si connecté, faux sinon
-   */
-  setConnected(connected) {
-    let btnsConnect = this.header.element.querySelectorAll("[data-action='login']");
-    let connectAccesses = this.header.element.querySelectorAll("[data-action='connect']");
-    for (let index = 0; index < connectAccesses.length; index++) {
-      const connectAccess = connectAccesses[index];
-      const btnConnect = btnsConnect[index];
-      let navConnect = connectAccess.parentElement;
-      let navItem = navConnect.querySelector('.fr-nav__item');
-      if (connected) {
-        delete document.body.dataset.disconnected;
-        btnConnect.classList.add('fr-hidden');
-        navConnect.classList.remove('fr-hidden');
-        // TODO : mieux gérer le problème ?
-        navItem.classList.add('fr-nav__item--align-right')
-      } else {
-        document.body.dataset.disconnected = '';
-        btnConnect.classList.remove('fr-hidden');
-        navConnect.classList.add('fr-hidden');
-      }
-    }
-  }
   /** Définit les informations du service
    * @param {ServiceOptions} options Options du service
    */

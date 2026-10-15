@@ -80,18 +80,18 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       });
     }
     // TODO selection de style depuis la bibliothèque
-    const onselect = (symbol) => {
-      const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-      this.setFlatStyle(style);
-      this.styleObj.setFlatStyle(style);
-      this.dispatchEvent({ 
-        type: "style",
-        ignStyle: symbol.getIgnStyle(),
-        flatStyle: style,
-        typeGeom: symbol.getType()
-      });
-      this.updatePreview();
-    }
+    // const onselect = (symbol) => {
+    //   const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+    //   this.setFlatStyle(style);
+    //   this.styleObj.setFlatStyle(style);
+    //   this.dispatchEvent({ 
+    //     type: "style",
+    //     ignStyle: symbol.getIgnStyle(),
+    //     flatStyle: style,
+    //     typeGeom: symbol.getType()
+    //   });
+    //   this.updatePreview();
+    // }
     if (!options.noSymbolLib) {
       // Bouton pour ajouter le style actuel à la bibliothèque
       this.addTitleButton({

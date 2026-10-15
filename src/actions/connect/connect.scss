@@ -59,6 +59,11 @@
   button.connected:last-child {
     margin-left: 1rem;
   }
+
+  &__btns-group {
+    display:flex;
+    gap: 1rem;
+  }
 }
 
 [data-role='map'][inert],

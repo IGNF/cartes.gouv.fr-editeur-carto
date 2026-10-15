@@ -6,7 +6,6 @@ import './renameMap/renameMapAction.js';
 import './importLocal/importLocalAction.js';
 import './importFlow/importFlowAction.js';
 import './measure/measureAction.js';
-import './login/loginAction.js';
 import './editLayerStyle/editLayerStyleAction.js';
 import './editLayerInfo/editLayerInfoAction.js';
 import './editLayerPopup/editLayerPopupAction.js';

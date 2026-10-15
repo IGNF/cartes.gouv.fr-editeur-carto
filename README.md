@@ -16,6 +16,27 @@ L'éditeur cartographique est l'un des outils de Cartes.gouv.fr : il est constit
 * [L'outil d'édition de cartes](https://github.com/IGNF/cartes.gouv.fr-editeur-carto)
 * [La bibliothèque de l'éditeur de carte (accès à l'API, etc)](https://github.com/IGNF/carte.gouv.fr-editeur-lib)
 
+## Modification des variables d'environnements
+
+Historiquement, le projet utilisait un fichier config.json situé dans le dossier `public`.
+
+Désormais, il faut utiliser les variables d'environnements définies dans .env. **Attention** à ne pas modifier ce fichier, mais plutôt écrire un fichier .env.local, qui sera pris en priorité et qui ne sera pas déposé sur le répertoire GitHub.
+
+
+### Explications des variables d'environnements
+
+- `REDIRECT_URI` : URL vers laquelle le module **oidc-spa** doit rediriger l'application lorsque déployé en prod (cela empêche la redirection automatique vers "/", qui renvoie alors sur l'entrée carto);
+
+- `API_URL` : URL de l'API à utiliser;
+
+- `VIEWER_URL` : URL de la visionneuse de carte;
+
+- Variables en `IAM_` : Information de connexion à l'IAM (Identity and Access Manager) :
+  - `IAM_URL` : URL de connexion;
+  - `IAM_REALM` : realm à utiliser;
+  - `IAM_CLIENT_ID` : clientId utilisé pour se connecter;
+
+
 ## Installer les dépendances
 
 ```sh
