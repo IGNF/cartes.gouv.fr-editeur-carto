@@ -3,14 +3,15 @@ import carte from '../../carte.js';
 import Catalog from "geopf-extensions-openlayers/src/packages/Controls/Catalog/Catalog.js";
 
 // import local des layers
+import GeoportalMapBox from "geopf-extensions-openlayers/src/packages/Layers/LayerMapBox.js";
 import GeoportalWFS from "geopf-extensions-openlayers/src/packages/Layers/LayerWFS.js";
 import GeoportalWMS from "geopf-extensions-openlayers/src/packages/Layers/LayerWMS.js";
 import GeoportalWMTS from "geopf-extensions-openlayers/src/packages/Layers/LayerWMTS.js";
-import GeoportalMapBox from "geopf-extensions-openlayers/src/packages/Layers/LayerMapBox.js";
 
 import Config from "geopf-extensions-openlayers/src/packages/Utils/Config.js";
 import LayerConfig from "geopf-extensions-openlayers/src/packages/Utils/LayerConfigUtils.js";
 import GeopfExtensionsFormat from 'mcutils/cgouv/GeopfExtensionsFormat.js';
+import Alert from '../../control/Alert/Alert';
 
 /**
  * @typedef {Object} CatalogEvent Événément envoyé lors d'un clic sur une couche du catalogue
@@ -19,7 +20,6 @@ import GeopfExtensionsFormat from 'mcutils/cgouv/GeopfExtensionsFormat.js';
  * @property {String} name Nom de la couche
  * @property {Service} service Nom du service
  * @property {Object} layer Configuration de la couche (vide si non ajouté / retiré de la carte)
- * 
  */
 
 const catalog = new Catalog({
@@ -98,7 +98,8 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
   const conf = (!Config.isConfigLoaded()) ? LayerConfig.getLayerConfig(this.layersList[id]) : null;
   let layer = null;
   // Créé la couche correspondante
-  switch (service) {
+  try {
+    switch (service) {
     case "WMS":
       layer = new GeoportalWMS({
         layer: name,
@@ -127,6 +128,24 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
       break;
     default:
       break;
+  }
+  } catch (error) {
+    if (error?.message === "ERROR : Layer ID not found into the catalogue !?") {
+      // La couche n'a pas été trouvé dans le catalogue
+      // On essaie de récupérer le label contenant le nom visible (pas nom technique)
+      const layerName = e.target?.getContainer().querySelector(`input[data-layer="${name}:${service}"] ~ * label.GPlabelActive`)?.title;
+      Alert.addAlert({
+        id: `add-catalog-layer-ID-${id.replaceAll(/[^a-zA-Z]/g, '-')}--error`,
+        closable: true,
+        type: Alert.TYPES.ERROR,
+        title: "Une erreur est survenue",
+        description: `La couche ${layerName ? layerName + " ": ""}n'a pas pu être ajoutée à la carte`,
+        // small: true,
+      }, true);
+    } else {
+      console.error(error);
+    }
+    return;
   }
 
   // Ajoute la couche à la carte

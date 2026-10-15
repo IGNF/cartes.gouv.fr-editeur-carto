@@ -2,8 +2,8 @@ import Action from '../Action.js';
 import content from './editLayerInfo.html?raw';
 import { addMessage, removeMessage } from '../../utils/message.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
-import Alert from '../../control/Alert/Alert';
 import "./editLayerInfo.scss";
+import Notice from '../../control/Notice/Notice';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -51,20 +51,19 @@ function onOpen(e) {
     const description = getCatalogDescription(this?.action?.layerSwitcher, options, layer);
     inputs.description.value = description;
 
-    // Ajoute une alerte au formulaire si pas présente
-    if (!form.querySelector(".fr-alert")) {
+    // Ajoute un bandeau d'information au formulaire si pas présent
+    if (!form.querySelector(".fr-notice")) {
 
-      const alert = new Alert({
-        closable: false,
-        size: 'sm',
+      const notice = Notice.createNotice({
+        title: "Les informations des couches du catalogue ne sont pas modifiables.",
+        titleLevel: 3,
         type: 'warning',
-        description: "Les informations des couches du catalogue ne sont pas modifiables, seulement consultable."
       });
 
-      form.firstChild.before(alert.getElement());
+      form.firstChild.before(notice);
     }
   } else {
-    form.querySelector(".fr-alert")?.remove();
+    form.querySelector(".fr-notice")?.remove();
     setDisabled(false);
   }
 
