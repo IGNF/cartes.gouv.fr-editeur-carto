@@ -6,16 +6,12 @@ import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
 import PopupForm from './popupForm.js';
 import { carte } from "../../story.js";
-import { createDefaultStyle } from "ol/style/flat.js";
 import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
 import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
 import charte from '../../charte/charte.js';
-import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
-import styleLibDialog from '../../dialogs/styleLibDialog.js';
-import StyleObj from '../LayerStyle/StyleObj.js';
 
 const forms = [styleForm, labelForm];
 const popupForm = new PopupForm({ carte: carte });
@@ -59,11 +55,13 @@ const styleDialog = new StyleDialog({
       label: "Style",
       title: "Configuration du style"
     },
+    /*
     {
       form: labelForm,
       label: "Texte",
       title: "Configuration du texte"
     },
+    */
     {
       form: popupForm,
       label: "Infobulle",
@@ -136,43 +134,19 @@ styleDialog.getForms().forEach(form => {
     }
   })
   // Add from symbol library
-  form.on(["lib:addsymbol", "lib:getsymbol"], (e) => {
-    let styleObj = null;
-    let type = styleDialog.getForms()[0]?.styleObj.get('type') || null;
-    if (e.type === "lib:addsymbol") {
-      const styles = createDefaultStyle() || {};
-      styleDialog.getForms().forEach(frm => {
-        if (frm.styleObj) {
-          type = type || frm.styleObj.get('type');
-          const st = frm.getFormFlatStyle();
-          Object.keys(st).forEach((key) => {
-            styles[key] = st[key];
-          });
-        }
+  form.on("lib:getsymbol", (e) => {
+    // Get style from forms
+    const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
+    styleDialog.getForms().forEach(frm => {
+      frm.setFlatStyle(style);
+      frm.dispatchEvent({ 
+        type: "style",
+        ignStyle: e.symbol.getIgnStyle(),
+        flatStyle: style,
+        typeGeom: e.symbol.getType()
       });
-      styleObj = new StyleObj({
-        flatStyle: styles,
-        type: type,
-      });
-    }
-    symbolLibAction.open(styleLibDialog, { 
-      styleObj: styleObj,
-      typeGeom: type,
-      onSelect: (symbol) => {
-        // Get style from forms
-        const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-        styleDialog.getForms().forEach(frm => {
-          frm.setFlatStyle(style);
-          frm.dispatchEvent({ 
-            type: "style",
-            ignStyle: symbol.getIgnStyle(),
-            flatStyle: style,
-            typeGeom: symbol.getType()
-          });
-          // frm.updatePreview();
-        })
-      },
-    });
+      // frm.updatePreview();
+    })
   });
 })
 

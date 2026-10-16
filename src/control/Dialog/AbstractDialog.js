@@ -152,6 +152,7 @@ class AbstractDialog extends BaseObject {
 
     const dialogOptions = Utils.assign(this.options, optionsToKeep);
 
+    /** @type {HTMLDialogElement} */
     this.dialog = ol_ext_element.create('DIALOG', dialogOptions);
 
     let createOptions = Utils.assign(this.options, options);
@@ -190,6 +191,7 @@ class AbstractDialog extends BaseObject {
    * @param {Object} options Options de création du panneau
    */
   _createDialog(options) {
+    /** @type {HTMLButtonElement} */
     this.closeBtn = this.querySelector(this.selectors.BTN_CLOSE);
     if (this.closeBtn) {
       this.closeBtn.setAttribute('aria-controls', this.getId());
@@ -602,6 +604,14 @@ class AbstractDialog extends BaseObject {
       this.setOnClose(action.onClose);
       this.open();
     }
+  }
+
+  /**
+   * Indique si le dialogue est ouvert.
+   * @returns {Boolean} Vrai si le dialogue est ouvert, faux sinon
+   */
+  isOpen() {
+    return this.dialog.open;
   }
 }
 

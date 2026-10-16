@@ -49,6 +49,7 @@
         "vitest": "^5.0.0"
     },
     "dependencies": {
+        "@gouvfr/dsfr": "^1.15.3",
         "ci": "^2.3.0",
         "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.15.3/ignf-dsfr-v1.15.3.tgz",
         "geoimport": "^0.7.0",

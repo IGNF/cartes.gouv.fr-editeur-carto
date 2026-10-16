@@ -11,6 +11,10 @@ dialog[data-action-id='edit-layer-style'] {
   &__container {
     display: flex;
     flex-direction: column;
+
+    .style-form:before {
+      top: 0!important;
+    }
   }
 
   &__header {
@@ -22,7 +26,7 @@ dialog[data-action-id='edit-layer-style'] {
   }
 
   &__content {
-    padding: 0.75rem;
+    padding: 0 0.75rem 0.75rem;
 
     > .fr-nav.fr-tabnav {
       background-color: var(--background-default-grey);
@@ -32,7 +36,7 @@ dialog[data-action-id='edit-layer-style'] {
   }
 
   &__tabnav-content {
-    padding: 0.75rem;
+    
     background-color: var(--background-default-grey);
   }
 }
