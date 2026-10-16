@@ -169,7 +169,7 @@ async function saveMap() {
           description: "La taille de la carte dépasse la limite autorisée par le serveur.",
           small: true
         }, true);
-      } else if (status === 201) {
+      } else if (status === 201 || status === 200) {
         // Update id
         if (responseData.view_id) {
           carte.set('id', responseData.view_id);

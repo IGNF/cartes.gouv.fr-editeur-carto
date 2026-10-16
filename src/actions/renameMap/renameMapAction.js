@@ -1,6 +1,7 @@
 import Action from '../Action.js';
 import carte from '../../carte.js';
 import content from './renameMap.html?raw';
+import { api } from '../../api/index.js';
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -21,15 +22,18 @@ function onOpen(e) {
   input.value = carte.getTitle(true);
 }
 
-function renameMap() {
+async function renameMap() {
   let input = dialog.querySelector('[data-field="title"]');
 
-  if (input.value) {
+  // Permet la modification
+  if (input.value && carte.get("atlas")?.edit_id) {
+    const metadata = carte.get("atlas");
     carte.set('title', input.value);
     carte.getMap().set('title', input.value);
-    if (carte.get('atlas')) {
-      carte.get('atlas').title = input.value;
-    }
+    metadata.title = input.value;
+    await api.map.patchMapByEditId(metadata.edit_id, {
+      title: input.value
+    });
   }
 
   dialog.close()
