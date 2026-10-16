@@ -29,6 +29,19 @@
   .symbol-lib-item-list {
     margin: 0.5rem 0;
   }
+
+  .style-form-container .style-form__select-geom .fr-radio-group {
+
+    label {
+      width: auto;
+      padding-left: 2.3rem;
+      padding-right: 0.5rem;
+      &:before {
+        width: 2.1rem;
+        margin-left: -2.3rem;
+      }
+    }
+  }
 }
 
 

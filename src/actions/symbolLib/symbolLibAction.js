@@ -298,6 +298,7 @@ class SymbolLibAction extends Action {
     addBtn.className = 'fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline';
     addBtn.innerText = 'Ajouter';
     addBtn.addEventListener('click', () => {
+      this.editStyle.header.querySelector('button').textContent = 'Revenir aux styles';
       symbolLibAction.showEditStyle();
     });
     btnContainer.appendChild(addBtn);
