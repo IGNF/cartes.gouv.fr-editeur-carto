@@ -83,38 +83,6 @@ class StyleForm extends ExtendedFlatStyleForm {
     }
   }
 
-  /**
-   * Ajoute un titre dans le formulaire.
-   * @param {string} title 
-   */
-  _addTitle(title) {
-    const titleElem = this.header.querySelector('.style-form-title');
-    const span = document.createElement('span');
-    span.innerText = title;
-    span.className = 'fr-hint-text';
-    titleElem.appendChild(span);
-    // Boutons du titre
-    const btnContainer = document.createElement('div');
-    btnContainer.className = 'btn-container';
-    titleElem.appendChild(btnContainer);
-  }
-
-  /**
-   * Ajoute un bouton dans le titre du formulaire.
-   * @param {string} title 
-   * @param {string} icon 
-   * @returns 
-   */
-  addTitleButton(title, icon) {
-    const btnContainer = this.header.querySelector('.btn-container');
-    if (btnContainer) {
-      const btn = document.createElement('button');
-      btn.className = (icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
-      btn.title = title;
-      btnContainer.appendChild(btn);
-      return btn;
-    }
-  }
 
   /**
    * Méthode ajoutant un label d'information dans le formulaire.
