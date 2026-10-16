@@ -153,10 +153,10 @@ function setTitle(e) {
   if (e.key === "title") {
     title = carte.get("title");
   }
-  mapTitle.setHtml(title)
-  mapTitle.setTitle(title)
-  fileName.setHtml(title)
-  fileName.setTitle(title)
+  [mapTitle, fileName].map(btn => {
+    btn.setHtml(title)
+    btn.setTitle(title)
+  });
 }
 carte.on('change:title', setTitle)
 carte.on('read', setTitle);
@@ -211,4 +211,4 @@ fileToggle.on("change:active", (e) => {
 carte.addControl('filebar', filebar);
 filebar.setPosition('top-left');
 
-export { shareMapBtn };
+export { shareMapBtn, renameMapBtn };
