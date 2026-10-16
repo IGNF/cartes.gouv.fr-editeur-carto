@@ -1,6 +1,5 @@
 
-import { LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
-// import carte from '../carte.js';
+import { LayerMapBox, LayerSwitcher } from 'geopf-extensions-openlayers/src/index.js';
 import { carte } from '../story.js';
 import addLayer from './addLayer.js';
 import Action from '../actions/Action.js';
@@ -13,6 +12,7 @@ import VectorSource from 'ol/source/Vector.js';
 import Alert from '../control/Alert/Alert';
 import editLayerInfoAction from '../actions/editLayerInfo/editLayerInfoAction.js';
 import editLayerPopupAction from '../actions/editLayerPopup/editLayerPopupAction.js';
+import VectorStyle from 'mcutils/layer/VectorStyle.js';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -48,7 +48,7 @@ const switcher = new LayerSwitcher({
           editLayerInfoAction.layerSwitcher = instance;
 
           Action.open(e);
-        }
+        },
       },
       {
         label: 'Style',
@@ -89,7 +89,8 @@ const switcher = new LayerSwitcher({
               }, true)
             }
           }
-        }
+        },
+        accepted: [VectorStyle, LayerMapBox]
       },
       {
         label: 'Infobulle',
@@ -106,7 +107,8 @@ const switcher = new LayerSwitcher({
           carte.selectedLayer = layer;
           editLayerPopupAction.layer = layer;
           Action.open(e);
-        }
+        },
+        accepted: [VectorStyle]
       },
     ]
   }
