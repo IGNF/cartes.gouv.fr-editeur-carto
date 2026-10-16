@@ -3,11 +3,7 @@ import ol_ext_element from "ol-ext/util/element.js";
 import LayerStyleContainer from "../../control/LayerStyle/LayerStyleContainer.js";
 import "./editLayerStyle.scss";
 import EditStyle from "../../control/LayerStyle/EditStyle.js";
-import symbolLibAction from "../symbolLib/symbolLibAction.js";
-import styleLibDialog from "../../dialogs/styleLibDialog.js";
-import { createDefaultStyle } from "ol/style/flat.js";
 import { ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
-import StyleObj from "../../control/LayerStyle/StyleObj.js";
 
 
 /// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///

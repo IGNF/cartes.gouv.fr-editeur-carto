@@ -2,6 +2,7 @@
  * @file Formulaire pour le style d'un objet
  */
 
+import { StyleEvent } from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import ExtendedFlatStyleForm from './ExtendedFlatStyleForm.js';
 import InputColor from './InputColor.js';
 import SelectIcons from './SelectIcons.js';
@@ -85,7 +86,7 @@ class StyleForm extends ExtendedFlatStyleForm {
   /**
    * Ajoute un titre dans le formulaire.
    * @param {string} title 
-   * /
+   */
   _addTitle(title) {
     const titleElem = this.header.querySelector('.style-form-title');
     const span = document.createElement('span');
@@ -103,7 +104,7 @@ class StyleForm extends ExtendedFlatStyleForm {
    * @param {string} title 
    * @param {string} icon 
    * @returns 
-   * /
+   */
   addTitleButton(title, icon) {
     const btnContainer = this.header.querySelector('.btn-container');
     if (btnContainer) {

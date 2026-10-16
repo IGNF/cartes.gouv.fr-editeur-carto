@@ -52,7 +52,7 @@
     }
 
     &[aria-current='true'] {
-      @include mix.button-state($text-color: initial, $background: var(--background-default-grey-hover));
+      @include mix.button-state($text-color: inherit, $background: var(--background-default-grey-hover));
     }
   }
 }

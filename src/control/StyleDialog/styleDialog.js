@@ -6,17 +6,12 @@ import labelForm from './labelForm.js';
 import styleForm from './styleForm.js';
 import PopupForm from './popupForm.js';
 import { carte } from "../../story.js";
-import { createDefaultStyle } from "ol/style/flat.js";
-import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle, flatToIgnStyle } from './styleToFlatStyle.js';
+import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle } from './styleToFlatStyle.js';
 import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
 import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
 import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
 import charte from '../../charte/charte.js';
-import symbolLibAction from '../../actions/symbolLib/symbolLibAction.js';
-import styleLibDialog from '../../dialogs/styleLibDialog.js';
-import StyleObj from '../LayerStyle/StyleObj.js';
-import SymbolLib from 'mcutils/style/SymbolLib.js';
 
 const forms = [styleForm, labelForm];
 const popupForm = new PopupForm({ carte: carte });

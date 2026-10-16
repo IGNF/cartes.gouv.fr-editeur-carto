@@ -3,12 +3,12 @@
  */
 import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import StyleObj from '../LayerStyle/StyleObj.js';
-import element from 'ol-ext/util/element.js';
 
 import "./ExtendedFlatStyleForm.scss";
-import { flatToIgnStyle, ignStyleToFlatStyle } from './styleToFlatStyle.js';
+import { flatToIgnStyle } from './styleToFlatStyle.js';
 import getUid from '../../utils/getUid.js';
 import SymbolLib from 'mcutils/style/SymbolLib.js';
+import { carte } from '../../story.js';
 
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
