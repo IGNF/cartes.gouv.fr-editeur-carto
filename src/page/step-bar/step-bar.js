@@ -10,7 +10,7 @@ import Toggle from 'ol-ext/control/Toggle.js';
 import Action from '../../actions/Action.js'
 
 import './step-bar.scss'
-import { shareMapBtn } from '../file-bar/file-bar.js';
+import { renameMapBtn, shareMapBtn } from '../file-bar/file-bar.js';
 
 let onToggleMode = function () {
   let toggle = this;
@@ -89,29 +89,28 @@ let share = new Button({
   handleClick: Action.open
 });
 
-// Active / désactive les boutons de partage
+// Active / désactive certains boutons
 carte.on("read", () => {
-  const shareBtns = [shareMapBtn, share];
+  const disabledButtons = [shareMapBtn, share, renameMapBtn];
   if (!carte.get("id")) {
-    shareBtns.forEach(share => {
-      share.setDisable(true);
-      share.button_.setAttribute("aria-label", "Enregistrez avant de partager")
+    disabledButtons.forEach(btn => {
+      btn.setDisable(true);
+      btn.button_.setAttribute("aria-label", "Enregistrez avant de partager")
     });
   } else {
-    shareBtns.forEach(share => {
-      share.setDisable(false);
-      share.button_.setAttribute("aria-label", "Partager");
-
+    disabledButtons.forEach(btn => {
+      btn.setDisable(false);
+      btn.button_.setAttribute("aria-label", "Partager");
     });
   }
 })
 
-// À l'enregistrement, active les boutons de partage
+// À l'enregistrement, active certains boutons
 carte.on("save", () => {
-  const shareBtns = [shareMapBtn, share];
-  shareBtns.forEach(share => {
-    share.setDisable(false);
-    share.button_.setAttribute("aria-label", "Partager");
+  const disabledButtons = [shareMapBtn, share, renameMapBtn];
+  disabledButtons.forEach(btn => {
+    btn.setDisable(false);
+    btn.button_.setAttribute("aria-label", "Partager");
   });
 
   // Change l'icône de sauvegarde vers `success` pendant 5 secondes

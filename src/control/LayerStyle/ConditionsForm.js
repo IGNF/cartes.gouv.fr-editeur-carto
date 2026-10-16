@@ -51,6 +51,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     // Enlève les anciens attributs
     this._datalist.replaceChildren();
 
+    // TODO : GÉRER LE CAS DES WFS ??
     if (layer) {
       const attributes = {};
       // Récupère les attributs du layer
