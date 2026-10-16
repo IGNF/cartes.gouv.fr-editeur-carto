@@ -127,7 +127,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
           // Validation => send event
           const validateButton = document.createElement('button'); 
           validateButton.innerText = 'Enregistrer';
-          validateButton.className = 'fr-btn';
+          validateButton.className = 'fr-btn fr-btn-primary';
           validateButton.addEventListener('click', () => {
             if (nameInput.value) {
               e.hide?.();
@@ -345,6 +345,8 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       // Create popup
       const popup = document.createElement('div');
       popup.id = 'style-popup-' + getUid();
+      popup.className = 'style-popup-popup';
+      popup.dataset.visible = 'false';
       popup.role = 'dialog';
       // Set ARIA attributes for accessibility
       btn.setAttribute('aria-haspopup', 'true');
@@ -353,13 +355,20 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       btn.setAttribute('aria-controls', popup.id);
 
       function hideonclick(event) {
-        if (event && event.target.closest && event.target.closest('.style-popup') === popupContainer) {
+        if (event && event.target.closest 
+          && ( 
+            event.target.closest('.style-popup') === popupContainer
+            || event.target.closest('.style-popup-popup') === popup
+          )
+        ) {
           return;
         }
+        console.log("Hiding popup", event);
         document.removeEventListener("click", hideonclick);
         window.removeEventListener("resize", hideonclick);
         btn.setAttribute('aria-pressed', false);
         btn.setAttribute('aria-expanded', false);
+        popup.dataset.visible = 'false';
       }
       popupContainer.appendChild(popup);
       // Title for the popup
@@ -378,12 +387,9 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         const isPressed = btn.getAttribute('aria-pressed') === 'false';
         btn.setAttribute('aria-pressed', isPressed);
         btn.setAttribute('aria-expanded', isPressed);
+        popup.dataset.visible = 'true';
         if (isPressed) {
-          document.addEventListener("click", hideonclick);
-          window.addEventListener("resize", hideonclick);
-          var rect = btn.getBoundingClientRect();
-          popup.style.top = rect.top + "px";
-          popup.style.left = rect.right + "px";
+          // Do something on click (fill the popup)
           if (typeof options.onClick === "function") {
             options.onClick({
               event: event,
@@ -391,6 +397,18 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
               element: popupContent,
               hide: hideonclick
             });
+          }
+          // Place the popup on screen
+          document.addEventListener("click", hideonclick);
+          window.addEventListener("resize", hideonclick);
+          const rect = btn.getBoundingClientRect();
+          // const popupHeight = popup.offsetHeight;
+          popup.style.top = rect.top + "px";
+          const popupWidth = popup.offsetWidth;
+          if (rect.right + popup.offsetWidth > window.innerWidth) {
+            popup.style.left = (window.innerWidth - popupWidth) + "px";
+          } else {
+            popup.style.left = rect.right + "px";
           }
         } else {
           hideonclick();

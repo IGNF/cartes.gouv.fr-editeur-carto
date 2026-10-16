@@ -1,6 +1,8 @@
 import getUid from '../utils/getUid.js';
 import Modal from '../control/Modal/Modal.js'
 
+import './styleLibDialog.scss';
+
 const styleLibDialog = new Modal({
   id: getUid('style-lib-modal'),
   parent: document.body.querySelector('main'),

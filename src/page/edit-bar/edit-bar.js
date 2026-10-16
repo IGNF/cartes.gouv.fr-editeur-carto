@@ -142,7 +142,10 @@ switcher.on("layerswitcher:change:selected", (e) => {
   }
 })
 
-
+/**
+ * Toggle for measuring
+ * DISABLED
+ * /
 const measureToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-ruler-line ',
   attributes: {
@@ -152,13 +155,28 @@ const measureToggle = new Toggle({
   },
   onToggle: onToggleAction
 });
+*/
+
+
+import symbolLibAction from "../../actions/symbolLib/symbolLibAction.js"
+import styleLibDialog from "../../dialogs/styleLibDialog.js"
+const SymbolLibButton = new Button({
+  classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-book-open-line ',
+  attributes: {
+    // 'aria-controls': styleLibDialog.dialog.id,
+    'aria-label': "Bibliothèque de styles",
+  },
+  handleClick: (e) => symbolLibAction.open(styleLibDialog)
+});
+
 
 // Barre d'interaction
 const interactionBar = new Bar({
   // toggleOne: true, // Ne fonctionne pas en liant les contrôles ol-ext et geopf 
   controls: [
     drawToggle,
-    measureToggle,
+    // measureToggle,
+    SymbolLibButton,
   ]
 })
 

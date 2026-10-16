@@ -20,8 +20,19 @@ let sortable = null;
 
 class SymbolLibAction extends Action {
   constructor(options = {}) {
-    // Affichage des symboles disponibles
     options.onOpen = () => {
+      // Display title
+      const dlog = this.getDialog();
+      const header = dlog.querySelector('.fr-modal__header');
+      const btn = header.querySelector('.main-modal__close-btn');
+      btn.innerText = '';
+      if (!header.querySelector('.fr-icon-book-open-line')) {
+        const icon = document.createElement('span');
+        icon.className = 'fr-icon fr-icon--sm fr-icon-book-open-line';
+        header.insertBefore(icon, btn);
+        header.insertBefore(dlog.querySelector('.fr-modal__title'), btn);
+      }
+      // Affichage des symboles disponibles
       this.setSymbols();
     };
     super(options);
@@ -42,7 +53,14 @@ class SymbolLibAction extends Action {
         className: 'symbol-lib-edit-style',
       });
       // Color picker popup is moved to the dialog
-      this.popup = this.editStyle.element.querySelectorAll('[id^="color-picker-popup-"]')
+      this.popup = [];
+      this.editStyle.element.querySelectorAll('[id^="color-picker-popup-"]').forEach(el => {
+        this.popup.push(el);
+      });
+      this.editStyle.element.querySelectorAll('.style-popup div[id^="style-popup-"]').forEach(el => {
+        console.log('Adding style popup to popup array:', [el]);
+        this.popup.push(el);
+      });
       // 
       this.editStyle.on('rollback-style', () => {
         this.setSymbols();
@@ -57,11 +75,13 @@ class SymbolLibAction extends Action {
         if (this.editStyle.item) {
           this.editStyle.item._type = e.styleObj.get('type');
           this.editStyle.item.setIgnStyle(ignStyle);
+          this.editStyle.item.set('name', e.styleObj.get('name'));
           this.setSymbols();
         } else {
           // Add new symbol to the library
           this.addSymbol(new SymbolLib({
             type: e.styleObj.get('type'),
+            name: e.styleObj.get('name'),
             style: flatToIgnStyle(ignStyle, e.styleObj.get('type')),
           }));
         }
@@ -76,23 +96,27 @@ class SymbolLibAction extends Action {
     if (options.styleObj) {
       const currentSymbol = new SymbolLib({
         type: options.styleObj.get('type'),
-        name: '',
+        name: options.styleObj.get('name'),
         style: flatToIgnStyle(options.styleObj.getFlatStyle())
       });
       this.symbolLib.push(currentSymbol);
       // Focus on the new symbol to edit its name
-      this.editLastItem();
+      this.editLastItem(false);
     }
     // Open action
     Action.open(dialog, this.id);
   }
   /** Edit the last item in the library (to edit its name)
    */
-  editLastItem() {
+  editLastItem(edit=false) {
     setTimeout(() => {
       const parent = this.getDialog().getDialogContent().parentNode.parentNode;
       parent.scrollTop = parent.scrollHeight;
-      this.getDialog().getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child .edit-symbol-lib-name-btn').click();
+      if (edit) {
+        this.getDialog().getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child .edit-symbol-lib-name-btn').click();
+      } else {
+        this.getDialog().getDialogContent().querySelector('.symbol-lib-item-list .symbol-lib-item:last-child').click();
+      }
     }, 100);
   }
   /** Select a symbol in the library
@@ -109,26 +133,34 @@ class SymbolLibAction extends Action {
     } else {
       this.selectedSymbol = null;
     }
-    modal.getDialog().querySelector('.applySymbol').disabled = item ? false : true;
-    modal.getDialog().querySelector('.duplicateSymbol').disabled = item ? false : true;
+    ['.applySymbol', '.duplicateSymbol'].forEach(i => {
+      const btn = modal.getDialog().querySelector(i);
+      if (btn) {
+        btn.disabled = item ? false : true;
+      }
+    })
   }
+
   /** Add a symbol to the library
    * @param {SymbolLib} symbol - symbol to add
    */
   addSymbol(symbol) {
     const currentSymbol = new SymbolLib({
       type: symbol.getType(),
-      name: '',
+      name: symbol.get('name'),
       style: symbol.getIgnStyle()
     });
     this.symbolLib.push(currentSymbol);
     this.setSymbols();
     // Focus on the new symbol to edit its name
-    this.editLastItem();
+    this.editLastItem(false);
   }
+
   /** Afficher les symboles disponibles dans la bibliothèque
+   * @param {string} [filter] geometry type to filter the symbols by (e.g., 'Point', 'LineString', 'Polygon')
    */
-  setSymbols() {
+  setSymbols(filter='all') {
+    console.log('Setting symbols with filter:', filter);
     const modal = symbolLibAction.getDialog();
     modal.getDialogContent().innerHTML = symbolLibHTML.replace(/-ID/g, '-' + this.uid);
     delete modal.getDialog().dataset.edit;
@@ -157,6 +189,7 @@ class SymbolLibAction extends Action {
     // Items
     let hasSelection = false;
     symbolLib.forEach((item, i) => {
+      if (filter !== 'all' && item.getType() !== filter) return;
       // Filter by geometry type
       if (this.typeGeom && item.getType() !== this.typeGeom) return;
       // Create item element
@@ -187,7 +220,14 @@ class SymbolLibAction extends Action {
       elt.querySelector('[data-attr="title"]').innerText = item.get('name') || '';
       // Open button
       elt.querySelector('.open-symbol-lib-btn').addEventListener('click', (e) => {
+        elt.click();
         this.showEditStyle(item);
+        e.stopPropagation();
+      });
+      // delete button
+      elt.querySelector('.duplicate-symbol-lib-btn').addEventListener('click', (e) => {
+        symbolLibAction.addSymbol(item)
+        this.setSymbols();
         e.stopPropagation();
       });
       // delete button
@@ -248,6 +288,52 @@ class SymbolLibAction extends Action {
       });
     }
 
+    // Boutons d'action pour la bibliothèque de symboles
+    const btns = modal.getDialogContent().querySelector('.symbol-lib-action-btns');
+    // Ajouter un nouveau style
+    const btnContainer = document.createElement('div');
+    btnContainer.className = 'fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md';
+    btns.appendChild(btnContainer);
+    const addBtn = document.createElement('button');
+    addBtn.className = 'fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline';
+    addBtn.innerText = 'Ajouter';
+    addBtn.addEventListener('click', () => {
+      symbolLibAction.showEditStyle();
+    });
+    btnContainer.appendChild(addBtn);
+
+    // Type de geometrie
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'style-form__select-geom fr-fieldset';
+    btns.appendChild(fieldset);
+    const geomTypes = [
+      { type: 'all', str: 'Tous'},
+      { type: 'Point', str: 'Points'},
+      { type: 'LineString', str: 'Lignes'},
+      { type: 'Polygon', str: 'Surfaces'}
+    ]
+    const name = 'symbol-lib-geomType-' + getUid();
+    geomTypes.forEach(gt => {
+      const container = document.createElement('div');
+      container.className = 'fr-fieldset__element';
+      fieldset.appendChild(container);
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = name;
+      input.checked = (gt.type === filter);
+      input.id = name + '-' + gt.type;
+      input.value = gt.type;
+      input.addEventListener('change', () => {
+        this.setSymbols(input.value);
+      });
+      container.appendChild(input);
+      const label = document.createElement('label');
+      label.htmlFor = input.id;
+      label.className = 'fr-label';
+      label.innerText = gt.str;
+      container.appendChild(label);
+    });
+
     // Formulaire d'édition de style
     const formContainer = modal.getDialogContent().querySelector('.symbol-lib-item-form');
     formContainer.appendChild(this.editStyle.getElement());
@@ -261,9 +347,10 @@ class SymbolLibAction extends Action {
     const flatStyle = item ? ignStyleToFlatStyle(item.getIgnStyle(), typeGeom) : ignStyleToFlatStyle(defaultIgnStyle, 'Point');
     const styleObj = new StyleObj({
       type: typeGeom,
-      flatStyle: flatStyle
+      flatStyle: flatStyle,
+      name: item ? item.get('name') : ''
     });
-    styleObj.isDefault = true;
+    styleObj.isDefault = false;
     styleObj.showGeom = !item && !this.typeGeom;
     this.editStyle.element.querySelector('.apply-btn').innerText = item ? 'Appliquer' : 'Ajouter';
     this.editStyle.setStyleObj(styleObj);
@@ -289,8 +376,9 @@ class SymbolLibAction extends Action {
  */
 const symbolLibAction = new SymbolLibAction({
   id: 'symbolLib',
-  title: 'Bibliothèque de symboles',
+  title: 'Bibliothèque de styles',
   content: content,
+/*
   buttons: [{
     label: 'Ajouter',
     className: 'addSymbol',
@@ -316,6 +404,7 @@ const symbolLibAction = new SymbolLibAction({
       }
     }
   }]
+*/
 });
 
 
