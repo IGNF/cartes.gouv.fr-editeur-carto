@@ -451,10 +451,10 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       if (feature && feature.getLayer) {
         // Style conditionnel
         if (feature.getLayer().getConditionStyle().length > 0) {
-          this.showError("Le style de cette couche est paramétré par des conditions.");
+          this.showError();
         } else if (feature.getLayer().get("type") === "Statistique") {
           // Style statistique
-          this.showError("Le style de cette couche est paramétré par un style statistique.");
+          this.showError(true);
           // TODO : bouton pour convertir un
           //  couche statistique en couche simple
         } else {
@@ -465,13 +465,14 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   }
 
   /** Show error message
-   * @param {String} message Message to show
+   * @param {boolean} [statistic = false] true if it's a statistic style. Default: false.
    */
-  showError(message) {
+  showError(statistic = false) {
     this.getContent().dataset.conditionStyle = '';
     this.getContent().querySelector(".style-form-container .fr-alert").innerHTML =  `<p>
-      Le formulaire de style ne peut pas être utilisé pour modifier le style de cette couche.
-      <br/>` + message + "</p>";
+      Un style ${statistic === true ? "statistique" : "conditionnel"} est défini sur cette couche.
+      <br/>
+      Le style des objets de la couche ne peut pas être modifié individuellement.</p>`;
   }
 
   /**

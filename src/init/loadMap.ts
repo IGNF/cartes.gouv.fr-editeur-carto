@@ -1,5 +1,6 @@
 import { api } from "../api";
 import Alert from "../control/Alert/Alert";
+import introDialog from "../dialogs/introDialog";
 import { getOidc } from "../oidc";
 import { carte } from "../story";
 import { setInert, unsetInert } from "../utils/inert";
@@ -80,7 +81,10 @@ export function loadMap() {
         );
       })
       // Réactive les interactions avec la carte
-      .finally(() => unsetInert(carte));
+      .finally(() => {
+        // Si le dialogue est fermé, on rend la carte interactive
+        introDialog.isOpen() ?? unsetInert(carte);
+      });
   } else {
     carte.read(
       `${import.meta.env.BASE_URL}${import.meta.env.BASE_URL.endsWith("/") ? "" : "/"}carte/template.carte`,
