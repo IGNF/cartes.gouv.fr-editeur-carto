@@ -1,4 +1,5 @@
 import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js';
+import i18next from '../../i18n/index';
 
 /**
  * @returns {HTMLElement}
@@ -9,7 +10,7 @@ function initContent () {
 
   const badge = document.createElement('p');
   badge.className = 'fr-badge fr-badge--new';
-  badge.textContent = 'Bientôt disponible';
+  badge.textContent = i18next.t('controls:layout.comingSoon');
 
   container.appendChild(badge);
 
@@ -17,8 +18,8 @@ function initContent () {
 }
 
 const styleTabNavItem = new TabNavItem({
-  label: 'Style',
-  title: 'Ouvrir l\'onglet Style',
+  label: i18next.t('controls:ui.style'),
+  title: i18next.t('controls:layout.openStyle'),
   content: initContent(),
 });
 

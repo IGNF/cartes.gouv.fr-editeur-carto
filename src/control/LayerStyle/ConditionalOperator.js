@@ -64,13 +64,13 @@ const ConditionalOperator = Object.freeze({
     },
     STARTS_WITH : {
         key : "STARTS_WITH",
-        label : "Commence par...",
+        label : "Commence par",
         filterName : "PropertyStartsWith",
         mcutilsOperator : undefined,
     },
     ENDS_WITH : {
         key : "ENDS_WITH",
-        label : "Fini par...",
+        label : "Fini par",
         filterName : "PropertyEndsWith",
         mcutilsOperator : undefined,
     },
@@ -88,13 +88,13 @@ const ConditionalOperator = Object.freeze({
     },
         LIKE : {
         key : "LIKE",
-        label : "Comme...",
+        label : "Comme",
         filterName : "PropertyIsLike",
         mcutilsOperator : "regexp",
     },
     NOT : {
         key : "NOT",
-        label : "N'est pas...",
+        label : "N'est pas",
         filterName : "Not",
         mcutilsOperator : "!regexp",
     },

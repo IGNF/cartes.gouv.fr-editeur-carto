@@ -10,6 +10,7 @@ let currentCoord = false;
 
 /**
  * @typedef {Object} PopupFromOptions Options pour le formulaire de style d'un objet
+ * @property {Object<string, string>} [labels] Libellés personnalisés des champs.
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
  * @property {Boolean} [preview = false] Faux par défaut. Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`.
  * @property {Boolean} [selectGeomType = false] Faux par défaut. Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
@@ -49,34 +50,35 @@ class PopupForm extends FlatStyleForm {
    * @abstract
    * @protected
    */
-  _addCustomInputs(/* options */) {
+  _addCustomInputs(options) {
+    const labels = options.labels ?? {};
     this._addInput({
-      label: "Titre",
+      label: labels.title ?? "Titre",
       property: "popup-titre",
       type: "text"
     });
     this._addInput({
-      label: "Description",
+      label: labels.description ?? "Description",
       property: "popup-desc",
       type: "textarea"
     });
     this._addInput({
-      label: "Image",
+      label: labels.image ?? "Image",
       labelInfo: "URL",
-      labelError: "L'URL doit commencer par http:// ou https://",
+      labelError: labels.urlError ?? "L'URL doit commencer par http:// ou https://",
       property: "popup-img",
       type: "url"
     });
     this._addInput({
-      label: "Lien",
-      labelInfo: "Nom",
+      label: labels.link ?? "Lien",
+      labelInfo: labels.name ?? "Nom",
       property: "popup-link",
       type: "text"
     });
     this._addInput({
       label: "",
       labelInfo: "URL",
-      labelError: "L'URL doit commencer par http:// ou https://",
+      labelError: labels.urlError ?? "L'URL doit commencer par http:// ou https://",
       property: "popup-url",
       type: "url"
     });

@@ -1,5 +1,7 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import content from './importFlow.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import './importFlow.scss';
 
 /**
@@ -21,10 +23,10 @@ function onOpen() {
 
 const importFlowAction = new Action({
   id: 'import-flow',
-  title: 'Importer un flux',
+  title: i18next.t('actions:import-flow.title'),
   icon: 'ri-global-line',
   onOpen: onOpen,
-  content: content,
+  content: translateHtml(content),
 })
 
 export default importFlowAction;

@@ -3,10 +3,12 @@
  */
 import InputColor from './InputColor.js';
 import ExtendedFlatStyleForm from './ExtendedFlatStyleForm.js';
+import { getControlLabels } from '../../i18n/controlLabels';
 import { StyleEvent } from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 
 /**
  * @typedef {Object} LabelFormOptions Options pour le formulaire de style d'un objet
+ * @property {Object<string, *>} [labels] Libellés personnalisés transmis aux sous-contrôles.
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
  * @property {Boolean} [preview = false] Faux par défaut. Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`.
  * @property {Boolean} [selectGeomType = false] Faux par défaut. Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
@@ -28,6 +30,7 @@ class LabelForm extends ExtendedFlatStyleForm {
    * @override
    */
   _initialize(options) {
+    this.labels = options.labels ?? {};
     super._initialize(options);
 
     options.generalType ??= true;
@@ -109,7 +112,7 @@ class LabelForm extends ExtendedFlatStyleForm {
 
     /** @type {HTMLTextAreaElement} */
     const label = this.addInput({
-      label: "Texte",
+      label: this.labels.text ?? "Texte",
       property: `${prefix}text-value`,
       type: "textarea"
     });
@@ -132,13 +135,13 @@ class LabelForm extends ExtendedFlatStyleForm {
 
     // Couleur et taille du texte
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: `${prefix}text-fill-color`,
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
 
     this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       labelInfo: '(px)',
       property: `${prefix}text-size`,
       type: 'number',
@@ -164,7 +167,7 @@ class LabelForm extends ExtendedFlatStyleForm {
 }
 
 // Création du formulaire de style
-const labelForm = new LabelForm({ hasreset: true });
+const labelForm = new LabelForm({ hasreset: true, labels: getControlLabels() });
 
 export default labelForm;
 export { LabelForm };

@@ -88,6 +88,7 @@ export class ConditionContainerDeleteEvent extends ConditionContainerEvent {
 
 /**
  * @typedef {Object} ConditionContainerOptions
+ * @property {Object<string, *>} [labels] Libellés des champs, actions et opérateurs.
  * @property {Layer} layer Couche OpenLayers à styliser
  * @property {Condition|import("./Condition.js").ConditionOptions} condition Condition ou options de la condition à créer / modifier
  * @property {Boolean} [delete = true] Si vrai, permet d'ajouter un bouton 
@@ -109,6 +110,7 @@ class ConditionContainer extends BaseObject {
    */
   constructor(options = {}) {
     super(options);
+    this.labels = options.labels ?? {};
 
     // Pour la documentation des événements personnalisés
     /** @type {ConditionContainerOnSignature<import("ol/events.js").EventsKey>} */
@@ -238,7 +240,7 @@ class ConditionContainer extends BaseObject {
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "delete-condition-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line";
       deleteBtn.addEventListener("click", () => this._deleteCondition());
-      deleteBtn.textContent = deleteBtn.title = "Supprimer la condition";
+      deleteBtn.textContent = deleteBtn.title = this.labels.deleteCondition ?? "Supprimer la condition";
 
       this.deleteBtn = deleteBtn;
 
@@ -312,7 +314,7 @@ class ConditionContainer extends BaseObject {
     operatorOptions.forEach(({ key, label }) => {
       const option = document.createElement("option");
       option.value = key;
-      option.textContent = label;
+      option.textContent = this.labels.operators?.[key] ?? label;
       operatorSelect.appendChild(option);
     });
 
@@ -329,13 +331,13 @@ class ConditionContainer extends BaseObject {
     valueInput.name = "value";
 
     // Création des fieldset__element
-    fieldset.appendChild(this._createInputFieldsetElement("Attribut", attributeId, attributeInput, true, true));
+    fieldset.appendChild(this._createInputFieldsetElement(this.labels.attribute ?? "Attribut", attributeId, attributeInput, true, true));
 
     // Conteneur dédié pour les champs Opérateur et Valeur (style géré en CSS)
     const secondaryFields = document.createElement("div");
     secondaryFields.className = "condition-container__secondary-fields";
-    secondaryFields.appendChild(this._createSelectFieldsetElement("Opérateur", operatorId, operatorSelect));
-    secondaryFields.appendChild(this._createInputFieldsetElement("Valeur", valueId, valueInput));
+    secondaryFields.appendChild(this._createSelectFieldsetElement(this.labels.operator ?? "Opérateur", operatorId, operatorSelect));
+    secondaryFields.appendChild(this._createInputFieldsetElement(this.labels.value ?? "Valeur", valueId, valueInput));
     fieldset.appendChild(secondaryFields);
 
     // Message global du fieldset
@@ -408,7 +410,7 @@ class ConditionContainer extends BaseObject {
       }
       const combobox = document.createElement("ul");
       combobox.className = "fr-combobox";
-      combobox.ariaLabel = "Attributs";
+      combobox.ariaLabel = this.labels.attributes ?? "Attributs";
       combobox.role = "listbox";
       combobox.id = "combobox-" + listId;
       inputGroup.appendChild(combobox);

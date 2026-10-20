@@ -1,9 +1,15 @@
-
 import Carte from "mcutils/Carte";
-import { isInertAvailable } from "../charte/utils";
 
 // Interactions sur la carte
 const interactions: Record<number, boolean> = {};
+
+/**
+ * Vérifie si la propriété `inert` est supportée par le navigateur.
+ */
+export function isInertAvailable(): boolean {
+  return "inert" in HTMLElement.prototype;
+}
+
 /**
  * Bloque les interactions avec la carte
  */

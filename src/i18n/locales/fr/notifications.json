@@ -1,0 +1,26 @@
+{
+  "authentication": {
+    "unavailable": "L'authentification ne fonctionne pas. Veuillez réessayer ultérieurement."
+  },
+  "dismiss": "Masquer le message",
+  "layerSwitcher": {
+    "styleNotEditable": "Le style de cette couche n'est pas modifiable."
+  },
+  "map": {
+    "copied_many": "{{count}} objets copiés",
+    "copied_one": "{{count}} objet copié",
+    "copied_other": "{{count}} objets copiés",
+    "deleted_one": "{{count}} objet supprimé",
+    "deleted_many": "{{count}} objets supprimés",
+    "deleted_other": "{{count}} objets supprimés",
+    "layerCannotAddFeatures": "La couche sélectionnée ne permet pas l'ajout d'objets.",
+    "loadError": "Impossible de charger la carte dont l'id est \"{{id}}\". Veuillez réessayer plus tard",
+    "loading": "Carte en cours de chargement",
+    "loadSuccess": "Carte chargée avec succès",
+    "requestError": "Une erreur est survenue"
+  },
+  "search": {
+    "noLayerSelected": "Aucune couche sélectionnée",
+    "notDrawingLayer": "La couche séléctionnée n'est pas une couche de dessin."
+  }
+}

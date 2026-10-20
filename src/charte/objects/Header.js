@@ -1,6 +1,7 @@
 import BaseObject from 'ol/Object.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from '../../utils/getUid.js';
+import i18next from '../../i18n/index';
 
 /** Header */
 class Header extends BaseObject {
@@ -38,9 +39,17 @@ class Header extends BaseObject {
     });
     this.logoContainer = ol_ext_element.create('DIV', {
       className: 'fr-header__logo',
-      html: '<p class="fr-logo"> République <br> française </p></p>',
       parent: brandTop
     })
+    const logo = ol_ext_element.create('P', {
+      className: 'fr-logo',
+      parent: this.logoContainer
+    });
+    logo.append(
+      i18next.t('charte:header.logo.republic') + ' ',
+      document.createElement('br'),
+      ' ' + i18next.t('charte:header.logo.country')
+    );
 
     const headerService = this.headerService = ol_ext_element.create('DIV', {
       className: 'fr-header__service',
@@ -69,7 +78,7 @@ class Header extends BaseObject {
     const navButton = ol_ext_element.create('BUTTON', {
       id: getUid('button'),
       className: 'fr-btn--menu fr-btn',
-      title: 'Menu',
+      title: i18next.t('charte:header.menu'),
       type: 'button',
       'data-fr-opened': 'false',
       'aria-controls': idmodal,
@@ -90,11 +99,11 @@ class Header extends BaseObject {
     // Close box
     ol_ext_element.create('BUTTON', {
       type: 'button',
-      title: 'Fermer',
+      title: i18next.t('common:close'),
       id: getUid('button'),
       'aria-controls': idmodal,
       className: 'fr-btn--close fr-btn',
-      text: 'Fermer',
+      text: i18next.t('common:close'),
       parent: container
     })
     this.links = ol_ext_element.create('DIV', {

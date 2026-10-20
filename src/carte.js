@@ -5,6 +5,7 @@ import { carte } from './story.js';
 import ModifyingInteraction from 'geopf-extensions-openlayers/src/packages/Interactions/Modifying.js';
 import switcher from './mcutils/layerSwitcher.js';
 import notification from './control/Notification/notification.js';
+import i18next from './i18n/index';
 import './mcutils/Feature.js';
 
 // Only one selction when editing features
@@ -22,7 +23,7 @@ carte.getMap().addControl(notification);
 modify.on(['cut', 'delete'], e => {
   const features = e.features || e.deleted;
   // undo notification
-  notification.info(features.length + (features.length > 1 ? ' objets supprimés' : ' objet supprimé'), () => {
+  notification.info(i18next.t('notifications:map.deleted', { count: features.length }), () => {
     notification.hide();
     features.forEach(f => {
       f.layer.getSource().addFeature(f.feature);
@@ -36,7 +37,7 @@ modify.on(['paste'], e => {
   const layer = switcher.getSelectedLayer();
   // Check layer
   if (!layer || layer.get('type') !== 'Vector') {
-    notification.warning('La couche sélectionnée ne permet pas l\'ajout d\'objets.', () => { });
+    notification.warning(i18next.t('notifications:map.layerCannotAddFeatures'), () => { });
     return;
   }
   // copy features
@@ -46,7 +47,7 @@ modify.on(['paste'], e => {
     layer.getSource().addFeature(feature);
   });
   // undo notification
-  const info = features.length + (features.length > 1 ? ' objets copiés' : ' objet copié');
+  const info = i18next.t('notifications:map.copied', { count: features.length });
   notification.info(info, () => {
     notification.hide();
     features.forEach(f => {
@@ -59,7 +60,7 @@ modify.on(['paste'], e => {
 modify.on(['duplicate'], e => {
   const features = e.features || [];
   // undo notification
-  const info = features.length + (features.length > 1 ? ' objets copiés' : ' objet copié');
+  const info = i18next.t('notifications:map.copied', { count: features.length });
   notification.info(info, () => {
     notification.hide();
     features.forEach(f => {

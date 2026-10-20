@@ -1,5 +1,7 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import content from './editLayerInfo.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import { addMessage, removeMessage } from '../../utils/message.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
 import "./editLayerInfo.scss";
@@ -55,7 +57,8 @@ function onOpen(e) {
     if (!form.querySelector(".fr-notice")) {
 
       const notice = Notice.createNotice({
-        title: "Les informations des couches du catalogue ne sont pas modifiables.",
+        closeLabel: i18next.t('notifications:dismiss'),
+        title: i18next.t('actions:edit-layer-info.catalogReadOnly'),
         titleLevel: 3,
         type: 'warning',
       });
@@ -70,7 +73,7 @@ function onOpen(e) {
   // Écouteurs d'événements
   inputs.title.addEventListener("change", (e) => {
     if (e.target.value === "") {
-      addMessage(e.target, 'Le nom de la couche est obligatoire.', { type: 'error' });
+      addMessage(e.target, i18next.t('actions:edit-layer-info.nameRequired'), { type: 'error' });
       return;
     } else {
       removeMessage(e.target)
@@ -79,7 +82,7 @@ function onOpen(e) {
 
   inputs.thumbnail.addEventListener("change", (e) => {
     if (e.target.value && !e.target.value.startsWith("https://")) {
-      addMessage(e.target, 'Le lien doit être un lien https.', { type: 'error' });
+      addMessage(e.target, i18next.t('actions:edit-layer-info.httpsRequired'), { type: 'error' });
       return;
     } else {
       removeMessage(e.target)
@@ -194,7 +197,9 @@ function getCatalogDescription(switcher, layerOptions) {
   if (metadata && metadata.textContent.trim()) {
     const metadataLinks = extractLinksFromElement(metadata);
     if (metadataLinks.length > 0) {
-      parts.push("Métadonnées : " + metadataLinks.join("\n"));
+      parts.push(i18next.t('actions:edit-layer-info.metadataLinks', {
+        links: metadataLinks.join("\n"), interpolation: { escapeValue: false }
+      }));
     }
   }
 
@@ -202,7 +207,10 @@ function getCatalogDescription(switcher, layerOptions) {
   if (legend && legend.textContent.trim()) {
     const legendLinks = extractLinksFromElement(legend);
     if (legendLinks.length > 0) {
-      parts.push("Légende : " + legendLinks.join("\n"));
+      parts.push(i18next.t('actions:edit-layer-info.legendLinks', {
+        count: legendLinks.length,
+        links: legendLinks.join("\n"), interpolation: { escapeValue: false }
+      }));
     }
   }
 
@@ -334,17 +342,17 @@ function saveInfo(e) {
 
 const editLayerInfoAction = new Action({
   id: 'edit-layer-info',
-  title: 'Informations de la couche',
-  content: content,
+  title: i18next.t('actions:edit-layer-info.title'),
+  content: translateHtml(content),
   buttons: [
     {
-      label: "Valider",
+      label: i18next.t('common:validate'),
       kind: 0,
       "type": "submit",
       "form": "edit-layer-info-form",
     },
     {
-      label: "Annuler",
+      label: i18next.t('common:cancel'),
       kind: 1,
       close: true
     }

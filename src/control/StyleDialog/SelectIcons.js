@@ -5,6 +5,7 @@ import "./SelectIcons.scss";
 /**
  * @typedef {Object} SelectIconsConfig
  * @property {String} label Le label de l'input
+ * @property {String} [noIconLabel] Libellé de l'option sans icône.
  * @property {String} property La propriété flat style correspondante
  * @property {Array<String>} fonts Les options de la sélection (valeur: libellé)
  */
@@ -157,7 +158,7 @@ class SelectIcons extends CustomSelectGrid {
 
     // Par défaut : aucune icône
     const opt = {
-      " ": "Sans icône",
+      " ": options.noIconLabel ?? "Sans icône",
     }
 
     this.fonts = this.fonts.filter(f => fonts[f]);

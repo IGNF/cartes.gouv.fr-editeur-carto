@@ -1,8 +1,10 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import carte from '../../carte.js';
 import Alert from '../../control/Alert/Alert';
 
 import content from './shareMap.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import './shareMap.scss';
 import { getViewURL } from '../../utils/urls.js';
 
@@ -23,10 +25,11 @@ function beforeOpen() {
   const id = carte.get('id');
   if (!id) {
     Alert.addAlert({
+      closeLabel: i18next.t('notifications:dismiss'),
       type: Alert.TYPES.ERROR,
       id: "alert--map-not-saved",
-      title: 'Impossible de partager la carte',
-      description: "Enregistrez d'abord votre carte pour générer un lien de partage.",
+      title: i18next.t('actions:share-map.notSavedTitle'),
+      description: i18next.t('actions:share-map.notSaved'),
     }, true);
 
     return false;
@@ -63,7 +66,8 @@ function onOpen(e) {
 }
 
 function copy(e) {
-  let dataCopy = e.target.dataset.copy;
+  const button = e.currentTarget;
+  let dataCopy = button.dataset.copy;
   let input = document.getElementById(dataCopy);
 
   if (input) {
@@ -71,18 +75,22 @@ function copy(e) {
     navigator.clipboard.writeText(input.value);
 
     // Change l'icône et le texte affiché
-    let copied = 'Copié <span class="fr-ml-1w ri-check-line"></span>'
-    e.target.innerHTML = copied;
+    const icon = document.createElement('span');
+    icon.className = 'fr-ml-1w ri-check-line';
+    button.replaceChildren(i18next.t('actions:share-map.copied') + ' ', icon);
 
     // Remet le bouton à son état initial après 3 secondes
-    setTimeout(() => e.target.innerHTML = 'Copier <span class="fr-ml-1w ri-file-copy-line"></span>', 3000);
+    setTimeout(() => {
+      icon.className = 'fr-ml-1w ri-file-copy-line';
+      button.replaceChildren(i18next.t('actions:share-map.copy') + ' ', icon);
+    }, 3000);
   }
 }
 
 const shareMapAction = new Action({
   id: 'share-map',
-  title: 'Partager',
-  content: content,
+  title: i18next.t('actions:share-map.title'),
+  content: translateHtml(content),
   beforeOpen: beforeOpen,
   onOpen: onOpen
 });

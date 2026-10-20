@@ -3,6 +3,7 @@ import Alert from "../control/Alert/Alert";
 import { getOidc } from "../oidc";
 import { carte } from "../story";
 import { setInert, unsetInert } from "../utils/inert";
+import i18next from "../i18n/index";
 
 export type SearchParams = {
   /** Id de la carte */
@@ -27,9 +28,10 @@ export function loadMap() {
     setInert(carte);
     Alert.addAlert(
       {
+        closeLabel: i18next.t('notifications:dismiss'),
         type: Alert.TYPES.INFO,
         id: "alert--loading",
-        description: "Carte en cours de chargement",
+        description: i18next.t('notifications:map.loading'),
         small: true,
       },
       true,
@@ -55,9 +57,10 @@ export function loadMap() {
 
             Alert.addAlert(
               {
+                closeLabel: i18next.t('notifications:dismiss'),
                 type: Alert.TYPES.SUCCESS,
                 id: "alert--load-success",
-                description: "Carte chargée avec succès",
+                description: i18next.t('notifications:map.loadSuccess'),
                 small: true,
               },
               true,
@@ -71,10 +74,14 @@ export function loadMap() {
         console.error(error);
         Alert.addAlert(
           {
+            closeLabel: i18next.t('notifications:dismiss'),
             type: Alert.TYPES.ERROR,
             id: "alert--load-error",
-            title: "Une erreur est survenue",
-            description: `Impossible de charger la carte dont l'id est "${editId}". Veuillez réessayer plus tard`,
+            title: i18next.t('notifications:map.requestError'),
+            description: i18next.t('notifications:map.loadError', {
+              id: editId,
+              interpolation: { escapeValue: false }
+            }),
           },
           true,
         );

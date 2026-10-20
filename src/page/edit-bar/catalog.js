@@ -1,4 +1,5 @@
 import carte from '../../carte.js';
+import i18next from '../../i18n/index';
 
 import Catalog from "geopf-extensions-openlayers/src/packages/Controls/Catalog/Catalog.js";
 
@@ -25,7 +26,7 @@ import Alert from '../../control/Alert/Alert';
 const catalog = new Catalog({
   position: "top-right",
   listable: false,
-  titlePrimary: "Catalogue des cartes",
+  titlePrimary: i18next.t('pages:catalog.title'),
   layerLabel: "title",
   layerThumbnail: true,
   optimisation: "on-demand",
@@ -37,7 +38,7 @@ const catalog = new Catalog({
   },
   categories: [
     {
-      title: "Cartes de références",
+      title: i18next.t('pages:catalog.referenceMaps'),
       id: "base",
       order: false,
       featured: true,
@@ -47,12 +48,12 @@ const catalog = new Catalog({
       }
     },
     {
-      title: "Toutes les cartes",
+      title: i18next.t('pages:catalog.allMaps'),
       id: "data",
       search: true,
       items: [
         {
-          title: "Thème",
+          title: i18next.t('pages:catalog.theme'),
           default: true,
           order: true,
           section: true,
@@ -63,7 +64,7 @@ const catalog = new Catalog({
           }
         },
         {
-          title: "Producteur",
+          title: i18next.t('pages:catalog.producer'),
           section: true,
           order: true,
           icon: false,
@@ -73,7 +74,7 @@ const catalog = new Catalog({
           }
         },
         {
-          title: "Service",
+          title: i18next.t('pages:catalog.service'),
           section: true,
           order: true,
           featured: true,
@@ -135,11 +136,16 @@ catalog.on(catalog.ADD_CATALOG_LAYER_EVENT, function (/** @type {CatalogEvent} *
       // On essaie de récupérer le label contenant le nom visible (pas nom technique)
       const layerName = e.target?.getContainer().querySelector(`input[data-layer="${name}:${service}"] ~ * label.GPlabelActive`)?.title;
       Alert.addAlert({
+        closeLabel: i18next.t('notifications:dismiss'),
         id: `add-catalog-layer-ID-${id.replaceAll(/[^a-zA-Z]/g, '-')}--error`,
         closable: true,
         type: Alert.TYPES.ERROR,
-        title: "Une erreur est survenue",
-        description: `La couche ${layerName ? layerName + " ": ""}n'a pas pu être ajoutée à la carte`,
+        title: i18next.t('pages:catalog.requestError'),
+        description: layerName
+          ? i18next.t('pages:catalog.namedLayerAddError', {
+            name: layerName, interpolation: { escapeValue: false }
+          })
+          : i18next.t('pages:catalog.layerAddError'),
         // small: true,
       }, true);
     } else {

@@ -1,7 +1,9 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import carte from '../../carte.js';
 import { api } from '../../api';
 import content from './saveMap.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import ol_ext_element from 'ol-ext/util/element.js';
 import { transformExtent } from 'ol/proj.js'
 import { addMessage } from '../../utils/message.js';
@@ -87,12 +89,12 @@ async function saveMap() {
   const inputDescription = dialog.querySelector('[data-field="description"]');
   // Check mandatory
   if (!inputName.value) {
-    addMessage(inputName, 'Le nom de la carte est obligatoire', { type: 'error' });
+    addMessage(inputName, i18next.t('actions:save-map.nameRequired'), { type: 'error' });
     inputName.focus();
     return;
   }
   if (!select.value) {
-    addMessage(select, 'Le thème est obligatoire', { type: 'error' });
+    addMessage(select, i18next.t('actions:save-map.themeRequired'), { type: 'error' });
     select.focus();
     return;
   }
@@ -145,9 +147,10 @@ async function saveMap() {
         // Connect and iterate
         console.error('Unauthorized, please login to save the map');
         Alert.addAlert({
+          closeLabel: i18next.t('notifications:dismiss'),
           type: Alert.TYPES.ERROR,
           id: "alert--save-login-needed",
-          description: "Vous devez être connecté·e pour enregistrer une carte.",
+          description: i18next.t('actions:save-map.loginRequired'),
           small: true
         }, true);
       }
@@ -164,9 +167,10 @@ async function saveMap() {
       else if (status === 400 || status === 404) {
         console.error('Map size limit exceeded');
         Alert.addAlert({
+          closeLabel: i18next.t('notifications:dismiss'),
           type: Alert.TYPES.ERROR,
           id: "alert--save-size-limit-exceeded",
-          description: "La taille de la carte dépasse la limite autorisée par le serveur.",
+          description: i18next.t('actions:save-map.sizeLimitExceeded'),
           small: true
         }, true);
       } else if (status === 201 || status === 200) {
@@ -179,9 +183,10 @@ async function saveMap() {
           carte.set('atlas', responseData);
         }
         Alert.addAlert({
+          closeLabel: i18next.t('notifications:dismiss'),
           type: Alert.TYPES.SUCCESS,
           id: "alert--save-success",
-          description: "Carte enregistrée",
+          description: i18next.t('actions:save-map.saved'),
           small: true,
         }, true);
         carte.dispatchEvent('save')
@@ -190,8 +195,8 @@ async function saveMap() {
       dialog.close();
     }
     async function post() {
-      console.log('Posting map...', metadata, data);
-      dialog.setDialogContent(savingContent);
+      console.log('Posting map', metadata, data);
+      dialog.setDialogContent(translateHtml(savingContent));
       dialog.setButtons();
       // Contenu de la carte au format .carte, envoyé en tant que fichier
       const file = new Blob([JSON.stringify(data)], { type: 'application/json' });
@@ -227,16 +232,16 @@ async function saveMap() {
 
 const saveMapAction = new Action({
   id: 'save-map',
-  title: 'Enregistrer',
-  content: content,
+  title: i18next.t('actions:save-map.title'),
+  content: translateHtml(content),
   buttons: [
     {
-      label: "Enregistrer",
+      label: i18next.t('common:save'),
       kind: 0,
       callback: saveMap,
     },
     {
-      label: "Annuler",
+      label: i18next.t('common:cancel'),
       kind: 1,
       close: true
     }
