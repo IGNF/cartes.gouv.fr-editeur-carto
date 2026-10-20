@@ -89,6 +89,10 @@
       margin: 0 1rem 1rem !important;
       padding: 0 !important;
       clear: both;
+
+      tr:nth-child(2n + 1) {
+        background-color: var(--background-contrast-grey);
+      }
     }
 
     img {
