@@ -58,7 +58,6 @@ class SymbolLibAction extends Action {
         this.popup.push(el);
       });
       this.editStyle.element.querySelectorAll('.style-popup div[id^="style-popup-"]').forEach(el => {
-        console.log('Adding style popup to popup array:', [el]);
         this.popup.push(el);
       });
       // 
@@ -72,6 +71,7 @@ class SymbolLibAction extends Action {
           if (!style[key]) style[key] = style2[key];
         });
         const ignStyle = flatToIgnStyle(style, e.styleObj.get('type'));
+        console.log('Applying style:', style);
         if (this.editStyle.item) {
           this.editStyle.item._type = e.styleObj.get('type');
           this.editStyle.item.setIgnStyle(ignStyle);
@@ -160,7 +160,6 @@ class SymbolLibAction extends Action {
    * @param {string} [filter] geometry type to filter the symbols by (e.g., 'Point', 'LineString', 'Polygon')
    */
   setSymbols(filter='all') {
-    console.log('Setting symbols with filter:', filter);
     const modal = symbolLibAction.getDialog();
     modal.getDialogContent().innerHTML = symbolLibHTML.replace(/-ID/g, '-' + this.uid);
     delete modal.getDialog().dataset.edit;
@@ -351,13 +350,22 @@ class SymbolLibAction extends Action {
       flatStyle: flatStyle,
       name: item ? item.get('name') : ''
     });
-    styleObj.isDefault = false;
+    styleObj.isDefault = true;
     styleObj.showGeom = !item && !this.typeGeom;
+    console.log('Style object showGeom:', styleObj.showGeom);
+    console.log('Showing edit style for item:', item, 'with styleObj:', styleObj);
     this.editStyle.element.querySelector('.apply-btn').innerText = item ? 'Appliquer' : 'Ajouter';
     this.editStyle.setStyleObj(styleObj);
     this.editStyle.item = item;
     this.editStyle.setVisible(true);
+    // Hide or show the geometry selection based on the style object's showGeom property
     modal.getDialog().dataset.edit = '';
+    if (!styleObj.showGeom) {
+      modal.getDialogContent().querySelector('.symbol-lib-item-form .style-form__select-geom').classList.add('fr-hidden');
+    } else {
+      modal.getDialogContent().querySelector('.symbol-lib-item-form .style-form__select-geom').classList.remove('fr-hidden');
+    }
+    modal.getDialogContent().querySelector('.style-name').disabled = false;
     // Color picker popup is moved to the dialog to avoid being hidden by overflow:hidden
     let cpicker = modal.getDialog().querySelector('.dialog-colorpicker');
     if (!cpicker) {

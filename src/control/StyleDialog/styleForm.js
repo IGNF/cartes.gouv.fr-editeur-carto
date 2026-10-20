@@ -48,7 +48,7 @@ class StyleForm extends ExtendedFlatStyleForm {
     const strokeElements = this.getContent().querySelectorAll("[data-property^=stroke-]");
     const fillStrokeElements = this.getContent().querySelectorAll("[data-property^=fill-stroke-]");
     // Style par défaut : on affiche les inputs "fill-stroke..."
-    if (this.styleObj.isDefault && this.getGeom()?.split(' ').includes("Polygon")) {
+    if ((this.styleObj.isDefault || this.styleObj?.showGeom) && this.getGeom()?.split(' ').includes("Polygon")) {
       strokeElements.forEach(elem => elem.classList.add("fr-hidden"));
       fillStrokeElements.forEach(elem => elem.classList.remove("fr-hidden"));
     } else {

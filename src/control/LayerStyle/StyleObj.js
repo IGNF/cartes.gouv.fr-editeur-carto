@@ -205,6 +205,7 @@ class StyleObj extends BaseObject {
     this.name = name;
     this.type = type;
     this.conditions = conditions;
+    this.showGeom = options.showGeom || false;
     this.setFlatStyle(flatStyle, true);
   }
 
@@ -574,6 +575,7 @@ class StyleObj extends BaseObject {
       name: this.name,
       type: this.get("type"),
       default: this.isDefault,
+      showGeom: this.showGeom,
       conditions: clonedConditions,
       flatStyle: this.getFlatStyle(),
     })
