@@ -13,9 +13,10 @@ import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
 import charte from '../../charte/charte.js';
 import i18next from '../../i18n/index';
+import { getControlLabels } from '@/i18n/controlLabels.js';
 
 const forms = [styleForm, labelForm];
-const popupForm = new PopupForm({ carte: carte });
+const popupForm = new PopupForm({ carte: carte, labels: getControlLabels() });
 
 // Initialise les formulaires
 const initForm = () => {
@@ -54,7 +55,8 @@ const styleDialog = new StyleDialog({
     {
       form: styleForm,
       label: i18next.t('controls:ui.style'),
-      title: "Configuration du style"
+      title: i18next.t('controls:ui.styleConfiguration')
+
     },
     /*
     {
@@ -65,11 +67,11 @@ const styleDialog = new StyleDialog({
     */
     {
       form: popupForm,
-      label: "Infobulle",
-      title: "Configuration de l'infobulle"
+      label: i18next.t('controls:ui.popup'),
+      title: i18next.t('controls:ui.popupConfiguration')
     }
   ],
-  labelTabNav: "Navigation de configuration",
+  labelTabNav: i18next.t('controls:ui.configuration'),
 });
 
 // Écouteurs d'événements "style" pour chaque formulaire

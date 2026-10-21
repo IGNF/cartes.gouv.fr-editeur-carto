@@ -23,6 +23,7 @@ class PopupForm extends FlatStyleForm {
    */
   constructor(options = {}) {
     super(options);
+    console.log(options.labels)
     this._addCustomInputs(options);
     // Get current feature and coordinate from carte popup
     this.carte = options.carte;
@@ -192,7 +193,7 @@ class PopupForm extends FlatStyleForm {
 
   /**
    * Définit le contenu du formulaire à partir d'une feature
-   * @param {import('ol/Feature.js').default
+   * @param {import('ol/Feature.js').default}
    */
   setLayer(layer) {
     this.layer = layer;

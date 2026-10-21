@@ -64,7 +64,7 @@
     "unsavedChanges": "The map has been modified. Do you want to continue without saving?"
   },
   "rename-map": {
-    "nameLabel": "Name*",
+    "nameLabel": "Name (required)",
     "title": "Rename"
   },
   "save-map": {

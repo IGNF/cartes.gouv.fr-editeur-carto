@@ -226,7 +226,7 @@ class EditStyle extends BaseObject {
     const saveStyleBtn = document.createElement("button");
     saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-go-back-line";
     saveStyleBtn.addEventListener("click", this.rollbackStyle.bind(this));
-    saveStyleBtn.textContent = saveStyleBtn.title = "Enregistrer le style";
+    saveStyleBtn.textContent = saveStyleBtn.title = this.labels.saveStyle ?? "Enregistrer le style";
 
     // Preview
     const preview = this._createPreview(options);

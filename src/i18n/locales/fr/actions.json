@@ -65,7 +65,7 @@
     "unsavedChanges": "La carte a été modifiée. Voulez-vous continuer sans enregistrer ?"
   },
   "rename-map": {
-    "nameLabel": "Nom*",
+    "nameLabel": "Nom (obligatoire)",
     "title": "Renommer"
   },
   "save-map": {

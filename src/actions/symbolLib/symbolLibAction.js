@@ -334,6 +334,7 @@ class SymbolLibAction extends Action {
       const label = document.createElement('label');
       label.htmlFor = input.id;
       label.className = 'fr-label';
+      // Permet de traduire
       label.innerText = i18next.t(gt.key);
       container.appendChild(label);
     });

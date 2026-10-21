@@ -23,7 +23,9 @@ function onOpen(e) {
   // Initialise le formulaire
   if (!this.popupForm) {
     this.popupForm = new PopupForm({ labels: getControlLabels() });
-    dialog.getDialogContent().innerHTML = "";
+    dialog.getDialogContent().innerHTML = ol_ext_element.create("div", {
+      className: "edit-layer-popup-content",
+    }).outerHTML;
     this.popupForm.on("style", (e) => {
       this.popupForm.setPopupContent(editLayerPopupAction.layer, e.property, e.value);
     });
@@ -51,7 +53,7 @@ function onOpen(e) {
 const editLayerPopupAction = new Action({
   id: "edit-layer-popup",
   content: ol_ext_element.create("div", {
-    className: "edit-layer-poup-content",
+    className: "edit-layer-popup-content",
   }),
   icon: "fr-icon-chat-quote-line",
   size: "md",

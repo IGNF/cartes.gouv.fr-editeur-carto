@@ -127,7 +127,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
           nameInput.focus();
           // Validation => send event
           const validateButton = document.createElement('button'); 
-          validateButton.innerText = this.labels.saveStyle ?? 'Enregistrer';
+          validateButton.innerText = this.labels.save ?? 'Enregistrer';
           validateButton.className = 'fr-btn fr-btn-primary';
           validateButton.addEventListener('click', () => {
             if (nameInput.value) {
@@ -154,7 +154,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
       // Bouton pour ouvrir la bibliothèque de symboles
       this.addTitleButton({
-        title: this.labels.styleLibrary ?? 'Bibliothèque de style',
+        title: this.labels.styleLibrary ?? 'Bibliothèque de styles',
         icon: 'fromSymbolLib fr-icon-book-open-line',
         haspopup: true,
         onClick: (e) => {
@@ -473,7 +473,6 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     this.getContent().dataset.conditionStyle = '';
     const alert = this.getContent().querySelector(".style-form-container .fr-alert");
     const message = document.createElement('p');
-    // Intertionalisation
     const styleType = statistic
       ? this.labels.statistical ?? 'statistique'
       : this.labels.conditional ?? 'conditionnel';
@@ -634,7 +633,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const label = document.createElement("legend");
     label.className = "fr-hint-text fr-fieldset__legend--regular fr-fieldset__legend";
-    label.textContent = "Symbolisation";
+    label.textContent = this.labels.symbolization ?? "Symbolisation";
     selectGroup.append(label);
 
 
@@ -665,9 +664,9 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     }
 
     const geomTypes = [
-      { value: "Point", text: "Point", icon: "fr-icon-map-pin-2-line" },
-      { value: "LineString", text: "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
-      { value: "Polygon", text: "Surface", icon: "fr-icon-ign-shape-3-fill" },
+      { value: "Point", text: this.labels.point ?? "Point", icon: "fr-icon-map-pin-2-line" },
+      { value: "LineString", text: this.labels.line ?? "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
+      { value: "Polygon", text: this.labels.polygon ?? "Surface", icon: "fr-icon-ign-shape-3-fill" },
     ];
 
     const radioName = "geom-type-" + getUid();
@@ -719,7 +718,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const label = document.createElement("label");
     label.className = "fr-label";
-    label.textContent = this.labels.preview ?? "Prévisualisation";
+    label.textContent = this.labels.previewTitle ?? "Prévisualisation";
     preview.appendChild(label);
 
     let image = document.createElement("canvas");
