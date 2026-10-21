@@ -2,6 +2,7 @@ import TabNavItem from 'geopf-extensions-openlayers/src/packages/Controls/Toggle
 import story from '../../story.js';
 import { addMessage, removeMessage, setDisabled } from '../../utils/utils.js';
 import { getTitle, setLogo, setTitle } from '../../utils/story.js';
+import i18next from '../../i18n/index';
 
 
 ///// VALEURS PAR DÉFAUTS /////
@@ -25,8 +26,8 @@ const IDS = {
  */
 const defaultValues = {
   SHOW_TITLE: false,
-  TITLE: 'Titre de la carte',
-  SUBTITLE: 'Sous-titre de la carte',
+  TITLE: i18next.t('controls:layout.defaultTitle'),
+  SUBTITLE: i18next.t('controls:layout.defaultSubtitle'),
   SHOW_LOGO: false,
   LOGO: '',
 };
@@ -59,13 +60,13 @@ const getInstances = (element) => {
 function initContent() {
   // Formulaire racine du panneau "Titre"
   const container = document.createElement('form');
-  container.setAttribute('aria-label', 'Configuration du panneau de titre');
+  container.setAttribute('aria-label', i18next.t('controls:layout.titleConfiguration'));
 
   // Fieldset de contenu piloté par le toggle "Titre"
   const titleFieldset = document.createElement('fieldset');
   titleFieldset.className = 'fr-fieldset';
   titleFieldset.id = IDS.TITLE_FIELDSET;
-  titleFieldset.setAttribute('aria-label', 'Paramètres du titre');
+  titleFieldset.setAttribute('aria-label', i18next.t('controls:layout.titleSettings'));
   titleFieldset.setAttribute('aria-describedby', `${IDS.TITLE_FIELDSET}-messages`);
 
   // Fieldset dédié au toggle "Titre" (évite les décalages de styles DSFR)
@@ -88,7 +89,7 @@ function initContent() {
   const toggleLabel = document.createElement('label');
   toggleLabel.className = 'fr-toggle__label fr-text--bold';
   toggleLabel.setAttribute('for', IDS.TITLE_TOGGLE);
-  toggleLabel.textContent = 'Ajouter un titre';
+  toggleLabel.textContent = i18next.t('controls:layout.addTitle');
 
   toggleGroup.appendChild(toggleInput);
   toggleGroup.appendChild(toggleLabel);
@@ -105,7 +106,7 @@ function initContent() {
   const titleInputLabel = document.createElement('label');
   titleInputLabel.className = 'fr-label';
   titleInputLabel.setAttribute('for', IDS.TITLE_INPUT);
-  titleInputLabel.textContent = 'Titre';
+  titleInputLabel.textContent = i18next.t('controls:ui.title');
 
   const titleInput = document.createElement('input');
   titleInput.className = 'fr-input';
@@ -126,7 +127,7 @@ function initContent() {
   const subtitleInputLabel = document.createElement('label');
   subtitleInputLabel.className = 'fr-label';
   subtitleInputLabel.setAttribute('for', IDS.SUBTITLE_INPUT);
-  subtitleInputLabel.textContent = 'Sous-titre';
+  subtitleInputLabel.textContent = i18next.t('controls:layout.subtitle');
 
   const subtitleInput = document.createElement('input');
   subtitleInput.className = 'fr-input';
@@ -141,7 +142,7 @@ function initContent() {
   const imageFieldset = document.createElement('fieldset');
   imageFieldset.className = 'fr-fieldset';
   imageFieldset.id = IDS.IMAGE_FIELDSET;
-  imageFieldset.setAttribute('aria-label', 'Paramètres de l\'image');
+  imageFieldset.setAttribute('aria-label', i18next.t('controls:layout.imageSettings'));
 
   // Toggle pour activer l'ajout d'une image
   const imageToggleElement = document.createElement('div');
@@ -159,7 +160,7 @@ function initContent() {
   const imageToggleLabel = document.createElement('label');
   imageToggleLabel.className = 'fr-toggle__label';
   imageToggleLabel.setAttribute('for', IDS.IMAGE_TOGGLE);
-  imageToggleLabel.textContent = 'Image';
+  imageToggleLabel.textContent = i18next.t('controls:ui.image');
 
   imageToggleGroup.appendChild(imageToggleInput);
   imageToggleGroup.appendChild(imageToggleLabel);
@@ -175,7 +176,7 @@ function initContent() {
   const imageUploadLabel = document.createElement('label');
   imageUploadLabel.className = 'fr-label';
   imageUploadLabel.setAttribute('for', IDS.IMAGE_INPUT);
-  imageUploadLabel.textContent = 'URL de l\'image';
+  imageUploadLabel.textContent = i18next.t('controls:layout.imageUrl');
 
   const imageUploadInput = document.createElement('input');
   imageUploadInput.className = 'fr-input';
@@ -282,7 +283,7 @@ function addEvents(container, story) {
   refs.imageInput.addEventListener('change', () => {
     if (!refs.imageInput.validity.valid) {
       // Invalide, on envoie un message d'erreur
-      addMessage(refs.imageInput, `L’URL doit être un lien https.`);
+      addMessage(refs.imageInput, i18next.t('controls:layout.httpsRequired'));
       setLogo(story);
     } else {
       removeMessage(refs.imageInput);
@@ -298,7 +299,7 @@ function addEvents(container, story) {
       return;
     } else {
       // Erreur de chargement
-      addMessage(refs.imageInput, `L'image n'a pas pu être intégrée correctement`);
+      addMessage(refs.imageInput, i18next.t('controls:layout.imageError'));
       setLogo(story);
     }
   });
@@ -350,8 +351,8 @@ function onOpen() {
 ///// INSTANCE TABNAV ITEM POUR LE CHANGEMENT DU TITRE /////
 
 const titleTabNavItem = new TabNavItem({
-  label: 'Titre',
-  title: 'Ouvrir l\'onglet Titre',
+  label: i18next.t('controls:ui.title'),
+  title: i18next.t('controls:layout.openTitle'),
   content: initContent(),
   onOpen: onOpen,
 });

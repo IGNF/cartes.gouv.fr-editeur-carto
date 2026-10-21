@@ -13,6 +13,11 @@
   .GPF-dialog__content {
     background: var(--background-contrast-grey);
     padding: 0.75rem;
+
+    > .edit-layer-popup-content + .style-form-container{
+      background: var(--background-default-grey);
+      padding: 0.75rem;
+    }
   }
   
   [id^=tabNavContent] {

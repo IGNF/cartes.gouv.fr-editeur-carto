@@ -1,4 +1,6 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
+import { translateHtml } from '../../i18n/translateHtml';
 import content from './openMap.html?raw';
 import loadingContent from './loading.html?raw';
 import cardTemplate from './cardMapTemplate.html?raw';
@@ -14,14 +16,14 @@ const defaultImagePath = 'img/alt-image.svg';
 
 const buttons = [
   {
-    label: "Ouvrir",
+    label: i18next.t('common:open'),
     kind: 0,
     close: false,
     disabled: true,
     callback: openMap
   },
   {
-    label: "Annuler",
+    label: i18next.t('common:cancel'),
     kind: 1,
     close: true
   }
@@ -51,7 +53,10 @@ async function onOpen(e) {
     const { data, status } = await api.map.getMaps({ context: "profile", limit: "all" });
     if (refetchCount >= maxRefetchCount) {
       refetchCount = 0;
-      dialog.setDialogContent('<p class="fr-message fr-message--error">Une erreur est survenue.</p>');
+      dialog.setDialogContent(ol_ext_element.create('p', {
+        className: 'fr-message fr-message--error',
+        text: i18next.t('actions:open-map.requestError')
+      }));
     } else if (status !== 200 && status !== 206) {
       refetchCount++;
       load();
@@ -63,23 +68,25 @@ async function onOpen(e) {
 
   // Check if map has changed
   if (carte.hasChanged()) {
-    dialog.setDialogContent('<p>La carte a été modifiée. Voulez-vous continuer sans enregistrer ?</p>');
+    dialog.setDialogContent(ol_ext_element.create('p', {
+      text: i18next.t('actions:open-map.unsavedChanges')
+    }));
     dialog.setButtons([{
-      label: 'Annuler',
+      label: i18next.t('common:cancel'),
       kind: 0,
       close: true
     }, {
-      label: 'Continuer',
+      label: i18next.t('common:continue'),
       kind: 1,
       close: false,
       callback: () => {
-        dialog.setDialogContent(loadingContent);
+        dialog.setDialogContent(translateHtml(loadingContent));
         dialog.setButtons();
         load();
       }
     }]);
   } else {
-    dialog.setDialogContent(loadingContent);
+    dialog.setDialogContent(translateHtml(loadingContent));
     dialog.setButtons();
     load();
   }
@@ -92,7 +99,9 @@ async function onOpen(e) {
 function getUserMaps(data) {
   const { maps } = data;
   if (!maps.length) {
-    dialog.setDialogContent("<p>Vous n'avez pas de cartes enregistrées</p>");
+    dialog.setDialogContent(ol_ext_element.create('p', {
+      text: i18next.t('actions:open-map.empty')
+    }));
     return;
   }
 
@@ -121,7 +130,7 @@ function getUserMaps(data) {
   const filterInput = ol_ext_element.create('input', {
     className: 'fr-input',
     id: 'map-filter',
-    placeholder: 'Rechercher',
+    placeholder: i18next.t('common:search'),
     parent: content,
     on: {
       // Filter on keyup
@@ -169,19 +178,21 @@ function createMapCard({ title, timestamp, img, id }) {
   let mapTitle = title ? title : '';
   let date = new Date(timestamp);
   let dateStr = '';
-  if (date) {
+  if (!Number.isNaN(date.valueOf())) {
     const options = {
       year: "numeric",
       month: "long",
       day: "numeric",
     };
 
-    const localDate = date.toLocaleDateString('fr-FR', options);
+    const locale = i18next.resolvedLanguage || i18next.language || "fr-FR";
+    const localDate = date.toLocaleDateString(locale, options);
     const timeOptions = {
       hour: "2-digit",
       minute: "2-digit"
     };
-    const time = date.toLocaleTimeString('fr-FR', timeOptions).replace(":", "h");
+    const formattedTime = date.toLocaleTimeString(locale, timeOptions);
+    const time = locale.startsWith('fr') ? formattedTime.replace(":", "h") : formattedTime;
 
     dateStr = `${localDate}, ${time}`;
   }
@@ -230,18 +241,20 @@ async function openMap() {
     dialog.close();
     if (bool) {
       Alert.addAlert({
+        closeLabel: i18next.t('notifications:dismiss'),
         id: "map-loaded--success",
         type: "success",
         small: true,
-        description: "La carte a été chargée avec succés.",
+        description: i18next.t('actions:open-map.loadSuccess'),
         closable: true,
       })
     } else {
       Alert.addAlert({
+        closeLabel: i18next.t('notifications:dismiss'),
         id: "map-loaded--error",
         type: "error",
         small: true,
-        description: "Une erreur est survenue. La carte n'a pas pu être chargée.",
+        description: i18next.t('actions:open-map.loadError'),
         closable: true,
       })
     }
@@ -250,8 +263,8 @@ async function openMap() {
 
 const openMapAction = new Action({
   id: 'open-map',
-  title: 'Mes cartes',
-  content: content,
+  title: i18next.t('actions:open-map.title'),
+  content: translateHtml(content),
   onOpen: onOpen
 })
 

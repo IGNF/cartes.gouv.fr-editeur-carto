@@ -1,5 +1,6 @@
 import carte from '../../carte.js';
 import modal from '../../dialogs/modal.js';
+import i18next from '../../i18n/index';
 
 import './file-bar.scss';
 
@@ -40,7 +41,7 @@ carte.getControl('printDlg')._printDialog.on('hide', () => {
 // Nom du fichier (dans le menu ouvert)
 let fileName = new TextButton({
   className: 'file-name fr-p-2w fr-text--sm fr-m-0',
-  html: 'Nom du fichier',
+  html: i18next.t('pages:file.name'),
 });
 
 // Ouvrir une carte existante
@@ -52,7 +53,7 @@ let openMapBtn = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  html: 'Ouvrir une carte',
+  html: i18next.t('pages:file.open'),
   handleClick: Action.open
 });
 
@@ -65,7 +66,7 @@ let saveMapBtn = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  html: 'Enregistrer',
+  html: i18next.t('pages:file.save'),
   handleClick: Action.open,
 });
 
@@ -78,7 +79,7 @@ let renameMapBtn = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  html: 'Renommer',
+  html: i18next.t('pages:file.rename'),
   handleClick: Action.open,
 });
 
@@ -91,7 +92,7 @@ let shareMapBtn = new Button({
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
   },
-  html: 'Partager',
+  html: i18next.t('pages:file.share'),
   handleClick: Action.open,
 });
 
@@ -102,7 +103,7 @@ let exportMapBtn = new Button({
     'data-action': 'export-map',
     type: 'button'
   },
-  html: 'Exporter',
+  html: i18next.t('pages:file.export'),
   handleClick: exportMap,
 });
 
@@ -113,7 +114,7 @@ let printMapBtn = new Button({
     'data-action': 'print-map',
     type: 'button'
   },
-  html: 'Imprimer',
+  html: i18next.t('pages:file.print'),
   handleClick: printMap,
 });
 
@@ -133,16 +134,16 @@ let btnBar = new Bar({
 let fileToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-ign-add-data',
   attributes: {
-    'aria-label': "Gérer ma carte",
+    'aria-label': i18next.t('pages:file.manage'),
   },
   bar: btnBar
 });
 
 // Titre de la carte (affiché en permanence sur la carte)
 let mapTitle = new TextButton({
-  html: title || 'Carte sans titre',
+  html: title || i18next.t('pages:file.untitled'),
   attributes: {
-    title: title || 'Carte sans titre',
+    title: title || i18next.t('pages:file.untitled'),
   },
   className: 'fr-text map-title'
 });

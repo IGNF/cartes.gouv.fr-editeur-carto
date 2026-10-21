@@ -1,4 +1,5 @@
 import './version.js'
+import i18next from './i18n/index';
 import './charte/dsfr.js'
 import './charte/navigation.js'
 import './actions/actions.js'
@@ -19,6 +20,9 @@ import './page/page.js'
 // Custom CSS
 import 'remixicon/fonts/remixicon.css'
 import './css/index.scss';
+
+document.title = i18next.t('pages:document.title');
+document.querySelector('meta[name="description"]').setAttribute('content', i18next.t('pages:document.description'));
 
 // Ajout des contrôles
 carte.once('read', () => {

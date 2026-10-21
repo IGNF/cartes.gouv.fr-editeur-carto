@@ -1,6 +1,7 @@
 import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 
 import contentHTML from './modal.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import Dialog from '../Dialog/AbstractDialog.js';
 
 class Modal extends Dialog {
@@ -29,7 +30,7 @@ class Modal extends Dialog {
     let options = {
       className: this.dialogClass + ' fr-modal',
       'aria-labelledby': 'main-modal__title',
-      html: contentHTML,
+      html: translateHtml(contentHTML),
     }
 
     Utils.assign(this.options, options);

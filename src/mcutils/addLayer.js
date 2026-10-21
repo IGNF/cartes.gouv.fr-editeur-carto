@@ -2,6 +2,7 @@ import VectorStyle from "mcutils/layer/VectorStyle.js";
 // import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js"
 import carte from "../carte.js";
+import i18next from '../i18n/index';
 
 /**
  * 
@@ -11,8 +12,8 @@ import carte from "../carte.js";
 function addLayer(e, layerSwitcher) {
   let layer = new VectorStyle({
     source: new VectorSource(),
-    description: "Dessin personnalisé",
-    title: "Dessin ajouté",
+    description: i18next.t('controls:layerSwitcher.newLayerDescription'),
+    title: i18next.t('controls:layerSwitcher.newLayerTitle'),
     type: "Vector",
     thumbnail: "personal-drawing",
   });

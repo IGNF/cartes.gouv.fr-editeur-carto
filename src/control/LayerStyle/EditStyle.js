@@ -21,6 +21,7 @@ import ConditionsForm from "./ConditionsForm.js";
  * @property {HTMLElement|string} [target] Élément HTML ou id auquel ajouter le conteneur
  * @property {Boolean} [visible] Si faux, rend le conteneur invisible
  * @property {String} [className] Classe CSS racine du conteneur
+ * @property {Object<string, *>} [labels] Libellés traduits transmis aux sous-contrôles.
  */
 
 /**
@@ -104,7 +105,8 @@ class EditStyle extends BaseObject {
    * Initialise les valeurs du contrôle.
    * @protected
    */
-  _initialize() {
+  _initialize(options = {}) {
+    this.labels = options.labels ?? {};
     /** 
      * @type {Array<import("ol/events.js").EventsKey>}
      * Tableau d'écouteurs d'événements (pour les enlever plus facilement)
@@ -119,18 +121,21 @@ class EditStyle extends BaseObject {
     this.styleForm = new StyleForm({
       preview: true,
       selectGeomType: true,
+      labels: this.labels,
     });
     this.forms.push(this.styleForm);
 
     // Formulaire d'étiquette
     this.labelForm = new LabelForm({
       generalType: false,
+      labels: this.labels,
     });
     this.forms.push(this.labelForm);
 
     // Formulaire de conditions
     this.conditionsForm = new ConditionsForm({
       noSymbolLib: true,
+      labels: this.labels,
     });
     this.forms.push(this.conditionsForm);
   }
@@ -221,7 +226,7 @@ class EditStyle extends BaseObject {
     const saveStyleBtn = document.createElement("button");
     saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-go-back-line";
     saveStyleBtn.addEventListener("click", this.rollbackStyle.bind(this));
-    saveStyleBtn.textContent = saveStyleBtn.title = "Enregistrer le style";
+    saveStyleBtn.textContent = saveStyleBtn.title = this.labels.saveStyle ?? "Enregistrer le style";
 
     // Preview
     const preview = this._createPreview(options);
@@ -301,7 +306,7 @@ class EditStyle extends BaseObject {
     // Navigation tertiaire
     const tabnav = this.tabnav = new TabNav({
       items: [{
-        label: "Propriétés",
+        label: this.labels.properties ?? "Propriétés",
         content: this.styleForm.getContent(),
       },
       /*
@@ -311,7 +316,7 @@ class EditStyle extends BaseObject {
       },
       */
       {
-        label: "Conditions",
+        label: this.labels.conditions ?? "Conditions",
         content: this.conditionsForm.getContent(),
       }],
       contentContainer: contentContainer,
@@ -395,7 +400,7 @@ class EditStyle extends BaseObject {
   setDefault(bool) {
     /** @type {import("geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js").default} */
     const conditions = this.tabnav.items.getArray().at(-1);
-    const isCondition = (conditions.getButton().textContent === "Conditions");
+    const isCondition = (conditions.getButton().textContent === (this.labels.conditions ?? "Conditions"));
     if (bool) {
       // Cache le bouton de la navigation tertiaire
       isCondition && conditions.getElement().classList.add("fr-hidden")

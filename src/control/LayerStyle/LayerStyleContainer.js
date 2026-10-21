@@ -27,6 +27,7 @@ import { toMcutilsOperator } from "./ConditionalOperator.js";
 
 /**
  * @typedef {Object} LayerStyleContainerOptions
+ * @property {Object<string, *>} [labels] Libellés personnalisés des styles et sous-contrôles.
  * @property {Layer} layer Couche OpenLayers à styliser
  * @property {String} [className] Classe CSS racine du conteneur
  */
@@ -42,6 +43,7 @@ class LayerStyleContainer extends BaseObject {
    */
   constructor(options = {}) {
     super(options);
+    this.labels = options.labels ?? {};
 
     this._initialize(options);
     this._initContainer(options);
@@ -360,14 +362,14 @@ class LayerStyleContainer extends BaseObject {
     this.conditionalStyles.clear();
     this.styles.clear();
     result.defaultStyles.forEach((styleObj) => {
-      const styleContainer = new StyleContainer({ layer: layer, styleObj: styleObj });
+      const styleContainer = new StyleContainer({ layer: layer, styleObj: styleObj, labels: this.labels });
       this.styles.insertAt(0, styleContainer);
       const element = styleContainer.getElement();
       this._getDefaultStylesContainer().prepend(element);
     });
 
     result.conditionalStyles.forEach((styleObj) => {
-      const styleContainer = new StyleContainer({ layer: layer, styleObj: styleObj });
+      const styleContainer = new StyleContainer({ layer: layer, styleObj: styleObj, labels: this.labels });
       this.styles.insertAt(0, styleContainer);
       // Ajoute aussi au styles conditionnels
       this.conditionalStyles.insertAt(0, styleObj);
@@ -476,7 +478,7 @@ class LayerStyleContainer extends BaseObject {
       styleObj.showGeom = true;
     }
 
-    const styleContainer = new StyleContainer({ layer: this.getLayer(), styleObj: styleObj });
+    const styleContainer = new StyleContainer({ layer: this.getLayer(), styleObj: styleObj, labels: this.labels });
     // Ajoute le conteneur à la collection
     this.styles.insertAt(0, styleContainer);
     const element = styleContainer.getElement();
@@ -506,9 +508,9 @@ class LayerStyleContainer extends BaseObject {
   #getStyleObj(layer, type) {
     // Nom du style
     const names = {
-      "Point": "Point (défaut)",
-      "LineString": "Ligne (défaut)",
-      "Polygon": "Surface (défaut)",
+      "Point": this.labels.defaultPoint ?? "Point (défaut)",
+      "LineString": this.labels.defaultLine ?? "Ligne (défaut)",
+      "Polygon": this.labels.defaultPolygon ?? "Surface (défaut)",
     };
 
     // Récupère le style et le transforme en flatStyle
@@ -547,7 +549,7 @@ class LayerStyleContainer extends BaseObject {
     }
 
     // Récupère le nom
-    const name = names[type] ? names[type] : "Nouveau style";
+    const name = names[type] ? names[type] : (this.labels.newStyle ?? "Nouveau style");
 
     // Style par défaut seulement si un style est donné
     const isDefault = type ? true : false;

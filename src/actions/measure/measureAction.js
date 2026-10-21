@@ -1,4 +1,5 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import './measure.scss';
 import carte from '../../carte.js';
 import { createBar } from './measure.js';
@@ -43,7 +44,7 @@ function onClose() {
 
 const measureAction = new Action({
   id: 'measure',
-  title: 'Outils de mesure',
+  title: i18next.t('actions:measure.title'),
   icon: 'ri-ruler-line',
   onOpen: onOpen,
   onClose: onClose,

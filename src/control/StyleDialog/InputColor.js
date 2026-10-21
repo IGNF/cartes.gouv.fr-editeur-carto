@@ -7,11 +7,16 @@ import './InputColor.scss';
  * Input de type couleur pour le formulaire de style
  */
 class InputColor extends Color {
+  /**
+   * @param {Object} [options] Options du sélecteur de couleur.
+   * @param {Object<string, string>} [options.labels] Libellés personnalisés.
+   */
   constructor(options) {
     options = options || {};
     options.position = options.position || 'fixed';
-    options.paletteLabel = "Palette";
-    options.pickerLabel = "Mélangeur";
+    const labels = options.labels ?? {};
+    options.paletteLabel ??= labels.palette ?? "Palette";
+    options.pickerLabel ??= labels.mixer ?? "Mélangeur";
     super(options);
     // Dispatch change event on color change
     this.input.addEventListener('change', e => this.setColor(e.target.value));
@@ -19,13 +24,13 @@ class InputColor extends Color {
     this.element.querySelectorAll('button').forEach(btn => {
       btn.className = 'fr-btn fr-btn--tertiary';
       if (btn.innerText === 'OK') {
-        btn.textContent = 'Valider';
+        btn.textContent = labels.validate ?? 'Valider';
       }
     });
     // Popup accessibility
     this._elt.popup.id = getUid('color-picker-popup');
     this.element.id = getUid('color-picker');
-    this.element.ariaLabel = 'Sélecteur de couleur';
+    this.element.ariaLabel = labels.colorPicker ?? 'Sélecteur de couleur';
     this.element.ariaExpanded = false;
     this.element.role = 'button';
     this.element.setAttribute('aria-controls', this._elt.popup.id);
@@ -56,8 +61,8 @@ class InputColor extends Color {
       eyedropperBtn.classList.add('ol-eyedropper', 'fr-btn--tertiary', 'fr-icon-sip-line');
       eyedropperBtn.className = 'ol-eyedropper fr-btn fr-btn--tertiary fr-icon-sip-line';
       eyedropperBtn.type = 'button';
-      eyedropperBtn.ariaLabel = 'Outil pipette';
-      eyedropperBtn.title = 'Outil pipette';
+      eyedropperBtn.ariaLabel = labels.eyedropper ?? 'Outil pipette';
+      eyedropperBtn.title = labels.eyedropper ?? 'Outil pipette';
     }
   }
 

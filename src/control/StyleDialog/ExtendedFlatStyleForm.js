@@ -15,6 +15,7 @@ import { carte } from '../../story.js';
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
  * @property {Boolean} [hasreset] Indique si le formulaire a un bouton de reset.
  * @property {Boolean} [noSymbolLib] Indique si le formulaire n'a pas de bouton pour ouvrir la bibliothèque de symboles.
+ * @property {Object<string, *>} [labels] Libellés traduits transmis au formulaire.
  * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`. 
  * @property {Boolean} [selectGeomType = false] Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
@@ -52,7 +53,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     const previewContainer = document.createElement('div');
     previewContainer.className = 'style-form__panel';
     const previewLabel = document.createElement('span');
-    previewLabel.textContent = 'Aperçu';
+    previewLabel.textContent = this.labels.preview ?? 'Aperçu';
     previewLabel.className = 'fr-hint-text';
     previewContainer.appendChild(previewLabel);
     previewContainer.appendChild(preview);
@@ -72,7 +73,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Restaure style
     if (options.hasreset) {
       this.addTitleButton({
-        title: 'Revenir au style par défaut', 
+        title: this.labels.resetStyle ?? 'Revenir au style par défaut',
         icon: 'fr-icon-arrow-go-back-line',
         onClick: () => {
           this.dispatchEvent({ type: "reset" });
@@ -95,7 +96,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     if (!options.noSymbolLib) {
       // Bouton pour ajouter le style actuel à la bibliothèque
       this.addTitleButton({
-        title: 'Ajouter à la bibliothèque', 
+        title: this.labels.addToLibrary ?? 'Ajouter à la bibliothèque',
         icon: 'addToSymbolLib fr-icon-add-line',
         haspopup: true,
         onClick: (e) => {
@@ -119,14 +120,14 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
           const inputLabel = document.createElement('label');
           inputLabel.setAttribute('for', nameInput.id);
           inputLabel.className = 'fr-label';
-          inputLabel.innerText = 'Nom';
+          inputLabel.innerText = this.labels.name ?? 'Nom';
           inputGroup.appendChild(inputLabel);
 
           inputGroup.appendChild(nameInput);
           nameInput.focus();
           // Validation => send event
           const validateButton = document.createElement('button'); 
-          validateButton.innerText = 'Enregistrer';
+          validateButton.innerText = this.labels.save ?? 'Enregistrer';
           validateButton.className = 'fr-btn fr-btn-primary';
           validateButton.addEventListener('click', () => {
             if (nameInput.value) {
@@ -153,7 +154,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
       // Bouton pour ouvrir la bibliothèque de symboles
       this.addTitleButton({
-        title: 'Bibliothèque de style',
+        title: this.labels.styleLibrary ?? 'Bibliothèque de styles',
         icon: 'fromSymbolLib fr-icon-book-open-line',
         haspopup: true,
         onClick: (e) => {
@@ -161,14 +162,15 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
           // Bouton de recherche
           const searchBt = document.createElement('button');
           searchBt.className = 'fr-btn fr-icon-search-line fr-btn fr-btn--tertiary-no-outline';
+          searchBt.title = searchBt.ariaLabel = this.labels.search ?? 'Rechercher';
           e.element.appendChild(searchBt);
           // input de recherche
           const searchInput = document.createElement('input');
           searchInput.type = 'text';
           searchInput.className = 'fr-input fr-input-search';
-          searchInput.placeholder = 'Rechercher...';
+          searchInput.placeholder = this.labels.search ?? 'Rechercher';
           searchInput.role = 'combobox';
-          searchInput.setAttribute('aria-label', 'Rechercher');
+          searchInput.setAttribute('aria-label', this.labels.search ?? 'Rechercher');
           searchInput.setAttribute('aria-expanded', 'true');
           function getNextElementSibling(item, arrow) {
             if (!item) {
@@ -469,10 +471,15 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    */
   showError(statistic = false) {
     this.getContent().dataset.conditionStyle = '';
-    this.getContent().querySelector(".style-form-container .fr-alert").innerHTML =  `<p>
-      Un style ${statistic === true ? "statistique" : "conditionnel"} est défini sur cette couche.
-      <br/>
-      Le style des objets de la couche ne peut pas être modifié individuellement.</p>`;
+    const alert = this.getContent().querySelector(".style-form-container .fr-alert");
+    const message = document.createElement('p');
+    const styleType = statistic
+      ? this.labels.statistical ?? 'statistique'
+      : this.labels.conditional ?? 'conditionnel';
+    message.textContent = (this.labels.styleNotIndividuallyEditable
+      ?? `Un style {{type}} est défini sur cette couche. Le style des objets de la couche ne peut pas être modifié individuellement.`)
+      .replace('{{type}}', styleType);
+    alert.replaceChildren(message);
   }
 
   /**
@@ -480,6 +487,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    */
   _initialize(options) {
     super._initialize(options);
+    this.labels = options.labels ?? {};
 
     options.preview ??= false;
     this.set("showPreview", options.preview);
@@ -625,7 +633,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const label = document.createElement("legend");
     label.className = "fr-hint-text fr-fieldset__legend--regular fr-fieldset__legend";
-    label.textContent = "Symbolisation";
+    label.textContent = this.labels.symbolization ?? "Symbolisation";
     selectGroup.append(label);
 
 
@@ -656,9 +664,9 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     }
 
     const geomTypes = [
-      { value: "Point", text: "Point", icon: "fr-icon-map-pin-2-line" },
-      { value: "LineString", text: "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
-      { value: "Polygon", text: "Surface", icon: "fr-icon-ign-shape-3-fill" },
+      { value: "Point", text: this.labels.point ?? "Point", icon: "fr-icon-map-pin-2-line" },
+      { value: "LineString", text: this.labels.line ?? "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
+      { value: "Polygon", text: this.labels.polygon ?? "Surface", icon: "fr-icon-ign-shape-3-fill" },
     ];
 
     const radioName = "geom-type-" + getUid();
@@ -710,7 +718,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const label = document.createElement("label");
     label.className = "fr-label";
-    label.textContent = "Prévisualisation";
+    label.textContent = this.labels.previewTitle ?? "Prévisualisation";
     preview.appendChild(label);
 
     let image = document.createElement("canvas");
@@ -732,7 +740,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const ilabel = document.createElement("label");
     ilabel.className = "fr-label";
-    ilabel.textContent = "Nom";
+    ilabel.textContent = this.labels.name ?? "Nom";
     inputGroup.appendChild(ilabel);
 
     const input = document.createElement("input");

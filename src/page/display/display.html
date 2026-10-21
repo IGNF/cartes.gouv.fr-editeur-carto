@@ -3,24 +3,18 @@
     <div class="fr-col-12 fr-col-md-6 fr-col-lg-4">
       <div class="fr-modal__body">
         <div class="fr-modal__header">
-          <button aria-controls="display-modal" title="Fermer" type="button" id="button-close-display-modal"
-            class="fr-btn--close fr-btn">Fermer</button>
+          <button aria-controls="display-modal" data-i18n-title="common:close" type="button" id="button-close-display-modal"
+            class="fr-btn--close fr-btn" data-i18n="common:close"></button>
         </div>
         <div class="fr-modal__content">
-          <h2 id="fr-theme-modal-title" class="fr-modal__title">
-            Paramètres d’affichage
-          </h2>
+          <h2 id="fr-theme-modal-title" class="fr-modal__title" data-i18n="pages:display.title"></h2>
           <div id="fr-display" class="fr-display">
             <fieldset class="fr-fieldset" id="display-fieldset">
-              <legend class="fr-fieldset__legend--regular fr-fieldset__legend" id="display-fieldset-legend">
-                Choisissez un thème pour personnaliser l’apparence du site.
-              </legend>
+              <legend class="fr-fieldset__legend--regular fr-fieldset__legend" id="display-fieldset-legend" data-i18n="pages:display.chooseTheme"></legend>
               <div class="fr-fieldset__element">
                 <div class="fr-radio-group fr-radio-rich">
                   <input value="light" type="radio" id="fr-radios-theme-light" name="fr-radios-theme">
-                  <label class="fr-label" for="fr-radios-theme-light">
-                    Thème clair
-                  </label>
+                  <label class="fr-label" for="fr-radios-theme-light" data-i18n="pages:display.light"></label>
                   <div class="fr-radio-rich__pictogram">
                     <svg aria-hidden="true" class="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">
                       <use class="fr-artwork-decorative"
@@ -36,9 +30,7 @@
               <div class="fr-fieldset__element">
                 <div class="fr-radio-group fr-radio-rich">
                   <input value="dark" type="radio" id="fr-radios-theme-dark" name="fr-radios-theme">
-                  <label class="fr-label" for="fr-radios-theme-dark">
-                    Thème sombre
-                  </label>
+                  <label class="fr-label" for="fr-radios-theme-dark" data-i18n="pages:display.dark"></label>
                   <div class="fr-radio-rich__pictogram">
                     <svg aria-hidden="true" class="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">
                       <use class="fr-artwork-decorative"
@@ -55,8 +47,8 @@
                 <div class="fr-radio-group fr-radio-rich">
                   <input value="system" type="radio" id="fr-radios-theme-system" name="fr-radios-theme">
                   <label class="fr-label" for="fr-radios-theme-system">
-                    Système
-                    <span class="fr-hint-text">Utilise les paramètres système</span>
+                    <span data-i18n="pages:display.system"></span>
+                    <span class="fr-hint-text" data-i18n="pages:display.systemHint"></span>
                   </label>
                   <div class="fr-radio-rich__pictogram">
                     <svg aria-hidden="true" class="fr-artwork" viewBox="0 0 80 80" width="80px" height="80px">

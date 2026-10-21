@@ -14,6 +14,8 @@ import "./ConditionsForm.scss";
 
 /**
  * @typedef {Object} ConditionsFormOptions Options pour le formulaire de style d'un objet
+ * @property {Object<string, *>} [labels] Libellés du formulaire et des conditions.
+ * @property {function(number): string} [conditionTitle] Titre d'une condition numérotée.
  * @property {Layer} [layer] Couche à utiliser pour déduire les attributs.
  */
 
@@ -34,7 +36,7 @@ class ConditionsForm extends ExtendedFlatStyleForm {
     const addConditionBtn = document.createElement("button");
     addConditionBtn.className = "fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline";
     addConditionBtn.addEventListener("click", () => this.addConditionContainer());
-    addConditionBtn.textContent = "Ajouter";
+    addConditionBtn.textContent = this.labels.add ?? "Ajouter";
 
     footer.appendChild(addConditionBtn);
 
@@ -116,7 +118,8 @@ class ConditionsForm extends ExtendedFlatStyleForm {
       const conditionContainer = new ConditionContainer({
         datalistId: this._datalist.id,
         delete: false,
-        title: "Condition",
+        title: this.labels.condition ?? "Condition",
+        labels: this.labels,
         condition: conditionOptions
       })
       this.conditionContainers.push(conditionContainer);
@@ -133,6 +136,8 @@ class ConditionsForm extends ExtendedFlatStyleForm {
    * @override
    */
   _initialize(options) {
+    this.labels = options.labels ?? {};
+    this.conditionTitle = options.conditionTitle;
     /** @type {Collection<ConditionContainer>} */
     this.conditionContainers = new Collection();
 
@@ -225,9 +230,12 @@ class ConditionsForm extends ExtendedFlatStyleForm {
       : undefined;
     // Si c'est le premier, ne permet pas de supprimer la condition
     const length = this.conditionContainers.getLength();
-    const title = length ? `Condition ${this.conditionContainers.getLength() + 1}` : "Condition";
+    const title = length
+      ? (this.conditionTitle?.(length + 1) ?? `Condition ${length + 1}`)
+      : (this.labels.condition ?? "Condition");
     const first = !!length;
     const conditionContainer = new ConditionContainer({
+      labels: this.labels,
       datalistId: this._datalist.id,
       condition: conditionOptions,
       delete: first,

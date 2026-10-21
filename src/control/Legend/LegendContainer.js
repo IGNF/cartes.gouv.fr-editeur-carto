@@ -11,6 +11,7 @@ import carte from '../../carte.js';
 import './legend.scss';
 import html from './legend.html?raw';
 import itemHtml from './legend-item.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 
 /**
  * @classdesc
@@ -18,7 +19,8 @@ import itemHtml from './legend-item.html?raw';
  */
 class LegendContainer extends BaseObject {
   /**
-   * @param {*} options
+   * @param {Object} options
+   * @param {Object<string, string>} [options.labels] Libellés personnalisés.
    */
   constructor(options = {}) {
     super(options);
@@ -26,8 +28,8 @@ class LegendContainer extends BaseObject {
 
     this.content = element.create('form', {
       className: 'legend',
-      html: html.replace(/-ID/g, '-' + getUid()),
-      'aria-label': 'Configuration de la légende',
+      html: translateHtml(html).replace(/-ID/g, '-' + getUid()),
+      'aria-label': options.labels?.legendConfiguration ?? 'Configuration de la légende',
     });
     this.content.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -81,7 +83,7 @@ class LegendContainer extends BaseObject {
     // Add legend title
     this.content.querySelector('.add-title-btn').addEventListener('click', (e) => {
       const legend = carte.getControl('legend').getLegend();
-      legend.addItem({title: 'Titre de la section'});
+      legend.addItem({title: options.labels?.sectionTitle ?? 'Titre de la section'});
       this.refreshList();
       e.preventDefault();
     });
@@ -141,7 +143,7 @@ class LegendContainer extends BaseObject {
       const elt = element.create('div', {
         className: 'legend-item' + (prop.feature ? '' : ' legend-title'),
         'data-sortable-id': i,
-        html: itemHtml.replace(/-ID/g, '-' + getUid()),
+        html: translateHtml(itemHtml).replace(/-ID/g, '-' + getUid()),
         parent: this._legendList
       });
       // Image de la légende

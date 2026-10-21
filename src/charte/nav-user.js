@@ -1,12 +1,13 @@
 import charte from "./charte.js";
 import "./nav-user.scss";
 import { getOidc } from "../oidc";
+import i18next from "../i18n/index";
 
 // Menu
 export const account = charte.getHeaderMenu({
   icon: "fr-icon-account-fill",
   action: "connect",
-  text: "Mon espace",
+  text: i18next.t('charte:navigation.account.label'),
 });
 
 /* User menu */
@@ -17,14 +18,14 @@ account.addMenu([
   },
   {
     type: "link",
-    label: "Tableau de bord",
+    label: i18next.t('charte:navigation.account.dashboard'),
     action: "board",
     href: "/tableau-de-bord",
     icon: "fr-icon-dashboard-3-line",
   },
   {
     type: "link",
-    label: "Mon compte",
+    label: i18next.t('charte:navigation.account.myAccount'),
     action: "account",
     href: "/mon-compte",
     icon: "fr-icon-user-line",
@@ -32,8 +33,8 @@ account.addMenu([
   {
     type: "option",
     action: "disconnect",
-    label: "Se déconnecter",
-    title: "Se déconnecter",
+    label: i18next.t('charte:navigation.account.logout'),
+    title: i18next.t('charte:navigation.account.logout'),
     href: "#",
     icon: "fr-icon-logout-box-r-line",
   },

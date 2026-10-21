@@ -1,4 +1,5 @@
 import Notification from 'ol-ext/control/Notification.js'
+import i18next from '../../i18n/index';
 import "./notification.scss";
 
 class NotificationExtended extends Notification {
@@ -7,6 +8,7 @@ class NotificationExtended extends Notification {
     options.className = (options.className ? options.className + ' ' : '') + 'gpf-notification';
     // Call parent constructor
     super(options);
+    this.labels = options.labels ?? {};
     this.element.classList.remove('ol-control');
     // Default duration for notifications
     this.set('duration', options.duration || 6000);
@@ -75,7 +77,7 @@ class NotificationExtended extends Notification {
     // Bouton annuler
     if (cancelFn) {
       const btn = document.createElement('button');
-      btn.textContent = 'Annuler';
+      btn.textContent = this.labels.cancel ?? 'Annuler';
       btn.type = 'button';
       btn.className = 'gpf-btn fr-btn gpf-btn--tertiary fr-btn--tertiary';
       btnGroup.appendChild(btn);
@@ -83,7 +85,7 @@ class NotificationExtended extends Notification {
     }
     // Bouton de fermeture
     const close = document.createElement('button');
-    close.textContent = 'close';
+    close.textContent = this.labels.close ?? 'Fermer';
     close.type = 'button';
     close.className = 'gpf-btn fr-btn fr-btn--tertiary-no-outline fr-icon-close-line gpf-notification-close';
     btnGroup.appendChild(close);
@@ -104,6 +106,11 @@ class NotificationExtended extends Notification {
   }
 };
 
-const notification = new NotificationExtended();
+const notification = new NotificationExtended({
+  labels: {
+    cancel: i18next.t('common:cancel'),
+    close: i18next.t('common:close'),
+  },
+});
 
 export default notification;

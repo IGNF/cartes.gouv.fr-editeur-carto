@@ -1,4 +1,5 @@
 import carte from '../../carte.js';
+import i18next from '../../i18n/index';
 
 import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
@@ -61,7 +62,7 @@ function closeToggle(toggle) {
 const selectToggle = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-cursor-line',
   attributes: {
-    'aria-label': "Sélecteur",
+    'aria-label': i18next.t('pages:edit.selection'),
   },
   // interaction: carte.getSelect(),
   active: true,
@@ -82,7 +83,7 @@ const selectToggle = new Button({
 const catalogToggle = new Toggle({
   classButton: 'fr-btn fr-btn--tertiary-no-outline ri-map-2-line',
   attributes: {
-    'aria-label': "Importer une donnée depuis cartes.gouv",
+    'aria-label': i18next.t('pages:edit.importCatalog'),
     'aria-controls': catalog.getContainer()?.querySelector("dialog")?.id,
   },
 });
@@ -105,7 +106,7 @@ const file = new Toggle({
   attributes: {
     'data-action': 'import-local',
     'aria-controls': rightPanel.getId(),
-    'aria-label': "Importer une donnée locale",
+    'aria-label': i18next.t('pages:edit.importLocal'),
   },
   onToggle: onToggleAction
 });
@@ -151,7 +152,7 @@ const measureToggle = new Toggle({
   attributes: {
     'data-action': 'measure',
     'aria-controls': rightPanel.getId(),
-    'aria-label': "Mesurer",
+    'aria-label': i18next.t('pages:edit.measure'),
   },
   onToggle: onToggleAction
 });
@@ -164,7 +165,7 @@ const SymbolLibButton = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-book-open-line ',
   attributes: {
     // 'aria-controls': styleLibDialog.dialog.id,
-    'aria-label': "Bibliothèque de styles",
+    'aria-label': i18next.t('actions:symbolLib.title'),
   },
   handleClick: (e) => symbolLibAction.open(styleLibDialog)
 });
@@ -189,17 +190,17 @@ const editDataBar = new Bar({
 
 drawToggle.getDialog().on("dialog:open", () => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
-    notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    notification.error(i18next.t('pages:edit.layerNotEditable'));
   }
 })
 drawToggle.on("drawstart", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource) && e.target.type_ !== "Point") {
-    notification.error("La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche");
+    notification.error(i18next.t('pages:edit.layerNotEditable'));
   }
 })
 drawToggle.on("drawend", (e) => {
   if (!(switcher.getSelectedLayer()?.getSource() instanceof VectorSource)) {
-    notification.error("La couche sélectionnée n'est pas éditable. Le dessin n'est pas ajouté à la couche");
+    notification.error(i18next.t('pages:edit.drawingNotAdded'));
     e.preventDefault();
     drawToggle.select.clear ? drawToggle.select.clear() : drawToggle.select.getFeatures().clear();
   } else {

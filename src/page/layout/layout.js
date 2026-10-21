@@ -2,9 +2,12 @@ import story from "../../story.js";
 import Layout from "../../control/Layout/Layout.js";
 import charte from "../../charte/charte.js";
 import Charte from "../../charte/objects/Charte.js";
+import i18next from '../../i18n/index';
 
 const layout = new Layout(story, {
   id: "layout-dialog",
+  closeLabel: i18next.t('controls:layout.closePanel'),
+  labelTabNav: i18next.t('controls:layout.navigation'),
   target: document.body.querySelector("main"),
 });
 

@@ -1,6 +1,8 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import carte from '../../carte.js';
 import content from './renameMap.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import { api } from '../../api/index.js';
 
 /**
@@ -41,16 +43,16 @@ async function renameMap() {
 
 const renameMapAction = new Action({
   id: 'rename-map',
-  title: 'Renommer',
-  content: content,
+  title: i18next.t('actions:rename-map.title'),
+  content: translateHtml(content),
   buttons: [
     {
-      label: "Enregistrer",
+      label: i18next.t('common:save'),
       kind: 0,
       callback: renameMap
     },
     {
-      label: "Annuler",
+      label: i18next.t('common:cancel'),
       kind: 1,
       close: true
     }

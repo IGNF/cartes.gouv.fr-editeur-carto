@@ -1,4 +1,6 @@
 import Action from "../Action.js";
+import i18next from '../../i18n/index';
+import { getControlLabels } from '../../i18n/controlLabels';
 import ol_ext_element from "ol-ext/util/element.js";
 import PopupForm from "../../control/StyleDialog/popupForm.js";
 import VectorStyle from "mcutils/layer/VectorStyle.js";
@@ -20,8 +22,10 @@ function onOpen(e) {
 
   // Initialise le formulaire
   if (!this.popupForm) {
-    this.popupForm = new PopupForm();
-    dialog.getDialogContent().innerHTML = "";
+    this.popupForm = new PopupForm({ labels: getControlLabels() });
+    dialog.getDialogContent().innerHTML = ol_ext_element.create("div", {
+      className: "edit-layer-popup-content",
+    }).outerHTML;
     this.popupForm.on("style", (e) => {
       this.popupForm.setPopupContent(editLayerPopupAction.layer, e.property, e.value);
     });
@@ -35,17 +39,21 @@ function onOpen(e) {
     dialog.getDialogContent().appendChild(content);
     content.querySelector("input").focus();
   } else {
-    dialog.getDialogContent().innerHTML = `
-    <div class="fr-alert fr-alert--warning fr-alert--sm">
-      <p>Cette couche n'est pas interrogeable et ne permet pas l'affichage d'infobulles.</p>
-    </div>`
+    const warning = ol_ext_element.create('div', {
+      className: 'fr-alert fr-alert--warning fr-alert--sm'
+    });
+    ol_ext_element.create('p', {
+      text: i18next.t('actions:edit-layer-popup.notQueryable'),
+      parent: warning
+    });
+    dialog.getDialogContent().replaceChildren(warning);
   }
 }
 
 const editLayerPopupAction = new Action({
   id: "edit-layer-popup",
   content: ol_ext_element.create("div", {
-    className: "edit-layer-poup-content",
+    className: "edit-layer-popup-content",
   }),
   icon: "fr-icon-chat-quote-line",
   size: "md",

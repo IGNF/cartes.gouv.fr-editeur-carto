@@ -1,0 +1,113 @@
+{
+  "connect": {
+    "beta": "bêta",
+    "tagline": "Créer, personnaliser, partager",
+    "description": "Un service gratuit et libre pour transformer vos données en cartes personnalisées, annotées et faciles à partager.",
+    "createMap": "Créer une carte",
+    "title": "Créer votre carte",
+    "viewMaps": "Voir mes cartes"
+  },
+  "edit-layer-info": {
+    "nameLabel": "Nom de la couche (obligatoire)",
+    "descriptionLabel": "Description (optionnel)",
+    "descriptionHint": "La description est visible dans les informations de la couche lors du partage de la carte.",
+    "attributionsLabel": "Crédits (optionnel)",
+    "attributionsHint": "Les crédits sont visibles dans les informations de la couche lors du partage de la carte.",
+    "thumbnailLabel": "Vignette (optionnel)",
+    "imageUrl": "URL de l'image",
+    "catalogReadOnly": "Les informations des couches du catalogue ne sont pas modifiables.",
+    "httpsRequired": "Le lien doit être un lien https.",
+    "legendLinks_one": "Légende : {{links}}",
+    "legendLinks_many": "Légendes : {{links}}",
+    "legendLinks_other": "Légendes : {{links}}",
+    "metadataLinks": "Métadonnées : {{links}}",
+    "nameRequired": "Le nom de la couche est obligatoire.",
+    "title": "Informations de la couche"
+  },
+  "edit-layer-popup": {
+    "notQueryable": "Cette couche n'est pas interrogeable et ne permet pas l'affichage d'infobulles."
+  },
+  "edit-layer-style": {
+    "addConditionalStyle": "Ajouter un style conditionnel"
+  },
+  "import-flow": {
+    "title": "Importer un flux"
+  },
+  "import-local": {
+    "fileLabel": "Ajouter un fichier",
+    "formatsHint": "Formats supportés : ShapeFile (compressé), Geojson, GéoPackage, CSV, KML et GPX",
+    "documentationTitle": "Documentation - nouvelle fenêtre",
+    "documentation": "Comment importer mon fichier",
+    "emptyFile": "Le fichier {{fileName}} ne contient aucun objet valide",
+    "emptyLayer": "La couche {{title}} ne contient pas de données.",
+    "importFailed": "Le fichier {{fileName}} n'a pas pu être correctement importé.",
+    "layerAdded": "La couche {{title}} a été ajouté à votre carte.",
+    "loading": "Chargement en cours",
+    "missingArchiveFile": "Fichier manquant dans l'archive: {{fileName}}",
+    "missingFile": "Fichier manquant",
+    "title": "Importer une donnée locale",
+    "unsupportedFormat": "Format non supporté: {{format}}"
+  },
+  "measure": {
+    "distance": "Mesurer une distance",
+    "isochrone": "Mesurer une isochrone",
+    "surface": "Mesurer une surface",
+    "title": "Outils de mesure"
+  },
+  "open-map": {
+    "loading": "Chargement en cours",
+    "signInRequired": "Vous n'êtes pas connecté·e·s. Connectez-vous pour accéder à vos cartes.",
+    "empty": "Vous n'avez pas de cartes enregistrées",
+    "loadError": "Une erreur est survenue. La carte n'a pas pu être chargée.",
+    "loadSuccess": "La carte a été chargée avec succés.",
+    "requestError": "Une erreur est survenue.",
+    "title": "Mes cartes",
+    "unsavedChanges": "La carte a été modifiée. Voulez-vous continuer sans enregistrer ?"
+  },
+  "rename-map": {
+    "nameLabel": "Nom (obligatoire)",
+    "title": "Renommer"
+  },
+  "save-map": {
+    "nameLabel": "Nom (obligatoire)",
+    "themeLabel": "Thématique (obligatoire)",
+    "selectTheme": "Sélectionner une thématique",
+    "descriptionLabel": "Description (optionnel)",
+    "saving": "Enregistrement en cours",
+    "loginRequired": "Vous devez être connecté·e pour enregistrer une carte.",
+    "nameRequired": "Le nom de la carte est obligatoire.",
+    "saved": "Carte enregistrée",
+    "sizeLimitExceeded": "La taille de la carte dépasse la limite autorisée par le serveur.",
+    "themeRequired": "Le thème est obligatoire.",
+    "title": "Enregistrer"
+  },
+  "share-map": {
+    "linkLabel": "Lien",
+    "linkHint": "Toute personne disposant de ce lien peut visualiser votre carte.",
+    "iframeLabel": "Iframe",
+    "iframeHint": "Intégrer votre carte dans vos mails, réseaux sociaux, sites web et applications.",
+    "copied": "Copié",
+    "copy": "Copier",
+    "notSaved": "Enregistrez d'abord votre carte pour générer un lien de partage.",
+    "notSavedTitle": "Impossible de partager la carte",
+    "title": "Partager"
+  },
+  "symbolLib": {
+    "add": "Ajouter",
+    "all": "Tous",
+    "cancelEdit": "Annuler la modification",
+    "delete": "Supprimer le symbole",
+    "duplicate": "Dupliquer le symbole",
+    "edit": "Modifier le symbole",
+    "editName": "Modifier le nom du symbole",
+    "empty": "Aucun symbole disponible",
+    "emptyForGeometry": "Aucun symbole disponible pour ce type de géométrie.",
+    "lines": "Lignes",
+    "name": "Nom du symbole",
+    "points": "Points",
+    "rename": "Modifier le nom",
+    "returnToStyles": "Revenir aux styles",
+    "surfaces": "Surfaces",
+    "title": "Bibliothèque de symboles"
+  }
+}

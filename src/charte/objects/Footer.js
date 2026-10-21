@@ -1,6 +1,7 @@
 import BaseObject from 'ol/Object.js';
 import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from '../../utils/getUid.js';
+import i18next from '../../i18n/index';
 
 /** Footer complet avec tous les éléments du DSFR */
 class Footer extends BaseObject {
@@ -29,8 +30,8 @@ class Footer extends BaseObject {
       id: expandBtnId,
       type: 'button',
       className: 'fr-icon-arrow-up-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
-      'aria-label': 'Plus d\'informations',
-      'title': 'Plus d\'informations',
+      'aria-label': i18next.t('charte:footer.moreInformation'),
+      'title': i18next.t('charte:footer.moreInformation'),
       'aria-expanded': 'false',
       'aria-controls': containId,
       parent: this.element
@@ -42,9 +43,10 @@ class Footer extends BaseObject {
       containBt.classList.toggle('fr-icon-arrow-up-s-line', expanded)
       containBt.classList.toggle('fr-btn--close', !expanded)
       containBt.classList.toggle('fr-btn--icon-right', !expanded)
-      containBt.setAttribute('aria-label', expanded ? 'Plus d\'informations' : 'Fermer')
-      containBt.innerText = "Fermer";
-      containBt.setAttribute('title', expanded ? 'Plus d\'informations' : 'Fermer')
+      const label = expanded ? i18next.t('charte:footer.moreInformation') : i18next.t('common:close');
+      containBt.setAttribute('aria-label', label)
+      containBt.innerText = i18next.t('common:close');
+      containBt.setAttribute('title', label)
 
       // Scroll en bas de la page
       const top = !expanded ? document.body.scrollHeight : 0;
@@ -62,7 +64,7 @@ class Footer extends BaseObject {
     const brand = ol_ext_element.create('A', {
       id: 'footer-brand-link-' + getUid('brand'),
       className: 'router-link-active router-link-exact-active',
-      title: 'Retour à l\'accueil',
+      title: i18next.t('charte:footer.backToHome'),
       'aria-current': 'page',
       href: '/',
       parent: ol_ext_element.create('DIV', {
@@ -72,9 +74,13 @@ class Footer extends BaseObject {
     })
     this.logo = ol_ext_element.create('P', {
       className: 'fr-logo',
-      html: ' République <br> Française',
       parent: brand
     })
+    this.logo.append(
+      i18next.t('charte:footer.logo.republic') + ' ',
+      document.createElement('br'),
+      ' ' + i18next.t('charte:footer.logo.country')
+    );
 
     // Footer content
     const content = ol_ext_element.create('DIV', {
@@ -97,7 +103,7 @@ class Footer extends BaseObject {
     })
     ol_ext_element.create('H2', {
       className: 'fr-footer__partners-title',
-      text: 'Nos partenaires',
+      text: i18next.t('charte:footer.partners.title'),
       parent: partners
     })
     const logos = ol_ext_element.create('DIV', {
@@ -129,15 +135,24 @@ class Footer extends BaseObject {
 
     // Copy
     this.copy = ol_ext_element.create('P', {
-      html: `Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous 
-        <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank" rel="noopener external" title="Licence etalab - Nouvelle fenêtre">
-        licence etalab-2.0
-        </a>`,
       parent: ol_ext_element.create('DIV', {
         className: 'fr-footer__bottom-copy',
         parent: bottom
       })
     })
+    const licenseLink = ol_ext_element.create('A', {
+      href: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md',
+      target: '_blank',
+      rel: 'noopener external',
+      title: i18next.t('charte:footer.license.title'),
+      text: i18next.t('charte:footer.license.label')
+    });
+    // Keep the link position translatable without inserting HTML into the catalogue.
+    const parts = i18next.t('charte:footer.license.notice', { license: '\0' }).split('\0');
+    parts.forEach((text, index) => {
+      if (index) this.copy.append(licenseLink.cloneNode(true));
+      this.copy.append(text);
+    });
   }
 
   /**
@@ -181,7 +196,10 @@ class Footer extends BaseObject {
       className: 'fr-footer__content-link',
       target: '_blank',
       rel: 'noopener external',
-      title: options.titleAttr || title + ' - Nouvelle fenêtre',
+      title: options.titleAttr || i18next.t('charte:externalLink.title', {
+        title,
+        interpolation: { escapeValue: false }
+      }),
       text: title,
       href: options.href,
       parent: ol_ext_element.create('LI', {

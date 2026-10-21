@@ -1,5 +1,7 @@
 import Action from '../Action.js';
+import i18next from '../../i18n/index';
 import content from './importLocal.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import './importLocal.scss';
 import carte from '../../carte.js';
 import {addMessage, removeMessage} from '../../utils/message.js';
@@ -47,7 +49,7 @@ async function submitForm(e) {
   try {
     if (importLocal.checkFile(inputFile)) {
 
-      addMessage(input, 'Chargement en cours', { type: 'info', append: false });
+      addMessage(input, i18next.t('actions:import-local.loading'), { type: 'info', append: false });
       const submit = form.querySelector('[type="submit"]');
       submit.disabled = true;
 
@@ -61,9 +63,13 @@ async function submitForm(e) {
           const layer = promise.value
           if (layer.getSource().getFeatures().length) {
             carte.addLayer(layer);
-            addMessage(input, `La couche ${layer.get('title')} a été ajouté à votre carte.`, { type: 'valid', append: true });
+            addMessage(input, i18next.t('actions:import-local.layerAdded', {
+              title: layer.get('title'), interpolation: { escapeValue: false }
+            }), { type: 'valid', append: true });
           } else {
-            addMessage(input, `La couche ${layer.get('title')} ne contient pas de données.`, { type: 'warning', append: true });
+            addMessage(input, i18next.t('actions:import-local.emptyLayer', {
+              title: layer.get('title'), interpolation: { escapeValue: false }
+            }), { type: 'warning', append: true });
           }
         } else {
           handleError(promise.reason, form, file, true);
@@ -92,23 +98,31 @@ function handleError(err, form, file, append = false) {
   let input = form.querySelector('input');
   switch (true) {
     case err instanceof errors.MissingFileError:
-      addMessage(input, "Fichier manquant", options);
+      addMessage(input, i18next.t('actions:import-local.missingFile'), options);
       break;
 
     case err instanceof errors.UnsupportedExtensionError:
-      addMessage(input, `Format non supporté: ${err.message}`, options);
+      addMessage(input, i18next.t('actions:import-local.unsupportedFormat', {
+        format: err.message, interpolation: { escapeValue: false }
+      }), options);
       break;
 
     case err instanceof errors.EmptyLayerError:
-      addMessage(input, `Le fichier ${err.message} ne contient aucun objet valide`, options);
+      addMessage(input, i18next.t('actions:import-local.emptyFile', {
+        fileName: err.message, interpolation: { escapeValue: false }
+      }), options);
       break;
 
     case err instanceof errors.MissingFileInZipError:
-      addMessage(input, `Fichier manquant dans l'archive: ${err.message}`, options);
+      addMessage(input, i18next.t('actions:import-local.missingArchiveFile', {
+        fileName: err.message, interpolation: { escapeValue: false }
+      }), options);
       break;
 
     default:
-      addMessage(input, `Le fichier ${file.name} n'a pas pu être correctement importé.`, options);
+      addMessage(input, i18next.t('actions:import-local.importFailed', {
+        fileName: file.name, interpolation: { escapeValue: false }
+      }), options);
       console.error(err);
       break;
   }
@@ -117,10 +131,10 @@ function handleError(err, form, file, append = false) {
 
 const importLocalAction = new Action({
   id: 'import-local',
-  title: 'Importer une donnée locale',
+  title: i18next.t('actions:import-local.title'),
   icon: 'ri-file-upload-line',
   onOpen: onOpen,
-  content: content,
+  content: translateHtml(content),
 })
 
 export default importLocalAction;

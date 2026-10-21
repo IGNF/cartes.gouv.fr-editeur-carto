@@ -7,7 +7,7 @@ L'éditeur cartographique est l'un des outils de Cartes.gouv.fr : il est constit
 
 ## Description/Résumé du projet
 
-À compléter...
+À COMPLÉTER
 
 ## Projets liés
 
@@ -48,6 +48,13 @@ npm install
 ```sh
 npm run dev
 ```
+
+### Libellés et internationalisation
+
+Les libellés utilisent [i18next](https://www.i18next.com/) et des catalogues JSON
+organisés par domaine fonctionnel.
+Voir le [guide d'internationalisation](./doc/developper/Doc_internationalisation.md)
+pour les namespaces, l'interpolation, les pluriels et l'ajout d'une langue.
 
 ### Vérification des types, Compilation et Minification pour la Production
 

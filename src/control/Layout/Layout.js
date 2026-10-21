@@ -27,6 +27,7 @@ import './layout.scss';
  * @property {String} [className] - Classe CSS additionnelle.
  * @property {Array<LayoutTabNavItemOptions|import("geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js").default>} [items] - Liste des onglets à créer.
  * @property {String} [labelTabNav] - Label ARIA de la navigation.
+ * @property {String} [closeLabel] - Libellé du bouton de fermeture ; conserve celui de GeoPF si absent.
  * @property {Function} [onOpen] - Callback à l'ouverture du panneau.
  * @property {Function} [onClose] - Callback à la fermeture du panneau.
  */
@@ -68,6 +69,10 @@ class Layout extends Dialog {
   _initContainer(options) {
     super._initContainer(options);
     this.element.classList.add('layout-dialog');
+    if (options.closeLabel !== undefined) {
+      this.closeBtn.title = options.closeLabel;
+      this.closeBtn.setAttribute('aria-label', options.closeLabel);
+    }
   }
 
   /**

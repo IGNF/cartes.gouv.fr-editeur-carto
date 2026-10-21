@@ -1,5 +1,7 @@
 import Action from '../../actions/Action.js';
+import i18next from '../../i18n/index';
 import content from './connect.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import './connect.scss';
 
 import carte from '../../carte.js';
@@ -34,15 +36,15 @@ function closeDialog() {
 
 const connectAction = new Action({
   id: 'connect',
-  title: 'Créer votre carte',
-  content: content,
+  title: i18next.t('actions:connect.title'),
+  content: translateHtml(content),
   buttons: [{
-    label: 'Voir mes cartes',
+    label: i18next.t('actions:connect.viewMaps'),
     kind: 1,
     markup: 'a',
     href: '/tableau-de-bord/editeur/cartes',
   }, {
-    label: 'Créer une carte',
+    label: i18next.t('actions:connect.createMap'),
     className: 'fr-icon-arrow-right-s-line fr-btn--icon-right',
     kind: 0,
     close: true,

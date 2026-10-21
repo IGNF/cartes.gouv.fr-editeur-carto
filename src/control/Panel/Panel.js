@@ -1,5 +1,6 @@
 import Utils from "geopf-extensions-openlayers/src/packages/Utils/Helper.js";
 import contentHTML from './panel.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 import ol_ext_element from 'ol-ext/util/element.js';
 import getUid from "../../utils/getUid.js";
 import './panel.scss';
@@ -68,7 +69,7 @@ class Panel extends Dialog {
 
     // Override les valeurs initiales
     let options = {
-      html: contentHTML,
+      html: translateHtml(contentHTML),
     }
 
     Utils.assign(this.options, options);

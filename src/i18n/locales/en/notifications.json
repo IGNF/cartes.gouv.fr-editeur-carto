@@ -1,0 +1,24 @@
+{
+  "authentication": {
+    "unavailable": "Authentication is unavailable. Please try again later."
+  },
+  "dismiss": "Hide message",
+  "layerSwitcher": {
+    "styleNotEditable": "The style of this layer cannot be edited"
+  },
+  "map": {
+    "copied_one": "{{count}} feature copied",
+    "copied_other": "{{count}} features copied",
+    "deleted_one": "{{count}} feature deleted",
+    "deleted_other": "{{count}} features deleted",
+    "layerCannotAddFeatures": "The selected layer does not support adding features.",
+    "loadError": "Unable to load the map with ID \"{{id}}\". Please try again later",
+    "loading": "Loading map",
+    "loadSuccess": "Map loaded successfully",
+    "requestError": "An error occurred"
+  },
+  "search": {
+    "noLayerSelected": "No layer selected",
+    "notDrawingLayer": "The selected layer is not a drawing layer"
+  }
+}

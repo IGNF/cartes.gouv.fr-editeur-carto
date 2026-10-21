@@ -6,6 +6,7 @@ import Charte from '../../charte/objects/Charte.js';
 import Button from 'ol-ext/control/Button.js';
 import Bar from 'ol-ext/control/Bar.js';
 import Toggle from 'ol-ext/control/Toggle.js';
+import i18next from '../../i18n/index';
 
 import Action from '../../actions/Action.js'
 
@@ -30,13 +31,18 @@ let onToggleMode = function () {
 }
 
 // Barre ajout de donnée
+const creationLabel = document.createElement('span');
+creationLabel.textContent = i18next.t('pages:steps.creation');
+const layoutLabel = document.createElement('span');
+layoutLabel.textContent = i18next.t('pages:steps.layout');
+
 let createmap = new Toggle({
-  html: '<i class="ri-pencil-line"></i><span>Création</span>',
+  html: '<i class="ri-pencil-line"></i>' + creationLabel.outerHTML,
   active: true,
   className: 'action-button',
   classButton: 'fr-btn fr-btn--tertiary-no-outline',
   attributes: {
-    'aria-label': "Gérer le contenu de la carte",
+    'aria-label': i18next.t('pages:steps.manageContent'),
     'data-action': Charte.modes.EDITOR,
   },
   onToggle: onToggleMode,
@@ -48,12 +54,12 @@ let createmap = new Toggle({
 let currentToggle = createmap;
 
 let storymap = new Toggle({
-  html: '<i class="ri-collage-line"></i><span>Mise en page</span>',
+  html: '<i class="ri-collage-line"></i>' + layoutLabel.outerHTML,
   className: 'action-button',
   // autoActivate: true,
   classButton: 'fr-btn fr-btn--tertiary-no-outline',
   attributes: {
-    'aria-label': "Gérer la mise en page de la carte",
+    'aria-label': i18next.t('pages:steps.manageLayout'),
     'data-action': Charte.modes.STORYMAP,
   },
   onToggle: onToggleMode,
@@ -68,7 +74,7 @@ let save = new Button({
   classButton: `fr-btn fr-btn--tertiary-no-outline ${saveIcon}`,
   attributes: {
     type: 'button',
-    'aria-label': "Enregistrer",
+    'aria-label': i18next.t('common:save'),
     'data-action': 'save-map',
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false'
@@ -81,7 +87,7 @@ let share = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-share-2-line',
   attributes: {
     type: 'button',
-    'aria-label': "Partager",
+    'aria-label': i18next.t('common:share'),
     'data-action': 'share-map',
     'aria-controls': modal.getId(),
     'data-fr-opened': 'false',
@@ -95,12 +101,16 @@ carte.on("read", () => {
   if (!carte.get("id")) {
     disabledButtons.forEach(btn => {
       btn.setDisable(true);
-      btn.button_.setAttribute("aria-label", "Enregistrez avant de partager")
+      btn.button_.setAttribute("aria-label", btn === renameMapBtn
+        ? i18next.t('pages:steps.saveBeforeRename')
+        : i18next.t('pages:steps.saveBeforeShare'))
     });
   } else {
     disabledButtons.forEach(btn => {
       btn.setDisable(false);
-      btn.button_.setAttribute("aria-label", "Partager");
+      btn.button_.setAttribute("aria-label", btn === renameMapBtn
+        ? i18next.t('common:rename')
+        : i18next.t('common:share'));
     });
   }
 })
@@ -110,7 +120,9 @@ carte.on("save", () => {
   const disabledButtons = [shareMapBtn, share, renameMapBtn];
   disabledButtons.forEach(btn => {
     btn.setDisable(false);
-    btn.button_.setAttribute("aria-label", "Partager");
+    btn.button_.setAttribute("aria-label", btn === renameMapBtn
+      ? i18next.t('common:rename')
+      : i18next.t('common:share'));
   });
 
   // Change l'icône de sauvegarde vers `success` pendant 5 secondes

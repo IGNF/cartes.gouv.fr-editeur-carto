@@ -1,0 +1,72 @@
+{
+  "externalLink": {
+    "title": "{{title}} - New window"
+  },
+  "footer": {
+    "backToHome": "Back to home",
+    "description": "Cartes.gouv.fr is the public service for maps and geographic data about France. Led by IGN and its partners, it gives everyone access to authoritative public mapping and allows anyone to create, host and publish their own data and maps.",
+    "license": {
+      "label": "Etalab Open Licence 2.0",
+      "notice": "Unless explicitly stated as intellectual property owned by third parties, the content of this site is available under the {{license}}",
+      "title": "Etalab licence - New window"
+    },
+    "links": {
+      "accessibility": "Accessibility: partially compliant",
+      "cookies": "Cookie settings",
+      "displaySettings": "Display settings",
+      "language": "Language",
+      "legalNotice": "Legal notice",
+      "personalData": "Personal data",
+      "sitemap": "Sitemap",
+      "switchLanguage": "Switch to French (reloads the page)",
+      "termsOfUse": "Terms of use"
+    },
+    "logo": {
+      "country": "Republic",
+      "republic": "French"
+    },
+    "moreInformation": "More information",
+    "partners": {
+      "cnig": "National Council for Geographic Information",
+      "ecologicalTransitionMinistry": "Ministry for the Ecological Transition and Territorial Cohesion",
+      "ign": "IGN",
+      "publicTransformationMinistry": "Ministry for Public Sector Transformation and the Civil Service",
+      "title": "Our partners"
+    }
+  },
+  "header": {
+    "logo": {
+      "country": "Republic",
+      "republic": "French"
+    },
+    "menu": "Menu",
+    "service": {
+      "baseline": "The public service for maps and geographic data",
+      "createBadge": "Create",
+      "name": "cartes.gouv.fr",
+      "title": "Home - Cartes.gouv.fr - IGN France"
+    }
+  },
+  "navigation": {
+    "account": {
+      "dashboard": "Dashboard",
+      "label": "My space",
+      "logout": "Sign out",
+      "myAccount": "My account"
+    },
+    "help": {
+      "contact": "Contact us",
+      "faq": "Frequently asked questions",
+      "label": "Help",
+      "userGuide": "User guide"
+    },
+    "services": {
+      "createMap": "Create a map",
+      "discover": "Discover cartes.gouv.fr",
+      "exploreMaps": "Explore maps",
+      "label": "Services",
+      "publishData": "Publish data",
+      "searchData": "Search for data"
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "connect": {
+    "beta": "beta",
+    "tagline": "Create, customize, share",
+    "description": "A free and open service to turn your data into customized, annotated maps that are easy to share.",
+    "createMap": "Create a map",
+    "title": "Create your map",
+    "viewMaps": "View my maps"
+  },
+  "edit-layer-info": {
+    "nameLabel": "Layer name (required)",
+    "descriptionLabel": "Description (optional)",
+    "descriptionHint": "The description is visible in the layer information when the map is shared.",
+    "attributionsLabel": "Credits (optional)",
+    "attributionsHint": "Credits are visible in the layer information when the map is shared.",
+    "thumbnailLabel": "Thumbnail (optional)",
+    "imageUrl": "Image URL",
+    "catalogReadOnly": "Information about catalog layers cannot be edited.",
+    "httpsRequired": "The link must use HTTPS.",
+    "legendLinks_one": "Legend: {{links}}",
+    "legendLinks_other": "Legends: {{links}}",
+    "metadataLinks": "Metadata: {{links}}",
+    "nameRequired": "The layer name is required.",
+    "title": "Layer information"
+  },
+  "edit-layer-popup": {
+    "notQueryable": "This layer cannot be queried and does not support popups."
+  },
+  "edit-layer-style": {
+    "addConditionalStyle": "Add a conditional style"
+  },
+  "import-flow": {
+    "title": "Import a web service"
+  },
+  "import-local": {
+    "fileLabel": "Add a file",
+    "formatsHint": "Supported formats: ShapeFile (compressed), GeoJSON, GeoPackage, CSV, KML and GPX",
+    "documentationTitle": "Documentation - new window",
+    "documentation": "How to import my file",
+    "emptyFile": "The file {{fileName}} contains no valid features",
+    "emptyLayer": "The layer {{title}} contains no data.",
+    "importFailed": "The file {{fileName}} could not be imported correctly.",
+    "layerAdded": "The layer {{title}} has been added to your map.",
+    "loading": "Loading",
+    "missingArchiveFile": "Missing file in archive: {{fileName}}",
+    "missingFile": "Missing file",
+    "title": "Import local data",
+    "unsupportedFormat": "Unsupported format: {{format}}"
+  },
+  "measure": {
+    "distance": "Measure a distance",
+    "isochrone": "Measure an isochrone",
+    "surface": "Measure an area",
+    "title": "Measurement tools"
+  },
+  "open-map": {
+    "loading": "Loading",
+    "signInRequired": "You are not signed in. Sign in to access your maps.",
+    "empty": "You have no saved maps",
+    "loadError": "An error occurred. The map could not be loaded.",
+    "loadSuccess": "The map has been loaded successfully.",
+    "requestError": "An error occurred.",
+    "title": "My maps",
+    "unsavedChanges": "The map has been modified. Do you want to continue without saving?"
+  },
+  "rename-map": {
+    "nameLabel": "Name (required)",
+    "title": "Rename"
+  },
+  "save-map": {
+    "nameLabel": "Name (required)",
+    "themeLabel": "Theme (required)",
+    "selectTheme": "Select a theme",
+    "descriptionLabel": "Description (optional)",
+    "saving": "Saving",
+    "loginRequired": "You must be signed in to save a map.",
+    "nameRequired": "The map name is required",
+    "saved": "Map saved",
+    "sizeLimitExceeded": "The map size exceeds the limit allowed by the server.",
+    "themeRequired": "The theme is required",
+    "title": "Save"
+  },
+  "share-map": {
+    "linkLabel": "Link",
+    "linkHint": "Anyone with this link can view your map.",
+    "iframeLabel": "Iframe",
+    "iframeHint": "Embed your map in emails, social media, websites and applications.",
+    "copied": "Copied",
+    "copy": "Copy",
+    "notSaved": "Save your map first to generate a sharing link.",
+    "notSavedTitle": "Unable to share the map",
+    "title": "Share"
+  },
+  "symbolLib": {
+    "add": "Add",
+    "all": "All",
+    "cancelEdit": "Cancel editing",
+    "delete": "Delete symbol",
+    "duplicate": "Duplicate symbol",
+    "edit": "Edit symbol",
+    "editName": "Edit symbol name",
+    "empty": "No symbols available",
+    "emptyForGeometry": "No symbols available for this geometry type",
+    "lines": "Lines",
+    "name": "Symbol name",
+    "points": "Points",
+    "rename": "Rename",
+    "returnToStyles": "Back to styles",
+    "surfaces": "Areas",
+    "title": "Symbol library"
+  }
+}

@@ -2,6 +2,7 @@ import { FullScreen } from 'ol/control.js';
 import Toggle from 'ol-ext/control/Toggle.js';
 import Bar from 'ol-ext/control/Bar.js';
 import carte from '../../carte.js';
+import i18next from '../../i18n/index';
 
 const fullScreenClass = 'ri-fullscreen-line';
 const fullScreenExitClass = 'ri-fullscreen-exit-line';
@@ -15,22 +16,23 @@ let fullScreen = new FullScreen({
   activeClassName: 'fr-hidden',
   inactiveClassName: 'fr-hidden',
   source: document.body.querySelector('main'),
+  tipLabel: i18next.t('pages:fullScreen.enter'),
 })
 
 fullScreen.on('enterfullscreen', () => {
   fullScreenToggle.setActive(true);
   fullScreenToggle.button_.classList.add(fullScreenExitClass);
   fullScreenToggle.button_.classList.remove(fullScreenClass);
-  fullScreenToggle.setTitle("Quitter le plein écran");
-  fullScreenToggle.button_.ariaLabel = "Quitter le plein écran";
+  fullScreenToggle.setTitle(i18next.t('pages:fullScreen.exit'));
+  fullScreenToggle.button_.ariaLabel = i18next.t('pages:fullScreen.exit');
 })
 
 fullScreen.on('leavefullscreen', () => {
   fullScreenToggle.setActive(false);
   fullScreenToggle.button_.classList.add(fullScreenClass);
   fullScreenToggle.button_.classList.remove(fullScreenExitClass);
-  fullScreenToggle.setTitle("Plein écran");
-  fullScreenToggle.button_.ariaLabel = "Plein écran";
+  fullScreenToggle.setTitle(i18next.t('pages:fullScreen.enter'));
+  fullScreenToggle.button_.ariaLabel = i18next.t('pages:fullScreen.enter');
 })
 
 let fullScreenToggle = new Toggle({
@@ -38,7 +40,7 @@ let fullScreenToggle = new Toggle({
   autoActivate: true,
   classButton: `fr-btn fr-btn--tertiary-no-outline ${fullScreenClass}`,
   attributes: {
-    'aria-label': "Plein écran",
+    'aria-label': i18next.t('pages:fullScreen.enter'),
   },
   onToggle: onToggle
 })

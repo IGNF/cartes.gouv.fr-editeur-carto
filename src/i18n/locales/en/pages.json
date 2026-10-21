@@ -1,0 +1,68 @@
+{
+  "document": {
+    "title": "Map editor | Cartes.gouv.fr",
+    "description": "Cartes.gouv.fr map editor"
+  },
+  "display": {
+    "title": "Display settings",
+    "chooseTheme": "Choose a theme to customize the appearance of the site.",
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "system": "System",
+    "systemHint": "Uses system settings"
+  },
+  "beta": {
+    "label": "Beta version"
+  },
+  "catalog": {
+    "allMaps": "All maps",
+    "layerAddError": "The layer could not be added to the map",
+    "namedLayerAddError": "The layer {{name}} could not be added to the map",
+    "producer": "Producer",
+    "referenceMaps": "Reference maps",
+    "requestError": "An error occurred",
+    "service": "Service",
+    "theme": "Theme",
+    "title": "Map catalog"
+  },
+  "draw": {
+    "box": "Rectangle",
+    "circle": "Circle",
+    "line": "Line",
+    "multiple": "Multiple",
+    "point": "Point",
+    "polygon": "Area",
+    "title": "Annotate the map"
+  },
+  "edit": {
+    "drawingNotAdded": "The selected layer cannot be edited. The drawing has not been added to the layer",
+    "importCatalog": "Import data from cartes.gouv",
+    "importLocal": "Import local data",
+    "layerNotEditable": "The selected layer cannot be edited. Select an editable layer or the drawing will not be added to the layer",
+    "measure": "Measure",
+    "selection": "Selection tool"
+  },
+  "file": {
+    "export": "Export",
+    "manage": "Manage my map",
+    "name": "File name",
+    "open": "Open a map",
+    "print": "Print",
+    "rename": "Rename",
+    "save": "Save",
+    "share": "Share",
+    "untitled": "Untitled map"
+  },
+  "fullScreen": {
+    "enter": "Full screen",
+    "exit": "Exit full screen"
+  },
+  "steps": {
+    "creation": "Create",
+    "layout": "Layout",
+    "manageContent": "Manage map content",
+    "manageLayout": "Manage map layout",
+    "saveBeforeRename": "Save before renaming",
+    "saveBeforeShare": "Save before sharing"
+  }
+}

@@ -1,48 +1,47 @@
 import charte from './charte.js'
 import displayDialog from '../dialogs/displayDialog.js'
+import i18next from '../i18n/index'
 
 // Set service info
 charte.setService({
-  service: 'cartes.gouv.fr ',
+  service: i18next.t('charte:header.service.name') + ' ',
   href: './',
-  title: 'Accueil - Cartes.gouv.fr - IGN France',
-  baseline: 'Le service public des cartes et données du territoire',
+  title: i18next.t('charte:header.service.title'),
+  baseline: i18next.t('charte:header.service.baseline'),
   operator: {
     logo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo.svg',
     darkLogo: 'https://data.geopf.fr/annexes/ressources/header/cartes-gouv-logo-dark.svg'
   },
   badge: {
-    text: 'Créer',
+    text: i18next.t('charte:header.service.createBadge'),
     colorClass: 'fr-badge--yellow-tournesol',
     icon: 'fr-icon-brush-fill'
   }
 });
 
 charte.setDescription(
-  `Cartes.gouv.fr est le service public des cartes et données du territoire français. 
-  Porté par l'IGN et ses partenaires, il offre à tous un accès à la référence de la cartographie publique 
-  et permet à chacun de créer, d'héberger et de publier ses propres données et représentations.`
+  i18next.t('charte:footer.description')
 );
 
 // Partner list / logo
 charte.addPartner({
-  alt: 'IGN',
+  alt: i18next.t('charte:footer.partners.ign'),
   url: 'https://www.ign.fr/',
   img: 'https://data.geopf.fr/annexes/ressources/footer/ign.png',
   main: true
 });
 charte.addPartner({
-  alt: 'Ministère de la transformation et de la fonction publiques',
+  alt: i18next.t('charte:footer.partners.publicTransformationMinistry'),
   url: 'https://www.transformation.gouv.fr/',
   img: 'https://data.geopf.fr/annexes/ressources/footer/min_fp.jpg'
 });
 charte.addPartner({
-  alt: 'Ministère de la Transition Écologique et de la Cohésion des Territoires',
+  alt: i18next.t('charte:footer.partners.ecologicalTransitionMinistry'),
   url: 'https://www.ecologie.gouv.fr/',
   img: 'https://data.geopf.fr/annexes/ressources/footer/min_ecologie.jpg'
 });
 charte.addPartner({
-  alt: 'Conseil national de l\'information géolocalisée',
+  alt: i18next.t('charte:footer.partners.cnig'),
   url: 'https://cnig.gouv.fr/',
   img: 'https://data.geopf.fr/annexes/ressources/footer/rf_cnig.jpg'
 });
@@ -67,32 +66,32 @@ charte.addContentLink({
 
 // Footer links
 charte.addFooterLink({
-  title: 'Plan du site',
+  title: i18next.t('charte:footer.links.sitemap'),
   href: 'https://cartes.gouv.fr/plan-du-site'
 });
 charte.addFooterLink({
-  title: 'Accessibilité : partiellement conforme',
+  title: i18next.t('charte:footer.links.accessibility'),
   href: 'https://cartes.gouv.fr/accessibilite'
 });
 charte.addFooterLink({
-  title: 'Mentions légales',
+  title: i18next.t('charte:footer.links.legalNotice'),
   href: 'https://cartes.gouv.fr/mentions-legales'
 });
 charte.addFooterLink({
-  title: "Conditions générales d'utilisation",
+  title: i18next.t('charte:footer.links.termsOfUse'),
   href: 'https://cartes.gouv.fr/cgu'
 });
 charte.addFooterLink({
-  title: 'Données personnelles',
+  title: i18next.t('charte:footer.links.personalData'),
   href: 'https://cartes.gouv.fr/donnees-personnelles'
 });
 charte.addFooterLink({
-  title: 'Gestion des cookies',
+  title: i18next.t('charte:footer.links.cookies'),
   href: '#'
 });
-charte.addFooterButton('Paramètres d\'affichage', {
+charte.addFooterButton(i18next.t('charte:footer.links.displaySettings'), {
   icon: 'fr-icon-theme-fill',
-  title: "Paramètres d'affichage",
+  title: i18next.t('charte:footer.links.displaySettings'),
   'aria-controls': displayDialog.id,
   'data-fr-opened': false,
 });

@@ -3,14 +3,17 @@ import Beta from "../../control/Beta/Beta.js";
 import charte from "../../charte/charte.js";
 import Charte from "../../charte/objects/Charte.js";
 import "./beta.scss";
+import i18next from '../../i18n/index';
 
 
 // Deux badges pour éviter qu'ils changent de place
 const betaMap = new Beta({
-  className : "beta-map"
+  className : "beta-map",
+  label: i18next.t('pages:beta.label')
 });
 
 const betaLayout = new Beta({
+  label: i18next.t('pages:beta.label'),
   target: document.body.querySelector("main"),
 });
 

@@ -1,6 +1,7 @@
 import { createOidc, type OidcInitializationError } from "oidc-spa/core";
 import { z } from "zod";
 import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
+import i18next from "./i18n/index";
 
 const prOidc = createOidc({
   // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
@@ -36,7 +37,7 @@ if (prOidc instanceof Error) {
   import.meta.env.DEV && console.log(oidcInitializationError.message);
 
   alert(
-    "L'authentification ne fonctionne pas. Veuillez réessayer ultérieurement.",
+    i18next.t('notifications:authentication.unavailable'),
   );
 
   // Halt the app in a typed-safe way (nothing renders until you decide otherwise).

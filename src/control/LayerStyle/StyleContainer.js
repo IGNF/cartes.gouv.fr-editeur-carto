@@ -101,6 +101,7 @@ export class StyleContainerMoveEvent extends BaseEvent {
 
 /**
  * @typedef {Object} StyleContainerOptions
+ * @property {Object<string, *>} [labels] Libellés personnalisés des actions.
  * @property {import('ol/layer/BaseVector').default|import('mcutils/layer/VectorStyle.js').default} layer Couche OpenLayers à styliser
  * @property {StyleObj} styleObj Style géré par ce conteneur
  * @property {String} [className] Classe CSS racine du conteneur
@@ -118,6 +119,7 @@ class StyleContainer extends BaseObject {
    */
   constructor(options = {}) {
     super(options);
+    this.labels = options.labels ?? {};
 
     // Pour la documentation des événements personnalisés
     /** @type {StyleContainerOnSignature<import("ol/events.js").EventsKey>} */
@@ -208,21 +210,21 @@ class StyleContainer extends BaseObject {
       dragBtn.classList.add("not-draggable");
       dragBtn.setAttribute("disabled", true);
     } else {
-      dragBtn.title = "Deplacer le style";
+      dragBtn.title = this.labels.moveStyle ?? "Deplacer le style";
       
       // Ajoute la navigation au clavier
       // Des événements sont envoyés pour être gérés dans LayerStyleContainer
       const buttonUp = document.createElement("button");
       buttonUp.dataset.direction = "up";
       buttonUp.id = Helper.addUID("style__drag-btn-up", this._uid);
-      buttonUp.title = buttonUp.ariaLabel = "Déplacer le style vers le haut";
+      buttonUp.title = buttonUp.ariaLabel = this.labels.moveStyleUp ?? "Déplacer le style vers le haut";
       buttonUp.className = "fr-icon-arrow-up-line fr-icon--sm";
       buttonUp.addEventListener("click", (e) => this.dispatchEvent(new StyleContainerMoveEvent(e.currentTarget.dataset.direction)));
 
       const buttonDown = document.createElement("button");
       buttonDown.dataset.direction = "down";
       buttonDown.id = Helper.addUID("style__drag-btn-down", this._uid);
-      buttonDown.title = buttonDown.ariaLabel = "Déplacer le style vers le bas";
+      buttonDown.title = buttonDown.ariaLabel = this.labels.moveStyleDown ?? "Déplacer le style vers le bas";
       buttonDown.className = "fr-icon-arrow-down-line fr-icon--sm";
       buttonDown.addEventListener("click", (e) => this.dispatchEvent(new StyleContainerMoveEvent(e.currentTarget.dataset.direction)));
       const divKeyboard = document.createElement("div");
@@ -248,13 +250,13 @@ class StyleContainer extends BaseObject {
       // Mettre l'event listener sur le titre si on veut cliquer
       // sur le nom pour le modifier
       editStyleNameBtn.addEventListener("click", () => this.editStyleName());
-      editStyleNameBtn.textContent = editStyleNameBtn.title = "Modifier le nom du style";
+      editStyleNameBtn.textContent = editStyleNameBtn.title = this.labels.editStyleName ?? "Modifier le nom du style";
       actions.appendChild(editStyleNameBtn);
 
       const deleteStyleBtn = document.createElement("button");
       deleteStyleBtn.className = "delete-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line";
       deleteStyleBtn.addEventListener("click", () => this.deleteStyle());
-      deleteStyleBtn.textContent = deleteStyleBtn.title = "Supprimer le style";
+      deleteStyleBtn.textContent = deleteStyleBtn.title = this.labels.deleteStyle ?? "Supprimer le style";
       actions.appendChild(deleteStyleBtn);
     }
 
@@ -262,7 +264,7 @@ class StyleContainer extends BaseObject {
     const openStyleBtn = document.createElement("button");
     openStyleBtn.className = "open-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-right-s-line";
     openStyleBtn.addEventListener("click", () => this.openStyle());
-    openStyleBtn.textContent = openStyleBtn.title = "Modifier le style";
+    openStyleBtn.textContent = openStyleBtn.title = this.labels.editStyle ?? "Modifier le style";
     actions.appendChild(openStyleBtn);
 
     return actions;
@@ -288,7 +290,7 @@ class StyleContainer extends BaseObject {
     input.className = "fr-input";
     input.type = "text";
     input.id = `input-edit-layer-name-${this._uid}`;
-    input.ariaLabel = input.title = `Nom du style`;
+    input.ariaLabel = input.title = this.labels.styleName ?? `Nom du style`;
     input.value = this.getStyleObj()?.name;
     input.id = `input-edit-layer-name-${this._uid}`;
     mask.appendChild(input);
@@ -296,7 +298,7 @@ class StyleContainer extends BaseObject {
     // Annuler
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "cancel-edit-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line";
-    cancelBtn.textContent = cancelBtn.title = "Annuler la modification";
+    cancelBtn.textContent = cancelBtn.title = this.labels.cancelEdit ?? "Annuler la modification";
     cancelBtn.addEventListener("click", () => {
       input.removeEventListener("keydown", keydownEvent);
       mask.remove();
@@ -306,7 +308,7 @@ class StyleContainer extends BaseObject {
     // Valider
     const validateBtn = document.createElement("button");
     validateBtn.className = "validate-style-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-check-line";
-    validateBtn.textContent = validateBtn.title = "Modifier le nom du style";
+    validateBtn.textContent = validateBtn.title = this.labels.editStyleName ?? "Modifier le nom du style";
     validateBtn.addEventListener("click", () => {
       if (input.value.trim().length > 0) {
         this.getStyleObj().name = input.value.trim();

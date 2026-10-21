@@ -1,6 +1,7 @@
 import AbstractDialog from "./AbstractDialog.js";
 
 import defaultHTML from './defaultDialog.html?raw';
+import { translateHtml } from '../../i18n/translateHtml';
 
 /** @classdesc 
  * Un simple dialogue avec : une barre de titre un contenu et un footer vide
@@ -15,7 +16,7 @@ class Dialog extends AbstractDialog {
     options.dialogClass = options.dialogClass || 'ign-dialog'
     options.parent = options.parent || document.body.querySelector('main') || document.body
     if (!options.html) {
-      options.html = defaultHTML.replace(/CLASSNAME/g, options.dialogClass)
+      options.html = translateHtml(defaultHTML).replace(/CLASSNAME/g, options.dialogClass)
     }
     // Create
     super(options)

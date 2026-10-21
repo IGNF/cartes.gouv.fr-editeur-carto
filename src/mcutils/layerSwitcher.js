@@ -13,6 +13,7 @@ import Alert from '../control/Alert/Alert';
 import editLayerInfoAction from '../actions/editLayerInfo/editLayerInfoAction.js';
 import editLayerPopupAction from '../actions/editLayerPopup/editLayerPopupAction.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
+import i18next from '../i18n/index';
 
 const switcher = new LayerSwitcher({
   options: {
@@ -21,18 +22,18 @@ const switcher = new LayerSwitcher({
     panel: true,
     counter: true,
     allowEdit: true,
-    label: "Couches",
+    label: i18next.t('controls:layerSwitcher.label'),
     headerButtons: [
       {
         id: "add-layer-layerswitcher",
-        label: "Ajouter",
+        label: i18next.t('common:add'),
         icon: "fr-icon-add-line",
         cb: addLayer,
       }
     ],
     advancedTools: [
       {
-        label: 'Info',
+        label: i18next.t('controls:layerSwitcher.info'),
         icon: 'fr-icon-information-line',
         attributes: {
           "aria-controls": modal.getId(),
@@ -51,7 +52,7 @@ const switcher = new LayerSwitcher({
         },
       },
       {
-        label: 'Style',
+        label: i18next.t('controls:layerSwitcher.style'),
         icon: 'fr-icon-brush-line',
         attributes: {
           "aria-controls": leftPanel.getElement()?.id,
@@ -82,8 +83,9 @@ const switcher = new LayerSwitcher({
               const alertId = `layer-not-editable--${layer.gpLayerId ?? ''}`
               // Affiche un message à l'utilisateur
               Alert.addAlert({
+                closeLabel: i18next.t('notifications:dismiss'),
                 id: alertId,
-                description: "Le style de cette couche n'est pas modifiable",
+                description: i18next.t('notifications:layerSwitcher.styleNotEditable'),
                 small: true,
                 type: Alert.TYPES.WARNING,
               }, true)
@@ -93,7 +95,7 @@ const switcher = new LayerSwitcher({
         accepted: [VectorStyle, LayerMapBox]
       },
       {
-        label: 'Infobulle',
+        label: i18next.t('controls:layerSwitcher.popup'),
         icon: 'fr-icon-chat-quote-line',
         attributes: {
           "aria-controls": leftPanel.getElement()?.id,
@@ -119,7 +121,7 @@ switcher.container.classList.remove("gpf-mobile-fullscreen")
 
 // Passe le bouton en primary
 let switcherBtn = switcher.container.querySelector("[id^=GPshowLayersListPicto]");
-switcherBtn.ariaLabel = "Couches";
+switcherBtn.ariaLabel = i18next.t('controls:layerSwitcher.label');
 switcherBtn.classList.remove('fr-btn--tertiary', 'gpf-btn--tertiary');
 switcherBtn.classList.add('gpf-btn--primary');
 
