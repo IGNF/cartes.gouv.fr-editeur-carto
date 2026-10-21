@@ -10,6 +10,9 @@ import StyleObj from '../../control/LayerStyle/StyleObj.js';
 import { defaultIgnStyle } from 'mcutils/style/ignStyleFn.js';
 
 import carte from '../../carte.js';
+import i18next from '../../i18n/index';
+import { translateHtml } from '../../i18n/translateHtml';
+import { getControlLabels } from '../../i18n/controlLabels';
 
 import './symbolLib.scss';
 import symbolLibHTML from './symbolLib.html?raw';
@@ -51,6 +54,7 @@ class SymbolLibAction extends Action {
       this.editStyle = new EditStyle({
         visible: false,
         className: 'symbol-lib-edit-style',
+        labels: getControlLabels(),
       });
       // Color picker popup is moved to the dialog
       this.popup = [];
@@ -161,7 +165,7 @@ class SymbolLibAction extends Action {
    */
   setSymbols(filter='all') {
     const modal = symbolLibAction.getDialog();
-    modal.getDialogContent().innerHTML = symbolLibHTML.replace(/-ID/g, '-' + this.uid);
+    modal.getDialogContent().innerHTML = translateHtml(symbolLibHTML).replace(/-ID/g, '-' + this.uid);
     delete modal.getDialog().dataset.edit;
     // Show symbols in the dialog
     const symbolLib = this.symbolLib;
@@ -196,7 +200,7 @@ class SymbolLibAction extends Action {
       const elt = element.create('div', {
         className: 'symbol-lib-item' + (prop.feature ? '' : ' symbol-lib-title'),
         'data-sortable-id': i,
-        html: symbolLibItem.replace(/-ID/g, '-' + getUid()),
+        html: translateHtml(symbolLibItem).replace(/-ID/g, '-' + getUid()),
         parent: symbolList,
         click: () => this.selectItem(elt, item),
         on: {
@@ -282,7 +286,7 @@ class SymbolLibAction extends Action {
     if (symbolList.querySelectorAll('.symbol-lib-item').length === 0) {
       element.create('div', {
         className: 'fr-alert fr-alert--info fr-info--small',
-        html: 'Aucun symbole disponible ' + (this.typeGeom ? 'pour le type de géométrie' : ''),
+        text: i18next.t(this.typeGeom ? 'actions:symbolLib.emptyForGeometry' : 'actions:symbolLib.empty'),
         parent: symbolList
       });
     }
@@ -295,9 +299,9 @@ class SymbolLibAction extends Action {
     btns.appendChild(btnContainer);
     const addBtn = document.createElement('button');
     addBtn.className = 'fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline';
-    addBtn.innerText = 'Ajouter';
+    addBtn.innerText = i18next.t('actions:symbolLib.add');
     addBtn.addEventListener('click', () => {
-      this.editStyle.header.querySelector('button').textContent = 'Revenir aux styles';
+      this.editStyle.header.querySelector('button').textContent = i18next.t('actions:symbolLib.returnToStyles');
       symbolLibAction.showEditStyle();
     });
     btnContainer.appendChild(addBtn);
@@ -307,10 +311,10 @@ class SymbolLibAction extends Action {
     fieldset.className = 'style-form__select-geom fr-fieldset';
     btns.appendChild(fieldset);
     const geomTypes = [
-      { type: 'all', str: 'Tous'},
-      { type: 'Point', str: 'Points'},
-      { type: 'LineString', str: 'Lignes'},
-      { type: 'Polygon', str: 'Surfaces'}
+      { type: 'all', key: 'actions:symbolLib.all'},
+      { type: 'Point', key: 'actions:symbolLib.points'},
+      { type: 'LineString', key: 'actions:symbolLib.lines'},
+      { type: 'Polygon', key: 'actions:symbolLib.surfaces'}
     ]
     const name = 'symbol-lib-geomType-' + getUid();
     geomTypes.forEach(gt => {
@@ -330,7 +334,7 @@ class SymbolLibAction extends Action {
       const label = document.createElement('label');
       label.htmlFor = input.id;
       label.className = 'fr-label';
-      label.innerText = gt.str;
+      label.innerText = i18next.t(gt.key);
       container.appendChild(label);
     });
 
@@ -354,7 +358,9 @@ class SymbolLibAction extends Action {
     styleObj.showGeom = !item && !this.typeGeom;
     console.log('Style object showGeom:', styleObj.showGeom);
     console.log('Showing edit style for item:', item, 'with styleObj:', styleObj);
-    this.editStyle.element.querySelector('.apply-btn').innerText = item ? 'Appliquer' : 'Ajouter';
+    this.editStyle.element.querySelector('.apply-btn').innerText = item
+      ? i18next.t('common:apply')
+      : i18next.t('actions:symbolLib.add');
     this.editStyle.setStyleObj(styleObj);
     this.editStyle.item = item;
     this.editStyle.setVisible(true);
@@ -385,7 +391,7 @@ class SymbolLibAction extends Action {
  */
 const symbolLibAction = new SymbolLibAction({
   id: 'symbolLib',
-  title: 'Bibliothèque de styles',
+  title: i18next.t('actions:symbolLib.title'),
   content: content,
 /*
   buttons: [{

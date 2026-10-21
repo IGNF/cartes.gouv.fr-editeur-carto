@@ -165,7 +165,7 @@ const SymbolLibButton = new Button({
   classButton: 'fr-btn fr-btn--tertiary-no-outline fr-icon-book-open-line ',
   attributes: {
     // 'aria-controls': styleLibDialog.dialog.id,
-    'aria-label': "Bibliothèque de styles",
+    'aria-label': i18next.t('actions:symbolLib.title'),
   },
   handleClick: (e) => symbolLibAction.open(styleLibDialog)
 });

@@ -6,12 +6,14 @@ import { StyleEvent } from 'geopf-extensions-openlayers/src/packages/Controls/St
 import ExtendedFlatStyleForm from './ExtendedFlatStyleForm.js';
 import InputColor from './InputColor.js';
 import SelectIcons from './SelectIcons.js';
+import { getControlLabels } from '../../i18n/controlLabels';
 
 /**
  * @typedef {Object} StyleFormOptions Options pour le formulaire de style d'un objet
  * @property {Boolean} [hasbutton] Indique si le formulaire a un bouton de validation.
  * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`. 
  * @property {Boolean} [selectGeomType = false] Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
+ * @property {Object<string, *>} [labels] Libellés traduits transmis au formulaire.
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
  */
 
@@ -68,13 +70,13 @@ class StyleForm extends ExtendedFlatStyleForm {
    * @protected
    */
   _addCustomInputs(options) {
-    this.setTitle('Propriétés');
-    this._addLabelInfo('Symbole');
+    this.setTitle(this.labels.properties ?? 'Propriétés');
+    this._addLabelInfo(this.labels.symbol ?? 'Symbole');
     this._addPointInputs(options);
     this._addLineStringInputs(options);
     this._addPolygonInputs(options);
     // label
-    this._addLabelInfo('Label');
+    this._addLabelInfo(this.labels.text ?? 'Texte');
     this._addLabelInputs();
     if (options.generalType === false) {
       this._addLabelInputs("Point");
@@ -101,10 +103,10 @@ class StyleForm extends ExtendedFlatStyleForm {
    */
   _addPointInputs() {
     this.addInput({
-      label: 'Forme',
+      label: this.labels.shape ?? 'Forme',
       property: 'point-form',
       type: "form",
-      options: {
+      options: this.labels.shapes ?? {
         none: 'Sans',
         marker: 'Marqueur',
         circle: 'Cercle',
@@ -114,13 +116,13 @@ class StyleForm extends ExtendedFlatStyleForm {
     });
 
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: 'point-color',
-      input: new InputColor(),
+      input: new InputColor({ labels: this.labels }),
     });
 
     this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       labelInfo: '(px)',
       property: 'point-radius',
       type: "number",
@@ -128,13 +130,13 @@ class StyleForm extends ExtendedFlatStyleForm {
 
     this.addBreak('point-form');
     this.addInput({
-      label: 'Bordure',
+      label: this.labels.border ?? 'Bordure',
       property: 'point-stroke-color',
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
 
     this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       labelInfo: '(px)',
       property: 'point-stroke-width',
       type: "number",
@@ -143,19 +145,20 @@ class StyleForm extends ExtendedFlatStyleForm {
     this.addBreak('point-stroke');
 
     const inputIcons = new SelectIcons({
-      label: 'Symbole',
+      label: this.labels.symbol ?? 'Symbole',
       property: 'point-glyph',
       type: 'icon',
       fonts: ["remixicon"],
+      noIconLabel: this.labels.noIcon,
     })
     this.addInput({
       property: 'point-glyph',
       input: inputIcons,
     });
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: 'point-symbol-color',
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
     this.addBreak('point-symbol');
   }
@@ -168,9 +171,9 @@ class StyleForm extends ExtendedFlatStyleForm {
 
     // LIGNE ET POLYGONE
     this.addInput({
-      label: 'Bordure',
+      label: this.labels.border ?? 'Bordure',
       property: 'stroke-line-dash',
-      options: {
+      options: this.labels.dashes ?? {
         "": "Continue",
         "5,5": "Tiret",
         "0,5": "Pointillé",
@@ -179,12 +182,12 @@ class StyleForm extends ExtendedFlatStyleForm {
       type: "stroke",
     });
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: 'stroke-color',
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
     this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       labelInfo: '(px)',
       property: 'stroke-width',
       type: "number",
@@ -192,10 +195,10 @@ class StyleForm extends ExtendedFlatStyleForm {
 
     this.addBreak('line-stroke');
     this.addInput({
-      label: 'Début',
+      label: this.labels.start ?? 'Début',
       // disabled: true,
       property: 'line-arrow-start',
-      options: {
+      options: this.labels.arrows ?? {
         "": "Simple",
         "triangle": "Flèche",
         "circle": "Rond",
@@ -205,9 +208,9 @@ class StyleForm extends ExtendedFlatStyleForm {
     });
 
     this.addInput({
-      label: 'Fin',
+      label: this.labels.end ?? 'Fin',
       property: 'line-arrow-end',
-      options: {
+      options: this.labels.arrows ?? {
         "": "Simple",
         "triangle": "Flèche",
         "circle": "Rond",
@@ -225,9 +228,9 @@ class StyleForm extends ExtendedFlatStyleForm {
   _addPolygonInputs() {
     // POLYGONE //
     this.addInput({
-      label: 'Bordure',
+      label: this.labels.border ?? 'Bordure',
       property: 'fill-stroke-line-dash',
-      options: {
+      options: this.labels.dashes ?? {
         "": "Continue",
         "5,5": "Tiret",
         "0,5": "Pointillé",
@@ -236,12 +239,12 @@ class StyleForm extends ExtendedFlatStyleForm {
       type: "stroke",
     });
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: 'fill-stroke-color',
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
     this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       labelInfo: '(px)',
       property: 'fill-stroke-width',
       type: "number",
@@ -249,9 +252,9 @@ class StyleForm extends ExtendedFlatStyleForm {
     this.addBreak('fill-stroke');
 
     const inputPattern = this.addInput({
-      label: 'Motif',
+      label: this.labels.pattern ?? 'Motif',
       property: 'fill-pattern-config',
-      options: {
+      options: this.labels.patterns ?? {
         "": "Plein",
         "hatch;0": "Lignes verticales",
         "hatch;90": "Lignes horizontales",
@@ -269,21 +272,21 @@ class StyleForm extends ExtendedFlatStyleForm {
     });
 
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: 'fill-color',
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
 
     const inputFillSize = this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       property: 'fill-pattern-scale',
       type: "number",
     });
 
     this.addBreak('fill-style');
-    const inputFillColor = new InputColor();
+    const inputFillColor = new InputColor({ labels: this.labels });
     this.addInput({
-      label: 'Fond',
+      label: this.labels.background ?? 'Fond',
       property: 'fill-pattern-color',
       input: inputFillColor
     });
@@ -325,7 +328,7 @@ class StyleForm extends ExtendedFlatStyleForm {
 
     /** @type {HTMLTextAreaElement} */
     const label = this.addInput({
-      label: "Texte",
+      label: this.labels.text ?? "Texte",
       property: `${prefix}text-value`,
       type: "textarea"
     });
@@ -348,13 +351,13 @@ class StyleForm extends ExtendedFlatStyleForm {
 
     // Couleur et taille du texte
     this.addInput({
-      label: 'Couleur',
+      label: this.labels.color ?? 'Couleur',
       property: `${prefix}text-fill-color`,
-      input: new InputColor()
+      input: new InputColor({ labels: this.labels })
     });
 
     this.addInput({
-      label: 'Taille',
+      label: this.labels.size ?? 'Taille',
       labelInfo: '(px)',
       property: `${prefix}text-size`,
       type: 'number',
@@ -380,7 +383,7 @@ class StyleForm extends ExtendedFlatStyleForm {
 }
 
 // Création du formulaire de style
-const styleForm = new StyleForm({ hasreset: true });
+const styleForm = new StyleForm({ hasreset: true, labels: getControlLabels() });
 
 export default styleForm;
 export { StyleForm };

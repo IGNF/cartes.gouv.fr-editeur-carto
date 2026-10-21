@@ -92,8 +92,21 @@
     "title": "Share"
   },
   "symbolLib": {
+    "add": "Add",
+    "all": "All",
+    "cancelEdit": "Cancel editing",
+    "delete": "Delete symbol",
+    "duplicate": "Duplicate symbol",
+    "edit": "Edit symbol",
+    "editName": "Edit symbol name",
     "empty": "No symbols available",
     "emptyForGeometry": "No symbols available for this geometry type",
+    "lines": "Lines",
+    "name": "Symbol name",
+    "points": "Points",
+    "rename": "Rename",
+    "returnToStyles": "Back to styles",
+    "surfaces": "Areas",
     "title": "Symbol library"
   }
 }

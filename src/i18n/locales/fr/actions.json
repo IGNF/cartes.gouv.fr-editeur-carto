@@ -93,8 +93,21 @@
     "title": "Partager"
   },
   "symbolLib": {
+    "add": "Ajouter",
+    "all": "Tous",
+    "cancelEdit": "Annuler la modification",
+    "delete": "Supprimer le symbole",
+    "duplicate": "Dupliquer le symbole",
+    "edit": "Modifier le symbole",
+    "editName": "Modifier le nom du symbole",
     "empty": "Aucun symbole disponible",
     "emptyForGeometry": "Aucun symbole disponible pour ce type de géométrie.",
+    "lines": "Lignes",
+    "name": "Nom du symbole",
+    "points": "Points",
+    "rename": "Modifier le nom",
+    "returnToStyles": "Revenir aux styles",
+    "surfaces": "Surfaces",
     "title": "Bibliothèque de symboles"
   }
 }

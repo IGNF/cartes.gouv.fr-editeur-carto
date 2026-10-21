@@ -12,6 +12,7 @@ import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/Style
 import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
 import charte from '../../charte/charte.js';
+import i18next from '../../i18n/index';
 
 const forms = [styleForm, labelForm];
 const popupForm = new PopupForm({ carte: carte });
@@ -32,7 +33,7 @@ const initForm = () => {
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new StyleDialog({
   id: "style-dialog",
-  title: "Dialog",
+  title: i18next.t('controls:ui.dialog'),
   position: "left",
   select: carte.getSelect(),
   onOpen: function () {
@@ -52,13 +53,13 @@ const styleDialog = new StyleDialog({
   forms: [
     {
       form: styleForm,
-      label: "Style",
+      label: i18next.t('controls:ui.style'),
       title: "Configuration du style"
     },
     /*
     {
       form: labelForm,
-      label: "Texte",
+      label: i18next.t('controls:ui.text'),
       title: "Configuration du texte"
     },
     */

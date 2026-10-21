@@ -30,7 +30,6 @@ class LabelForm extends ExtendedFlatStyleForm {
    * @override
    */
   _initialize(options) {
-    this.labels = options.labels ?? {};
     super._initialize(options);
 
     options.generalType ??= true;

@@ -4,6 +4,8 @@ import LayerStyleContainer from "../../control/LayerStyle/LayerStyleContainer.js
 import "./editLayerStyle.scss";
 import EditStyle from "../../control/LayerStyle/EditStyle.js";
 import { ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
+import i18next from "../../i18n/index";
+import { getControlLabels } from "../../i18n/controlLabels";
 
 
 /// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///
@@ -47,7 +49,7 @@ function createMainContent() {
   ol_ext_element.create("button", {
     className: "fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline",
     type: "button",
-    text: "Ajouter un style conditionnel",
+    text: i18next.t('actions:edit-layer-style.addConditionalStyle'),
     parent: header,
     on: {
       click: onAddConditionalStyleClick,
@@ -55,6 +57,7 @@ function createMainContent() {
   });
 
   layerContainer = new LayerStyleContainer({
+    labels: getControlLabels(),
   });
   root.appendChild(layerContainer.getElement());
 
@@ -97,6 +100,7 @@ function onOpen(e) {
     visible: false,
     layer: editLayerStyleAction.layer,
     target: dialog.getDialogContent(),
+    labels: getControlLabels(),
   });
 
   // Ajoute / modifie du contenu

@@ -35,7 +35,7 @@
     "deleteCondition": "Supprimer la condition",
     "deleteStyle": "Supprimer le style",
     "description": "Description",
-    "dialog": "Dialog",
+    "dialog": "Dialogue",
     "editStyle": "Modifier le style",
     "editStyleName": "Modifier le nom du style",
     "end": "Fin",
@@ -58,6 +58,7 @@
     "pattern": "Motif",
     "point": "Point",
     "polygon": "Surface",
+    "properties": "Propriétés",
     "popup": "Infobulle",
     "popupConfiguration": "Configuration de l'infobulle",
     "preview": "Aperçu",
@@ -70,10 +71,17 @@
     "start": "Début",
     "statisticalStyle": "Le style de cette couche est paramétré par un style statistique.",
     "style": "Style",
+    "styleLibrary": "Bibliothèque de styles",
     "styleName": "Nom du style",
     "styleConfiguration": "Configuration du style",
     "styleFormUnavailable": "Le formulaire de style ne peut pas être utilisé pour modifier le style de cette couche.",
+    "styleNotIndividuallyEditable": "Un style {{type}} est défini sur cette couche. Le style des objets de la couche ne peut pas être modifié individuellement.",
+    "statistical": "statistique",
+    "conditional": "conditionnel",
     "symbol": "Symbole",
+    "moveSymbol": "Déplacer le symbole",
+    "moveSymbolDown": "Déplacer le symbole vers le bas",
+    "moveSymbolUp": "Déplacer le symbole vers le haut",
     "symbolization": "Symbolisation",
     "text": "Texte",
     "textConfiguration": "Configuration du texte",
@@ -114,12 +122,12 @@
       "forest2": "Arbres"
     },
     "operators": {
-      "STARTS_WITH": "Commence par...",
-      "ENDS_WITH": "Fini par...",
+      "STARTS_WITH": "Commence par",
+      "ENDS_WITH": "Fini par",
       "IN": "Contient",
       "NOT_IN": "Ne contient pas",
-      "LIKE": "Comme...",
-      "NOT": "N'est pas..."
+      "LIKE": "Comme",
+      "NOT": "N'est pas"
     }
   },
   "layout": {

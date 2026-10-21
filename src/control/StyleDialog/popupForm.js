@@ -180,7 +180,7 @@ class PopupForm extends FlatStyleForm {
 
   /**
    * Définit le contenu du formulaire à partir d'une feature
-   * @param {import('ol/Feature.js').default
+   * @param {import('ol/Feature.js').default}
    */
   setFeature(feature) {
     this.feature = feature;

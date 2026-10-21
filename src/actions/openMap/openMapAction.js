@@ -178,19 +178,21 @@ function createMapCard({ title, timestamp, img, id }) {
   let mapTitle = title ? title : '';
   let date = new Date(timestamp);
   let dateStr = '';
-  if (date) {
+  if (!Number.isNaN(date.valueOf())) {
     const options = {
       year: "numeric",
       month: "long",
       day: "numeric",
     };
 
-    const localDate = date.toLocaleDateString('fr-FR', options);
+    const locale = i18next.resolvedLanguage || i18next.language || "fr-FR";
+    const localDate = date.toLocaleDateString(locale, options);
     const timeOptions = {
       hour: "2-digit",
       minute: "2-digit"
     };
-    const time = date.toLocaleTimeString('fr-FR', timeOptions).replace(":", "h");
+    const formattedTime = date.toLocaleTimeString(locale, timeOptions);
+    const time = locale.startsWith('fr') ? formattedTime.replace(":", "h") : formattedTime;
 
     dateStr = `${localDate}, ${time}`;
   }
