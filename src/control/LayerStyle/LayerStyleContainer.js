@@ -475,6 +475,7 @@ class LayerStyleContainer extends BaseObject {
   addConditionalStyle(styleObj) {
     if (!(styleObj instanceof StyleObj)) {
       styleObj = this.#getStyleObj(this.getLayer());
+      styleObj.showGeom = true;
     }
 
     const styleContainer = new StyleContainer({ layer: this.getLayer(), styleObj: styleObj, labels: this.labels });

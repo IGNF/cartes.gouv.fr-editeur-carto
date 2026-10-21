@@ -3,10 +3,12 @@
  */
 import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import StyleObj from '../LayerStyle/StyleObj.js';
-import element from 'ol-ext/util/element.js';
 
 import "./ExtendedFlatStyleForm.scss";
-// import { ignStyleToFlatStyle } from './styleToFlatStyle.js';
+import { flatToIgnStyle } from './styleToFlatStyle.js';
+import getUid from '../../utils/getUid.js';
+import SymbolLib from 'mcutils/style/SymbolLib.js';
+import { carte } from '../../story.js';
 
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
@@ -31,31 +33,51 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     const container = this.header = document.createElement("div");
     container.className = "style-form__header";
 
-    const select = this.selectGeomType = this._addSelectGeomType(options.type);
-    container.appendChild(select);
-    this.showSelectGeomType(options.selectGeomType);
-
-    const preview = this.preview = this._addPreview();
-    container.appendChild(preview);
-    this.showPreview(options.preview);
-
+    const titleElem = document.createElement('div');
+    titleElem.className = 'style-form-title';
+    container.appendChild(titleElem);
+    // Title
+    const span = document.createElement('span');
+    span.className = 'fr-hint-text';
+    titleElem.appendChild(span);
+    // Boutons du titre
+    const btnContainer = document.createElement('div');
+    btnContainer.className = 'style-btn-container';
+    titleElem.appendChild(btnContainer);
     // Place le header avant le formulaire
     this.getElement().before(container);
+
+    // La preview
+    const preview = this.preview = this._addPreview();
+    const previewContainer = document.createElement('div');
+    previewContainer.className = 'style-form__panel';
+    const previewLabel = document.createElement('span');
+    previewLabel.textContent = 'Aperçu';
+    previewLabel.className = 'fr-hint-text';
+    previewContainer.appendChild(previewLabel);
+    previewContainer.appendChild(preview);
+    this.getElement().before(previewContainer);
+    this.showPreview(options.preview);
+
+    // Sélecteur de type de géométrie
+    const select = this.selectGeomType = this._addSelectGeomType(options.type);
+    // container.appendChild(select);
+    this.getElement().before(select);
+    this.showSelectGeomType(options.selectGeomType);
 
     this.styleObj = new StyleObj({
       flatStyle: this.flatStyle,
     })
 
     // Restaure style
-    const footer = this.footer = document.createElement("div");
-    footer.className = "style-form__footer";
     if (options.hasreset) {
-      const btn = document.createElement("button");
-      btn.innerHTML = "Revenir au style par défaut";
-      btn.className = "fr-btn reset fr-icon-corner-up-left-fill fr-btn--icon-left fr-btn--tertiary";
-      btn.type = "button";
-      btn.addEventListener("click", () => this.dispatchEvent({ type: "reset" }));
-      footer.appendChild(btn);
+      this.addTitleButton({
+        title: 'Revenir au style par défaut', 
+        icon: 'fr-icon-arrow-go-back-line',
+        onClick: () => {
+          this.dispatchEvent({ type: "reset" });
+        }
+      });
     }
     // TODO selection de style depuis la bibliothèque
     // const onselect = (symbol) => {
@@ -71,35 +93,183 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     //   this.updatePreview();
     // }
     if (!options.noSymbolLib) {
-      // Bouton pour ouvrir la bibliothèque de symboles
-      element.create("button", {
-        html: "Depuis la bibliothèque",
-        type: "button",
-        className: "fromSymbolLib fr-btn reset fr-icon-palette-line fr-btn--icon-left fr-btn--tertiary",
-        click: () =>  {
-          this.dispatchEvent({
-            type: "lib:getsymbol",
-            styleObj: this.styleObj,
-          });
-        },
-        parent: footer
-      });
       // Bouton pour ajouter le style actuel à la bibliothèque
-      element.create("button", {
-        html: "Ajouter à la bibliothèque",
-        type: "button",
-        className: "addToSymbolLib fr-btn reset fr-icon-add-circle-line fr-btn--icon-left fr-btn--tertiary",
-        click: () =>  {
-          this.dispatchEvent({
-            type: "lib:addsymbol",
-            styleObj: this.styleObj,
+      this.addTitleButton({
+        title: 'Ajouter à la bibliothèque', 
+        icon: 'addToSymbolLib fr-icon-add-line',
+        haspopup: true,
+        onClick: (e) => {
+          const inputGroup = document.createElement('div');
+          inputGroup.className = 'fr-input-group';
+          e.element.appendChild(inputGroup);
+
+          const nameInput = document.createElement('input');
+          nameInput.type = 'text';
+          nameInput.id = 'style-name-input-'+getUid();
+          nameInput.className = 'fr-input';
+          nameInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+              validateButton.click();
+            }
+            if (event.key === 'Escape') {
+              e.hide?.();
+            }
           });
-        },
-        parent: footer
+          
+          const inputLabel = document.createElement('label');
+          inputLabel.setAttribute('for', nameInput.id);
+          inputLabel.className = 'fr-label';
+          inputLabel.innerText = 'Nom';
+          inputGroup.appendChild(inputLabel);
+
+          inputGroup.appendChild(nameInput);
+          nameInput.focus();
+          // Validation => send event
+          const validateButton = document.createElement('button'); 
+          validateButton.innerText = 'Enregistrer';
+          validateButton.className = 'fr-btn fr-btn-primary';
+          validateButton.addEventListener('click', () => {
+            if (nameInput.value) {
+              e.hide?.();
+              // Add the symbol to the library
+              const currentSymbol = new SymbolLib({
+                type: this.styleObj.get('type'),
+                name: nameInput.value,
+                style: flatToIgnStyle(this.styleObj.getFlatStyle())
+              });
+              carte.getSymbolLib().push(currentSymbol);
+
+              // Dispatch envent
+              this.dispatchEvent({
+                type: "lib:addsymbol",
+                name: nameInput.value,
+                styleObj: this.styleObj,
+              });
+            }
+          });
+          e.element.appendChild(validateButton);
+        }
       });
-    }
-    if (footer.childNodes.length > 0) {
-      this.getContent().appendChild(footer);
+
+      // Bouton pour ouvrir la bibliothèque de symboles
+      this.addTitleButton({
+        title: 'Bibliothèque de style',
+        icon: 'fromSymbolLib fr-icon-book-open-line',
+        haspopup: true,
+        onClick: (e) => {
+          const symbolLib = this.symbolLib || carte.getSymbolLib();
+          // Bouton de recherche
+          const searchBt = document.createElement('button');
+          searchBt.className = 'fr-btn fr-icon-search-line fr-btn fr-btn--tertiary-no-outline';
+          e.element.appendChild(searchBt);
+          // input de recherche
+          const searchInput = document.createElement('input');
+          searchInput.type = 'text';
+          searchInput.className = 'fr-input fr-input-search';
+          searchInput.placeholder = 'Rechercher...';
+          searchInput.role = 'combobox';
+          searchInput.setAttribute('aria-label', 'Rechercher');
+          searchInput.setAttribute('aria-expanded', 'true');
+          function getNextElementSibling(item, arrow) {
+            if (!item) {
+              let sibling = (arrow === 'ArrowUp' ? listItem.lastElementChild : listItem.firstElementChild);
+              if (!sibling) {
+                return null;
+              } else if (sibling.style.display !== 'none') {
+                return sibling;
+              } else {
+                return getNextElementSibling(sibling, arrow);
+              }
+            }
+            const fn = (arrow === 'ArrowUp' ? 'previousElementSibling' : 'nextElementSibling')
+            let sibling = item?.[fn] || null;
+            while (sibling && sibling.style.display == 'none') {
+              sibling = sibling?.[fn] || null;
+            }
+            return sibling;
+          }
+          searchInput.addEventListener('keydown', (ke) => {
+            if (/Arrow(Up|Down)/.test(ke.key)) {
+              ke.preventDefault();
+            }
+          });
+          searchInput.addEventListener('keyup', (ke) => {
+            switch (ke.key) {
+              case 'Escape': {
+                e.hide?.();
+                break;
+              }
+              case 'Enter': {
+                // Trigger search
+                listItem.querySelector('.selected')?.click();
+                searchInput.setAttribute('aria-activedescendant', '');
+                break;
+              }
+              case 'ArrowUp':
+              case 'ArrowDown': {
+                ke.preventDefault();
+                // Trigger previous item selection
+                const selectedItem = listItem.querySelector('.selected');
+                if (selectedItem) {
+                  selectedItem.classList.remove('selected');
+                }
+                const sibling = getNextElementSibling(selectedItem, ke.key)
+                if (sibling) {
+                  sibling.classList.add('selected');
+                  searchInput.setAttribute('aria-activedescendant', sibling.id);
+                }
+                break;
+              }
+              default: {
+                searchInput.setAttribute('aria-activedescendant', '');
+                const selectedItem = listItem.querySelector('.selected');
+                if (selectedItem) {
+                  selectedItem.classList.remove('selected');
+                }
+                const filter = new RegExp(searchInput.value, 'i');
+                Array.from(listItem.children).forEach(item => {
+                  const name = item.querySelector('span.fr-text').innerText.toLowerCase();
+                  item.style.display = filter.test(name) ? '' : 'none';
+                });
+                break;
+              }
+            } 
+          });
+          
+          e.element.appendChild(searchInput);
+          searchInput.focus();
+          // liste des symboles de la bibliothèque
+          const listItem = document.createElement('ul');
+          listItem.id = 'stylelib_list_' + getUid();
+          listItem.className = 'stylelib_list';
+          e.element.appendChild(listItem);
+          searchInput.setAttribute('aria-controls', listItem.id);
+          symbolLib.forEach(symbol => {
+            if (symbol.getType() !== this.getGeom('type')) return;
+            const listItemElement = document.createElement('li');
+            listItemElement.className = 'stylelib_item';
+            listItemElement.id = 'stylelib_item_' + getUid();
+            listItemElement.setAttribute('role', 'option');
+            listItem.appendChild(listItemElement);
+            // Image du symbole
+            listItemElement.appendChild(symbol.getImage());
+            // Nom du symbole
+            const nameElt = document.createElement('span');
+            nameElt.className = 'fr-text';
+            nameElt.innerText = symbol.get('name');
+            listItemElement.appendChild(nameElt);
+            // Selection du symbole
+            listItemElement.addEventListener('click', () => {
+              e.hide?.();
+              this.dispatchEvent({
+                type: "lib:getsymbol",
+                symbol: symbol,
+                styleObj: this.styleObj,
+              });
+            });
+          });
+        }
+      });
     }
 
     // Alerte pour le style au calque
@@ -113,6 +283,145 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     // Type du formulaire
     this.setGeom(options.type);
     this._initEvents(options);
+  }
+
+  /**
+   * Ajoute un titre dans le formulaire.
+   * @param {string} title 
+   */
+  setTitle(title) {
+    const titleElem = this.header.querySelector('.style-form-title span');
+    titleElem.innerText = title;
+  }
+
+  /**
+   * Définit le nom du style et son état par défaut.
+   * @param {string} name 
+   * @param {boolean} [disabled=false] 
+   */
+  setName(name, disabled = false) {
+    const nameInput = this.preview.querySelector(".style-name");
+    if (nameInput) {
+      nameInput.value = name || "";
+      nameInput.ariaDisabled = disabled;
+      nameInput.disabled = disabled;
+    }
+  }
+
+  /**
+   * Retourne le nom du style.
+   * @returns string
+   */
+  getName() {
+    const nameInput = this.preview.querySelector(".style-name");
+    return nameInput ? nameInput.value : "";
+  }
+
+  /**
+   * Ajoute un bouton dans le titre du formulaire.
+   * @param {*} options 
+   *  @param {string} options.title title of the button
+   *  @param {string} options.icon icon of the button
+   *  @param {boolean} options.haspopup whether the button has a popup
+   *  @param {function} options.onClick click handler for the button
+   * @returns 
+   */
+  addTitleButton(options) {
+    const btnContainer = this.header.querySelector('.style-btn-container');
+    if (!btnContainer) {
+      return;
+    }
+    const popupContainer = document.createElement('div');
+    popupContainer.className = 'style-popup';
+    btnContainer.appendChild(popupContainer);
+    // Création du bouton
+    const btn = document.createElement('button');
+    btn.className = (options.icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
+    btn.title = options.title;
+    btn.id = 'style-popup-btn-' + getUid();
+    popupContainer.appendChild(btn);
+    // Has popup
+    if (options.haspopup !== undefined) {
+      // Create popup
+      const popup = document.createElement('div');
+      popup.id = 'style-popup-' + getUid();
+      popup.className = 'style-popup-popup';
+      popup.dataset.visible = 'false';
+      popup.role = 'dialog';
+      // Set ARIA attributes for accessibility
+      btn.setAttribute('aria-haspopup', 'true');
+      btn.setAttribute('aria-pressed', false);
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', popup.id);
+
+      function hideonclick(event) {
+        if (event && event.target.closest 
+          && ( 
+            event.target.closest('.style-popup') === popupContainer
+            || event.target.closest('.style-popup-popup') === popup
+          )
+        ) {
+          return;
+        }
+        console.log("Hiding popup", event);
+        document.removeEventListener("click", hideonclick);
+        window.removeEventListener("resize", hideonclick);
+        btn.setAttribute('aria-pressed', false);
+        btn.setAttribute('aria-expanded', false);
+        popup.dataset.visible = 'false';
+      }
+      popupContainer.appendChild(popup);
+      // Title for the popup
+      const popupTitle = document.createElement('span');
+      popupTitle.className = (options.icon||'') + ' style-popup-title';
+      popupTitle.innerText = options.title;
+      popup.appendChild(popupTitle);
+      // container for the popup content
+      const popupContent = document.createElement('div');
+      popupContent.className = 'style-popup-content';
+      popup.appendChild(popupContent);
+      // Click on the button to toggle the popup
+      btn.addEventListener("click", (event) => {
+        popupContent.innerHTML = '';
+        // Pressed ?
+        const isPressed = btn.getAttribute('aria-pressed') === 'false';
+        btn.setAttribute('aria-pressed', isPressed);
+        btn.setAttribute('aria-expanded', isPressed);
+        popup.dataset.visible = 'true';
+        if (isPressed) {
+          // Do something on click (fill the popup)
+          if (typeof options.onClick === "function") {
+            options.onClick({
+              event: event,
+              isPressed: isPressed,
+              element: popupContent,
+              hide: hideonclick
+            });
+          }
+          // Place the popup on screen
+          document.addEventListener("click", hideonclick);
+          window.addEventListener("resize", hideonclick);
+          const rect = btn.getBoundingClientRect();
+          // const popupHeight = popup.offsetHeight;
+          popup.style.top = rect.top + "px";
+          const popupWidth = popup.offsetWidth;
+          if (rect.right + popup.offsetWidth > window.innerWidth) {
+            popup.style.left = (window.innerWidth - popupWidth) + "px";
+          } else {
+            popup.style.left = rect.right + "px";
+          }
+        } else {
+          hideonclick();
+        }
+      });
+    } else {
+      if (typeof options.onClick === "function") {
+        btn.addEventListener("click", (event) => {
+          options.onClick(event);
+        });
+      }
+    }
+    return btn;
   }
 
   /** Get form footer
@@ -142,10 +451,10 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       if (feature && feature.getLayer) {
         // Style conditionnel
         if (feature.getLayer().getConditionStyle().length > 0) {
-          this.showError("Le style de cette couche est paramétré par des conditions.");
+          this.showError();
         } else if (feature.getLayer().get("type") === "Statistique") {
           // Style statistique
-          this.showError("Le style de cette couche est paramétré par un style statistique.");
+          this.showError(true);
           // TODO : bouton pour convertir un
           //  couche statistique en couche simple
         } else {
@@ -156,13 +465,14 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
   }
 
   /** Show error message
-   * @param {String} message Message to show
+   * @param {boolean} [statistic = false] true if it's a statistic style. Default: false.
    */
-  showError(message) {
+  showError(statistic = false) {
     this.getContent().dataset.conditionStyle = '';
     this.getContent().querySelector(".style-form-container .fr-alert").innerHTML =  `<p>
-      Le formulaire de style ne peut pas être utilisé pour modifier le style de cette couche.
-      <br/>` + message + "</p>";
+      Un style ${statistic === true ? "statistique" : "conditionnel"} est défini sur cette couche.
+      <br/>
+      Le style des objets de la couche ne peut pas être modifié individuellement.</p>`;
   }
 
   /**
@@ -201,7 +511,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     this.styleObj.on("change:image", (e) => {
       const image = e.target.get(e.key);
-      this.preview.lastChild.replaceWith(image);
+      this.preview.querySelector('canvas').replaceWith(image);
     })
   }
 
@@ -232,7 +542,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     if (this.isPreviewShown()) {
       // Met à jour la preview
       const image = this.styleObj?.getImage({ small: false });
-      this.preview.lastChild.replaceWith(image);
+      this.preview.querySelector('canvas').replaceWith(image);
     }
   }
 
@@ -280,7 +590,11 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    */
   showPreview(show = false) {
     this.set("showPreview", show);
-    this.preview.classList.toggle("fr-hidden", !show)
+    if (show) {
+      this.getElement().parentElement.dataset.hasPreview = '';
+    } else {
+      delete this.getElement().parentElement.dataset.hasPreview;
+    }
   }
 
   /**
@@ -306,19 +620,21 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
    * @returns {HTMLElement} Élément HTML à ajouter
    */
   _addSelectGeomType(type) {
-    const selectGroup = document.createElement("div");
-    selectGroup.className = "style-form__select-geom fr-select-group";
+    const selectGroup = this.selectGeomType = document.createElement("fieldset");
+    selectGroup.className = "style-form__select-geom fr-fieldset";
 
-    const label = document.createElement("label");
-    label.className = "fr-label";
-    label.htmlFor = "select-geom-type";
+    const label = document.createElement("legend");
+    label.className = "fr-hint-text fr-fieldset__legend--regular fr-fieldset__legend";
     label.textContent = "Symbolisation";
+    selectGroup.append(label);
 
+
+/*    
     const select = document.createElement("select");
     select.className = "fr-select";
     select.id = "select-geom-type";
     select.name = "select-geom-type";
-
+*/
     // Transforme le type en option valable
     let mappedType;
     switch (type) {
@@ -340,27 +656,47 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
     }
 
     const geomTypes = [
-      { value: "Point", text: "Point" },
-      { value: "LineString", text: "Ligne" },
-      { value: "Polygon", text: "Surface" },
+      { value: "Point", text: "Point", icon: "fr-icon-map-pin-2-line" },
+      { value: "LineString", text: "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
+      { value: "Polygon", text: "Surface", icon: "fr-icon-ign-shape-3-fill" },
     ];
 
-    geomTypes.forEach(geom => {
-      const option = document.createElement("option");
-      option.value = geom.value;
-      option.textContent = geom.text;
-      if ((mappedType || "Point") === geom.value) {
-        option.selected = true;
-      }
-      select.appendChild(option);
-    });
+    const radioName = "geom-type-" + getUid();
+    geomTypes.forEach((geom, i) => {
+      const fieldElt = document.createElement("div")
+      fieldElt.className = "fr-fieldset__element";
+      selectGroup.appendChild(fieldElt);
 
+      const radio = document.createElement("div");
+      radio.className = "fr-radio-group";
+      fieldElt.appendChild(radio);
+      // radio
+      const option = document.createElement("input");
+      option.type = "radio";
+      option.name = radioName;
+      option.id = option.name + i;
+      option.value = geom.value;
+      if ((mappedType || "Point") === geom.value) {
+        option.checked = true;
+      }
+      radio.appendChild(option);
+      radio.addEventListener("change", evt => {
+        this.setGeom(evt.target.value);
+        this.updatePreview();
+      });
+      // label
+      const label = document.createElement("label");
+      label.className = "fr-label " + geom.icon;
+      label.htmlFor = option.id;
+      label.textContent = geom.text;
+      radio.appendChild(label);
+    });
+/*
     select.addEventListener("change", evt => {
       this.setGeom(evt.target.value);
       this.updatePreview();
     });
-
-    selectGroup.append(label, select);
+*/
     return selectGroup
   }
 
@@ -374,7 +710,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
     const label = document.createElement("label");
     label.className = "fr-label";
-    label.textContent = "Aperçu";
+    label.textContent = "Prévisualisation";
     preview.appendChild(label);
 
     let image = document.createElement("canvas");
@@ -385,7 +721,25 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
       image.height = 72;
     }
 
-    preview.appendChild(image);
+    const imageContainer = document.createElement('div');
+    imageContainer.className = "style-image-container";
+    imageContainer.appendChild(image)
+    preview.appendChild(imageContainer);
+
+    const inputGroup = document.createElement('div');
+    inputGroup.className = "style-input-group";
+    preview.appendChild(inputGroup);
+
+    const ilabel = document.createElement("label");
+    ilabel.className = "fr-label";
+    ilabel.textContent = "Nom";
+    inputGroup.appendChild(ilabel);
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "style-input-name-" + getUid();
+    input.className = "fr-input style-name";
+    inputGroup.appendChild(input);
 
     return preview;
   }

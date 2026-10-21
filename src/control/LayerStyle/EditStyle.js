@@ -159,6 +159,10 @@ class EditStyle extends BaseObject {
 
     options.visible === false && this.setVisible(false);
 
+    // Footer
+    const footer = this.footer = this._createFooterElement(options);
+    container.appendChild(footer);
+
     return container;
   }
 
@@ -215,7 +219,7 @@ class EditStyle extends BaseObject {
 
     // Bouton retour en arrière
     const saveStyleBtn = document.createElement("button");
-    saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-left-line";
+    saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-go-back-line";
     saveStyleBtn.addEventListener("click", this.rollbackStyle.bind(this));
     saveStyleBtn.textContent = saveStyleBtn.title = "Enregistrer le style";
 
@@ -227,18 +231,41 @@ class EditStyle extends BaseObject {
     const name = document.createElement("span");
     name.className = "style-title__name fr-text--sm";
 
+    header.appendChild(saveStyleBtn);
+    header.appendChild(preview);
+    header.appendChild(name);
+
+    return header;
+  }
+
+    /**
+   * Créé le header
+   * @param {EditStyleOptions} options Options du constructeur
+   * @returns {HTMLElement} header
+   */
+  _createFooterElement(options) {
+    const footer = document.createElement("div");
+    footer.className = "edit-style__footer";
+
+    const btns = document.createElement("div");
+    btns.className = "fr-btns-group fr-btns-group--inline fr-btns-group--sm fr-btns-group--icon-left";
+    footer.appendChild(btns);
+
     // Bouton appliquer
     const applyBtn = document.createElement("button");
     applyBtn.className = "apply-btn fr-btn fr-btn--sm";
     applyBtn.addEventListener("click", this.applyStyle.bind(this));
     applyBtn.textContent = "Appliquer";
+    btns.appendChild(applyBtn);
 
-    header.appendChild(saveStyleBtn);
-    header.appendChild(preview);
-    header.appendChild(name);
-    header.appendChild(applyBtn);
+    // Bouton appliquer
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "fr-btn fr-btn--secondary";
+    cancelBtn.addEventListener("click", this.rollbackStyle.bind(this));
+    cancelBtn.textContent = "Annuler";
+    btns.appendChild(cancelBtn);
 
-    return header;
+    return footer;
   }
 
   /**
@@ -255,7 +282,9 @@ class EditStyle extends BaseObject {
 
     const tabNav = this._createTabNavElement(tabNavContent);
 
-    content.appendChild(tabNav.getElement());
+    // content.appendChild(tabNav.getElement());
+    this.header.appendChild(tabNav.getElement());
+
     content.appendChild(tabNavContent);
 
 
@@ -272,13 +301,15 @@ class EditStyle extends BaseObject {
     // Navigation tertiaire
     const tabnav = this.tabnav = new TabNav({
       items: [{
-        label: "Style",
+        label: "Propriétés",
         content: this.styleForm.getContent(),
       },
+      /*
       {
         label: "Texte",
         content: this.labelForm.getContent(),
       },
+      */
       {
         label: "Conditions",
         content: this.conditionsForm.getContent(),
@@ -342,6 +373,7 @@ class EditStyle extends BaseObject {
       const formStyleObj = styleObj.clone();
       this.forms.forEach(form => {
         form.styleObj = formStyleObj;
+        form.setName(styleObj.name, styleObj.isDefault);
       })
 
       // N'affiche le sélecteur que sur la partie style
@@ -423,6 +455,7 @@ class EditStyle extends BaseObject {
       this.getStyleObj().type = editedGeomType;
     }
     this.getStyleObj().setFlatStyle(this.styleForm.styleObj.getFlatStyle());
+    this.getStyleObj().set("name", this.styleForm.getName());
 
     const ignStyle = flatToIgnStyle(this.getStyleObj().getFlatStyle());
     if (this.getStyleObj().isDefault) {

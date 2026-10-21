@@ -2,6 +2,7 @@
  * @file Formulaire pour le style d'un objet
  */
 
+import { StyleEvent } from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
 import ExtendedFlatStyleForm from './ExtendedFlatStyleForm.js';
 import InputColor from './InputColor.js';
 import SelectIcons from './SelectIcons.js';
@@ -32,19 +33,10 @@ class StyleForm extends ExtendedFlatStyleForm {
     //
     if (this.isSelectGeomTypeShown()) {
       // Modifie l'option sélectionné seulement si on affiche le sélecteur
-      const select = this.header.querySelector("select");
-      const option = select.selectedOptions.item(0);
-      if (option && !this.getGeom().includes(option.value)) {
-        const geomType = this.getGeom();
-        // On modifie l'option sélectionné
-        const options = Array.from(select.options);
-        for (let i = 0; i < options.length; i++) {
-          if (options[i].value === geomType) {
-            options[i].selected = true;
-            break;
-          }
-        }
-      }
+      const select = this.selectGeomType.querySelectorAll('input[type="radio"');
+      select.forEach(input => {
+        input.checked = this.getGeom().includes(input.value);
+      });
     }
     const type = this.getGeom()?.split(' ').at(0);
     if (this.styleObj.get('type') !== type) {
@@ -56,7 +48,7 @@ class StyleForm extends ExtendedFlatStyleForm {
     const strokeElements = this.getContent().querySelectorAll("[data-property^=stroke-]");
     const fillStrokeElements = this.getContent().querySelectorAll("[data-property^=fill-stroke-]");
     // Style par défaut : on affiche les inputs "fill-stroke..."
-    if (this.styleObj.isDefault && this.getGeom()?.split(' ').includes("Polygon")) {
+    if ((this.styleObj.isDefault || this.styleObj?.showGeom) && this.getGeom()?.split(' ').includes("Polygon")) {
       strokeElements.forEach(elem => elem.classList.add("fr-hidden"));
       fillStrokeElements.forEach(elem => elem.classList.remove("fr-hidden"));
     } else {
@@ -76,9 +68,31 @@ class StyleForm extends ExtendedFlatStyleForm {
    * @protected
    */
   _addCustomInputs(options) {
+    this.setTitle('Propriétés');
+    this._addLabelInfo('Symbole');
     this._addPointInputs(options);
     this._addLineStringInputs(options);
     this._addPolygonInputs(options);
+    // label
+    this._addLabelInfo('Label');
+    this._addLabelInputs();
+    if (options.generalType === false) {
+      this._addLabelInputs("Point");
+      this._addLabelInputs("LineString");
+      this._addLabelInputs("Polygon");
+    }
+  }
+
+
+  /**
+   * Méthode ajoutant un label d'information dans le formulaire.
+   * @private
+   */
+  _addLabelInfo(title) {
+    const span = document.createElement('span');
+    span.innerText = title;
+    span.className = 'fr-hint-text';
+    this.element.appendChild(span);
   }
 
   /**
@@ -285,6 +299,67 @@ class StyleForm extends ExtendedFlatStyleForm {
         inputFillSize.input.disabled = true;
       }
     });
+  }
+
+    /**
+   * Méthode ajoutant les inputs pour les géométries de type `Point`
+   * @param {"Point"|"LineString"|"Polygon"} [type] Si donné, ajoute un préfixe aux propriétés flat-style
+   * @private
+   */
+  _addLabelInputs(type) {
+    // Ajoute un préfix si nécessaire
+    let prefix = "";
+    switch (type) {
+      case 'Point':
+        prefix = "point-";
+        break;
+      case 'LineString':
+        prefix = "line-";
+        break;
+      case 'Polygon':
+        prefix = "fill-";
+        break;
+      default:
+        break;
+    }
+
+    /** @type {HTMLTextAreaElement} */
+    const label = this.addInput({
+      label: "Texte",
+      property: `${prefix}text-value`,
+      type: "textarea"
+    });
+    // Update label value on keyup with a delay to avoid too many updates
+    let tout, value = label.value;
+    label.addEventListener('keyup', () => {
+      if (label.value === value) return;
+      clearTimeout(tout);
+      tout = setTimeout(() => {
+        this.dispatchEvent(new StyleEvent(`${prefix}text-value`, label.value));
+        value = label.value;
+      }, 300);
+    });
+    label.addEventListener('change', () => {
+      clearTimeout(tout);
+    });
+
+    // break
+    this.addBreak(`${prefix}text`,);
+
+    // Couleur et taille du texte
+    this.addInput({
+      label: 'Couleur',
+      property: `${prefix}text-fill-color`,
+      input: new InputColor()
+    });
+
+    this.addInput({
+      label: 'Taille',
+      labelInfo: '(px)',
+      property: `${prefix}text-size`,
+      type: 'number',
+    });
+
   }
 
   /**

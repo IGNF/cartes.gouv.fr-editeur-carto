@@ -18,11 +18,11 @@
         "init": "npm run extract",
         "extract": "npm run extract:remix",
         "extract:remix": "node scripts/extract-remix.cjs --output ./public/data",
-        "lint": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "lint:fix": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+        "lint": "eslint src/ --ext js,ts --report-unused-disable-directives --max-warnings 0",
+        "lint:fix": "eslint src/ --ext js,ts --report-unused-disable-directives --max-warnings 0 --fix",
         "preview": "vite preview",
         "format": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:fix": "prettier --list-different --write .",
         "prepare": "husky"
     },
     "devDependencies": {
@@ -31,6 +31,7 @@
         "@commitlint/prompt-cli": "^21.2.2",
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.34.0",
+        "@faker-js/faker": "^10.6.0",
         "canvas": "^3.2.0",
         "eslint": "^10.11.0",
         "eslint-config-prettier": "^10.1.8",
@@ -41,20 +42,21 @@
         "i18next-cli": "^1.77.0",
         "jsdom": "^26.1.0",
         "lint-staged": "^17.5.1",
+        "msw": "^2.15.0",
         "orval": "^8.33.0",
         "prettier": "^3.9.6",
-        "sass-embedded": "^1.89.2",
+        "sass-embedded": ">=1.89.2 <1.106.0",
         "typescript": "~6.0.2",
         "typescript-eslint": "^8.62.1",
         "vite": "^8.0.0",
         "vitest": "^5.0.0"
     },
     "dependencies": {
+        "@gouvfr/dsfr": "^1.15.3",
         "ci": "^2.3.0",
         "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.15.3/ignf-dsfr-v1.15.3.tgz",
         "geoimport": "^0.7.0",
-        "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.14-490.tgz",
-        "i18next": "^26.5.3",
+        "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.16-490.tgz",
         "mcutils": "git+https://github.com/IGNF/cartes.gouv.fr-editeur-lib#v0.1.6",
         "oidc-spa": "^10.2.11",
         "remixicon": "^4.6.0",
@@ -69,8 +71,8 @@
         ]
     },
     "lint-staged": {
-        "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern",
-        "*.{js,ts,jsx,tsx}": "eslint src/ --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --fix"
+        "*": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern .",
+        "*.{js,ts}": "eslint src/ --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --fix"
     },
     "engines": {
         "node": ">=24.0.0 <26.0.0",
