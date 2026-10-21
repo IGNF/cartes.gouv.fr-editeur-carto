@@ -1,6 +1,6 @@
 /**
  * @file
- * 
+ *
  * Ensemble de fonctions utilitaires permettant de
  * modifier ou d'accéder aux valeurs d'une storymap.
  */
@@ -22,10 +22,10 @@
  * @param {String} [src] Source de l'image à modifier.
  */
 const setLogo = (story, src) => {
-  story.set('logo', src || '');
-  story.element.logo.src = src || '';
-  story.element.logo.alt = '';
-}
+    story.set("logo", src || "");
+    story.element.logo.src = src || "";
+    story.element.logo.alt = "";
+};
 
 /**
  * Fonction utilitaire.
@@ -35,27 +35,33 @@ const setLogo = (story, src) => {
  * @param {TitleOptions} options Propriétés à mettre à jour
  */
 const setTitle = (story, options) => {
-  /**
-   * Modifie un élément HTML selon une fonction render.
-   * Permet d'éviter une suite de `if` par la suite;
-   * @param {string} key Clé correspondant à l'élément dans `StoryMap.element`
-   * @param {string|undefined} value Valeur correspondante
-   * @param {(el: HTMLElement, val: string) => void} render Fonction de transformation
-   */
-  const setField = (key, value, render) => {
-    if (value === undefined) return;
-    story.set(key, value);
-    render(story.element[key], value);
-  };
+    /**
+     * Modifie un élément HTML selon une fonction render.
+     * Permet d'éviter une suite de `if` par la suite;
+     * @param {string} key Clé correspondant à l'élément dans `StoryMap.element`
+     * @param {string|undefined} value Valeur correspondante
+     * @param {(el: HTMLElement, val: string) => void} render Fonction de transformation
+     */
+    const setField = (key, value, render) => {
+        if (value === undefined) return;
+        story.set(key, value);
+        render(story.element[key], value);
+    };
 
-  setField('title', options.title, (el, val) => {
-    el.innerHTML = val ? val : '';
-  });
-  setField('subTitle', options.subTitle, (el, val) => { el.innerText = val; });
-  setField('title1', options.title1, (el, val) => { el.innerText = val; });
-  setField('title2', options.title2, (el, val) => { el.innerText = val; });
+    setField("title", options.title, (el, val) => {
+        el.innerHTML = val ? val : "";
+    });
+    setField("subTitle", options.subTitle, (el, val) => {
+        el.innerText = val;
+    });
+    setField("title1", options.title1, (el, val) => {
+        el.innerText = val;
+    });
+    setField("title2", options.title2, (el, val) => {
+        el.innerText = val;
+    });
 
-  story.changed();
+    story.changed();
 };
 
 /**
@@ -64,11 +70,7 @@ const setTitle = (story, options) => {
  * @returns {String} Titre de la storymap
  */
 const getTitle = (story) => {
-  return story.get("title") || story.getCarte()?.getTitle(true);
-}
+    return story.get("title") || story.getCarte()?.getTitle(true);
+};
 
-export {
-  setLogo,
-  setTitle,
-  getTitle,
-}
+export { setLogo, setTitle, getTitle };

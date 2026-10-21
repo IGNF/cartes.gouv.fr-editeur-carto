@@ -1,8 +1,4 @@
-import ConditionalOperator, {
-    getConditionalOperatorInfo,
-    getConditionalOperatorOptions,
-    isConditionalOperator,
-} from "./ConditionalOperator.js";
+import ConditionalOperator, { getConditionalOperatorInfo, getConditionalOperatorOptions, isConditionalOperator } from "./ConditionalOperator.js";
 import Condition from "./Condition.js";
 import StyleObj from "./StyleObj.js";
 import StyleContainer from "./StyleContainer.js";

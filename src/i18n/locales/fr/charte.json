@@ -1,72 +1,72 @@
 {
-  "externalLink": {
-    "title": "{{title}} - Nouvelle fenêtre"
-  },
-  "footer": {
-    "backToHome": "Retour à l'accueil",
-    "description": "Cartes.gouv.fr est le service public des cartes et données du territoire français. Porté par l'IGN et ses partenaires, il offre à tous un accès à la référence de la cartographie publique et permet à chacun de créer, d'héberger et de publier ses propres données et représentations.",
-    "license": {
-      "label": "licence etalab-2.0",
-      "notice": "Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous {{license}}",
-      "title": "Licence etalab - Nouvelle fenêtre"
+    "externalLink": {
+        "title": "{{title}} - Nouvelle fenêtre"
     },
-    "links": {
-      "accessibility": "Accessibilité : partiellement conforme",
-      "cookies": "Gestion des cookies",
-      "displaySettings": "Paramètres d'affichage",
-      "language": "Langue",
-      "legalNotice": "Mentions légales",
-      "personalData": "Données personnelles",
-      "sitemap": "Plan du site",
-      "switchLanguage": "Passer en anglais (recharge la page)",
-      "termsOfUse": "Conditions générales d'utilisation"
+    "footer": {
+        "backToHome": "Retour à l'accueil",
+        "description": "Cartes.gouv.fr est le service public des cartes et données du territoire français. Porté par l'IGN et ses partenaires, il offre à tous un accès à la référence de la cartographie publique et permet à chacun de créer, d'héberger et de publier ses propres données et représentations.",
+        "license": {
+            "label": "licence etalab-2.0",
+            "notice": "Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous {{license}}",
+            "title": "Licence etalab - Nouvelle fenêtre"
+        },
+        "links": {
+            "accessibility": "Accessibilité : partiellement conforme",
+            "cookies": "Gestion des cookies",
+            "displaySettings": "Paramètres d'affichage",
+            "language": "Langue",
+            "legalNotice": "Mentions légales",
+            "personalData": "Données personnelles",
+            "sitemap": "Plan du site",
+            "switchLanguage": "Passer en anglais (recharge la page)",
+            "termsOfUse": "Conditions générales d'utilisation"
+        },
+        "logo": {
+            "country": "Française",
+            "republic": "République"
+        },
+        "moreInformation": "Plus d'informations",
+        "partners": {
+            "cnig": "Conseil national de l'information géolocalisée",
+            "ecologicalTransitionMinistry": "Ministère de la Transition Écologique et de la Cohésion des Territoires",
+            "ign": "IGN",
+            "publicTransformationMinistry": "Ministère de la transformation et de la fonction publiques",
+            "title": "Nos partenaires"
+        }
     },
-    "logo": {
-      "country": "Française",
-      "republic": "République"
+    "header": {
+        "logo": {
+            "country": "française",
+            "republic": "République"
+        },
+        "menu": "Menu",
+        "service": {
+            "baseline": "Le service public des cartes et données du territoire",
+            "createBadge": "Créer",
+            "name": "cartes.gouv.fr",
+            "title": "Accueil - Cartes.gouv.fr - IGN France"
+        }
     },
-    "moreInformation": "Plus d'informations",
-    "partners": {
-      "cnig": "Conseil national de l'information géolocalisée",
-      "ecologicalTransitionMinistry": "Ministère de la Transition Écologique et de la Cohésion des Territoires",
-      "ign": "IGN",
-      "publicTransformationMinistry": "Ministère de la transformation et de la fonction publiques",
-      "title": "Nos partenaires"
+    "navigation": {
+        "account": {
+            "dashboard": "Tableau de bord",
+            "label": "Mon espace",
+            "logout": "Se déconnecter",
+            "myAccount": "Mon compte"
+        },
+        "help": {
+            "contact": "Nous contacter",
+            "faq": "Questions fréquentes",
+            "label": "Aide",
+            "userGuide": "Guide d'utilisation"
+        },
+        "services": {
+            "createMap": "Créer une carte",
+            "discover": "Découvrir cartes.gouv.fr",
+            "exploreMaps": "Explorer les cartes",
+            "label": "Services",
+            "publishData": "Publier une donnée",
+            "searchData": "Rechercher une donnée"
+        }
     }
-  },
-  "header": {
-    "logo": {
-      "country": "française",
-      "republic": "République"
-    },
-    "menu": "Menu",
-    "service": {
-      "baseline": "Le service public des cartes et données du territoire",
-      "createBadge": "Créer",
-      "name": "cartes.gouv.fr",
-      "title": "Accueil - Cartes.gouv.fr - IGN France"
-    }
-  },
-  "navigation": {
-    "account": {
-      "dashboard": "Tableau de bord",
-      "label": "Mon espace",
-      "logout": "Se déconnecter",
-      "myAccount": "Mon compte"
-    },
-    "help": {
-      "contact": "Nous contacter",
-      "faq": "Questions fréquentes",
-      "label": "Aide",
-      "userGuide": "Guide d'utilisation"
-    },
-    "services": {
-      "createMap": "Créer une carte",
-      "discover": "Découvrir cartes.gouv.fr",
-      "exploreMaps": "Explorer les cartes",
-      "label": "Services",
-      "publishData": "Publier une donnée",
-      "searchData": "Rechercher une donnée"
-    }
-  }
 }

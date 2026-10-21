@@ -7,8 +7,8 @@
  */
 
 export type GetEditorialCategories200Item = {
-  /** clé de la catégorie */
-  key?: string;
-  /** Nom de la catégorie */
-  value?: string;
+    /** clé de la catégorie */
+    key?: string;
+    /** Nom de la catégorie */
+    value?: string;
 };

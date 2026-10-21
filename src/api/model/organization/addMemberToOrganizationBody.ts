@@ -7,6 +7,6 @@
  */
 
 export type AddMemberToOrganizationBody = {
-  /** rôle de l'utilisateur, parmi ['member', 'editor', 'owner'] */
-  role?: string;
+    /** rôle de l'utilisateur, parmi ['member', 'editor', 'owner'] */
+    role?: string;
 };

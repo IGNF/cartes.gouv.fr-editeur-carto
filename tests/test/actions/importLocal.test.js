@@ -1,8 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import * as importLocal from '../../../src/actions/importLocal/importLocal.js'
+import { describe, it, expect } from "vitest";
 
-describe('import ', () => {
-  it('1 + 1 =2', () => {
-    expect(1 +1).toEqual(2)
-  })
-})
+describe("import ", () => {
+    it("1 + 1 =2", () => {
+        expect(1 + 1).toEqual(2);
+    });
+});

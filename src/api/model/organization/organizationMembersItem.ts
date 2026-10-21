@@ -7,18 +7,18 @@
  */
 
 export type OrganizationMembersItem = {
-  /** Nom public de l'utilisateur */
-  public_name?: string;
-  /** Identifiant public de l'utilisateur */
-  public_id?: string;
-  /** Date où l'utilisateur a été ajouté */
-  registered_at?: string;
-  /** Role de l'utilisateur dans l'organisation ('member'|'editor'|'owner') */
-  role?: string;
-  /** Date où l'utilisateur a été promu */
-  promoted_at?: string;
-  /** L'utilisateur est actif dans l'organisation */
-  active?: boolean;
-  /** Url de l'image de profil */
-  profile_picture?: string;
+    /** Nom public de l'utilisateur */
+    public_name?: string;
+    /** Identifiant public de l'utilisateur */
+    public_id?: string;
+    /** Date où l'utilisateur a été ajouté */
+    registered_at?: string;
+    /** Role de l'utilisateur dans l'organisation ('member'|'editor'|'owner') */
+    role?: string;
+    /** Date où l'utilisateur a été promu */
+    promoted_at?: string;
+    /** L'utilisateur est actif dans l'organisation */
+    active?: boolean;
+    /** Url de l'image de profil */
+    profile_picture?: string;
 };

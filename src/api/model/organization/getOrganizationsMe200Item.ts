@@ -7,16 +7,16 @@
  */
 
 export type GetOrganizationsMe200Item = {
-  /** identifiant de l'organisation */
-  public_id?: string;
-  /** Nom de l'organisation */
-  name?: string;
-  /** Logo de l'organisation */
-  profile_picture?: string;
-  /** Image de couverture */
-  cover_picture?: string;
-  /** Rôle de l'utilisateur dans l'organisation */
-  user_role?: string;
-  /** l'utilisateur est actif dans l'organisation */
-  active?: boolean;
+    /** identifiant de l'organisation */
+    public_id?: string;
+    /** Nom de l'organisation */
+    name?: string;
+    /** Logo de l'organisation */
+    profile_picture?: string;
+    /** Image de couverture */
+    cover_picture?: string;
+    /** Rôle de l'utilisateur dans l'organisation */
+    user_role?: string;
+    /** l'utilisateur est actif dans l'organisation */
+    active?: boolean;
 };

@@ -1,21 +1,53 @@
 <div id="style__drag-btn-ID" class="style__drag-btn drag-btn fr-icon-draggable-fill fr-icon--sm" data-i18n-title="controls:ui.moveStyle">
-  <div class="style__drag-keyboard">
-    <button data-direction="down" id="style__drag-btn-down-ID" data-i18n-aria-label="controls:ui.moveStyleDown" data-i18n-title="controls:ui.moveStyleDown" class="fr-icon-arrow-down-line fr-icon--sm"></button>
-    <button data-direction="up" id="style__drag-btn-up-ID" data-i18n-aria-label="controls:ui.moveStyleUp" data-i18n-title="controls:ui.moveStyleUp" class="fr-icon-arrow-up-line fr-icon--sm"></button>
-  </div>
+    <div class="style__drag-keyboard">
+        <button
+            data-direction="down"
+            id="style__drag-btn-down-ID"
+            data-i18n-aria-label="controls:ui.moveStyleDown"
+            data-i18n-title="controls:ui.moveStyleDown"
+            class="fr-icon-arrow-down-line fr-icon--sm"
+        ></button>
+        <button
+            data-direction="up"
+            id="style__drag-btn-up-ID"
+            data-i18n-aria-label="controls:ui.moveStyleUp"
+            data-i18n-title="controls:ui.moveStyleUp"
+            class="fr-icon-arrow-up-line fr-icon--sm"
+        ></button>
+    </div>
 </div>
 <div class="style-container__preview">
-  <canvas id="canvas-ID" width="48" height="48" style="width: 48px; height: 48px;"></canvas>
+    <canvas id="canvas-ID" width="48" height="48" style="width: 48px; height: 48px"></canvas>
 </div>
 <span class="style-container__title" data-attr="title"></span>
 <div class="style-container__actions">
-  <button class="edit-legend-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-edit-line" data-i18n-title="controls:legend.editTitle" data-i18n="controls:legend.editTitle"></button>
-  <button class="delete-legend-item-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line" data-i18n-title="controls:legend.deleteItem" data-i18n="controls:legend.deleteItem"></button>
-  <button class="update-legend-item-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-right-s-line" data-i18n-title="controls:legend.editItem" data-i18n="controls:legend.editItem"></button>
+    <button
+        class="edit-legend-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-edit-line"
+        data-i18n-title="controls:legend.editTitle"
+        data-i18n="controls:legend.editTitle"
+    ></button>
+    <button
+        class="delete-legend-item-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-delete-line"
+        data-i18n-title="controls:legend.deleteItem"
+        data-i18n="controls:legend.deleteItem"
+    ></button>
+    <button
+        class="update-legend-item-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-right-s-line"
+        data-i18n-title="controls:legend.editItem"
+        data-i18n="controls:legend.editItem"
+    ></button>
 </div>
 <div class="legend-container__mask">
-  <textarea class="fr-input" id="input-edit-layer-name-ID" data-i18n-title="controls:legend.itemName" data-i18n-aria-label="controls:legend.itemName">
-  </textarea>
-  <button class="cancel-legend-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line" data-i18n-title="controls:ui.cancelEdit" data-i18n="controls:ui.cancelEdit"></button>
-  <button class="validate-legend-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-check-line" data-i18n-title="controls:legend.editName" data-i18n="controls:legend.editName"></button>
+    <textarea class="fr-input" id="input-edit-layer-name-ID" data-i18n-title="controls:legend.itemName" data-i18n-aria-label="controls:legend.itemName">
+    </textarea>
+    <button
+        class="cancel-legend-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-close-line"
+        data-i18n-title="controls:ui.cancelEdit"
+        data-i18n="controls:ui.cancelEdit"
+    ></button>
+    <button
+        class="validate-legend-name-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-check-line"
+        data-i18n-title="controls:legend.editName"
+        data-i18n="controls:legend.editName"
+    ></button>
 </div>

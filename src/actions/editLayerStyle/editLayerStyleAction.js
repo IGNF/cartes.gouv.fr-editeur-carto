@@ -7,19 +7,18 @@ import { ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.
 import i18next from "../../i18n/index";
 import { getControlLabels } from "../../i18n/controlLabels";
 
-
 /// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
  * Dialog utilisé par l'action
  */
 let dialog;
-/** 
+/**
  * @type {LayerStyleContainer}
  * Conteneur des styles de la couche
  */
 let layerContainer;
-/** 
+/**
  * @type {EditStyle}
  * Édition d'un style
  */
@@ -29,7 +28,7 @@ let editStyle;
  * Fonction appelée lors du clic sur le bouton d'ajout de style conditionnel
  */
 function onAddConditionalStyleClick() {
-  layerContainer.addConditionalStyle();
+    layerContainer.addConditionalStyle();
 }
 
 /**
@@ -37,33 +36,32 @@ function onAddConditionalStyleClick() {
  * @returns {HTMLElement}
  */
 function createMainContent() {
-  const root = ol_ext_element.create("div", {
-    className: "edit-layer-style-content",
-  });
+    const root = ol_ext_element.create("div", {
+        className: "edit-layer-style-content",
+    });
 
-  const header = ol_ext_element.create("div", {
-    className: "edit-layer-style-content__header",
-    parent: root,
-  });
+    const header = ol_ext_element.create("div", {
+        className: "edit-layer-style-content__header",
+        parent: root,
+    });
 
-  ol_ext_element.create("button", {
-    className: "fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline",
-    type: "button",
-    text: i18next.t('actions:edit-layer-style.addConditionalStyle'),
-    parent: header,
-    on: {
-      click: onAddConditionalStyleClick,
-    },
-  });
+    ol_ext_element.create("button", {
+        className: "fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline",
+        type: "button",
+        text: i18next.t("actions:edit-layer-style.addConditionalStyle"),
+        parent: header,
+        on: {
+            click: onAddConditionalStyleClick,
+        },
+    });
 
-  layerContainer = new LayerStyleContainer({
-    labels: getControlLabels(),
-  });
-  root.appendChild(layerContainer.getElement());
+    layerContainer = new LayerStyleContainer({
+        labels: getControlLabels(),
+    });
+    root.appendChild(layerContainer.getElement());
 
-  return root;
+    return root;
 }
-
 
 /**
  * Créé le contenu d'édition du dialogue
@@ -71,8 +69,8 @@ function createMainContent() {
  * @param {import("../../control/LayerStyle/EditStyle.js").EditStyleOptions} options
  */
 function createEditStyleContent(options) {
-  const editStyle = new EditStyle(options);
-  return editStyle;
+    const editStyle = new EditStyle(options);
+    return editStyle;
 }
 
 /**
@@ -80,8 +78,8 @@ function createEditStyleContent(options) {
  * @param {Boolean} visible Si vrai, affiche le contenu principal et cache l'éditeur de style. Sinon, fais l'inverse.
  */
 function setMainContentVisibility(visible) {
-  dialog?.querySelector(".edit-layer-style-content")?.classList.toggle("fr-hidden", !visible);
-  editStyle?.setVisible(!visible);
+    dialog?.querySelector(".edit-layer-style-content")?.classList.toggle("fr-hidden", !visible);
+    editStyle?.setVisible(!visible);
 }
 
 /**
@@ -92,42 +90,42 @@ function setMainContentVisibility(visible) {
  * Dialog utilisé par l'action
  */
 function onOpen(e) {
-  dialog = e.target;
-  setMainContentVisibility(true);
-
-  // Créé le conteneur d'édition de style
-  editStyle = createEditStyleContent({
-    visible: false,
-    layer: editLayerStyleAction.layer,
-    target: dialog.getDialogContent(),
-    labels: getControlLabels(),
-  });
-
-  // Ajoute / modifie du contenu
-  dialog.setDialogTitle(editLayerStyleAction.layer?.get('title'));
-
-  // Set layer
-  layerContainer.setLayer(editLayerStyleAction.layer);
-
-  // Écouteurs d'événements
-  layerContainer.on("open-style", (/** @type {import("../../control/LayerStyle/StyleContainer.js").StyleContainerEvent} */ e) => {
-    setMainContentVisibility(false);
-    openStyle(e.layer, e.styleObj);
-  });
-
-  // Écouteur d'événement à la sauvegarde du style
-  editStyle.on(["rollback-style", "apply-style"], () => {
+    dialog = e.target;
     setMainContentVisibility(true);
-  });
-  // Écouteur d'événement à la gestion de la librairie de symboles
-  function onLibSymbolEvent(e) {
-    // Get style from forms
-    const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
-    const styleObj = editStyle.getStyleObj();
-    styleObj.set('type', e.symbol.getType());
-    styleObj.set('flatStyle', style);
-    editStyle.setStyleObj(styleObj);
-    /*
+
+    // Créé le conteneur d'édition de style
+    editStyle = createEditStyleContent({
+        visible: false,
+        layer: editLayerStyleAction.layer,
+        target: dialog.getDialogContent(),
+        labels: getControlLabels(),
+    });
+
+    // Ajoute / modifie du contenu
+    dialog.setDialogTitle(editLayerStyleAction.layer?.get("title"));
+
+    // Set layer
+    layerContainer.setLayer(editLayerStyleAction.layer);
+
+    // Écouteurs d'événements
+    layerContainer.on("open-style", (/** @type {import("../../control/LayerStyle/StyleContainer.js").StyleContainerEvent} */ e) => {
+        setMainContentVisibility(false);
+        openStyle(e.layer, e.styleObj);
+    });
+
+    // Écouteur d'événement à la sauvegarde du style
+    editStyle.on(["rollback-style", "apply-style"], () => {
+        setMainContentVisibility(true);
+    });
+    // Écouteur d'événement à la gestion de la librairie de symboles
+    function onLibSymbolEvent(e) {
+        // Get style from forms
+        const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
+        const styleObj = editStyle.getStyleObj();
+        styleObj.set("type", e.symbol.getType());
+        styleObj.set("flatStyle", style);
+        editStyle.setStyleObj(styleObj);
+        /*
     const type = editStyle.getStyleForm().styleObj.get('type');
     let styleObj = null;
     if (e.type === "lib:addsymbol") {
@@ -156,10 +154,9 @@ function onOpen(e) {
       },
     });
     */
-  }
-  editStyle.getStyleForm().on("lib:getsymbol", onLibSymbolEvent);
-  // editStyle.getLabelForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
-
+    }
+    editStyle.getStyleForm().on("lib:getsymbol", onLibSymbolEvent);
+    // editStyle.getLabelForm().on(["lib:addsymbol", "lib:getsymbol"], onLibSymbolEvent);
 }
 
 /**
@@ -168,17 +165,17 @@ function onOpen(e) {
  * @param {import("../../control/LayerStyle/StyleObj.js").default} styleObj Objet de style
  */
 function openStyle(layer, styleObj) {
-  editStyle.setStyleObj(styleObj);
+    editStyle.setStyleObj(styleObj);
 }
 
 const content = createMainContent();
 
 const editLayerStyleAction = new Action({
-  id: "edit-layer-style",
-  content: content,
-  icon: "fr-icon-brush-line",
-  size: "md",
-  onOpen: onOpen,
+    id: "edit-layer-style",
+    content: content,
+    icon: "fr-icon-brush-line",
+    size: "md",
+    onOpen: onOpen,
 });
 
 export default editLayerStyleAction;

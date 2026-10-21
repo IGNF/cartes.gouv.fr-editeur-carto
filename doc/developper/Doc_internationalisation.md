@@ -10,20 +10,20 @@ Les ressources sont importées par
 Un **namespace** est un groupe fonctionnel de traductions, correspondant à un
 fichier JSON par langue. Il ne dépend pas du dossier technique du code.
 
-| Namespace | Contenu |
-| --- | --- |
-| `common` | Actions partagées : Annuler, Fermer, Ajouter… |
-| `charte` | En-tête, pied de page et navigation |
-| `actions` | Dialogues et messages regroupés par identifiant d'action |
-| `pages` | Barres de l'éditeur, catalogue, dessin, plein écran et badges |
-| `controls` | Recherche, couches, styles, conditions, légende et mise en page |
-| `notifications` | Messages globaux, avertissements et chargement |
+| Namespace       | Contenu                                                         |
+| --------------- | --------------------------------------------------------------- |
+| `common`        | Actions partagées : Annuler, Fermer, Ajouter…                   |
+| `charte`        | En-tête, pied de page et navigation                             |
+| `actions`       | Dialogues et messages regroupés par identifiant d'action        |
+| `pages`         | Barres de l'éditeur, catalogue, dessin, plein écran et badges   |
+| `controls`      | Recherche, couches, styles, conditions, légende et mise en page |
+| `notifications` | Messages globaux, avertissements et chargement                  |
 
 ```js
-import i18next from '../../i18n/index'; // Adapter le chemin au fichier appelant.
+import i18next from "../../i18n/index"; // Adapter le chemin au fichier appelant.
 
-const label = i18next.t('common:cancel');
-const title = i18next.t('actions:open-map.title');
+const label = i18next.t("common:cancel");
+const title = i18next.t("actions:open-map.title");
 ```
 
 Dans `actions:open-map.title`, `actions` désigne le namespace et `open-map.title`
@@ -38,16 +38,16 @@ plutôt que concaténer plusieurs morceaux dans le code.
 
 ```json
 {
-  "import-local": {
-    "emptyFile": "Le fichier {{fileName}} ne contient aucun objet valide"
-  }
+    "import-local": {
+        "emptyFile": "Le fichier {{fileName}} ne contient aucun objet valide"
+    }
 }
 ```
 
 ```js
-const message = i18next.t('actions:import-local.emptyFile', {
-  fileName: file.name,
-  interpolation: { escapeValue: false }
+const message = i18next.t("actions:import-local.emptyFile", {
+    fileName: file.name,
+    interpolation: { escapeValue: false },
 });
 element.textContent = message;
 ```
@@ -66,16 +66,16 @@ i18next choisit la forme selon la langue. Par exemple, dans le namespace
 
 ```json
 {
-  "map": {
-    "deleted_one": "{{count}} objet supprimé",
-    "deleted_many": "{{count}} objets supprimés",
-    "deleted_other": "{{count}} objets supprimés"
-  }
+    "map": {
+        "deleted_one": "{{count}} objet supprimé",
+        "deleted_many": "{{count}} objets supprimés",
+        "deleted_other": "{{count}} objets supprimés"
+    }
 }
 ```
 
 ```js
-i18next.t('notifications:map.deleted', { count: features.length });
+i18next.t("notifications:map.deleted", { count: features.length });
 ```
 
 Appeler **la clé de base sans suffixe** et fournir un nombre dans la propriété
@@ -148,20 +148,17 @@ Prenons un bouton dont le texte visible, le titre au survol et le libellé
 accessible sont différents. Modèle brut dans `searchButton.html` :
 
 ```html
-<button type="button"
-  data-i18n="common:search"
-  data-i18n-title="actions:search.buttonTitle"
-  data-i18n-aria-label="actions:search.buttonAriaLabel"></button>
+<button type="button" data-i18n="common:search" data-i18n-title="actions:search.buttonTitle" data-i18n-aria-label="actions:search.buttonAriaLabel"></button>
 ```
 
 Pour cet exemple, ajouter dans le catalogue français `actions.json` :
 
 ```json
 {
-  "search": {
-    "buttonTitle": "Lancer la recherche",
-    "buttonAriaLabel": "Rechercher une carte dans mes cartes enregistrées"
-  }
+    "search": {
+        "buttonTitle": "Lancer la recherche",
+        "buttonAriaLabel": "Rechercher une carte dans mes cartes enregistrées"
+    }
 }
 ```
 
@@ -169,8 +166,8 @@ La clé `common:search` existe déjà et vaut `"Rechercher"` en français.
 Dans le JavaScript situé à côté du modèle :
 
 ```js
-import searchButtonHtml from './searchButton.html?raw';
-import { translateHtml } from '../../i18n/translateHtml';
+import searchButtonHtml from "./searchButton.html?raw";
+import { translateHtml } from "../../i18n/translateHtml";
 
 // Traduit le modèle, puis le transmet au dialogue pour l'afficher.
 dialog.setDialogContent(translateHtml(searchButtonHtml));
@@ -179,12 +176,16 @@ dialog.setDialogContent(translateHtml(searchButtonHtml));
 HTML rendu lorsque la langue courante est le français :
 
 ```html
-<button type="button"
-  data-i18n="common:search"
-  data-i18n-title="actions:search.buttonTitle"
-  data-i18n-aria-label="actions:search.buttonAriaLabel"
-  title="Lancer la recherche"
-  aria-label="Rechercher une carte dans mes cartes enregistrées">Rechercher</button>
+<button
+    type="button"
+    data-i18n="common:search"
+    data-i18n-title="actions:search.buttonTitle"
+    data-i18n-aria-label="actions:search.buttonAriaLabel"
+    title="Lancer la recherche"
+    aria-label="Rechercher une carte dans mes cartes enregistrées"
+>
+    Rechercher
+</button>
 ```
 
 Chaque marqueur est traité indépendamment : `data-i18n` remplit le texte,
@@ -222,9 +223,9 @@ Pour un futur sélecteur, un gestionnaire peut appeler l'API
 ```js
 // Exemple : à relier aux options du sélecteur DSFR.
 async function selectLanguage(language) {
-  await i18next.changeLanguage(language);
-  document.documentElement.lang = i18next.resolvedLanguage || language;
-  // Actualiser ensuite les textes et attributs des composants déjà créés.
+    await i18next.changeLanguage(language);
+    document.documentElement.lang = i18next.resolvedLanguage || language;
+    // Actualiser ensuite les textes et attributs des composants déjà créés.
 }
 ```
 

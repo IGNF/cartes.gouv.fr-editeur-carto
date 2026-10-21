@@ -7,15 +7,15 @@
  */
 
 export type PostMediaBody = {
-  /** image à ajouter à la bibliothèque, le fichier doit faire moins de 2 Mo */
-  file: Blob | File;
-  /** Dossier où ajouter l'image */
-  folder?: string;
-  /** Nom du fichier */
-  name?: string;
-  /**
-   * Id de l'organization
-   * @nullable
-   */
-  organization_id?: string | null;
+    /** image à ajouter à la bibliothèque, le fichier doit faire moins de 2 Mo */
+    file: Blob | File;
+    /** Dossier où ajouter l'image */
+    folder?: string;
+    /** Nom du fichier */
+    name?: string;
+    /**
+     * Id de l'organization
+     * @nullable
+     */
+    organization_id?: string | null;
 };

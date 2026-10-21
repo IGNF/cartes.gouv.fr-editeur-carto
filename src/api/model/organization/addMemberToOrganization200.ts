@@ -7,14 +7,14 @@
  */
 
 export type AddMemberToOrganization200 = {
-  /** Identifiant public de l'organisation */
-  organization_id?: string;
-  /** Identifiant public de l'utilisateur */
-  user_id?: string;
-  /** Nom public de l'utilisateur */
-  user_public_name?: string;
-  /** Rôle de l'utilisateur dans l'organisation */
-  user_role?: string;
-  /** si false, l'opération a été effectuée, mais le mail d'information n'a pas été envoyé à l'utilisateur */
-  mail_sent?: boolean;
+    /** Identifiant public de l'organisation */
+    organization_id?: string;
+    /** Identifiant public de l'utilisateur */
+    user_id?: string;
+    /** Nom public de l'utilisateur */
+    user_public_name?: string;
+    /** Rôle de l'utilisateur dans l'organisation */
+    user_role?: string;
+    /** si false, l'opération a été effectuée, mais le mail d'information n'a pas été envoyé à l'utilisateur */
+    mail_sent?: boolean;
 };

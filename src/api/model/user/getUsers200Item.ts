@@ -7,7 +7,7 @@
  */
 
 export type GetUsers200Item = {
-  public_name?: string;
-  public_id?: string;
-  profile_picture?: string;
+    public_name?: string;
+    public_id?: string;
+    profile_picture?: string;
 };

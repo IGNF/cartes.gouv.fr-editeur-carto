@@ -1,68 +1,68 @@
 {
-  "document": {
-    "title": "Éditeur de cartes | Cartes.gouv.fr",
-    "description": "Éditeur de cartes cartes.gouv.fr"
-  },
-  "display": {
-    "title": "Paramètres d’affichage",
-    "chooseTheme": "Choisissez un thème pour personnaliser l’apparence du site.",
-    "light": "Thème clair",
-    "dark": "Thème sombre",
-    "system": "Système",
-    "systemHint": "Utilise les paramètres système"
-  },
-  "beta": {
-    "label": "Version Bêta"
-  },
-  "catalog": {
-    "allMaps": "Toutes les cartes",
-    "layerAddError": "La couche n'a pas pu être ajoutée à la carte",
-    "namedLayerAddError": "La couche {{name}} n'a pas pu être ajoutée à la carte",
-    "producer": "Producteur",
-    "referenceMaps": "Cartes de références",
-    "requestError": "Une erreur est survenue",
-    "service": "Service",
-    "theme": "Thème",
-    "title": "Catalogue des cartes"
-  },
-  "draw": {
-    "box": "Rectangle",
-    "circle": "Cercle",
-    "line": "Ligne",
-    "multiple": "Multiple",
-    "point": "Point",
-    "polygon": "Surface",
-    "title": "Annoter la carte"
-  },
-  "edit": {
-    "drawingNotAdded": "La couche sélectionnée n'est pas éditable. Le dessin n'est pas ajouté à la couche",
-    "importCatalog": "Importer une donnée depuis cartes.gouv",
-    "importLocal": "Importer une donnée locale",
-    "layerNotEditable": "La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche",
-    "measure": "Mesurer",
-    "selection": "Sélecteur"
-  },
-  "file": {
-    "export": "Exporter",
-    "manage": "Gérer ma carte",
-    "name": "Nom du fichier",
-    "open": "Ouvrir une carte",
-    "print": "Imprimer",
-    "rename": "Renommer",
-    "save": "Enregistrer",
-    "share": "Partager",
-    "untitled": "Carte sans titre"
-  },
-  "fullScreen": {
-    "enter": "Plein écran",
-    "exit": "Quitter le plein écran"
-  },
-  "steps": {
-    "creation": "Création",
-    "layout": "Mise en page",
-    "manageContent": "Gérer le contenu de la carte",
-    "manageLayout": "Gérer la mise en page de la carte",
-    "saveBeforeRename": "Enregistrez avant de renommer",
-    "saveBeforeShare": "Enregistrez avant de partager"
-  }
+    "document": {
+        "title": "Éditeur de cartes | Cartes.gouv.fr",
+        "description": "Éditeur de cartes cartes.gouv.fr"
+    },
+    "display": {
+        "title": "Paramètres d’affichage",
+        "chooseTheme": "Choisissez un thème pour personnaliser l’apparence du site.",
+        "light": "Thème clair",
+        "dark": "Thème sombre",
+        "system": "Système",
+        "systemHint": "Utilise les paramètres système"
+    },
+    "beta": {
+        "label": "Version Bêta"
+    },
+    "catalog": {
+        "allMaps": "Toutes les cartes",
+        "layerAddError": "La couche n'a pas pu être ajoutée à la carte",
+        "namedLayerAddError": "La couche {{name}} n'a pas pu être ajoutée à la carte",
+        "producer": "Producteur",
+        "referenceMaps": "Cartes de références",
+        "requestError": "Une erreur est survenue",
+        "service": "Service",
+        "theme": "Thème",
+        "title": "Catalogue des cartes"
+    },
+    "draw": {
+        "box": "Rectangle",
+        "circle": "Cercle",
+        "line": "Ligne",
+        "multiple": "Multiple",
+        "point": "Point",
+        "polygon": "Surface",
+        "title": "Annoter la carte"
+    },
+    "edit": {
+        "drawingNotAdded": "La couche sélectionnée n'est pas éditable. Le dessin n'est pas ajouté à la couche",
+        "importCatalog": "Importer une donnée depuis cartes.gouv",
+        "importLocal": "Importer une donnée locale",
+        "layerNotEditable": "La couche sélectionnée n'est pas éditable. Sélectionnez en une ou le dessin ne sera pas ajouté à la couche",
+        "measure": "Mesurer",
+        "selection": "Sélecteur"
+    },
+    "file": {
+        "export": "Exporter",
+        "manage": "Gérer ma carte",
+        "name": "Nom du fichier",
+        "open": "Ouvrir une carte",
+        "print": "Imprimer",
+        "rename": "Renommer",
+        "save": "Enregistrer",
+        "share": "Partager",
+        "untitled": "Carte sans titre"
+    },
+    "fullScreen": {
+        "enter": "Plein écran",
+        "exit": "Quitter le plein écran"
+    },
+    "steps": {
+        "creation": "Création",
+        "layout": "Mise en page",
+        "manageContent": "Gérer le contenu de la carte",
+        "manageLayout": "Gérer la mise en page de la carte",
+        "saveBeforeRename": "Enregistrez avant de renommer",
+        "saveBeforeShare": "Enregistrez avant de partager"
+    }
 }

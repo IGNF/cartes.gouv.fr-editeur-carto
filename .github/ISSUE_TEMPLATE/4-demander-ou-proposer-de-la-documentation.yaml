@@ -9,12 +9,12 @@ body:
       attributes:
           label: Description
           description: |
-            Posez une question ou proposez des modifications de la documentation.
-            Détaillez votre besoin ou votre idée au maximum.
+              Posez une question ou proposez des modifications de la documentation.
+              Détaillez votre besoin ou votre idée au maximum.
 
-            Les ajouts ou modifications peuvent être :
-            * des ajouts ou modifications d'aide contextuelle (aide accompagnant un champ de formulaire par exemple)
-            * des ajouts dans les pages de documentation et tutoriels
-            * à tout autre endroit où vous les trouveriez judicieux
+              Les ajouts ou modifications peuvent être :
+              * des ajouts ou modifications d'aide contextuelle (aide accompagnant un champ de formulaire par exemple)
+              * des ajouts dans les pages de documentation et tutoriels
+              * à tout autre endroit où vous les trouveriez judicieux
       validations:
           required: true

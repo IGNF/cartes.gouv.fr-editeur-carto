@@ -7,6 +7,6 @@
  */
 
 export type AlreadyReportedResponse = {
-  code?: number;
-  message?: string;
+    code?: number;
+    message?: string;
 };

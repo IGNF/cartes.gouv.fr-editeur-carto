@@ -7,6 +7,6 @@
  */
 
 export type NotFoundResponse = {
-  code?: number;
-  message?: string;
+    code?: number;
+    message?: string;
 };

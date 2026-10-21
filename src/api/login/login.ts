@@ -7,146 +7,121 @@
  */
 import { apiURL } from "../../env";
 
-import type {
-  Login,
-  NotConnectedResponse,
-  PostLogin401,
-  PostLogin429,
-  PostLoginParams,
-  RefreshToken401,
-  RefreshTokenParams,
-} from "../model";
+import type { Login, NotConnectedResponse, PostLogin401, PostLogin429, PostLoginParams, RefreshToken401, RefreshTokenParams } from "../model";
 
 import { fetchWithAuth } from ".././fetchWithAuth";
 
 export type refreshTokenResponse200 = {
-  data: Login;
-  status: 200;
+    data: Login;
+    status: 200;
 };
 
 export type refreshTokenResponse401 = {
-  data: RefreshToken401;
-  status: 401;
+    data: RefreshToken401;
+    status: 401;
 };
 
 export type refreshTokenResponseSuccess = refreshTokenResponse200 & {
-  headers: Headers;
+    headers: Headers;
 };
 export type refreshTokenResponseError = refreshTokenResponse401 & {
-  headers: Headers;
+    headers: Headers;
 };
 
-export type refreshTokenResponse =
-  refreshTokenResponseSuccess | refreshTokenResponseError;
+export type refreshTokenResponse = refreshTokenResponseSuccess | refreshTokenResponseError;
 
 export const getRefreshTokenUrl = (params: RefreshTokenParams) => {
-  const normalizedParams = new URLSearchParams();
+    const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : String(value));
-    }
-  });
+    Object.entries(params || {}).forEach(([key, value]) => {
+        if (value !== undefined) {
+            normalizedParams.append(key, value === null ? "null" : String(value));
+        }
+    });
 
-  const stringifiedParams = normalizedParams.toString();
+    const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `${apiURL}/api/token/refresh?${stringifiedParams}`
-    : `${apiURL}/api/token/refresh`;
+    return stringifiedParams.length > 0 ? `${apiURL}/api/token/refresh?${stringifiedParams}` : `${apiURL}/api/token/refresh`;
 };
 
-export const refreshToken = async (
-  params: RefreshTokenParams,
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<refreshTokenResponse> => {
-  return fetchWithAuth<refreshTokenResponse>(getRefreshTokenUrl(params), {
-    ...options,
-    method: "POST",
-  });
+export const refreshToken = async (params: RefreshTokenParams, options?: Parameters<typeof fetchWithAuth>[1]): Promise<refreshTokenResponse> => {
+    return fetchWithAuth<refreshTokenResponse>(getRefreshTokenUrl(params), {
+        ...options,
+        method: "POST",
+    });
 };
 
 export type postLoginResponse200 = {
-  data: Login;
-  status: 200;
+    data: Login;
+    status: 200;
 };
 
 export type postLoginResponse401 = {
-  data: PostLogin401;
-  status: 401;
+    data: PostLogin401;
+    status: 401;
 };
 
 export type postLoginResponse429 = {
-  data: PostLogin429;
-  status: 429;
+    data: PostLogin429;
+    status: 429;
 };
 
 export type postLoginResponseSuccess = postLoginResponse200 & {
-  headers: Headers;
+    headers: Headers;
 };
-export type postLoginResponseError = (
-  postLoginResponse401 | postLoginResponse429
-) & {
-  headers: Headers;
+export type postLoginResponseError = (postLoginResponse401 | postLoginResponse429) & {
+    headers: Headers;
 };
 
-export type postLoginResponse =
-  postLoginResponseSuccess | postLoginResponseError;
+export type postLoginResponse = postLoginResponseSuccess | postLoginResponseError;
 
 export const getPostLoginUrl = (params: PostLoginParams) => {
-  const normalizedParams = new URLSearchParams();
+    const normalizedParams = new URLSearchParams();
 
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : String(value));
-    }
-  });
+    Object.entries(params || {}).forEach(([key, value]) => {
+        if (value !== undefined) {
+            normalizedParams.append(key, value === null ? "null" : String(value));
+        }
+    });
 
-  const stringifiedParams = normalizedParams.toString();
+    const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `${apiURL}/api/login?${stringifiedParams}`
-    : `${apiURL}/api/login`;
+    return stringifiedParams.length > 0 ? `${apiURL}/api/login?${stringifiedParams}` : `${apiURL}/api/login`;
 };
 
-export const postLogin = async (
-  params: PostLoginParams,
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<postLoginResponse> => {
-  return fetchWithAuth<postLoginResponse>(getPostLoginUrl(params), {
-    ...options,
-    method: "POST",
-  });
+export const postLogin = async (params: PostLoginParams, options?: Parameters<typeof fetchWithAuth>[1]): Promise<postLoginResponse> => {
+    return fetchWithAuth<postLoginResponse>(getPostLoginUrl(params), {
+        ...options,
+        method: "POST",
+    });
 };
 
 export type postLogoutResponse200 = {
-  data: void;
-  status: 200;
+    data: void;
+    status: 200;
 };
 
 export type postLogoutResponse401 = {
-  data: NotConnectedResponse;
-  status: 401;
+    data: NotConnectedResponse;
+    status: 401;
 };
 
 export type postLogoutResponseSuccess = postLogoutResponse200 & {
-  headers: Headers;
+    headers: Headers;
 };
 export type postLogoutResponseError = postLogoutResponse401 & {
-  headers: Headers;
+    headers: Headers;
 };
 
-export type postLogoutResponse =
-  postLogoutResponseSuccess | postLogoutResponseError;
+export type postLogoutResponse = postLogoutResponseSuccess | postLogoutResponseError;
 
 export const getPostLogoutUrl = () => {
-  return `${apiURL}/api/logout`;
+    return `${apiURL}/api/logout`;
 };
 
-export const postLogout = async (
-  options?: Parameters<typeof fetchWithAuth>[1],
-): Promise<postLogoutResponse> => {
-  return fetchWithAuth<postLogoutResponse>(getPostLogoutUrl(), {
-    ...options,
-    method: "POST",
-  });
+export const postLogout = async (options?: Parameters<typeof fetchWithAuth>[1]): Promise<postLogoutResponse> => {
+    return fetchWithAuth<postLogoutResponse>(getPostLogoutUrl(), {
+        ...options,
+        method: "POST",
+    });
 };

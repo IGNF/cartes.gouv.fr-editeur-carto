@@ -7,6 +7,6 @@
  */
 
 export type PostMediaFileByIdBody = {
-  /** image à associer à la bibliothèque, le fichier doit faire moins de 2 Mo */
-  file: Blob | File;
+    /** image à associer à la bibliothèque, le fichier doit faire moins de 2 Mo */
+    file: Blob | File;
 };

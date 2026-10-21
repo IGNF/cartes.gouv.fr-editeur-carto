@@ -8,20 +8,20 @@
 import type { LimitParameter } from "../limitParameter";
 
 export type GetMapsUsersParams = {
-  /**
-   * Thème des cartes (nom du thème ou 'Non défini')
-   */
-  theme?: string;
-  /**
-   * string que le public_name des utilisateurs doit inclure
-   */
-  public_name?: string;
-  /**
-   * Un ou plusieurs mots que doivent contenir le titre, la description ou le thème. S'il y a plusieurs mots, la recherche les interprète comme un ET.
-   */
-  query?: string;
-  /**
-   * Nombre maximum d'objets à retourner
-   */
-  limit?: LimitParameter;
+    /**
+     * Thème des cartes (nom du thème ou 'Non défini')
+     */
+    theme?: string;
+    /**
+     * string que le public_name des utilisateurs doit inclure
+     */
+    public_name?: string;
+    /**
+     * Un ou plusieurs mots que doivent contenir le titre, la description ou le thème. S'il y a plusieurs mots, la recherche les interprète comme un ET.
+     */
+    query?: string;
+    /**
+     * Nombre maximum d'objets à retourner
+     */
+    limit?: LimitParameter;
 };

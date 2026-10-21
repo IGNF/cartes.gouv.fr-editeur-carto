@@ -8,7 +8,7 @@
 import type { MapAdd } from "./mapAdd";
 
 export type PostMapBody = {
-  carte: MapAdd;
-  /** Contenu de la carte au format .carte */
-  file: Blob | File;
+    carte: MapAdd;
+    /** Contenu de la carte au format .carte */
+    file: Blob | File;
 };

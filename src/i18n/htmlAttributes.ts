@@ -1,5 +1,5 @@
 /** Attributs HTML dont la valeur peut être remplacée par une traduction. */
-export type TranslatedHtmlAttribute = 'placeholder' | 'title' | 'aria-label' | 'alt';
+export type TranslatedHtmlAttribute = "placeholder" | "title" | "aria-label" | "alt";
 
 /**
  * Associe chaque marqueur de traduction à sa cible dans le HTML.
@@ -15,9 +15,9 @@ export type TranslatedHtmlAttribute = 'placeholder' | 'title' | 'aria-label' | '
  * compléter le type ci-dessus et ajouter sa correspondance ici.
  */
 export const translationAttributes = {
-  'data-i18n': null,
-  'data-i18n-placeholder': 'placeholder',
-  'data-i18n-title': 'title',
-  'data-i18n-aria-label': 'aria-label',
-  'data-i18n-alt': 'alt',
+    "data-i18n": null,
+    "data-i18n-placeholder": "placeholder",
+    "data-i18n-title": "title",
+    "data-i18n-aria-label": "aria-label",
+    "data-i18n-alt": "alt",
 } as const satisfies Readonly<Record<`data-i18n${string}`, TranslatedHtmlAttribute | null>>;

@@ -7,6 +7,6 @@
  */
 
 export type PutOrganizationJoinLinkRoleBody = {
-  /** true : crée le lien, false : supprime le lien */
-  value?: boolean;
+    /** true : crée le lien, false : supprime le lien */
+    value?: boolean;
 };

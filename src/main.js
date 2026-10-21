@@ -1,46 +1,46 @@
-import './version.js'
-import i18next from './i18n/index';
-import './charte/dsfr.js'
-import './charte/navigation.js'
-import './actions/actions.js'
+import "./version.js";
+import i18next from "./i18n/index";
+import "./charte/dsfr.js";
+import "./charte/navigation.js";
+import "./actions/actions.js";
 
-import "./oidc"
-import story from './story.js'
-import carte from './carte.js'
-import './utils/storyToMapChanges.js'
+import "./oidc";
+import story from "./story.js";
+import carte from "./carte.js";
+import "./utils/storyToMapChanges.js";
 
-import introDialog from './dialogs/introDialog.js'
-import connectAction from './actions/connect/connectAction.js'
+import introDialog from "./dialogs/introDialog.js";
+import connectAction from "./actions/connect/connectAction.js";
 
-import switcher from './mcutils/layerSwitcher.js';
-import search from './mcutils/search.js';
+import switcher from "./mcutils/layerSwitcher.js";
+import search from "./mcutils/search.js";
 
-import './page/page.js'
+import "./page/page.js";
 
 // Custom CSS
-import 'remixicon/fonts/remixicon.css'
-import './css/index.scss';
+import "remixicon/fonts/remixicon.css";
+import "./css/index.scss";
 
-document.title = i18next.t('pages:document.title');
-document.querySelector('meta[name="description"]').setAttribute('content', i18next.t('pages:document.description'));
+document.title = i18next.t("pages:document.title");
+document.querySelector('meta[name="description"]').setAttribute("content", i18next.t("pages:document.description"));
 
 // Ajout des contrôles
-carte.once('read', () => {
-  carte.addControl('layerSwitcher', switcher);
-  carte.addControl('search', search);
-  carte.getMap().getOverlayContainerStopEvent().style.cursor = "auto";
-})
+carte.once("read", () => {
+    carte.addControl("layerSwitcher", switcher);
+    carte.addControl("search", search);
+    carte.getMap().getOverlayContainerStopEvent().style.cursor = "auto";
+});
 
 /**
  * UNIQUEMENT EN TEST, SI LOGIN NON SOUHAITÉ
-*/
+ */
 // introDialog.setAction(connectActionTest);
 introDialog.setAction(connectAction);
 introDialog.open();
 
 /* DEBUG */
 if (import.meta.env.DEV) {
-  window.story = story;
-  window.carte = carte;
+    window.story = story;
+    window.carte = carte;
 }
 /**/

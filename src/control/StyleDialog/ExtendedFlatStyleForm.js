@@ -1,14 +1,14 @@
 /**
  * @file Formulaire pour le style d'un objet
  */
-import FlatStyleForm from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js';
-import StyleObj from '../LayerStyle/StyleObj.js';
+import FlatStyleForm from "geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js";
+import StyleObj from "../LayerStyle/StyleObj.js";
 
 import "./ExtendedFlatStyleForm.scss";
-import { flatToIgnStyle } from './styleToFlatStyle.js';
-import getUid from '../../utils/getUid.js';
-import SymbolLib from 'mcutils/style/SymbolLib.js';
-import { carte } from '../../story.js';
+import { flatToIgnStyle } from "./styleToFlatStyle.js";
+import getUid from "../../utils/getUid.js";
+import SymbolLib from "mcutils/style/SymbolLib.js";
+import { carte } from "../../story.js";
 
 /**
  * @typedef {Object} ExtendedFlatStyleFormOptions Options pour le formulaire de style d'un objet
@@ -16,741 +16,735 @@ import { carte } from '../../story.js';
  * @property {Boolean} [hasreset] Indique si le formulaire a un bouton de reset.
  * @property {Boolean} [noSymbolLib] Indique si le formulaire n'a pas de bouton pour ouvrir la bibliothèque de symboles.
  * @property {Object<string, *>} [labels] Libellés traduits transmis au formulaire.
- * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`. 
+ * @property {Boolean} [preview = false] Si vrai, affiche la preview. L'affichage de la preview est contrôlé par la méthode `showPreview(bool)`.
  * @property {Boolean} [selectGeomType = false] Si vrai, affiche le sélecteur pour changer le type d'objet à modifier. L'affichage de la sélection est contrôlé par la méthode `showSelectGeomType(bool)`.
  * @property {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} [type] Si donné, utilise la méthode setGeom(type) sur le formulaire pour modifier directement le type.
  */
 
 class ExtendedFlatStyleForm extends FlatStyleForm {
+    /**
+     * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
+     */
+    constructor(options = {}) {
+        super(options);
+        this._initialize(options);
 
-  /**
-   * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
-   */
-  constructor(options = {}) {
-    super(options);
-    this._initialize(options);
+        // Header avec sélecteur et preview
+        const container = (this.header = document.createElement("div"));
+        container.className = "style-form__header";
 
-    // Header avec sélecteur et preview
-    const container = this.header = document.createElement("div");
-    container.className = "style-form__header";
+        const titleElem = document.createElement("div");
+        titleElem.className = "style-form-title";
+        container.appendChild(titleElem);
+        // Title
+        const span = document.createElement("span");
+        span.className = "fr-hint-text";
+        titleElem.appendChild(span);
+        // Boutons du titre
+        const btnContainer = document.createElement("div");
+        btnContainer.className = "style-btn-container";
+        titleElem.appendChild(btnContainer);
+        // Place le header avant le formulaire
+        this.getElement().before(container);
 
-    const titleElem = document.createElement('div');
-    titleElem.className = 'style-form-title';
-    container.appendChild(titleElem);
-    // Title
-    const span = document.createElement('span');
-    span.className = 'fr-hint-text';
-    titleElem.appendChild(span);
-    // Boutons du titre
-    const btnContainer = document.createElement('div');
-    btnContainer.className = 'style-btn-container';
-    titleElem.appendChild(btnContainer);
-    // Place le header avant le formulaire
-    this.getElement().before(container);
+        // La preview
+        const preview = (this.preview = this._addPreview());
+        const previewContainer = document.createElement("div");
+        previewContainer.className = "style-form__panel";
+        const previewLabel = document.createElement("span");
+        previewLabel.textContent = this.labels.preview ?? "Aperçu";
+        previewLabel.className = "fr-hint-text";
+        previewContainer.appendChild(previewLabel);
+        previewContainer.appendChild(preview);
+        this.getElement().before(previewContainer);
+        this.showPreview(options.preview);
 
-    // La preview
-    const preview = this.preview = this._addPreview();
-    const previewContainer = document.createElement('div');
-    previewContainer.className = 'style-form__panel';
-    const previewLabel = document.createElement('span');
-    previewLabel.textContent = this.labels.preview ?? 'Aperçu';
-    previewLabel.className = 'fr-hint-text';
-    previewContainer.appendChild(previewLabel);
-    previewContainer.appendChild(preview);
-    this.getElement().before(previewContainer);
-    this.showPreview(options.preview);
+        // Sélecteur de type de géométrie
+        const select = (this.selectGeomType = this._addSelectGeomType(options.type));
+        // container.appendChild(select);
+        this.getElement().before(select);
+        this.showSelectGeomType(options.selectGeomType);
 
-    // Sélecteur de type de géométrie
-    const select = this.selectGeomType = this._addSelectGeomType(options.type);
-    // container.appendChild(select);
-    this.getElement().before(select);
-    this.showSelectGeomType(options.selectGeomType);
-
-    this.styleObj = new StyleObj({
-      flatStyle: this.flatStyle,
-    })
-
-    // Restaure style
-    if (options.hasreset) {
-      this.addTitleButton({
-        title: this.labels.resetStyle ?? 'Revenir au style par défaut',
-        icon: 'fr-icon-arrow-go-back-line',
-        onClick: () => {
-          this.dispatchEvent({ type: "reset" });
-        }
-      });
-    }
-    // TODO selection de style depuis la bibliothèque
-    // const onselect = (symbol) => {
-    //   const style = ignStyleToFlatStyle(symbol.getIgnStyle());
-    //   this.setFlatStyle(style);
-    //   this.styleObj.setFlatStyle(style);
-    //   this.dispatchEvent({ 
-    //     type: "style",
-    //     ignStyle: symbol.getIgnStyle(),
-    //     flatStyle: style,
-    //     typeGeom: symbol.getType()
-    //   });
-    //   this.updatePreview();
-    // }
-    if (!options.noSymbolLib) {
-      // Bouton pour ajouter le style actuel à la bibliothèque
-      this.addTitleButton({
-        title: this.labels.addToLibrary ?? 'Ajouter à la bibliothèque',
-        icon: 'addToSymbolLib fr-icon-add-line',
-        haspopup: true,
-        onClick: (e) => {
-          const inputGroup = document.createElement('div');
-          inputGroup.className = 'fr-input-group';
-          e.element.appendChild(inputGroup);
-
-          const nameInput = document.createElement('input');
-          nameInput.type = 'text';
-          nameInput.id = 'style-name-input-'+getUid();
-          nameInput.className = 'fr-input';
-          nameInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-              validateButton.click();
-            }
-            if (event.key === 'Escape') {
-              e.hide?.();
-            }
-          });
-          
-          const inputLabel = document.createElement('label');
-          inputLabel.setAttribute('for', nameInput.id);
-          inputLabel.className = 'fr-label';
-          inputLabel.innerText = this.labels.name ?? 'Nom';
-          inputGroup.appendChild(inputLabel);
-
-          inputGroup.appendChild(nameInput);
-          nameInput.focus();
-          // Validation => send event
-          const validateButton = document.createElement('button'); 
-          validateButton.innerText = this.labels.save ?? 'Enregistrer';
-          validateButton.className = 'fr-btn fr-btn-primary';
-          validateButton.addEventListener('click', () => {
-            if (nameInput.value) {
-              e.hide?.();
-              // Add the symbol to the library
-              const currentSymbol = new SymbolLib({
-                type: this.styleObj.get('type'),
-                name: nameInput.value,
-                style: flatToIgnStyle(this.styleObj.getFlatStyle())
-              });
-              carte.getSymbolLib().push(currentSymbol);
-
-              // Dispatch envent
-              this.dispatchEvent({
-                type: "lib:addsymbol",
-                name: nameInput.value,
-                styleObj: this.styleObj,
-              });
-            }
-          });
-          e.element.appendChild(validateButton);
-        }
-      });
-
-      // Bouton pour ouvrir la bibliothèque de symboles
-      this.addTitleButton({
-        title: this.labels.styleLibrary ?? 'Bibliothèque de styles',
-        icon: 'fromSymbolLib fr-icon-book-open-line',
-        haspopup: true,
-        onClick: (e) => {
-          const symbolLib = this.symbolLib || carte.getSymbolLib();
-          // Bouton de recherche
-          const searchBt = document.createElement('button');
-          searchBt.className = 'fr-btn fr-icon-search-line fr-btn fr-btn--tertiary-no-outline';
-          searchBt.title = searchBt.ariaLabel = this.labels.search ?? 'Rechercher';
-          e.element.appendChild(searchBt);
-          // input de recherche
-          const searchInput = document.createElement('input');
-          searchInput.type = 'text';
-          searchInput.className = 'fr-input fr-input-search';
-          searchInput.placeholder = this.labels.search ?? 'Rechercher';
-          searchInput.role = 'combobox';
-          searchInput.setAttribute('aria-label', this.labels.search ?? 'Rechercher');
-          searchInput.setAttribute('aria-expanded', 'true');
-          function getNextElementSibling(item, arrow) {
-            if (!item) {
-              let sibling = (arrow === 'ArrowUp' ? listItem.lastElementChild : listItem.firstElementChild);
-              if (!sibling) {
-                return null;
-              } else if (sibling.style.display !== 'none') {
-                return sibling;
-              } else {
-                return getNextElementSibling(sibling, arrow);
-              }
-            }
-            const fn = (arrow === 'ArrowUp' ? 'previousElementSibling' : 'nextElementSibling')
-            let sibling = item?.[fn] || null;
-            while (sibling && sibling.style.display == 'none') {
-              sibling = sibling?.[fn] || null;
-            }
-            return sibling;
-          }
-          searchInput.addEventListener('keydown', (ke) => {
-            if (/Arrow(Up|Down)/.test(ke.key)) {
-              ke.preventDefault();
-            }
-          });
-          searchInput.addEventListener('keyup', (ke) => {
-            switch (ke.key) {
-              case 'Escape': {
-                e.hide?.();
-                break;
-              }
-              case 'Enter': {
-                // Trigger search
-                listItem.querySelector('.selected')?.click();
-                searchInput.setAttribute('aria-activedescendant', '');
-                break;
-              }
-              case 'ArrowUp':
-              case 'ArrowDown': {
-                ke.preventDefault();
-                // Trigger previous item selection
-                const selectedItem = listItem.querySelector('.selected');
-                if (selectedItem) {
-                  selectedItem.classList.remove('selected');
-                }
-                const sibling = getNextElementSibling(selectedItem, ke.key)
-                if (sibling) {
-                  sibling.classList.add('selected');
-                  searchInput.setAttribute('aria-activedescendant', sibling.id);
-                }
-                break;
-              }
-              default: {
-                searchInput.setAttribute('aria-activedescendant', '');
-                const selectedItem = listItem.querySelector('.selected');
-                if (selectedItem) {
-                  selectedItem.classList.remove('selected');
-                }
-                const filter = new RegExp(searchInput.value, 'i');
-                Array.from(listItem.children).forEach(item => {
-                  const name = item.querySelector('span.fr-text').innerText.toLowerCase();
-                  item.style.display = filter.test(name) ? '' : 'none';
-                });
-                break;
-              }
-            } 
-          });
-          
-          e.element.appendChild(searchInput);
-          searchInput.focus();
-          // liste des symboles de la bibliothèque
-          const listItem = document.createElement('ul');
-          listItem.id = 'stylelib_list_' + getUid();
-          listItem.className = 'stylelib_list';
-          e.element.appendChild(listItem);
-          searchInput.setAttribute('aria-controls', listItem.id);
-          symbolLib.forEach(symbol => {
-            if (symbol.getType() !== this.getGeom('type')) return;
-            const listItemElement = document.createElement('li');
-            listItemElement.className = 'stylelib_item';
-            listItemElement.id = 'stylelib_item_' + getUid();
-            listItemElement.setAttribute('role', 'option');
-            listItem.appendChild(listItemElement);
-            // Image du symbole
-            listItemElement.appendChild(symbol.getImage());
-            // Nom du symbole
-            const nameElt = document.createElement('span');
-            nameElt.className = 'fr-text';
-            nameElt.innerText = symbol.get('name');
-            listItemElement.appendChild(nameElt);
-            // Selection du symbole
-            listItemElement.addEventListener('click', () => {
-              e.hide?.();
-              this.dispatchEvent({
-                type: "lib:getsymbol",
-                symbol: symbol,
-                styleObj: this.styleObj,
-              });
-            });
-          });
-        }
-      });
-    }
-
-    // Alerte pour le style au calque
-    const divAlert = document.createElement("div");
-    divAlert.className = "fr-alert fr-alert--warning fr-alert--small";
-    this.getContent().appendChild(divAlert);
-
-    // Ajoute les inputs personnalisés
-    this._addCustomInputs(options);
-
-    // Type du formulaire
-    this.setGeom(options.type);
-    this._initEvents(options);
-  }
-
-  /**
-   * Ajoute un titre dans le formulaire.
-   * @param {string} title 
-   */
-  setTitle(title) {
-    const titleElem = this.header.querySelector('.style-form-title span');
-    titleElem.innerText = title;
-  }
-
-  /**
-   * Définit le nom du style et son état par défaut.
-   * @param {string} name 
-   * @param {boolean} [disabled=false] 
-   */
-  setName(name, disabled = false) {
-    const nameInput = this.preview.querySelector(".style-name");
-    if (nameInput) {
-      nameInput.value = name || "";
-      nameInput.ariaDisabled = disabled;
-      nameInput.disabled = disabled;
-    }
-  }
-
-  /**
-   * Retourne le nom du style.
-   * @returns string
-   */
-  getName() {
-    const nameInput = this.preview.querySelector(".style-name");
-    return nameInput ? nameInput.value : "";
-  }
-
-  /**
-   * Ajoute un bouton dans le titre du formulaire.
-   * @param {*} options 
-   *  @param {string} options.title title of the button
-   *  @param {string} options.icon icon of the button
-   *  @param {boolean} options.haspopup whether the button has a popup
-   *  @param {function} options.onClick click handler for the button
-   * @returns 
-   */
-  addTitleButton(options) {
-    const btnContainer = this.header.querySelector('.style-btn-container');
-    if (!btnContainer) {
-      return;
-    }
-    const popupContainer = document.createElement('div');
-    popupContainer.className = 'style-popup';
-    btnContainer.appendChild(popupContainer);
-    // Création du bouton
-    const btn = document.createElement('button');
-    btn.className = (options.icon||'') + ' fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline';
-    btn.title = options.title;
-    btn.id = 'style-popup-btn-' + getUid();
-    popupContainer.appendChild(btn);
-    // Has popup
-    if (options.haspopup !== undefined) {
-      // Create popup
-      const popup = document.createElement('div');
-      popup.id = 'style-popup-' + getUid();
-      popup.className = 'style-popup-popup';
-      popup.dataset.visible = 'false';
-      popup.role = 'dialog';
-      // Set ARIA attributes for accessibility
-      btn.setAttribute('aria-haspopup', 'true');
-      btn.setAttribute('aria-pressed', false);
-      btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-controls', popup.id);
-
-      function hideonclick(event) {
-        if (event && event.target.closest 
-          && ( 
-            event.target.closest('.style-popup') === popupContainer
-            || event.target.closest('.style-popup-popup') === popup
-          )
-        ) {
-          return;
-        }
-        console.log("Hiding popup", event);
-        document.removeEventListener("click", hideonclick);
-        window.removeEventListener("resize", hideonclick);
-        btn.setAttribute('aria-pressed', false);
-        btn.setAttribute('aria-expanded', false);
-        popup.dataset.visible = 'false';
-      }
-      popupContainer.appendChild(popup);
-      // Title for the popup
-      const popupTitle = document.createElement('span');
-      popupTitle.className = (options.icon||'') + ' style-popup-title';
-      popupTitle.innerText = options.title;
-      popup.appendChild(popupTitle);
-      // container for the popup content
-      const popupContent = document.createElement('div');
-      popupContent.className = 'style-popup-content';
-      popup.appendChild(popupContent);
-      // Click on the button to toggle the popup
-      btn.addEventListener("click", (event) => {
-        popupContent.innerHTML = '';
-        // Pressed ?
-        const isPressed = btn.getAttribute('aria-pressed') === 'false';
-        btn.setAttribute('aria-pressed', isPressed);
-        btn.setAttribute('aria-expanded', isPressed);
-        popup.dataset.visible = 'true';
-        if (isPressed) {
-          // Do something on click (fill the popup)
-          if (typeof options.onClick === "function") {
-            options.onClick({
-              event: event,
-              isPressed: isPressed,
-              element: popupContent,
-              hide: hideonclick
-            });
-          }
-          // Place the popup on screen
-          document.addEventListener("click", hideonclick);
-          window.addEventListener("resize", hideonclick);
-          const rect = btn.getBoundingClientRect();
-          // const popupHeight = popup.offsetHeight;
-          popup.style.top = rect.top + "px";
-          const popupWidth = popup.offsetWidth;
-          if (rect.right + popup.offsetWidth > window.innerWidth) {
-            popup.style.left = (window.innerWidth - popupWidth) + "px";
-          } else {
-            popup.style.left = rect.right + "px";
-          }
-        } else {
-          hideonclick();
-        }
-      });
-    } else {
-      if (typeof options.onClick === "function") {
-        btn.addEventListener("click", (event) => {
-          options.onClick(event);
+        this.styleObj = new StyleObj({
+            flatStyle: this.flatStyle,
         });
-      }
-    }
-    return btn;
-  }
 
-  /** Get form footer
-   * @return {HTMLElement} Footer element
-   */
-  getFooter() {
-    return this.footer;
-  }
-
-  /** Get form header
-   * @return {HTMLElement} Header element
-   */
-  getHeader() {
-    return this.header;
-  }
-
-  setGeom(featureOrGeomName) {
-    super.setGeom(featureOrGeomName);
-
-    delete this.getContent().dataset.conditionStyle;
-
-    // Interdire le changement de style si le style est géré par la couche (style conditionnel, statistique, etc.)
-    if (featureOrGeomName) {
-      // Is feature ?
-      const feature = featureOrGeomName.length ? featureOrGeomName[0] : featureOrGeomName;
-      // Vérifie si le style est géré par la couche
-      if (feature && feature.getLayer) {
-        // Style conditionnel
-        if (feature.getLayer().getConditionStyle().length > 0) {
-          this.showError();
-        } else if (feature.getLayer().get("type") === "Statistique") {
-          // Style statistique
-          this.showError(true);
-          // TODO : bouton pour convertir un
-          //  couche statistique en couche simple
-        } else {
-          // TODO
+        // Restaure style
+        if (options.hasreset) {
+            this.addTitleButton({
+                title: this.labels.resetStyle ?? "Revenir au style par défaut",
+                icon: "fr-icon-arrow-go-back-line",
+                onClick: () => {
+                    this.dispatchEvent({ type: "reset" });
+                },
+            });
         }
-      } 
+        // TODO selection de style depuis la bibliothèque
+        // const onselect = (symbol) => {
+        //   const style = ignStyleToFlatStyle(symbol.getIgnStyle());
+        //   this.setFlatStyle(style);
+        //   this.styleObj.setFlatStyle(style);
+        //   this.dispatchEvent({
+        //     type: "style",
+        //     ignStyle: symbol.getIgnStyle(),
+        //     flatStyle: style,
+        //     typeGeom: symbol.getType()
+        //   });
+        //   this.updatePreview();
+        // }
+        if (!options.noSymbolLib) {
+            // Bouton pour ajouter le style actuel à la bibliothèque
+            this.addTitleButton({
+                title: this.labels.addToLibrary ?? "Ajouter à la bibliothèque",
+                icon: "addToSymbolLib fr-icon-add-line",
+                haspopup: true,
+                onClick: (e) => {
+                    const inputGroup = document.createElement("div");
+                    inputGroup.className = "fr-input-group";
+                    e.element.appendChild(inputGroup);
+
+                    const nameInput = document.createElement("input");
+                    nameInput.type = "text";
+                    nameInput.id = "style-name-input-" + getUid();
+                    nameInput.className = "fr-input";
+                    nameInput.addEventListener("keydown", (event) => {
+                        if (event.key === "Enter") {
+                            validateButton.click();
+                        }
+                        if (event.key === "Escape") {
+                            e.hide?.();
+                        }
+                    });
+
+                    const inputLabel = document.createElement("label");
+                    inputLabel.setAttribute("for", nameInput.id);
+                    inputLabel.className = "fr-label";
+                    inputLabel.innerText = this.labels.name ?? "Nom";
+                    inputGroup.appendChild(inputLabel);
+
+                    inputGroup.appendChild(nameInput);
+                    nameInput.focus();
+                    // Validation => send event
+                    const validateButton = document.createElement("button");
+                    validateButton.innerText = this.labels.save ?? "Enregistrer";
+                    validateButton.className = "fr-btn fr-btn-primary";
+                    validateButton.addEventListener("click", () => {
+                        if (nameInput.value) {
+                            e.hide?.();
+                            // Add the symbol to the library
+                            const currentSymbol = new SymbolLib({
+                                type: this.styleObj.get("type"),
+                                name: nameInput.value,
+                                style: flatToIgnStyle(this.styleObj.getFlatStyle()),
+                            });
+                            carte.getSymbolLib().push(currentSymbol);
+
+                            // Dispatch envent
+                            this.dispatchEvent({
+                                type: "lib:addsymbol",
+                                name: nameInput.value,
+                                styleObj: this.styleObj,
+                            });
+                        }
+                    });
+                    e.element.appendChild(validateButton);
+                },
+            });
+
+            // Bouton pour ouvrir la bibliothèque de symboles
+            this.addTitleButton({
+                title: this.labels.styleLibrary ?? "Bibliothèque de styles",
+                icon: "fromSymbolLib fr-icon-book-open-line",
+                haspopup: true,
+                onClick: (e) => {
+                    const symbolLib = this.symbolLib || carte.getSymbolLib();
+                    // Bouton de recherche
+                    const searchBt = document.createElement("button");
+                    searchBt.className = "fr-btn fr-icon-search-line fr-btn fr-btn--tertiary-no-outline";
+                    searchBt.title = searchBt.ariaLabel = this.labels.search ?? "Rechercher";
+                    e.element.appendChild(searchBt);
+                    // input de recherche
+                    const searchInput = document.createElement("input");
+                    searchInput.type = "text";
+                    searchInput.className = "fr-input fr-input-search";
+                    searchInput.placeholder = this.labels.search ?? "Rechercher";
+                    searchInput.role = "combobox";
+                    searchInput.setAttribute("aria-label", this.labels.search ?? "Rechercher");
+                    searchInput.setAttribute("aria-expanded", "true");
+                    function getNextElementSibling(item, arrow) {
+                        if (!item) {
+                            let sibling = arrow === "ArrowUp" ? listItem.lastElementChild : listItem.firstElementChild;
+                            if (!sibling) {
+                                return null;
+                            } else if (sibling.style.display !== "none") {
+                                return sibling;
+                            } else {
+                                return getNextElementSibling(sibling, arrow);
+                            }
+                        }
+                        const fn = arrow === "ArrowUp" ? "previousElementSibling" : "nextElementSibling";
+                        let sibling = item?.[fn] || null;
+                        while (sibling && sibling.style.display == "none") {
+                            sibling = sibling?.[fn] || null;
+                        }
+                        return sibling;
+                    }
+                    searchInput.addEventListener("keydown", (ke) => {
+                        if (/Arrow(Up|Down)/.test(ke.key)) {
+                            ke.preventDefault();
+                        }
+                    });
+                    searchInput.addEventListener("keyup", (ke) => {
+                        switch (ke.key) {
+                            case "Escape": {
+                                e.hide?.();
+                                break;
+                            }
+                            case "Enter": {
+                                // Trigger search
+                                listItem.querySelector(".selected")?.click();
+                                searchInput.setAttribute("aria-activedescendant", "");
+                                break;
+                            }
+                            case "ArrowUp":
+                            case "ArrowDown": {
+                                ke.preventDefault();
+                                // Trigger previous item selection
+                                const selectedItem = listItem.querySelector(".selected");
+                                if (selectedItem) {
+                                    selectedItem.classList.remove("selected");
+                                }
+                                const sibling = getNextElementSibling(selectedItem, ke.key);
+                                if (sibling) {
+                                    sibling.classList.add("selected");
+                                    searchInput.setAttribute("aria-activedescendant", sibling.id);
+                                }
+                                break;
+                            }
+                            default: {
+                                searchInput.setAttribute("aria-activedescendant", "");
+                                const selectedItem = listItem.querySelector(".selected");
+                                if (selectedItem) {
+                                    selectedItem.classList.remove("selected");
+                                }
+                                const filter = new RegExp(searchInput.value, "i");
+                                Array.from(listItem.children).forEach((item) => {
+                                    const name = item.querySelector("span.fr-text").innerText.toLowerCase();
+                                    item.style.display = filter.test(name) ? "" : "none";
+                                });
+                                break;
+                            }
+                        }
+                    });
+
+                    e.element.appendChild(searchInput);
+                    searchInput.focus();
+                    // liste des symboles de la bibliothèque
+                    const listItem = document.createElement("ul");
+                    listItem.id = "stylelib_list_" + getUid();
+                    listItem.className = "stylelib_list";
+                    e.element.appendChild(listItem);
+                    searchInput.setAttribute("aria-controls", listItem.id);
+                    symbolLib.forEach((symbol) => {
+                        if (symbol.getType() !== this.getGeom("type")) return;
+                        const listItemElement = document.createElement("li");
+                        listItemElement.className = "stylelib_item";
+                        listItemElement.id = "stylelib_item_" + getUid();
+                        listItemElement.setAttribute("role", "option");
+                        listItem.appendChild(listItemElement);
+                        // Image du symbole
+                        listItemElement.appendChild(symbol.getImage());
+                        // Nom du symbole
+                        const nameElt = document.createElement("span");
+                        nameElt.className = "fr-text";
+                        nameElt.innerText = symbol.get("name");
+                        listItemElement.appendChild(nameElt);
+                        // Selection du symbole
+                        listItemElement.addEventListener("click", () => {
+                            e.hide?.();
+                            this.dispatchEvent({
+                                type: "lib:getsymbol",
+                                symbol: symbol,
+                                styleObj: this.styleObj,
+                            });
+                        });
+                    });
+                },
+            });
+        }
+
+        // Alerte pour le style au calque
+        const divAlert = document.createElement("div");
+        divAlert.className = "fr-alert fr-alert--warning fr-alert--small";
+        this.getContent().appendChild(divAlert);
+
+        // Ajoute les inputs personnalisés
+        this._addCustomInputs(options);
+
+        // Type du formulaire
+        this.setGeom(options.type);
+        this._initEvents(options);
     }
-  }
 
-  /** Show error message
-   * @param {boolean} [statistic = false] true if it's a statistic style. Default: false.
-   */
-  showError(statistic = false) {
-    this.getContent().dataset.conditionStyle = '';
-    const alert = this.getContent().querySelector(".style-form-container .fr-alert");
-    const message = document.createElement('p');
-    const styleType = statistic
-      ? this.labels.statistical ?? 'statistique'
-      : this.labels.conditional ?? 'conditionnel';
-    message.textContent = (this.labels.styleNotIndividuallyEditable
-      ?? `Un style {{type}} est défini sur cette couche. Le style des objets de la couche ne peut pas être modifié individuellement.`)
-      .replace('{{type}}', styleType);
-    alert.replaceChildren(message);
-  }
-
-  /**
-   * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
-   */
-  _initialize(options) {
-    super._initialize(options);
-    this.labels = options.labels ?? {};
-
-    options.preview ??= false;
-    this.set("showPreview", options.preview);
-    options.selectGeomType ??= false;
-    this.set("showSelectGeomType", options.selectGeomType);
-  }
-
-  /**
-   * Méthode permettant d'ajouter des inputs directement dans une classe
-   * étendue.
-   * @abstract
-   * @protected
-   */
-  _addCustomInputs() {
-
-  }
-
-  /**
-   * Gère le lien entre le formulaire de style et l'objet styleObj
-   * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
-   */
-  _initEvents(options) {
-    super._initEvents(options);
-
-    this.on("style", (e) => {
-      this.styleObj.setFlatStyleProperty(e.property, e.value);
-      // this.updatePreview();
-    })
-
-    this.styleObj.on("change:image", (e) => {
-      const image = e.target.get(e.key);
-      this.preview.querySelector('canvas').replaceWith(image);
-    })
-  }
-
-  /**
-   * @returns {StyleObj}
-   */
-  get styleObj() {
-    return this.get("styleObj");
-  }
-
-  /**
-   * @param {StyleObj} styleObj Objet styleObj
-   */
-  set styleObj(styleObj) {
-    if (!(styleObj instanceof StyleObj)) {
-      throw new SyntaxError("styleObj doit être de type StyleObj.")
+    /**
+     * Ajoute un titre dans le formulaire.
+     * @param {string} title
+     */
+    setTitle(title) {
+        const titleElem = this.header.querySelector(".style-form-title span");
+        titleElem.innerText = title;
     }
-    styleObj.small = false;
-    this.set("styleObj", styleObj);
-    this.setFlatStyle(styleObj.getFlatStyle());
-    styleObj.get("type") && this.setGeom(styleObj.get("type"));
-  }
 
-  /**
-   * Met à jour la preview
-   */
-  updatePreview() {
-    if (this.isPreviewShown()) {
-      // Met à jour la preview
-      const image = this.styleObj?.getImage({ small: false });
-      this.preview.querySelector('canvas').replaceWith(image);
+    /**
+     * Définit le nom du style et son état par défaut.
+     * @param {string} name
+     * @param {boolean} [disabled=false]
+     */
+    setName(name, disabled = false) {
+        const nameInput = this.preview.querySelector(".style-name");
+        if (nameInput) {
+            nameInput.value = name || "";
+            nameInput.ariaDisabled = disabled;
+            nameInput.disabled = disabled;
+        }
     }
-  }
 
-  /**
-   * @param {Object} flatStyle - Le style flat utilisé pour initialiser les inputs
-   * @override
-   */
-  setFlatStyle(flatStyle) {
-    super.setFlatStyle(flatStyle);
-
-    const styleo = this.styleObj.get('flatStyle')
-    Object.keys(styleo).forEach(key => {
-      styleo[key] = flatStyle[key];
-    });
-    
-    if (this.isPreviewShown()) {
-      // Modifie le styleObj
-      this.styleObj.setFlatStyle(flatStyle, true);
-      this.updatePreview();
+    /**
+     * Retourne le nom du style.
+     * @returns string
+     */
+    getName() {
+        const nameInput = this.preview.querySelector(".style-name");
+        return nameInput ? nameInput.value : "";
     }
-  }
 
-  /**
-   * Contrôle l'affichage du sélecteur de géométrie.
-   * Pour savoir s'il est affiché, il est possible d'appeler la méthode {@link ExtendedFlatStyleForm.isSelectGeomTypeShown `isSelectGeomTypeShown`}.
-   * @param {Boolean} [show = false] Si vrai, affiche le sélecteur. 
-   */
-  showSelectGeomType(show = false) {
-    this.set("showSelectGeomType", show);
-    this.selectGeomType.classList.toggle("fr-hidden", !show)
-  }
+    /**
+     * Ajoute un bouton dans le titre du formulaire.
+     * @param {*} options
+     *  @param {string} options.title title of the button
+     *  @param {string} options.icon icon of the button
+     *  @param {boolean} options.haspopup whether the button has a popup
+     *  @param {function} options.onClick click handler for the button
+     * @returns
+     */
+    addTitleButton(options) {
+        const btnContainer = this.header.querySelector(".style-btn-container");
+        if (!btnContainer) {
+            return;
+        }
+        const popupContainer = document.createElement("div");
+        popupContainer.className = "style-popup";
+        btnContainer.appendChild(popupContainer);
+        // Création du bouton
+        const btn = document.createElement("button");
+        btn.className = (options.icon || "") + " fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline";
+        btn.title = options.title;
+        btn.id = "style-popup-btn-" + getUid();
+        popupContainer.appendChild(btn);
+        // Has popup
+        if (options.haspopup !== undefined) {
+            // Create popup
+            const popup = document.createElement("div");
+            popup.id = "style-popup-" + getUid();
+            popup.className = "style-popup-popup";
+            popup.dataset.visible = "false";
+            popup.role = "dialog";
+            // Set ARIA attributes for accessibility
+            btn.setAttribute("aria-haspopup", "true");
+            btn.setAttribute("aria-pressed", false);
+            btn.setAttribute("aria-expanded", "false");
+            btn.setAttribute("aria-controls", popup.id);
 
-  /**
-   * Indique si la sélection de géométrie est visible
-   * @returns {Boolean} Vrai si la sélection de géométrie est visible
-   */
-  isSelectGeomTypeShown() {
-    return this.get("showSelectGeomType");
-  }
-
-  /**
-   * Contrôle l'affichage de la preview.
-   * Pour savoir si elle est affichée, il est possible d'appeler la méthode {@link ExtendedFlatStyleForm.isPreviewShown `isPreviewShown`}.
-   * @param {Boolean} [show = false] Si vrai, affiche la preview. 
-   */
-  showPreview(show = false) {
-    this.set("showPreview", show);
-    if (show) {
-      this.getElement().parentElement.dataset.hasPreview = '';
-    } else {
-      delete this.getElement().parentElement.dataset.hasPreview;
+            function hideonclick(event) {
+                if (
+                    event &&
+                    event.target.closest &&
+                    (event.target.closest(".style-popup") === popupContainer || event.target.closest(".style-popup-popup") === popup)
+                ) {
+                    return;
+                }
+                console.log("Hiding popup", event);
+                document.removeEventListener("click", hideonclick);
+                window.removeEventListener("resize", hideonclick);
+                btn.setAttribute("aria-pressed", false);
+                btn.setAttribute("aria-expanded", false);
+                popup.dataset.visible = "false";
+            }
+            popupContainer.appendChild(popup);
+            // Title for the popup
+            const popupTitle = document.createElement("span");
+            popupTitle.className = (options.icon || "") + " style-popup-title";
+            popupTitle.innerText = options.title;
+            popup.appendChild(popupTitle);
+            // container for the popup content
+            const popupContent = document.createElement("div");
+            popupContent.className = "style-popup-content";
+            popup.appendChild(popupContent);
+            // Click on the button to toggle the popup
+            btn.addEventListener("click", (event) => {
+                popupContent.innerHTML = "";
+                // Pressed ?
+                const isPressed = btn.getAttribute("aria-pressed") === "false";
+                btn.setAttribute("aria-pressed", isPressed);
+                btn.setAttribute("aria-expanded", isPressed);
+                popup.dataset.visible = "true";
+                if (isPressed) {
+                    // Do something on click (fill the popup)
+                    if (typeof options.onClick === "function") {
+                        options.onClick({
+                            event: event,
+                            isPressed: isPressed,
+                            element: popupContent,
+                            hide: hideonclick,
+                        });
+                    }
+                    // Place the popup on screen
+                    document.addEventListener("click", hideonclick);
+                    window.addEventListener("resize", hideonclick);
+                    const rect = btn.getBoundingClientRect();
+                    // const popupHeight = popup.offsetHeight;
+                    popup.style.top = rect.top + "px";
+                    const popupWidth = popup.offsetWidth;
+                    if (rect.right + popup.offsetWidth > window.innerWidth) {
+                        popup.style.left = window.innerWidth - popupWidth + "px";
+                    } else {
+                        popup.style.left = rect.right + "px";
+                    }
+                } else {
+                    hideonclick();
+                }
+            });
+        } else {
+            if (typeof options.onClick === "function") {
+                btn.addEventListener("click", (event) => {
+                    options.onClick(event);
+                });
+            }
+        }
+        return btn;
     }
-  }
 
-  /**
-   * Indique si la preview est visible
-   * @returns {Boolean} Vrai si la preview est visible
-   */
-  isPreviewShown() {
-    return this.get("showPreview");
-  }
+    /** Get form footer
+     * @return {HTMLElement} Footer element
+     */
+    getFooter() {
+        return this.footer;
+    }
 
-  /**
-   * Récupère le style flat du formulaire
-   * @returns {Object} Objet représentant le flat style
-   */
-  getFormFlatStyle() {
-    return this.styleObj.getFlatStyle();
-  }
+    /** Get form header
+     * @return {HTMLElement} Header element
+     */
+    getHeader() {
+        return this.header;
+    }
 
-  /**
-   * Ajoute un sélecteur de géométrie au formulaire de style.
-   * @param {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} type Géométrie à sélectionner.
-   * Par défaut, n'en sélectionne pas.
-   * @returns {HTMLElement} Élément HTML à ajouter
-   */
-  _addSelectGeomType(type) {
-    const selectGroup = this.selectGeomType = document.createElement("fieldset");
-    selectGroup.className = "style-form__select-geom fr-fieldset";
+    setGeom(featureOrGeomName) {
+        super.setGeom(featureOrGeomName);
 
-    const label = document.createElement("legend");
-    label.className = "fr-hint-text fr-fieldset__legend--regular fr-fieldset__legend";
-    label.textContent = this.labels.symbolization ?? "Symbolisation";
-    selectGroup.append(label);
+        delete this.getContent().dataset.conditionStyle;
 
+        // Interdire le changement de style si le style est géré par la couche (style conditionnel, statistique, etc.)
+        if (featureOrGeomName) {
+            // Is feature ?
+            const feature = featureOrGeomName.length ? featureOrGeomName[0] : featureOrGeomName;
+            // Vérifie si le style est géré par la couche
+            if (feature && feature.getLayer) {
+                // Style conditionnel
+                if (feature.getLayer().getConditionStyle().length > 0) {
+                    this.showError();
+                } else if (feature.getLayer().get("type") === "Statistique") {
+                    // Style statistique
+                    this.showError(true);
+                    // TODO : bouton pour convertir un
+                    //  couche statistique en couche simple
+                } else {
+                    // TODO
+                }
+            }
+        }
+    }
 
-/*    
+    /** Show error message
+     * @param {boolean} [statistic = false] true if it's a statistic style. Default: false.
+     */
+    showError(statistic = false) {
+        this.getContent().dataset.conditionStyle = "";
+        const alert = this.getContent().querySelector(".style-form-container .fr-alert");
+        const message = document.createElement("p");
+        const styleType = statistic ? (this.labels.statistical ?? "statistique") : (this.labels.conditional ?? "conditionnel");
+        message.textContent = (
+            this.labels.styleNotIndividuallyEditable ??
+            `Un style {{type}} est défini sur cette couche. Le style des objets de la couche ne peut pas être modifié individuellement.`
+        ).replace("{{type}}", styleType);
+        alert.replaceChildren(message);
+    }
+
+    /**
+     * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
+     */
+    _initialize(options) {
+        super._initialize(options);
+        this.labels = options.labels ?? {};
+
+        options.preview ??= false;
+        this.set("showPreview", options.preview);
+        options.selectGeomType ??= false;
+        this.set("showSelectGeomType", options.selectGeomType);
+    }
+
+    /**
+     * Méthode permettant d'ajouter des inputs directement dans une classe
+     * étendue.
+     * @abstract
+     * @protected
+     */
+    _addCustomInputs() {}
+
+    /**
+     * Gère le lien entre le formulaire de style et l'objet styleObj
+     * @param {ExtendedFlatStyleFormOptions} options Options du constructeur
+     */
+    _initEvents(options) {
+        super._initEvents(options);
+
+        this.on("style", (e) => {
+            this.styleObj.setFlatStyleProperty(e.property, e.value);
+            // this.updatePreview();
+        });
+
+        this.styleObj.on("change:image", (e) => {
+            const image = e.target.get(e.key);
+            this.preview.querySelector("canvas").replaceWith(image);
+        });
+    }
+
+    /**
+     * @returns {StyleObj}
+     */
+    get styleObj() {
+        return this.get("styleObj");
+    }
+
+    /**
+     * @param {StyleObj} styleObj Objet styleObj
+     */
+    set styleObj(styleObj) {
+        if (!(styleObj instanceof StyleObj)) {
+            throw new SyntaxError("styleObj doit être de type StyleObj.");
+        }
+        styleObj.small = false;
+        this.set("styleObj", styleObj);
+        this.setFlatStyle(styleObj.getFlatStyle());
+        styleObj.get("type") && this.setGeom(styleObj.get("type"));
+    }
+
+    /**
+     * Met à jour la preview
+     */
+    updatePreview() {
+        if (this.isPreviewShown()) {
+            // Met à jour la preview
+            const image = this.styleObj?.getImage({ small: false });
+            this.preview.querySelector("canvas").replaceWith(image);
+        }
+    }
+
+    /**
+     * @param {Object} flatStyle - Le style flat utilisé pour initialiser les inputs
+     * @override
+     */
+    setFlatStyle(flatStyle) {
+        super.setFlatStyle(flatStyle);
+
+        const styleo = this.styleObj.get("flatStyle");
+        Object.keys(styleo).forEach((key) => {
+            styleo[key] = flatStyle[key];
+        });
+
+        if (this.isPreviewShown()) {
+            // Modifie le styleObj
+            this.styleObj.setFlatStyle(flatStyle, true);
+            this.updatePreview();
+        }
+    }
+
+    /**
+     * Contrôle l'affichage du sélecteur de géométrie.
+     * Pour savoir s'il est affiché, il est possible d'appeler la méthode {@link ExtendedFlatStyleForm.isSelectGeomTypeShown `isSelectGeomTypeShown`}.
+     * @param {Boolean} [show = false] Si vrai, affiche le sélecteur.
+     */
+    showSelectGeomType(show = false) {
+        this.set("showSelectGeomType", show);
+        this.selectGeomType.classList.toggle("fr-hidden", !show);
+    }
+
+    /**
+     * Indique si la sélection de géométrie est visible
+     * @returns {Boolean} Vrai si la sélection de géométrie est visible
+     */
+    isSelectGeomTypeShown() {
+        return this.get("showSelectGeomType");
+    }
+
+    /**
+     * Contrôle l'affichage de la preview.
+     * Pour savoir si elle est affichée, il est possible d'appeler la méthode {@link ExtendedFlatStyleForm.isPreviewShown `isPreviewShown`}.
+     * @param {Boolean} [show = false] Si vrai, affiche la preview.
+     */
+    showPreview(show = false) {
+        this.set("showPreview", show);
+        if (show) {
+            this.getElement().parentElement.dataset.hasPreview = "";
+        } else {
+            delete this.getElement().parentElement.dataset.hasPreview;
+        }
+    }
+
+    /**
+     * Indique si la preview est visible
+     * @returns {Boolean} Vrai si la preview est visible
+     */
+    isPreviewShown() {
+        return this.get("showPreview");
+    }
+
+    /**
+     * Récupère le style flat du formulaire
+     * @returns {Object} Objet représentant le flat style
+     */
+    getFormFlatStyle() {
+        return this.styleObj.getFlatStyle();
+    }
+
+    /**
+     * Ajoute un sélecteur de géométrie au formulaire de style.
+     * @param {import('geopf-extensions-openlayers/src/packages/Controls/StyleDialog/FlatStyleForm.js').GeomType} type Géométrie à sélectionner.
+     * Par défaut, n'en sélectionne pas.
+     * @returns {HTMLElement} Élément HTML à ajouter
+     */
+    _addSelectGeomType(type) {
+        const selectGroup = (this.selectGeomType = document.createElement("fieldset"));
+        selectGroup.className = "style-form__select-geom fr-fieldset";
+
+        const label = document.createElement("legend");
+        label.className = "fr-hint-text fr-fieldset__legend--regular fr-fieldset__legend";
+        label.textContent = this.labels.symbolization ?? "Symbolisation";
+        selectGroup.append(label);
+
+        /*    
     const select = document.createElement("select");
     select.className = "fr-select";
     select.id = "select-geom-type";
     select.name = "select-geom-type";
 */
-    // Transforme le type en option valable
-    let mappedType;
-    switch (type) {
-      case 'Point':
-      case 'MultiPoint':
-        mappedType = 'Point';
-        break;
-      case 'LineString':
-      case 'MultiLineString':
-        mappedType = 'LineString';
-        break;
-      case 'Polygon':
-      case 'MultiPolygon':
-        mappedType = 'Polygon';
-        break;
-      default:
-        mappedType = '';
-        break;
-    }
+        // Transforme le type en option valable
+        let mappedType;
+        switch (type) {
+            case "Point":
+            case "MultiPoint":
+                mappedType = "Point";
+                break;
+            case "LineString":
+            case "MultiLineString":
+                mappedType = "LineString";
+                break;
+            case "Polygon":
+            case "MultiPolygon":
+                mappedType = "Polygon";
+                break;
+            default:
+                mappedType = "";
+                break;
+        }
 
-    const geomTypes = [
-      { value: "Point", text: this.labels.point ?? "Point", icon: "fr-icon-map-pin-2-line" },
-      { value: "LineString", text: this.labels.line ?? "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
-      { value: "Polygon", text: this.labels.polygon ?? "Surface", icon: "fr-icon-ign-shape-3-fill" },
-    ];
+        const geomTypes = [
+            { value: "Point", text: this.labels.point ?? "Point", icon: "fr-icon-map-pin-2-line" },
+            { value: "LineString", text: this.labels.line ?? "Ligne", icon: "fr-icon-ign-dessiner-trace-line" },
+            { value: "Polygon", text: this.labels.polygon ?? "Surface", icon: "fr-icon-ign-shape-3-fill" },
+        ];
 
-    const radioName = "geom-type-" + getUid();
-    geomTypes.forEach((geom, i) => {
-      const fieldElt = document.createElement("div")
-      fieldElt.className = "fr-fieldset__element";
-      selectGroup.appendChild(fieldElt);
+        const radioName = "geom-type-" + getUid();
+        geomTypes.forEach((geom, i) => {
+            const fieldElt = document.createElement("div");
+            fieldElt.className = "fr-fieldset__element";
+            selectGroup.appendChild(fieldElt);
 
-      const radio = document.createElement("div");
-      radio.className = "fr-radio-group";
-      fieldElt.appendChild(radio);
-      // radio
-      const option = document.createElement("input");
-      option.type = "radio";
-      option.name = radioName;
-      option.id = option.name + i;
-      option.value = geom.value;
-      if ((mappedType || "Point") === geom.value) {
-        option.checked = true;
-      }
-      radio.appendChild(option);
-      radio.addEventListener("change", evt => {
-        this.setGeom(evt.target.value);
-        this.updatePreview();
-      });
-      // label
-      const label = document.createElement("label");
-      label.className = "fr-label " + geom.icon;
-      label.htmlFor = option.id;
-      label.textContent = geom.text;
-      radio.appendChild(label);
-    });
-/*
+            const radio = document.createElement("div");
+            radio.className = "fr-radio-group";
+            fieldElt.appendChild(radio);
+            // radio
+            const option = document.createElement("input");
+            option.type = "radio";
+            option.name = radioName;
+            option.id = option.name + i;
+            option.value = geom.value;
+            if ((mappedType || "Point") === geom.value) {
+                option.checked = true;
+            }
+            radio.appendChild(option);
+            radio.addEventListener("change", (evt) => {
+                this.setGeom(evt.target.value);
+                this.updatePreview();
+            });
+            // label
+            const label = document.createElement("label");
+            label.className = "fr-label " + geom.icon;
+            label.htmlFor = option.id;
+            label.textContent = geom.text;
+            radio.appendChild(label);
+        });
+        /*
     select.addEventListener("change", evt => {
       this.setGeom(evt.target.value);
       this.updatePreview();
     });
 */
-    return selectGroup
-  }
-
-  /**
-   * Ajoute une preview au formulaire de style
-   * @returns {HTMLElement} Élément HTML à ajouter
-   */
-  _addPreview() {
-    const preview = document.createElement("div");
-    preview.className = "style-form__preview";
-
-    const label = document.createElement("label");
-    label.className = "fr-label";
-    label.textContent = this.labels.previewTitle ?? "Prévisualisation";
-    preview.appendChild(label);
-
-    let image = document.createElement("canvas");
-    if ((this.styleObj instanceof StyleObj)) {
-      image = this.styleObj.getImage({ small: false });
-    } else {
-      image.width = 72;
-      image.height = 72;
+        return selectGroup;
     }
 
-    const imageContainer = document.createElement('div');
-    imageContainer.className = "style-image-container";
-    imageContainer.appendChild(image)
-    preview.appendChild(imageContainer);
+    /**
+     * Ajoute une preview au formulaire de style
+     * @returns {HTMLElement} Élément HTML à ajouter
+     */
+    _addPreview() {
+        const preview = document.createElement("div");
+        preview.className = "style-form__preview";
 
-    const inputGroup = document.createElement('div');
-    inputGroup.className = "style-input-group";
-    preview.appendChild(inputGroup);
+        const label = document.createElement("label");
+        label.className = "fr-label";
+        label.textContent = this.labels.previewTitle ?? "Prévisualisation";
+        preview.appendChild(label);
 
-    const ilabel = document.createElement("label");
-    ilabel.className = "fr-label";
-    ilabel.textContent = this.labels.name ?? "Nom";
-    inputGroup.appendChild(ilabel);
+        let image = document.createElement("canvas");
+        if (this.styleObj instanceof StyleObj) {
+            image = this.styleObj.getImage({ small: false });
+        } else {
+            image.width = 72;
+            image.height = 72;
+        }
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.id = "style-input-name-" + getUid();
-    input.className = "fr-input style-name";
-    inputGroup.appendChild(input);
+        const imageContainer = document.createElement("div");
+        imageContainer.className = "style-image-container";
+        imageContainer.appendChild(image);
+        preview.appendChild(imageContainer);
 
-    return preview;
-  }
+        const inputGroup = document.createElement("div");
+        inputGroup.className = "style-input-group";
+        preview.appendChild(inputGroup);
+
+        const ilabel = document.createElement("label");
+        ilabel.className = "fr-label";
+        ilabel.textContent = this.labels.name ?? "Nom";
+        inputGroup.appendChild(ilabel);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = "style-input-name-" + getUid();
+        input.className = "fr-input style-name";
+        inputGroup.appendChild(input);
+
+        return preview;
+    }
 }
 
 export default ExtendedFlatStyleForm;

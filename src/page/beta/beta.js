@@ -3,32 +3,30 @@ import Beta from "../../control/Beta/Beta.js";
 import charte from "../../charte/charte.js";
 import Charte from "../../charte/objects/Charte.js";
 import "./beta.scss";
-import i18next from '../../i18n/index';
-
+import i18next from "../../i18n/index";
 
 // Deux badges pour éviter qu'ils changent de place
 const betaMap = new Beta({
-  className : "beta-map",
-  label: i18next.t('pages:beta.label')
+    className: "beta-map",
+    label: i18next.t("pages:beta.label"),
 });
 
 const betaLayout = new Beta({
-  label: i18next.t('pages:beta.label'),
-  target: document.body.querySelector("main"),
+    label: i18next.t("pages:beta.label"),
+    target: document.body.querySelector("main"),
 });
 
-
 charte.on("change:mode", (e) => {
-  if (e.target.get(e.key) === Charte.modes.STORYMAP) {
-    carte.removeControl('betaMap');
-    carte.addControl('betaLayout', betaLayout);
-  } else {
-    // setTimeout pour empêcher d'avoir le badge qui bouge
-    setTimeout(() => {
-      carte.removeControl('betaLayout');
-      carte.addControl('betaMap', betaMap);
-    }, 300);
-  }
-})
+    if (e.target.get(e.key) === Charte.modes.STORYMAP) {
+        carte.removeControl("betaMap");
+        carte.addControl("betaLayout", betaLayout);
+    } else {
+        // setTimeout pour empêcher d'avoir le badge qui bouge
+        setTimeout(() => {
+            carte.removeControl("betaLayout");
+            carte.addControl("betaMap", betaMap);
+        }, 300);
+    }
+});
 
-carte.addControl('betaMap', betaMap);
+carte.addControl("betaMap", betaMap);

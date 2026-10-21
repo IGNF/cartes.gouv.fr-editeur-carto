@@ -10,8 +10,8 @@
  * Theme
  */
 export interface Theme {
-  /** Id du thème */
-  id?: number;
-  /** Nom complet du thème */
-  name?: string;
+    /** Id du thème */
+    id?: number;
+    /** Nom complet du thème */
+    name?: string;
 }

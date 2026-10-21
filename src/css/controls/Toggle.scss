@@ -1,25 +1,22 @@
-@use '../mixins.scss' as mix;
+@use "../mixins.scss" as mix;
 
 .ol-toggle.ol-button.ol-control.ol-active > button {
-  // Surcharge couleurs ol-ext
-  --hover: var(--background-open-blue-france-hover);
-  --active: var(--background-open-blue-france-active);
+    // Surcharge couleurs ol-ext
+    --hover: var(--background-open-blue-france-hover);
+    --active: var(--background-open-blue-france-active);
 
-  @include mix.button-state(
-    $text-color: var(--text-action-high-blue-france),
-    $background: var(--background-open-blue-france)
-  );
+    @include mix.button-state($text-color: var(--text-action-high-blue-france), $background: var(--background-open-blue-france));
 }
 
 .ol-control.ol-button.dsfr-btn {
-  .fr-btn {
-    align-items: center;
-    display: inline-flex;
-    flex-direction: row;
-    padding: 0.5rem 1rem;
-  }
+    .fr-btn {
+        align-items: center;
+        display: inline-flex;
+        flex-direction: row;
+        padding: 0.5rem 1rem;
+    }
 
-  button {
-    border-radius: 0;
-  }
+    button {
+        border-radius: 0;
+    }
 }

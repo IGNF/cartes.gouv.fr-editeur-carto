@@ -7,21 +7,21 @@
  */
 
 export type PostOrganizationBody = {
-  /** Nom de l'organisation (obligatoire) */
-  name: string;
-  /**
-   * Présentation de l'organisation
-   * @nullable
-   */
-  presentation?: string | null;
-  /**
-   * Image / logo de l'organisation
-   * @nullable
-   */
-  profile_picture?: string | null;
-  /**
-   * Image de couverture
-   * @nullable
-   */
-  cover_picture?: string | null;
+    /** Nom de l'organisation (obligatoire) */
+    name: string;
+    /**
+     * Présentation de l'organisation
+     * @nullable
+     */
+    presentation?: string | null;
+    /**
+     * Image / logo de l'organisation
+     * @nullable
+     */
+    profile_picture?: string | null;
+    /**
+     * Image de couverture
+     * @nullable
+     */
+    cover_picture?: string | null;
 };

@@ -2,155 +2,154 @@
  * @file Dialogue de style utilisé notamment par le contrôle de dessin
  */
 
-import labelForm from './labelForm.js';
-import styleForm from './styleForm.js';
-import PopupForm from './popupForm.js';
+import labelForm from "./labelForm.js";
+import styleForm from "./styleForm.js";
+import PopupForm from "./popupForm.js";
 import { carte } from "../../story.js";
-import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle } from './styleToFlatStyle.js';
-import { updateCurrentStyle } from '../../mcutils/currentStyle.js';
-import StyleDialog from 'geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js';
+import { flatToIGNKeyValue, styleToFlatStyle, flatToIgnKey, ignStyleToFlatStyle } from "./styleToFlatStyle.js";
+import { updateCurrentStyle } from "../../mcutils/currentStyle.js";
+import StyleDialog from "geopf-extensions-openlayers/src/packages/Controls/StyleDialog/StyleDialog.js";
 import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
-import charte from '../../charte/charte.js';
-import i18next from '../../i18n/index';
-import { getControlLabels } from '@/i18n/controlLabels.js';
+import charte from "../../charte/charte.js";
+import i18next from "../../i18n/index";
+import { getControlLabels } from "@/i18n/controlLabels.js";
 
 const forms = [styleForm, labelForm];
 const popupForm = new PopupForm({ carte: carte, labels: getControlLabels() });
 
 // Initialise les formulaires
 const initForm = () => {
-  const feature = carte.getSelect().getFeatures().item(0);
-  // Attendre que la feature soit prête pour récupérer son style
-  setTimeout(() => {
-    const flatStyle = styleToFlatStyle(feature);
-    forms.forEach(form => {
-      form.setFlatStyle(flatStyle);
+    const feature = carte.getSelect().getFeatures().item(0);
+    // Attendre que la feature soit prête pour récupérer son style
+    setTimeout(() => {
+        const flatStyle = styleToFlatStyle(feature);
+        forms.forEach((form) => {
+            form.setFlatStyle(flatStyle);
+        });
+        popupForm.setFeature(feature);
     });
-    popupForm.setFeature(feature);
-  });
-}
+};
 
 // Création du Dialog avec navigation tertiaire
 const styleDialog = new StyleDialog({
-  id: "style-dialog",
-  title: i18next.t('controls:ui.dialog'),
-  position: "left",
-  select: carte.getSelect(),
-  onOpen: function () {
-    if (charte.getMode() !== "editor") {
-      // Empêche la modale de s'ouvrir si on n'est pas en mode édition
-      this.close();
-      return;
-    }
-    initForm();
-  },
-  onClose: () => {
-    // Déselectionne la sélection courante
-    const features = [...carte.getSelect().getFeatures().getArray()]
-    carte.getSelect().getFeatures().clear();
-    carte.getSelect().dispatchEvent(new SelectEvent("select", [], [features], undefined));
-  },
-  forms: [
-    {
-      form: styleForm,
-      label: i18next.t('controls:ui.style'),
-      title: i18next.t('controls:ui.styleConfiguration')
-
+    id: "style-dialog",
+    title: i18next.t("controls:ui.dialog"),
+    position: "left",
+    select: carte.getSelect(),
+    onOpen: function () {
+        if (charte.getMode() !== "editor") {
+            // Empêche la modale de s'ouvrir si on n'est pas en mode édition
+            this.close();
+            return;
+        }
+        initForm();
     },
-    /*
+    onClose: () => {
+        // Déselectionne la sélection courante
+        const features = [...carte.getSelect().getFeatures().getArray()];
+        carte.getSelect().getFeatures().clear();
+        carte.getSelect().dispatchEvent(new SelectEvent("select", [], [features], undefined));
+    },
+    forms: [
+        {
+            form: styleForm,
+            label: i18next.t("controls:ui.style"),
+            title: i18next.t("controls:ui.styleConfiguration"),
+        },
+        /*
     {
       form: labelForm,
       label: i18next.t('controls:ui.text'),
       title: "Configuration du texte"
     },
     */
-    {
-      form: popupForm,
-      label: i18next.t('controls:ui.popup'),
-      title: i18next.t('controls:ui.popupConfiguration')
-    }
-  ],
-  labelTabNav: i18next.t('controls:ui.configuration'),
+        {
+            form: popupForm,
+            label: i18next.t("controls:ui.popup"),
+            title: i18next.t("controls:ui.popupConfiguration"),
+        },
+    ],
+    labelTabNav: i18next.t("controls:ui.configuration"),
 });
 
 // Écouteurs d'événements "style" pour chaque formulaire
-styleDialog.getForms().forEach(form => {
-  form.on("reset", () => {
-    // Réinitialise le style par défaut
-    const features = carte.getSelect().getFeatures();
-    const keys = [];
-    Object.keys(form.inputs).forEach(k => {
-      if (k==="fill-pattern-config") {
-        keys.push("fillPattern");
-        keys.push("anglePattern");
-        keys.push("spacingPattern");
-      } else {
-        keys.push(flatToIgnKey(k));
-      }
+styleDialog.getForms().forEach((form) => {
+    form.on("reset", () => {
+        // Réinitialise le style par défaut
+        const features = carte.getSelect().getFeatures();
+        const keys = [];
+        Object.keys(form.inputs).forEach((k) => {
+            if (k === "fill-pattern-config") {
+                keys.push("fillPattern");
+                keys.push("anglePattern");
+                keys.push("spacingPattern");
+            } else {
+                keys.push(flatToIgnKey(k));
+            }
+        });
+        const layers = {};
+        features.forEach((f) => {
+            const style = f.getIgnStyle();
+            keys.forEach((key) => delete style[key]);
+            f.setIgnStyle(style);
+            layers[f.getLayer()?.get("id")] = f.getLayer();
+        });
+        // Update layers
+        Object.values(layers).forEach((layer) => layer.getSource().changed());
+        // Update style & form
+        updateCurrentStyle(features.item(0));
+        initForm();
     });
-    const layers = {};
-    features.forEach(f => {
-      const style = f.getIgnStyle();
-      keys.forEach(key => delete style[key]);
-      f.setIgnStyle(style);
-      layers[f.getLayer()?.get("id")] = f.getLayer();
+    form.on("style", (e) => {
+        const features = carte.getSelect().getFeatures();
+        if (e.property) {
+            // Récupère les résultats
+            const results = flatToIGNKeyValue(e.property, e.value);
+            features.forEach((f) => {
+                // Une clé peut correspondre à plusieurs clé IGN
+                // D'où le fait d'avoir un forEach
+                results.forEach(({ key, value }) => {
+                    if (/^popup/.test(key)) {
+                        popupForm.setPopupContent(f, key, value);
+                        f.showPopup(carte.popup);
+                    } else {
+                        f.setIgnStyle(key, value);
+                    }
+                });
+                // Met à jour le style courant
+                updateCurrentStyle(f);
+                f.changed();
+            });
+        } else {
+            // Appliquer le style à la ou les features sélectionnées
+            features.forEach((f) => {
+                if (e.typeGeom) {
+                    const rex = new RegExp(e.typeGeom);
+                    if (!rex.test(f.getGeometry().getType())) return;
+                }
+                f.setIgnStyle(e.ignStyle);
+                // Met à jour le style courant
+                updateCurrentStyle(f);
+                f.changed();
+            });
+        }
     });
-    // Update layers
-    Object.values(layers).forEach(layer => layer.getSource().changed());
-    // Update style & form
-    updateCurrentStyle(features.item(0));
-    initForm();
-  });
-  form.on("style", (e) => {
-    const features = carte.getSelect().getFeatures();
-    if (e.property) {
-      // Récupère les résultats
-      const results = flatToIGNKeyValue(e.property, e.value);
-      features.forEach(f => {
-        // Une clé peut correspondre à plusieurs clé IGN
-        // D'où le fait d'avoir un forEach
-        results.forEach(({ key, value }) => {
-          if (/^popup/.test(key)) {
-            popupForm.setPopupContent(f, key, value);
-            f.showPopup(carte.popup);
-          } else {
-            f.setIgnStyle(key, value);
-          }
-        })
-        // Met à jour le style courant
-        updateCurrentStyle(f);
-        f.changed();
-      });
-    } else {
-      // Appliquer le style à la ou les features sélectionnées 
-      features.forEach(f => {
-        if (e.typeGeom) {
-          const rex = new RegExp(e.typeGeom);
-          if (!rex.test(f.getGeometry().getType())) return;
-        } 
-        f.setIgnStyle(e.ignStyle);
-        // Met à jour le style courant
-        updateCurrentStyle(f);
-        f.changed();
-      });
-    }
-  })
-  // Add from symbol library
-  form.on("lib:getsymbol", (e) => {
-    // Get style from forms
-    const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
-    styleDialog.getForms().forEach(frm => {
-      frm.setFlatStyle(style);
-      frm.dispatchEvent({ 
-        type: "style",
-        ignStyle: e.symbol.getIgnStyle(),
-        flatStyle: style,
-        typeGeom: e.symbol.getType()
-      });
-      // frm.updatePreview();
-    })
-  });
-})
+    // Add from symbol library
+    form.on("lib:getsymbol", (e) => {
+        // Get style from forms
+        const style = ignStyleToFlatStyle(e.symbol.getIgnStyle());
+        styleDialog.getForms().forEach((frm) => {
+            frm.setFlatStyle(style);
+            frm.dispatchEvent({
+                type: "style",
+                ignStyle: e.symbol.getIgnStyle(),
+                flatStyle: style,
+                typeGeom: e.symbol.getType(),
+            });
+            // frm.updatePreview();
+        });
+    });
+});
 
 export default styleDialog;

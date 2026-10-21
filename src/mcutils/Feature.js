@@ -7,7 +7,7 @@ import "./popup.scss";
 const getPopupContent = Feature.prototype.getPopupContent;
 
 /**
- * Get popup content for a feature, with optional link and URL 
+ * Get popup content for a feature, with optional link and URL
  * @method ol.Feature#getPopupContent
  * @param {Object|true|undefined} options popup options (with a content propertie) or undefined to get the popupcontent object
  *  @param {string} options.titre
@@ -18,34 +18,34 @@ const getPopupContent = Feature.prototype.getPopupContent;
  * @return {string|Element} popupcontent
  */
 Feature.prototype.getPopupContent = function (options, html) {
-  const content = getPopupContent.call(this, options, html);
-  if (content.appendChild) {
-    let popupContent;
-    if (this._popupContent && this._popupContent.active) {
-      popupContent = this._popupContent;
-    } else {
-      popupContent = (this.getLayer() && this.getLayer().getPopupContent ? this.getLayer().getPopupContent() : '');
+    const content = getPopupContent.call(this, options, html);
+    if (content.appendChild) {
+        let popupContent;
+        if (this._popupContent && this._popupContent.active) {
+            popupContent = this._popupContent;
+        } else {
+            popupContent = this.getLayer() && this.getLayer().getPopupContent ? this.getLayer().getPopupContent() : "";
+        }
+        // Show img when there is no information text
+        if (content.querySelector("img") && !content.innerText) {
+            const span = document.createElement("span");
+            span.className = "hidden";
+            span.innerHTML = "&nbsp;";
+            content.appendChild(span);
+        }
+        if (popupContent.link && popupContent.url) {
+            const link = md2html(`[${popupContent.link}](${popupContent.url})`);
+            const div = document.createElement("div");
+            div.className = "fr-popup-footer";
+            div.innerHTML = link;
+            content.appendChild(div);
+            const a = content.querySelector(".fr-popup-footer a");
+            if (a) {
+                a.className = "fr-link fr-icon-arrow-right-line fr-link--icon-right";
+            }
+        }
     }
-    // Show img when there is no information text
-    if (content.querySelector('img') && !content.innerText) {
-      const span = document.createElement("span");
-      span.className = "hidden";
-      span.innerHTML = "&nbsp;";
-      content.appendChild(span);
-    }
-    if (popupContent.link && popupContent.url) {
-      const link = md2html(`[${popupContent.link}](${popupContent.url})`);
-      const div = document.createElement("div");
-      div.className = "fr-popup-footer";
-      div.innerHTML = link;
-      content.appendChild(div);
-      const a = content.querySelector(".fr-popup-footer a");
-      if (a) {
-        a.className = "fr-link fr-icon-arrow-right-line fr-link--icon-right";
-      }
-    }
-  }
-  return content;
-}
+    return content;
+};
 
 export default Feature;

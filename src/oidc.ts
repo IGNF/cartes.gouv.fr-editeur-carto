@@ -4,54 +4,52 @@ import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
 import i18next from "./i18n/index";
 
 const prOidc = createOidc({
-  // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
+    // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
 
-  issuerUri: `${iamUrl}/realms/${iamRealm}`,
-  // issuerUri: "http://localhost:8000",
-  clientId: iamClientId,
-  // Permet de gérer la redirection dans le cas de l'appli déployé
-  // (sinon renvoi sur "/", donc sur l'entrée carto)
-  BASE_URL: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
+    issuerUri: `${iamUrl}/realms/${iamRealm}`,
+    // issuerUri: "http://localhost:8000",
+    clientId: iamClientId,
+    // Permet de gérer la redirection dans le cas de l'appli déployé
+    // (sinon renvoi sur "/", donc sur l'entrée carto)
+    BASE_URL: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
 
-  debugLogs: import.meta.env.DEV,
+    debugLogs: import.meta.env.DEV,
 
-  // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
-  autoLogin: true,
+    // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
+    autoLogin: true,
 
-  decodedIdTokenSchema: z.object({
-    preferred_username: z.string(),
-    email: z.string(),
-  }),
+    decodedIdTokenSchema: z.object({
+        preferred_username: z.string(),
+        email: z.string(),
+    }),
 }).catch((error) => error as OidcInitializationError);
 
 if (prOidc instanceof Error) {
-  const oidcInitializationError = prOidc;
+    const oidcInitializationError = prOidc;
 
-  // Use this to distinguish a misconfiguration from a temporary auth-server outage.
-  // NOTE: below references should use `oidcInitializationError`.
-  // @ts-ignore car renvoi une erreur de type puisqu'on est censé être toujours loggé
-  console.log(oidcInitializationError.isAuthServerLikelyDown);
+    // Use this to distinguish a misconfiguration from a temporary auth-server outage.
+    // NOTE: below references should use `oidcInitializationError`.
+    // @ts-ignore car renvoi une erreur de type puisqu'on est censé être toujours loggé
+    console.log(oidcInitializationError.isAuthServerLikelyDown);
 
-  // Developer-only diagnostic with likely cause and fix.
-  // Do not display this to end users.
-  import.meta.env.DEV && console.log(oidcInitializationError.message);
+    // Developer-only diagnostic with likely cause and fix.
+    // Do not display this to end users.
+    import.meta.env.DEV && console.log(oidcInitializationError.message);
 
-  alert(
-    i18next.t('notifications:authentication.unavailable'),
-  );
+    alert(i18next.t("notifications:authentication.unavailable"));
 
-  // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
-  await new Promise<never>(() => {});
+    // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
+    await new Promise<never>(() => {});
 }
 
 export async function getOidc() {
-  const oidc = await prOidc;
+    const oidc = await prOidc;
 
-  if (oidc instanceof Error || !oidc.isUserLoggedIn) {
-    return undefined;
-  }
+    if (oidc instanceof Error || !oidc.isUserLoggedIn) {
+        return undefined;
+    }
 
-  return oidc;
+    return oidc;
 }
 
 /**
@@ -60,21 +58,21 @@ export async function getOidc() {
  * Retourne undefined si l'utilisateur n'est pas connecté
  */
 export const getAuthHeader = async () => {
-  const oidc = await getOidc();
+    const oidc = await getOidc();
 
-  if (oidc instanceof Error || !oidc.isUserLoggedIn) {
-    return undefined;
-  }
+    if (oidc instanceof Error || !oidc.isUserLoggedIn) {
+        return undefined;
+    }
 
-  const {
-    // The accessToken is what you'll use as a Bearer token to
-    // authenticate to your APIs
-    accessToken,
-  } = await oidc.getTokens();
+    const {
+        // The accessToken is what you'll use as a Bearer token to
+        // authenticate to your APIs
+        accessToken,
+    } = await oidc.getTokens();
 
-  return {
-    Authorization: `Bearer ${accessToken}`,
-  };
+    return {
+        Authorization: `Bearer ${accessToken}`,
+    };
 };
 /**
  * Retourne juste le header Authorization avec le token OIDC
@@ -82,7 +80,7 @@ export const getAuthHeader = async () => {
  * Retourne undefined si l'utilisateur n'est pas connecté
  */
 export const getUserInfo = async () => {
-  const oidc = await getOidc();
+    const oidc = await getOidc();
 
-  return oidc.getDecodedIdToken();
+    return oidc.getDecodedIdToken();
 };

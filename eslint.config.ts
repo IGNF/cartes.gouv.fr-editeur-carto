@@ -23,7 +23,7 @@ export default defineConfig([
             parserOptions: {},
         },
 
-        extends: compat.extends("eslint:recommended", /* "plugin:sonarjs/recommended" */),
+        extends: compat.extends("eslint:recommended" /* "plugin:sonarjs/recommended" */),
 
         settings: {
             "import/resolver": {
@@ -49,10 +49,13 @@ export default defineConfig([
 
             // Variables / imports manquants ou inutilisés
             "no-undef": "off",
-            "no-unused-vars": ["warn", {
-                args: "none",
-                ignoreRestSiblings: true,
-            }],
+            "no-unused-vars": [
+                "warn",
+                {
+                    args: "none",
+                    ignoreRestSiblings: true,
+                },
+            ],
 
             /*
               "sonarjs/no-small-switch": "off",
@@ -72,10 +75,13 @@ export default defineConfig([
         rules: {
             // Les imports de type (`import type { Foo }`) ne sont pas des valeurs
             "no-unused-vars": "off",
-            "@typescript-eslint/no-unused-vars": ["warn", {
-                args: "none",
-                ignoreRestSiblings: true,
-            }],
+            "@typescript-eslint/no-unused-vars": [
+                "warn",
+                {
+                    args: "none",
+                    ignoreRestSiblings: true,
+                },
+            ],
         },
         plugins: {
             "@typescript-eslint": tseslint.plugin,

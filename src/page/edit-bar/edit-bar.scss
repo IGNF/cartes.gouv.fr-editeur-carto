@@ -1,41 +1,41 @@
-@use '../../css/mixins.scss' as mix;
+@use "../../css/mixins.scss" as mix;
 
 .ol-control.ol-bar.ol-right.edit-bar {
-  transform: unset;
-  // top switcher + espace
-  top: calc(8rem + 3rem + 0.5rem);
+    transform: unset;
+    // top switcher + espace
+    top: calc(8rem + 3rem + 0.5rem);
 
-  .gpf-widget {
-    position: unset;
+    .gpf-widget {
+        position: unset;
 
-    > button {
-      color: var(--text-action-high-blue-france);
+        > button {
+            color: var(--text-action-high-blue-france);
 
-      &:not([aria-extended='true']):not([aria-pressed='true']) {
-        &:not(:hover):not(:active) {
-          background-color: var(--background-raised-grey);
+            &:not([aria-extended="true"]):not([aria-pressed="true"]) {
+                &:not(:hover):not(:active) {
+                    background-color: var(--background-raised-grey);
+                }
+            }
         }
-      }
     }
-  }
-  @include mix.respond-from('sm') {
-    // switcher + taille switcher + espace
-    top: calc(6rem + 2.625rem);
-  }
+    @include mix.respond-from("sm") {
+        // switcher + taille switcher + espace
+        top: calc(6rem + 2.625rem);
+    }
 }
 
 .GPF-dialog {
-  @include mix.respond-from('sm') {
-    // switcher + taille switcher + espace
-    top: calc(6rem + 2.625rem + 0.5rem);
-  }
-
-  &#style-dialog {
-    min-height: 300px;
-
-    @include mix.respond-from('sm') {
-      // barre du haut + espace
-      top: calc(3.5rem + 0.5rem);
+    @include mix.respond-from("sm") {
+        // switcher + taille switcher + espace
+        top: calc(6rem + 2.625rem + 0.5rem);
     }
-  }
+
+    &#style-dialog {
+        min-height: 300px;
+
+        @include mix.respond-from("sm") {
+            // barre du haut + espace
+            top: calc(3.5rem + 0.5rem);
+        }
+    }
 }

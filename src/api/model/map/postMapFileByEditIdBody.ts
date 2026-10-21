@@ -7,6 +7,6 @@
  */
 
 export type PostMapFileByEditIdBody = {
-  /** Contenu de la carte au format .carte */
-  file: Blob | File;
+    /** Contenu de la carte au format .carte */
+    file: Blob | File;
 };

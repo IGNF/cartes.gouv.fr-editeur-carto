@@ -1,6 +1,6 @@
 // NB : Les mixins viennent directement du DSFR
-@use 'sass:list';
-@use 'sass:map';
+@use "sass:list";
+@use "sass:map";
 
 // Voir https://github.com/GouvernementFR/dsfr pour + d'infos
 ////
@@ -8,11 +8,11 @@
 /// @group media-query
 ////
 $values: (
-  xs: 0 35.98em,
-  sm: 36em 47.98em,
-  md: 48em 61.98em,
-  lg: 62em 77.98em,
-  xl: 78em,
+    xs: 0 35.98em,
+    sm: 36em 47.98em,
+    md: 48em 61.98em,
+    lg: 62em 77.98em,
+    xl: 78em,
 );
 
 /// Set media query styles
@@ -25,45 +25,39 @@ $values: (
 ///     }
 ///   }
 @mixin respond-from($media) {
-  $limits: map.get($values, $media);
+    $limits: map.get($values, $media);
 
-  @if $limits != null {
-    @media (min-width: list.nth($limits, 1)) {
-      @content;
+    @if $limits != null {
+        @media (min-width: list.nth($limits, 1)) {
+            @content;
+        }
+    } @else {
+        @content;
     }
-  }
-  @else {
-    @content;
-  }
 }
 
-
-
 @mixin hover-media-query() {
-  @media (hover: hover) and (pointer: fine) {
-    @content;
-  }
+    @media (hover: hover) and (pointer: fine) {
+        @content;
+    }
 }
 
 // Change la couleur du background du bouton
-@mixin button-state(
-  $text-color: var(--text-action-high-blue-france),
-  $background: unset
-) {
-  &,
-  &:hover,
-  &:active {
-    color: $text-color;
-    background-color: $background;
-  }
-
-  @include hover-media-query {
-    &:hover {
-      background-color: var(--hover-tint);
-    }
-
+@mixin button-state($text-color: var(--text-action-high-blue-france), $background: unset) {
+    &,
+    &:hover,
     &:active {
-      background-color: var(--active-tint);
+        color: $text-color;
+        background-color: $background;
     }
-  }
+
+    @include hover-media-query {
+        &:hover {
+            background-color: var(--hover-tint);
+        }
+
+        &:active {
+            background-color: var(--active-tint);
+        }
+    }
 }

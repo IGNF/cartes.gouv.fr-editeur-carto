@@ -7,19 +7,19 @@
  */
 
 export type GetOrganizationLinksById200 = {
-  /**
-   * lien d'invitation en tant que membre, null si absent
-   * @nullable
-   */
-  link_as_member?: string | null;
-  /**
-   * lien d'invitation en tant qu'éditeur, null si absent
-   * @nullable
-   */
-  link_as_editor?: string | null;
-  /**
-   * pattern mail de l'organisation, null si absent
-   * @nullable
-   */
-  mail_pattern?: string | null;
+    /**
+     * lien d'invitation en tant que membre, null si absent
+     * @nullable
+     */
+    link_as_member?: string | null;
+    /**
+     * lien d'invitation en tant qu'éditeur, null si absent
+     * @nullable
+     */
+    link_as_editor?: string | null;
+    /**
+     * pattern mail de l'organisation, null si absent
+     * @nullable
+     */
+    mail_pattern?: string | null;
 };

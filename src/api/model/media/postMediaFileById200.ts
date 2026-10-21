@@ -7,12 +7,12 @@
  */
 
 export type PostMediaFileById200 = {
-  /** identifiant du média modifié */
-  id?: number;
-  /** attribut modifié */
-  attribute?: string;
-  /** url de l'image */
-  view_url?: string;
-  /** url de la vignette */
-  thumb_url?: string;
+    /** identifiant du média modifié */
+    id?: number;
+    /** attribut modifié */
+    attribute?: string;
+    /** url de l'image */
+    view_url?: string;
+    /** url de la vignette */
+    thumb_url?: string;
 };

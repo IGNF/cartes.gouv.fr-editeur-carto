@@ -1,310 +1,308 @@
-import BaseObject from 'ol/Object.js';
-import ol_ext_element from 'ol-ext/util/element.js';
-import getUid from '../../utils/getUid.js';
-import i18next from '../../i18n/index';
+import BaseObject from "ol/Object.js";
+import ol_ext_element from "ol-ext/util/element.js";
+import getUid from "../../utils/getUid.js";
+import i18next from "../../i18n/index";
 
 /** Footer complet avec tous les éléments du DSFR */
 class Footer extends BaseObject {
-  constructor() {
-    super()
-    this.element = ol_ext_element.create('FOOTER', {
-      id: getUid('footer'),
-      className: 'fr-footer',
-      role: 'contentinfo',
-      parent: document.body
-    })
+    constructor() {
+        super();
+        this.element = ol_ext_element.create("FOOTER", {
+            id: getUid("footer"),
+            className: "fr-footer",
+            role: "contentinfo",
+            parent: document.body,
+        });
 
-    const containId = getUid('footer-container');
-    const expandBtnId = getUid('footer-expand-button');
+        const containId = getUid("footer-container");
+        const expandBtnId = getUid("footer-expand-button");
 
-    // Container
-    const container = this.container = ol_ext_element.create('DIV', {
-      className: 'fr-container',
-      id: containId,
-      'aria-labelledby': expandBtnId,
-      parent: this.element
-    });
+        // Container
+        const container = (this.container = ol_ext_element.create("DIV", {
+            className: "fr-container",
+            id: containId,
+            "aria-labelledby": expandBtnId,
+            parent: this.element,
+        }));
 
-    // Bouton d'expansion (visible uniquement en mode compact)
-    const containBt = ol_ext_element.create('BUTTON', {
-      id: expandBtnId,
-      type: 'button',
-      className: 'fr-icon-arrow-up-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info',
-      'aria-label': i18next.t('charte:footer.moreInformation'),
-      'title': i18next.t('charte:footer.moreInformation'),
-      'aria-expanded': 'false',
-      'aria-controls': containId,
-      parent: this.element
-    });
+        // Bouton d'expansion (visible uniquement en mode compact)
+        const containBt = ol_ext_element.create("BUTTON", {
+            id: expandBtnId,
+            type: "button",
+            className: "fr-icon-arrow-up-s-line fr-btn--tertiary-no-outline fr-btn btn-more-info",
+            "aria-label": i18next.t("charte:footer.moreInformation"),
+            title: i18next.t("charte:footer.moreInformation"),
+            "aria-expanded": "false",
+            "aria-controls": containId,
+            parent: this.element,
+        });
 
-    containBt.addEventListener('click', () => {
-      const expanded = containBt.getAttribute('aria-expanded') === 'true'
-      containBt.setAttribute('aria-expanded', !expanded);
-      containBt.classList.toggle('fr-icon-arrow-up-s-line', expanded)
-      containBt.classList.toggle('fr-btn--close', !expanded)
-      containBt.classList.toggle('fr-btn--icon-right', !expanded)
-      const label = expanded ? i18next.t('charte:footer.moreInformation') : i18next.t('common:close');
-      containBt.setAttribute('aria-label', label)
-      containBt.innerText = i18next.t('common:close');
-      containBt.setAttribute('title', label)
+        containBt.addEventListener("click", () => {
+            const expanded = containBt.getAttribute("aria-expanded") === "true";
+            containBt.setAttribute("aria-expanded", !expanded);
+            containBt.classList.toggle("fr-icon-arrow-up-s-line", expanded);
+            containBt.classList.toggle("fr-btn--close", !expanded);
+            containBt.classList.toggle("fr-btn--icon-right", !expanded);
+            const label = expanded ? i18next.t("charte:footer.moreInformation") : i18next.t("common:close");
+            containBt.setAttribute("aria-label", label);
+            containBt.innerText = i18next.t("common:close");
+            containBt.setAttribute("title", label);
 
-      // Scroll en bas de la page
-      const top = !expanded ? document.body.scrollHeight : 0;
-      setTimeout(window.scrollTo({left:0, top:top, behavior:'smooth'}), 1);
-    })
+            // Scroll en bas de la page
+            const top = !expanded ? document.body.scrollHeight : 0;
+            setTimeout(window.scrollTo({ left: 0, top: top, behavior: "smooth" }), 1);
+        });
 
-    // Body
-    const body = ol_ext_element.create('DIV', {
-      className: 'fr-footer__body',
-      id: getUid('footer-body'),
-      parent: container
-    })
+        // Body
+        const body = ol_ext_element.create("DIV", {
+            className: "fr-footer__body",
+            id: getUid("footer-body"),
+            parent: container,
+        });
 
-    // Brand
-    const brand = ol_ext_element.create('A', {
-      id: 'footer-brand-link-' + getUid('brand'),
-      className: 'router-link-active router-link-exact-active',
-      title: i18next.t('charte:footer.backToHome'),
-      'aria-current': 'page',
-      href: '/',
-      parent: ol_ext_element.create('DIV', {
-        className: 'fr-footer__brand fr-enlarge-link',
-        parent: body
-      })
-    })
-    this.logo = ol_ext_element.create('P', {
-      className: 'fr-logo',
-      parent: brand
-    })
-    this.logo.append(
-      i18next.t('charte:footer.logo.republic') + ' ',
-      document.createElement('br'),
-      ' ' + i18next.t('charte:footer.logo.country')
-    );
+        // Brand
+        const brand = ol_ext_element.create("A", {
+            id: "footer-brand-link-" + getUid("brand"),
+            className: "router-link-active router-link-exact-active",
+            title: i18next.t("charte:footer.backToHome"),
+            "aria-current": "page",
+            href: "/",
+            parent: ol_ext_element.create("DIV", {
+                className: "fr-footer__brand fr-enlarge-link",
+                parent: body,
+            }),
+        });
+        this.logo = ol_ext_element.create("P", {
+            className: "fr-logo",
+            parent: brand,
+        });
+        this.logo.append(i18next.t("charte:footer.logo.republic") + " ", document.createElement("br"), " " + i18next.t("charte:footer.logo.country"));
 
-    // Footer content
-    const content = ol_ext_element.create('DIV', {
-      className: 'fr-footer__content',
-      parent: body
-    })
-    this.description = ol_ext_element.create('P', {
-      className: 'fr-footer__content-desc',
-      parent: content
-    })
-    this.contentLink = ol_ext_element.create('UL', {
-      className: 'fr-footer__content-list',
-      parent: content
-    })
+        // Footer content
+        const content = ol_ext_element.create("DIV", {
+            className: "fr-footer__content",
+            parent: body,
+        });
+        this.description = ol_ext_element.create("P", {
+            className: "fr-footer__content-desc",
+            parent: content,
+        });
+        this.contentLink = ol_ext_element.create("UL", {
+            className: "fr-footer__content-list",
+            parent: content,
+        });
 
-    // Partners
-    const partners = ol_ext_element.create('DIV', {
-      className: 'fr-footer__partners',
-      parent: container
-    })
-    ol_ext_element.create('H2', {
-      className: 'fr-footer__partners-title',
-      text: i18next.t('charte:footer.partners.title'),
-      parent: partners
-    })
-    const logos = ol_ext_element.create('DIV', {
-      className: 'fr-footer__partners-logos',
-      parent: partners
-    })
-    this.partnerMainList = ol_ext_element.create('DIV', {
-      className: 'fr-footer__partners-main',
-      parent: logos
-    })
-    this.partnerList = ol_ext_element.create('UL', {
-      parent: ol_ext_element.create('DIV', {
-        className: 'fr-footer__partners-sub',
-        parent: logos
-      })
-    })
+        // Partners
+        const partners = ol_ext_element.create("DIV", {
+            className: "fr-footer__partners",
+            parent: container,
+        });
+        ol_ext_element.create("H2", {
+            className: "fr-footer__partners-title",
+            text: i18next.t("charte:footer.partners.title"),
+            parent: partners,
+        });
+        const logos = ol_ext_element.create("DIV", {
+            className: "fr-footer__partners-logos",
+            parent: partners,
+        });
+        this.partnerMainList = ol_ext_element.create("DIV", {
+            className: "fr-footer__partners-main",
+            parent: logos,
+        });
+        this.partnerList = ol_ext_element.create("UL", {
+            parent: ol_ext_element.create("DIV", {
+                className: "fr-footer__partners-sub",
+                parent: logos,
+            }),
+        });
 
-    // Bottom
-    const bottom = ol_ext_element.create('DIV', {
-      className: 'fr-footer__bottom',
-      parent: container
-    })
+        // Bottom
+        const bottom = ol_ext_element.create("DIV", {
+            className: "fr-footer__bottom",
+            parent: container,
+        });
 
-    // Links
-    this.links = ol_ext_element.create('UL', {
-      className: 'fr-footer__bottom-list',
-      parent: bottom
-    })
+        // Links
+        this.links = ol_ext_element.create("UL", {
+            className: "fr-footer__bottom-list",
+            parent: bottom,
+        });
 
-    // Copy
-    this.copy = ol_ext_element.create('P', {
-      parent: ol_ext_element.create('DIV', {
-        className: 'fr-footer__bottom-copy',
-        parent: bottom
-      })
-    })
-    const licenseLink = ol_ext_element.create('A', {
-      href: 'https://github.com/etalab/licence-ouverte/blob/master/LO.md',
-      target: '_blank',
-      rel: 'noopener external',
-      title: i18next.t('charte:footer.license.title'),
-      text: i18next.t('charte:footer.license.label')
-    });
-    // Keep the link position translatable without inserting HTML into the catalogue.
-    const parts = i18next.t('charte:footer.license.notice', { license: '\0' }).split('\0');
-    parts.forEach((text, index) => {
-      if (index) this.copy.append(licenseLink.cloneNode(true));
-      this.copy.append(text);
-    });
-  }
-
-  /**
-   * Définit le texte du logo
-   * @param {string} html Contenu HTML du logo
-   */
-  setLogoText(html) {
-    this.logo.innerHTML = html
-  }
-
-  /**
-   * Définit le texte de description
-   * @param {string} text Texte de description
-   */
-  setDescription(text) {
-    this.description.textContent = text
-  }
-
-  /**
-   * Passe le footer en mode compact
-   * 
-   * @param {boolean} compact Si vrai, passe en mode compact
-   */
-  setCompact(compact) {
-    // Footer
-    this.element.classList.toggle("fr-footer--compact", !!compact);
-    // Conteneur (fluide ou non)
-    this.container.classList.toggle("fr-container--fluid", !!compact);
-    this.container.classList.toggle("fr-container", !compact);
-  }
-
-  /**
-   * Ajoute un lien de contenu
-   * @param {FooterContentLink} options Option d'un lien de contenu
-   */
-  addContentLink(options) {
-    const title = options.title || options.href.replace(/^http(s)?:\/\/(www.)?/, '').replace(/\//g, '');
-    const linkId = 'footer__content-link-' + getUid('content-link')
-    return ol_ext_element.create('A', {
-      id: linkId,
-      className: 'fr-footer__content-link',
-      target: '_blank',
-      rel: 'noopener external',
-      title: options.titleAttr || i18next.t('charte:externalLink.title', {
-        title,
-        interpolation: { escapeValue: false }
-      }),
-      text: title,
-      href: options.href,
-      parent: ol_ext_element.create('LI', {
-        className: 'fr-footer__content-item',
-        parent: this.contentLink
-      })
-    })
-  }
-
-  /** 
-   * Ajoute un logo de partenaire
-   * @param {FooterPartner} options Options d'un partenaire
-   */
-  addPartner(options) {
-    const imgElement = ol_ext_element.create('IMG', {
-      className: 'fr-footer__logo',
-      alt: options.alt,
-      src: options.img
-    })
-
-    if (options.main) {
-      // Partenaire principal : directement dans partnerMainList sans <li>
-      return ol_ext_element.create('A', {
-        className: 'fr-footer__partners-link',
-        href: options.url,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        html: imgElement,
-        parent: this.partnerMainList
-      })
-    } else {
-      // Partenaire secondaire : dans partnerList avec <li>
-      return ol_ext_element.create('A', {
-        className: 'fr-footer__partners-link',
-        href: options.url,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        html: imgElement,
-        parent: ol_ext_element.create('LI', {
-          parent: this.partnerList
-        })
-      })
+        // Copy
+        this.copy = ol_ext_element.create("P", {
+            parent: ol_ext_element.create("DIV", {
+                className: "fr-footer__bottom-copy",
+                parent: bottom,
+            }),
+        });
+        const licenseLink = ol_ext_element.create("A", {
+            href: "https://github.com/etalab/licence-ouverte/blob/master/LO.md",
+            target: "_blank",
+            rel: "noopener external",
+            title: i18next.t("charte:footer.license.title"),
+            text: i18next.t("charte:footer.license.label"),
+        });
+        // Keep the link position translatable without inserting HTML into the catalogue.
+        const parts = i18next.t("charte:footer.license.notice", { license: "\0" }).split("\0");
+        parts.forEach((text, index) => {
+            if (index) this.copy.append(licenseLink.cloneNode(true));
+            this.copy.append(text);
+        });
     }
-  }
 
-  /** 
-   * Ajoute un lien dans la section du bas
-   * @param {FooterBottomLink} options Option d'un lien du footer
-   */
-  addLink(options) {
-    const linkId = 'footer__bottom-link-' + getUid('bottom-link')
-    ol_ext_element.create('A', {
-      id: linkId,
-      className: 'fr-footer__bottom-link',
-      text: options.title,
-      href: options.href,
-      parent: ol_ext_element.create('LI', {
-        className: 'fr-footer__bottom-item',
-        parent: this.links
-      })
-    })
-  }
-
-  /** 
-   * Ajoute un bouton dans la section du bas
-   * @param {string} title Texte du bouton
-   * @param {Object} options Options du bouton
-   * @param {string} [options.icon] Classe d'icône DSFR
-   */
-  addButton(title, options) {
-    let btnOptions = {
-      className: 'fr-footer__bottom-link fr-link--icon-left fr-px-2v' + (options.icon ? ' ' + options.icon : ''),
-      text: ' ' + title + ' ',
-      parent: ol_ext_element.create('LI', {
-        className: 'fr-footer__bottom-item',
-        parent: this.links
-      })
+    /**
+     * Définit le texte du logo
+     * @param {string} html Contenu HTML du logo
+     */
+    setLogoText(html) {
+        this.logo.innerHTML = html;
     }
-    // Ajoute les attributs supplémentaires au bouton
-    for (const attr in options) {
-      if (attr !== 'icon') btnOptions[attr] = options[attr];
+
+    /**
+     * Définit le texte de description
+     * @param {string} text Texte de description
+     */
+    setDescription(text) {
+        this.description.textContent = text;
     }
-    ol_ext_element.create('BUTTON', btnOptions)
-  }
 
-  /**
-   * Supprime tous les liens de contenu
-   */
-  clearContentLinks() {
-    this.contentLink.innerHTML = ''
-  }
+    /**
+     * Passe le footer en mode compact
+     *
+     * @param {boolean} compact Si vrai, passe en mode compact
+     */
+    setCompact(compact) {
+        // Footer
+        this.element.classList.toggle("fr-footer--compact", !!compact);
+        // Conteneur (fluide ou non)
+        this.container.classList.toggle("fr-container--fluid", !!compact);
+        this.container.classList.toggle("fr-container", !compact);
+    }
 
-  /**
-   * Supprime tous les partenaires
-   */
-  clearPartners() {
-    this.partnerList.innerHTML = ''
-  }
+    /**
+     * Ajoute un lien de contenu
+     * @param {FooterContentLink} options Option d'un lien de contenu
+     */
+    addContentLink(options) {
+        const title = options.title || options.href.replace(/^http(s)?:\/\/(www.)?/, "").replace(/\//g, "");
+        const linkId = "footer__content-link-" + getUid("content-link");
+        return ol_ext_element.create("A", {
+            id: linkId,
+            className: "fr-footer__content-link",
+            target: "_blank",
+            rel: "noopener external",
+            title:
+                options.titleAttr ||
+                i18next.t("charte:externalLink.title", {
+                    title,
+                    interpolation: { escapeValue: false },
+                }),
+            text: title,
+            href: options.href,
+            parent: ol_ext_element.create("LI", {
+                className: "fr-footer__content-item",
+                parent: this.contentLink,
+            }),
+        });
+    }
 
-  /**
-   * Supprime tous les liens du bas
-   */
-  clearLinks() {
-    this.links.innerHTML = ''
-  }
+    /**
+     * Ajoute un logo de partenaire
+     * @param {FooterPartner} options Options d'un partenaire
+     */
+    addPartner(options) {
+        const imgElement = ol_ext_element.create("IMG", {
+            className: "fr-footer__logo",
+            alt: options.alt,
+            src: options.img,
+        });
+
+        if (options.main) {
+            // Partenaire principal : directement dans partnerMainList sans <li>
+            return ol_ext_element.create("A", {
+                className: "fr-footer__partners-link",
+                href: options.url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                html: imgElement,
+                parent: this.partnerMainList,
+            });
+        } else {
+            // Partenaire secondaire : dans partnerList avec <li>
+            return ol_ext_element.create("A", {
+                className: "fr-footer__partners-link",
+                href: options.url,
+                target: "_blank",
+                rel: "noopener noreferrer",
+                html: imgElement,
+                parent: ol_ext_element.create("LI", {
+                    parent: this.partnerList,
+                }),
+            });
+        }
+    }
+
+    /**
+     * Ajoute un lien dans la section du bas
+     * @param {FooterBottomLink} options Option d'un lien du footer
+     */
+    addLink(options) {
+        const linkId = "footer__bottom-link-" + getUid("bottom-link");
+        ol_ext_element.create("A", {
+            id: linkId,
+            className: "fr-footer__bottom-link",
+            text: options.title,
+            href: options.href,
+            parent: ol_ext_element.create("LI", {
+                className: "fr-footer__bottom-item",
+                parent: this.links,
+            }),
+        });
+    }
+
+    /**
+     * Ajoute un bouton dans la section du bas
+     * @param {string} title Texte du bouton
+     * @param {Object} options Options du bouton
+     * @param {string} [options.icon] Classe d'icône DSFR
+     */
+    addButton(title, options) {
+        let btnOptions = {
+            className: "fr-footer__bottom-link fr-link--icon-left fr-px-2v" + (options.icon ? " " + options.icon : ""),
+            text: " " + title + " ",
+            parent: ol_ext_element.create("LI", {
+                className: "fr-footer__bottom-item",
+                parent: this.links,
+            }),
+        };
+        // Ajoute les attributs supplémentaires au bouton
+        for (const attr in options) {
+            if (attr !== "icon") btnOptions[attr] = options[attr];
+        }
+        ol_ext_element.create("BUTTON", btnOptions);
+    }
+
+    /**
+     * Supprime tous les liens de contenu
+     */
+    clearContentLinks() {
+        this.contentLink.innerHTML = "";
+    }
+
+    /**
+     * Supprime tous les partenaires
+     */
+    clearPartners() {
+        this.partnerList.innerHTML = "";
+    }
+
+    /**
+     * Supprime tous les liens du bas
+     */
+    clearLinks() {
+        this.links.innerHTML = "";
+    }
 }
 
 export default Footer;

@@ -10,12 +10,12 @@
  * Notifications
  */
 export interface Notification {
-  id?: number;
-  description?: string;
-  /** Applicatifs où afficher la notification */
-  scope?: string;
-  showFrom?: string;
-  showUntil?: string;
-  /** Nombre de fois à afficher la notification */
-  repeatibility?: number;
+    id?: number;
+    description?: string;
+    /** Applicatifs où afficher la notification */
+    scope?: string;
+    showFrom?: string;
+    showUntil?: string;
+    /** Nombre de fois à afficher la notification */
+    repeatibility?: number;
 }

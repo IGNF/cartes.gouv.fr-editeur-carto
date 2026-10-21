@@ -7,8 +7,8 @@
  */
 
 export type GetEditorialFollowers200 = {
-  facebook?: string;
-  twitter?: string;
-  linkedin?: string;
-  instagram?: string;
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    instagram?: string;
 };

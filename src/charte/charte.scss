@@ -1,46 +1,46 @@
-@use './header.scss';
-@use './footer.scss';
-@use '../css/mixins.scss' as mix;
+@use "./header.scss";
+@use "./footer.scss";
+@use "../css/mixins.scss" as mix;
 
 html,
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Marianne, arial, sans-serif !important;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Marianne, arial, sans-serif !important;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  main {
-    flex: 1;
-    position: relative;
-    height: calc(100vh - 3.5rem);
-    background-color: var(--background-alt-grey);
-    min-height: 620px;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  header,
-  footer {
-    z-index: auto;
-  }
-
-  &.compact {
     main {
-      flex: 1 0 auto;
-      min-height: calc(100vh - 8.125rem);
-
-      @include mix.respond-from('lg') {
-        flex: 0 1 auto;
-      }
+        flex: 1;
+        position: relative;
+        height: calc(100vh - 3.5rem);
+        background-color: var(--background-alt-grey);
+        min-height: 620px;
+        overflow: hidden;
+        z-index: 1;
     }
-  }
+
+    header,
+    footer {
+        z-index: auto;
+    }
+
+    &.compact {
+        main {
+            flex: 1 0 auto;
+            min-height: calc(100vh - 8.125rem);
+
+            @include mix.respond-from("lg") {
+                flex: 0 1 auto;
+            }
+        }
+    }
 }
 
 dialog {
-  background-color: var(--background-default-grey);
+    background-color: var(--background-default-grey);
 }

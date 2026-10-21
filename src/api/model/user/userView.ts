@@ -8,13 +8,13 @@
 import type { UserEdit } from "./userEdit";
 
 export type UserView = UserEdit & {
-  /** Compte bloqué */
-  locked?: boolean;
-  id?: number;
-  /** Taille globale limite des images uploadées (en octet) */
-  medias_limit_size?: number;
-  /** Taille globale des images uploadées (en octet) */
-  medias_size?: number;
-  /** Rôle(s) de l'utilisateur */
-  roles?: string[];
+    /** Compte bloqué */
+    locked?: boolean;
+    id?: number;
+    /** Taille globale limite des images uploadées (en octet) */
+    medias_limit_size?: number;
+    /** Taille globale des images uploadées (en octet) */
+    medias_size?: number;
+    /** Rôle(s) de l'utilisateur */
+    roles?: string[];
 };

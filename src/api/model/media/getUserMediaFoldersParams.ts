@@ -7,9 +7,9 @@
  */
 
 export type GetUserMediaFoldersParams = {
-  /**
-   * Identifiant public de l'organisation. Si renseigné, renvoie les folders de l'organisation, pas de l'utilisateur connecté
-   * @nullable
-   */
-  organization_id?: string | null;
+    /**
+     * Identifiant public de l'organisation. Si renseigné, renvoie les folders de l'organisation, pas de l'utilisateur connecté
+     * @nullable
+     */
+    organization_id?: string | null;
 };

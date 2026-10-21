@@ -7,26 +7,26 @@
  */
 
 export interface Article {
-  /** Identifiant de l'article */
-  id?: number;
-  /** Catégorie de l'article */
-  category?: string;
-  /** Ordre d'affichage de l'article */
-  position?: number;
-  /** Titre de l'article */
-  title?: string;
-  /** Contenu de l'article */
-  content?: string;
-  /** Tags de l'article */
-  tags?: string[];
-  /** Date de mise à jour de l'article */
-  updated_at?: string;
-  /** Nom public de l'utilisateur qui a modifié l'article */
-  updated_by?: string;
-  /** Url de l'image d'illustration de l'article */
-  img_url?: string;
-  /** Article de la catégorie news : texte du lien */
-  link_text?: string;
-  /** Article de la catégorie news : destination du lien */
-  link_url?: string;
+    /** Identifiant de l'article */
+    id?: number;
+    /** Catégorie de l'article */
+    category?: string;
+    /** Ordre d'affichage de l'article */
+    position?: number;
+    /** Titre de l'article */
+    title?: string;
+    /** Contenu de l'article */
+    content?: string;
+    /** Tags de l'article */
+    tags?: string[];
+    /** Date de mise à jour de l'article */
+    updated_at?: string;
+    /** Nom public de l'utilisateur qui a modifié l'article */
+    updated_by?: string;
+    /** Url de l'image d'illustration de l'article */
+    img_url?: string;
+    /** Article de la catégorie news : texte du lien */
+    link_text?: string;
+    /** Article de la catégorie news : destination du lien */
+    link_url?: string;
 }

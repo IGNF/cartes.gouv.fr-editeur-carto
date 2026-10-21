@@ -7,6 +7,6 @@
  */
 
 export type PutOrganizationAttributeBody = {
-  /** valeur à affecter à l'attribut [name => non null] */
-  value?: string;
+    /** valeur à affecter à l'attribut [name => non null] */
+    value?: string;
 };

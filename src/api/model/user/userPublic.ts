@@ -7,20 +7,20 @@
  */
 
 export interface UserPublic {
-  /** identifiant public de l'utilisateur, ne sera jamais modifié */
-  public_id?: string;
-  /** Unique, ne doit pas être déjà utilisé (Erreur 400) */
-  public_name?: string;
-  /** Nom de compte Twitter */
-  twitter_account?: string;
-  /** Nom de compte Facebook */
-  facebook_account?: string;
-  /** Nom de compte LinkedIn */
-  linkedin_account?: string;
-  /** Présentation publique */
-  presentation?: string;
-  /** Url de l'image de profil */
-  profile_picture?: string;
-  /** Url de l'image de couverture */
-  cover_picture?: string;
+    /** identifiant public de l'utilisateur, ne sera jamais modifié */
+    public_id?: string;
+    /** Unique, ne doit pas être déjà utilisé (Erreur 400) */
+    public_name?: string;
+    /** Nom de compte Twitter */
+    twitter_account?: string;
+    /** Nom de compte Facebook */
+    facebook_account?: string;
+    /** Nom de compte LinkedIn */
+    linkedin_account?: string;
+    /** Présentation publique */
+    presentation?: string;
+    /** Url de l'image de profil */
+    profile_picture?: string;
+    /** Url de l'image de couverture */
+    cover_picture?: string;
 }

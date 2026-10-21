@@ -7,8 +7,8 @@
  */
 
 export type MapResearchTypesItem = {
-  /** Nom du type */
-  type: string;
-  /** Nombre de cartes */
-  count: number;
+    /** Nom du type */
+    type: string;
+    /** Nombre de cartes */
+    count: number;
 };

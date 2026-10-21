@@ -12,24 +12,23 @@ import BaseObject from "ol/Object.js";
  * Condition liée à un style.
  */
 class Condition extends BaseObject {
-
     /**
      * Vérifie si une condition est valide, i.e. si les
-     * options permettent de créer une 
-    * @param {ConditionOptions} options Options à vérifier
+     * options permettent de créer une
+     * @param {ConditionOptions} options Options à vérifier
      */
     static isValid(options) {
         try {
             new Condition(options);
             return true;
         } catch (error) {
-            console.warn("Condition non valide : ", error)
-            return false
+            console.warn("Condition non valide : ", error);
+            return false;
         }
     }
 
     /**
-    * @param {ConditionOptions} options
+     * @param {ConditionOptions} options
      */
     constructor(options = {}) {
         super();
@@ -63,7 +62,7 @@ class Condition extends BaseObject {
      */
     set operator(value) {
         if (isMcutilsOperator(value)) {
-            this.set("operator", fromMcutilsOperator(value))
+            this.set("operator", fromMcutilsOperator(value));
         } else if (!isConditionalOperator(value)) {
             throw new TypeError(`Opérateur conditionnel non pris en charge : ${value}`);
         } else {
@@ -81,7 +80,7 @@ class Condition extends BaseObject {
 
     /**
      * Vérifie si un objet (Feature) passe la condition
-     * 
+     *
      * @param {import("ol/Feature.js").default} feature Feature openlayer.
      * @returns {Boolean} Vrai si la condition est validée, faux sinon.
      */
@@ -107,7 +106,7 @@ class Condition extends BaseObject {
 
     /**
      * Compare deux éléments en fonction de l'opérateur
-     * 
+     *
      * @returns {Boolean} Vrai si la condition est vérifiée
      * @private
      */
@@ -135,11 +134,19 @@ class Condition extends BaseObject {
                 return source.includes(pattern);
             }
             case "IN": {
-                const listIn = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
+                const listIn = Array.isArray(right)
+                    ? right
+                    : String(right ?? "")
+                          .split(",")
+                          .map((v) => v.trim());
                 return listIn.includes(left);
             }
             case "NOT_IN": {
-                const listNotIn = Array.isArray(right) ? right : String(right ?? "").split(",").map(v => v.trim());
+                const listNotIn = Array.isArray(right)
+                    ? right
+                    : String(right ?? "")
+                          .split(",")
+                          .map((v) => v.trim());
                 return !listNotIn.includes(left);
             }
             case "NOT":

@@ -1,77 +1,77 @@
-@use '../css/mixins.scss' as mix;
+@use "../css/mixins.scss" as mix;
 
 /* HEADER */
 header.fr-header {
-  .fr-header__service {
-    order: 3;
-
-    &-tagline {
-      display: none;
-      @include mix.respond-from('lg') {
-        display: block;
-      }
-    }
-  }
-
-  .fr-header__operator {
-    margin-left: 0.125rem;
-    padding: 0;
-    > img {
-      min-width: unset;
-    }
-  }
-
-  footer {
-    display: none;
-
-    .fr-footer__brand .fr-logo {
-      font-size: 1.05rem;
-      margin: -1rem;
-      padding: 1rem;
-
-      @include mix.respond-from('sm') {
-        font-size: 1.3125rem;
-        margin: -1.25rem;
-        padding: 1.25rem;
-      }
-    }
-  }
-
-  .fr-header__tools-links {
-    gap: 1rem;
-
-    a[target='_blank']::after {
-      margin-left: auto;
-    }
-  }
-
-  &--compact {
-    .fr-header__body-row {
-      height: 3.5rem;
-    }
-    footer {
-      display: flex;
-      box-shadow: none;
-    }
-    .fr-header__operator {
-      > img {
-        width: 26px;
-        height: 28px;
-      }
-    }
-
     .fr-header__service {
-      &-title > .fr-badge {
-        display: none;
-        margin-left: 0.625rem;
+        order: 3;
 
-        @include mix.respond-from('sm') {
-          display: inline-flex;
+        &-tagline {
+            display: none;
+            @include mix.respond-from("lg") {
+                display: block;
+            }
         }
-      }
-      &-tagline {
-        display: none;
-      }
     }
-  }
+
+    .fr-header__operator {
+        margin-left: 0.125rem;
+        padding: 0;
+        > img {
+            min-width: unset;
+        }
+    }
+
+    footer {
+        display: none;
+
+        .fr-footer__brand .fr-logo {
+            font-size: 1.05rem;
+            margin: -1rem;
+            padding: 1rem;
+
+            @include mix.respond-from("sm") {
+                font-size: 1.3125rem;
+                margin: -1.25rem;
+                padding: 1.25rem;
+            }
+        }
+    }
+
+    .fr-header__tools-links {
+        gap: 1rem;
+
+        a[target="_blank"]::after {
+            margin-left: auto;
+        }
+    }
+
+    &--compact {
+        .fr-header__body-row {
+            height: 3.5rem;
+        }
+        footer {
+            display: flex;
+            box-shadow: none;
+        }
+        .fr-header__operator {
+            > img {
+                width: 26px;
+                height: 28px;
+            }
+        }
+
+        .fr-header__service {
+            &-title > .fr-badge {
+                display: none;
+                margin-left: 0.625rem;
+
+                @include mix.respond-from("sm") {
+                    display: inline-flex;
+                }
+            }
+            &-tagline {
+                display: none;
+            }
+        }
+    }
 }

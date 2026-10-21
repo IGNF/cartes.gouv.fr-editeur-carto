@@ -7,10 +7,10 @@
  */
 
 export type PutMediaAttribute200 = {
-  /** identifiant du média modifié */
-  id?: number;
-  /** attribut modifié */
-  attribute?: string;
-  /** nouvelle valeur affectée à l'attribut */
-  value?: string;
+    /** identifiant du média modifié */
+    id?: number;
+    /** attribut modifié */
+    attribute?: string;
+    /** nouvelle valeur affectée à l'attribut */
+    value?: string;
 };

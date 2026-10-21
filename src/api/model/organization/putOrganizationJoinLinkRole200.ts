@@ -7,10 +7,10 @@
  */
 
 export type PutOrganizationJoinLinkRole200 = {
-  /** identifiant de l'organisation modifiée */
-  id?: number;
-  /** attribut modifié */
-  attribute?: string;
-  /** nouvelle valeur affectée à l'attribut */
-  value?: string;
+    /** identifiant de l'organisation modifiée */
+    id?: number;
+    /** attribut modifié */
+    attribute?: string;
+    /** nouvelle valeur affectée à l'attribut */
+    value?: string;
 };
