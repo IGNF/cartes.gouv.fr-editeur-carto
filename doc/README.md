@@ -1,26 +1,14 @@
-<<<<<<< HEAD
-# La documentaion 
-
-
-N'hésitez pas à mettre dans ce dossier toute documentation que vous jugez pertinente à votre projet. Vous pouvez par exemple y décrire les choix techniques et la stack du projet. Mais aussi comment participer au projet. 
-=======
 # Contribuer au projet
 
 Les contributions se font par pull request (PR). Avant de commencer, vérifiez qu'une issue ou une discussion ne traite pas déjà du sujet.
->>>>>>> b1a6262 (chore(doc): ajout doc et build avec prettier)
 
 ## Préparer son environnement
 
 Le projet demande Node.js `>=24 <26` et npm `>=11.13 <12` (voir `package.json`). Depuis la racine du projet, installez les dépendances avec :
 
-<<<<<<< HEAD
-
-Faites une PR sur la branch qui vous intéresse. Les personnes en charge de ce projet ferons une review vous indiquerons si des changements sont nécessaire.
-=======
 ```sh
 npm i
 ```
->>>>>>> b1a6262 (chore(doc): ajout doc et build avec prettier)
 
 Créez une branche dédiée à votre changement, par exemple `feat/nom-du-sujet`, `fix/nom-du-sujet`. Ces noms sont des conventions pratiques, pas une vérification automatique.
 
