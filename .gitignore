@@ -36,3 +36,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# DSFR (à accepter par l'utilisateur)
+dsfr.yml
