@@ -1,0 +1,43 @@
+[id^="style-lib-modal"] {
+  .fr-modal__header {
+    background-color: var(--background-open-blue-france);
+    color: var(--text-action-high-blue-france);
+    border-radius: 0.25rem 0.25rem 0 0;
+
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+
+    span:before {
+      vertical-align: calc((1em - var(--icon-size)) * .5);
+    }
+    h2 {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: inherit;
+      margin: 0;
+      padding: 0;
+      line-height: 2rem;
+    }
+
+    button.main-modal__close-btn {
+      max-height: 2rem;
+      max-width: 2rem;
+      overflow: hidden;
+      padding-left: .5rem;
+      padding-right: .5rem;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: var(--hover-tint);
+      }
+      &::after {
+        margin: 0;
+      }
+    }
+  }
+  .fr-modal__content {
+  }
+}

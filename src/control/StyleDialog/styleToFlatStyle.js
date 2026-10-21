@@ -27,7 +27,7 @@ const flatToIgn = {
   // Bordure différente pour les surfaces
   'fill-stroke-color' : 'fillStrokeColor',
   'fill-stroke-width' : 'fillStrokeWidth',
-  'fill-stroke-line-dash' : 'fillStrokeDash',
+  'fill-stroke-line-dash' : 'fillStrokeLineDash',
   'fill-color': 'fillColor',
   'fill-pattern-config': 'fillPatternConfig',
   'fill-pattern-color': 'fillColorPattern',
@@ -56,6 +56,7 @@ const flatGeomValue = [
   'text-size',
   'stroke-color',
   'stroke-width',
+  'stroke-dash'
 ];
 
 /**
@@ -110,9 +111,14 @@ function flatToIgnStyle(flatStyle, typeGeom) {
       ignStyle[key] = value;
     });
   });
+  console.log('ignStyle before geom processing:', ignStyle, flatStyle);
   if (typeGeom) {
     flatGeomValue.forEach(key => {
-      const flatKey = geomToFlat(typeGeom) + "-" + key;
+      let flatKey = geomToFlat(typeGeom) + "-" + key;
+      if (key === 'stroke-dash') {
+        // flatKey = geomToFlat(typeGeom) + '-stroke-line-dash';
+      }
+      console.log('flatKey:', flatKey, key);
       if (ignStyle[flatToIgn[flatKey]]) {
         ignStyle[flatToIgn[key]] = ignStyle[flatToIgn[flatKey]];
         // delete ignStyle[flatToIgn[flatKey]];
@@ -148,12 +154,12 @@ function flatToIGNKeyValue(key, value) {
     value = value.replace(/\n{1,}$/g, '');
     result.push({ key: k, value: value });
   } else if (k === "fillPatternConfig") {
-    const values = value.split(";");
+    const values = (value || "").split(";");
     result.push({ key: "fillPattern", value: values.shift() });
     if (values.length) {
       result.push({ key: "anglePattern", value: values.shift() });
     }
-  } else if (k.toLowerCase().includes("strokedash")) {
+  } else if (k.toLowerCase().includes("strokedash") || k.toLowerCase().includes("strokelinedash")) {
     result.push({ key: k, value: value });
   }
   else {
