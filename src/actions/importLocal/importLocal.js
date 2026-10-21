@@ -5,7 +5,7 @@
 
 import * as errors from '../../utils/errors.js'
 import { loadFile } from 'mcutils/dialog/dialogImportFile.js'
-import * as geoimportRaw from 'geoimport';
+import * as geoimport from 'geoimport';
 import ol_format_GeoJSON from 'ol/format/GeoJSON.js'
 
 import workerUrl from 'geoimport/dist/static/gdal3.js?url';
@@ -16,7 +16,7 @@ import VectorSource from 'ol/source/Vector.js';
 import VectorStyle from 'mcutils/layer/VectorStyle.js';
 
 // Pour que les tests fonctionnent
-const geoimport = geoimportRaw.default ?? geoimportRaw;
+// const geoimport = geoimportRaw.default ?? geoimportRaw;
 
 /** Liste des formats acceptés */
 const accepted = [
