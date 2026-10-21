@@ -95,19 +95,3 @@ charte.addFooterButton(i18next.t('charte:footer.links.displaySettings'), {
   'aria-controls': displayDialog.id,
   'data-fr-opened': false,
 });
-charte.addFooterButton(i18next.t('charte:footer.links.language'), {
-  icon: 'fr-icon-translate-2',
-  title: i18next.t('charte:footer.links.switchLanguage'),
-  'aria-label': i18next.t('charte:footer.links.switchLanguage'),
-  type: 'button',
-  'data-action': 'switch-language',
-});
-
-// Delegate clicks because the footer is also copied into the mobile header.
-document.addEventListener('click', (event) => {
-  if (!(event.target instanceof Element)) return;
-  if (!event.target.closest('button[data-action="switch-language"]')) return;
-  const url = new URL(window.location.href);
-  url.searchParams.set('lang', i18next.language === 'en' ? 'fr' : 'en');
-  window.location.assign(url.href);
-});

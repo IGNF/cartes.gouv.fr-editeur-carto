@@ -13,12 +13,12 @@ import notificationsFr from './locales/fr/notifications.json';
 import notificationsEn from './locales/en/notifications.json';
 
 const i18next = createInstance();
-const language = new URLSearchParams(window.location.search).get('lang') === 'en' ? 'en' : 'fr';
+// const language = new URLSearchParams(window.location.search).get('lang') === 'en' ? 'en' : 'fr';
 
 i18next.init({
-  lng: language,
+  // lng: language,
   fallbackLng: 'fr',
-  supportedLngs: ['fr', 'en'],
+  supportedLngs: ['fr'],
   ns: ['actions', 'charte', 'common', 'controls', 'notifications', 'editor', 'pages'],
   defaultNS: 'editor',
   resources: {
@@ -46,6 +46,6 @@ i18next.init({
   },
 });
 
-document.documentElement.lang = language;
+// document.documentElement.lang = language;
 
 export default i18next;
