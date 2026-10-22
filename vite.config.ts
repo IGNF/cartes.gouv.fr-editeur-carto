@@ -8,7 +8,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig(() => ({
     base: process.env.BASE_URL || "/creer-une-carte",
     build: {
-        outDir: "./docs",
         emptyOutDir: true,
     },
     // Pour DSFR legacy
