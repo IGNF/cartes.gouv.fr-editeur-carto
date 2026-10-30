@@ -100,7 +100,7 @@
         "duplicate": "Dupliquer le symbole",
         "edit": "Modifier le symbole",
         "editName": "Modifier le nom du symbole",
-        "empty": "Aucun symbole disponible",
+        "empty": "Aucun symbole disponible.<br/>Commencez par ajouter un symbole.",
         "emptyForGeometry": "Aucun symbole disponible pour ce type de géométrie.",
         "lines": "Lignes",
         "name": "Nom du symbole",

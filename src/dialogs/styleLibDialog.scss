@@ -9,6 +9,9 @@
         gap: 0.5rem;
         align-items: center;
         justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 99;
 
         span:before {
             vertical-align: calc((1em - var(--icon-size)) * 0.5);

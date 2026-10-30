@@ -4,6 +4,10 @@
     min-width: 480px;
 }
 
+.fr-modal__body {
+    max-height: calc(100dvh - 4rem);
+}
+
 .GPF-dialog[id*="style-dialog"] {
     @include mix.respond-from("sm") {
         top: 4rem;
@@ -320,10 +324,12 @@
         width: 100%;
         flex-wrap: wrap;
         margin-bottom: -0.5rem !important;
+        margin-left: 0;
+        margin-right: 0;
 
         .fr-fieldset__element {
             display: flex;
-            flex: 1 0 auto;
+            flex: 0 0 auto;
             padding: 0;
             margin: 0.25rem 0;
             gap: 0.25rem;
