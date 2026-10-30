@@ -741,6 +741,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         input.type = "text";
         input.id = "style-input-name-" + getUid();
         input.className = "fr-input style-name";
+        input.placeholder = this.labels.namePlaceholder ?? "Nom du symbole";
         inputGroup.appendChild(input);
 
         return preview;

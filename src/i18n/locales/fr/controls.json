@@ -51,6 +51,7 @@
         "moveStyleDown": "Déplacer le style vers le bas",
         "moveStyleUp": "Déplacer le style vers le haut",
         "name": "Nom",
+        "namePlaceholder": "Nom du symbole",
         "newStyle": "Nouveau style",
         "noIcon": "Sans icône",
         "operator": "Opérateur",
