@@ -70,7 +70,16 @@ async function onOpen(e) {
 }
 
 function addThemes(themes, select) {
-    Object.keys(themes).forEach((key) => {
+    const keys = Object.keys(themes).sort((a, b) => {
+        if (themes[a].id < 0) {
+            return -1;
+        } else if (themes[b].id < 0) {
+            return 1;
+        }
+        return themes[a].name.localeCompare(themes[b].name);
+    });
+    console.log("Sorted theme keys:", keys, themes);
+    keys.forEach((key) => {
         const { id, name } = themes[key];
         const option = ol_ext_element.create("option", {
             value: id,
