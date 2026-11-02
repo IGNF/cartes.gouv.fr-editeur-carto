@@ -1,0 +1,1 @@
+var e=typeof window<`u`&&window.document!==void 0&&typeof navigator<`u`;export{e as t};
