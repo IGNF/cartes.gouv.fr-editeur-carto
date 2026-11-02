@@ -31,7 +31,7 @@ jobs:
               if: github.event.action != 'closed'
               env:
                   BASE_URL: /cartes.gouv.fr-editeur-carto/pr-preview/pr-${{ github.event.number }}
-              run: VITE_OIDC_USE_MOCK=true API_URL=$api_url npx vite build --mode demo
+              run: VITE_OIDC_USE_MOCK=true API_URL=${{ env.api_url }} npx vite build --mode demo
 
             - name: Deploy preview
               uses: rossjrw/pr-preview-action@v1
