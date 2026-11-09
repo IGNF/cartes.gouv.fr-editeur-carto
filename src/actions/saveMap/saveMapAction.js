@@ -72,9 +72,9 @@ async function onOpen(e) {
 function addThemes(themes, select) {
     const keys = Object.keys(themes).sort((a, b) => {
         if (themes[a].id < 0) {
-            return -1;
-        } else if (themes[b].id < 0) {
             return 1;
+        } else if (themes[b].id < 0) {
+            return -1;
         }
         return themes[a].name.localeCompare(themes[b].name);
     });
