@@ -110,7 +110,6 @@ class Charte extends BaseObject {
         }
         return ol_ext_element.create(options.type, btnOptions);
     }
-
     /** Définit les informations du service
      * @param {ServiceOptions} options Options du service
      */

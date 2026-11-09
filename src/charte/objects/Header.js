@@ -152,6 +152,10 @@ class Header extends BaseObject {
             this.setBadge(options.badge);
         }
 
+        if (options.beta) {
+            this.setBeta(options.beta);
+        }
+
         if (options.operator) {
             this.setOperator(options.operator);
         }
@@ -179,6 +183,29 @@ class Header extends BaseObject {
                 text: options.text,
             });
             this.title.querySelector("p").appendChild(badge);
+        }
+    }
+
+    /**
+     * Ajoute un badge bêta.
+     *
+     * @see {@link https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/badge} Composant badge
+     * @see {@link https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/en-tete/code-de-l-en-tete#variante-avec-badge-beta} Header avec adge beta
+     *
+     * @param {boolean} beta Si vrai, ajoute le badge bêta
+     */
+    setBeta(beta) {
+        const betaBadge = this.title.querySelector("p > span.fr-badge.fr-badge--sm.fr-badge--green-emeraude");
+        const hasBeta = betaBadge?.textContent === "BETA";
+        if (beta && !hasBeta) {
+            if (!hasBeta) {
+                const beta = document.createElement("span");
+                beta.className = "fr-badge fr-badge--sm fr-badge--green-emeraude";
+                beta.textContent = "BETA";
+                this.title.querySelector("p").appendChild(beta);
+            }
+        } else if (!beta && hasBeta) {
+            betaBadge?.remove();
         }
     }
 

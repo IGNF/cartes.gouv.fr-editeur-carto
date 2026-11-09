@@ -17,6 +17,7 @@ charte.setService({
         colorClass: "fr-badge--yellow-tournesol",
         icon: "fr-icon-brush-fill",
     },
+    beta: true,
 });
 
 charte.setDescription(i18next.t("charte:footer.description"));
@@ -78,10 +79,6 @@ charte.addFooterLink({
 charte.addFooterLink({
     title: i18next.t("charte:footer.links.personalData"),
     href: "https://cartes.gouv.fr/donnees-personnelles",
-});
-charte.addFooterLink({
-    title: i18next.t("charte:footer.links.cookies"),
-    href: "#",
 });
 charte.addFooterButton(i18next.t("charte:footer.links.displaySettings"), {
     icon: "fr-icon-theme-fill",

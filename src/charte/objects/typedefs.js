@@ -6,6 +6,7 @@
  * @property {string} [href] Lien associé
  * @property {OperatorLogo} [operator] Logo partenaire
  * @property {BadgeOptions} [badge] Badge
+ * @property {Boolean} [beta] Ajoute un badge beta. Faux par défaut.
  */
 
 /**
