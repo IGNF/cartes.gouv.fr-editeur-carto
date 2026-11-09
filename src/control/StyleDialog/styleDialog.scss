@@ -4,10 +4,6 @@
     min-width: 480px;
 }
 
-.fr-modal__body {
-    max-height: calc(100dvh - 4rem);
-}
-
 .GPF-dialog[id*="style-dialog"] {
     @include mix.respond-from("sm") {
         top: 4rem;

@@ -43,4 +43,7 @@
     }
     .fr-modal__content {
     }
+    .fr-notice--warning:empty {
+        display: none;
+    }
 }
