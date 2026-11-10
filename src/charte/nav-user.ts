@@ -1,7 +1,7 @@
 import charte from "./charte.js";
 import "./nav-user.scss";
-import { getOidc } from "../oidc";
-import i18next from "../i18n/index";
+import { getOidc } from "../oidc.js";
+import i18next from "../i18n/i18n.js";
 
 // Menu
 export const account = charte.getHeaderMenu({
@@ -56,7 +56,7 @@ document.documentElement.addEventListener("dsfr.start", () => {
     // Bouton de déconnexion
     let disconnect = account.getMenu("disconnect");
     disconnect.forEach((btn) => {
-        btn.link.addEventListener("click", async () => {
+        btn.link?.addEventListener("click", async () => {
             const oidc = await getOidc();
             oidc.logout({ redirectTo: "specific url", url: "/" });
         });

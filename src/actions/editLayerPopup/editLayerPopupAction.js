@@ -1,5 +1,5 @@
 import Action from "../Action.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import { getControlLabels } from "../../i18n/controlLabels";
 import ol_ext_element from "ol-ext/util/element.js";
 import PopupForm from "../../control/StyleDialog/popupForm.js";

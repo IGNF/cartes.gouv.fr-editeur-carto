@@ -1,7 +1,7 @@
 import { createOidc, type OidcInitializationError } from "oidc-spa/core";
 import { z } from "zod";
 import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
-import i18next from "./i18n/index";
+import i18next from "./i18n/i18n";
 
 const prOidc = createOidc({
     // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration

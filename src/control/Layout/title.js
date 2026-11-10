@@ -2,7 +2,7 @@ import TabNavItem from "geopf-extensions-openlayers/src/packages/Controls/Toggle
 import story from "../../story.js";
 import { addMessage, removeMessage, setDisabled } from "../../utils/utils.js";
 import { getTitle, setLogo, setTitle } from "../../utils/story.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 ///// VALEURS PAR DÉFAUTS /////
 

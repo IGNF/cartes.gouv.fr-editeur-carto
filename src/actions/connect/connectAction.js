@@ -1,5 +1,5 @@
 import Action from "../../actions/Action.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import content from "./connect.html?raw";
 import { translateHtml } from "../../i18n/translateHtml";
 import "./connect.scss";

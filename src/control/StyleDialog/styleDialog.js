@@ -12,7 +12,7 @@ import StyleDialog from "geopf-extensions-openlayers/src/packages/Controls/Style
 import "./styleDialog.scss";
 import { SelectEvent } from "ol/interaction/Select.js";
 import charte from "../../charte/charte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import { getControlLabels } from "@/i18n/controlLabels.js";
 
 const forms = [styleForm, labelForm];

@@ -4,7 +4,7 @@ import introDialog from "../dialogs/introDialog";
 import { getOidc } from "../oidc";
 import { carte } from "../story";
 import { setInert, unsetInert } from "../utils/inert";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 export type SearchParams = {
     /** Id de la carte */

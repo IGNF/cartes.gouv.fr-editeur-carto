@@ -1,5 +1,5 @@
 import "./version.js";
-import i18next from "./i18n/index";
+import i18next from "./i18n/i18n";
 import "./charte/dsfr.js";
 import "./charte/navigation.js";
 import "./actions/actions.js";

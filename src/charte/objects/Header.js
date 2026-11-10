@@ -1,7 +1,7 @@
 import BaseObject from "ol/Object.js";
 import ol_ext_element from "ol-ext/util/element.js";
 import getUid from "../../utils/getUid.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 /** Header */
 class Header extends BaseObject {
@@ -196,12 +196,12 @@ class Header extends BaseObject {
      */
     setBeta(beta) {
         const betaBadge = this.title.querySelector("p > span.fr-badge.fr-badge--sm.fr-badge--green-emeraude");
-        const hasBeta = betaBadge?.textContent === "BETA";
+        const hasBeta = betaBadge?.textContent === i18next.t("common:beta");
         if (beta && !hasBeta) {
             if (!hasBeta) {
                 const beta = document.createElement("span");
                 beta.className = "fr-badge fr-badge--sm fr-badge--green-emeraude";
-                beta.textContent = "BETA";
+                beta.textContent = i18next.t("common:beta");
                 this.title.querySelector("p").appendChild(beta);
             }
         } else if (!beta && hasBeta) {

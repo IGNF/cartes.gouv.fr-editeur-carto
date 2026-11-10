@@ -4,7 +4,7 @@
 
 import Bar from "ol-ext/control/Bar.js";
 import Toggle from "ol-ext/control/Toggle.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 const distanceLabel = document.createElement("span");
 distanceLabel.textContent = i18next.t("actions:measure.distance");

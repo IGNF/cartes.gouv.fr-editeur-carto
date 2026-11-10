@@ -15,3 +15,9 @@
     -webkit-mask-image: url("./icons/draggable-fill.svg");
     mask-image: url("./icons/draggable-fill.svg");
 }
+
+.fr-icon-extract::before,
+.fr-icon-extract::after {
+    -webkit-mask-image: url("./icons/extract.svg");
+    mask-image: url("./icons/extract.svg");
+}

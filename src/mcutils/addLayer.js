@@ -2,7 +2,7 @@ import VectorStyle from "mcutils/layer/VectorStyle.js";
 // import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import carte from "../carte.js";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 /**
  *

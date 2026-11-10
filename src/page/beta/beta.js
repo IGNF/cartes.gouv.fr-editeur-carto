@@ -3,7 +3,7 @@ import Beta from "../../control/Beta/Beta.js";
 import charte from "../../charte/charte.js";
 import Charte from "../../charte/objects/Charte.js";
 import "./beta.scss";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 // Deux badges pour éviter qu'ils changent de place
 const betaMap = new Beta({

@@ -1,5 +1,5 @@
 import carte from "../../carte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 import Catalog from "geopf-extensions-openlayers/src/packages/Controls/Catalog/Catalog.js";
 
