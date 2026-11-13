@@ -9,6 +9,9 @@ dialog[data-action-id="edit-layer-style"] {
     @include mix.respond-from("sm") {
         top: 4rem;
     }
+    .fr-notice--warning:empty {
+        display: none;
+    }
 }
 
 .edit-layer-style-content {

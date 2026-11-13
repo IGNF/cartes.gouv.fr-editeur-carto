@@ -46,7 +46,7 @@ const connectAction = new Action({
         },
         {
             label: i18next.t("actions:connect.createMap"),
-            className: "fr-icon-arrow-right-s-line fr-btn--icon-right",
+            className: "fr-icon-arrow-right-s-line fr-btn--icon-right createMap",
             kind: 0,
             close: true,
             callback: (e) => {

@@ -1,3 +1,4 @@
+[data-role="storymap"][data-drop]:after,
 [data-role="map"][data-drop]:after {
     content: "";
     inset: 0;

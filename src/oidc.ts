@@ -1,28 +1,50 @@
 import { createOidc, type OidcInitializationError } from "oidc-spa/core";
 import { z } from "zod";
+import { createMockOidc } from "oidc-spa/core-mock";
 import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
 import i18next from "./i18n/i18n";
 
-const prOidc = createOidc({
-    // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
+const decodedIdTokenSchema = z.object({
+    preferred_username: z.string(),
+    email: z.string(),
+});
 
-    issuerUri: `${iamUrl}/realms/${iamRealm}`,
-    // issuerUri: "http://localhost:8000",
-    clientId: iamClientId,
-    // Permet de gérer la redirection dans le cas de l'appli déployé
-    // (sinon renvoi sur "/", donc sur l'entrée carto)
-    BASE_URL: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
+// Créé un mock si besoin
+const prOidc = import.meta.env.VITE_OIDC_USE_MOCK
+    ? createMockOidc({
+          // Optional:
+          mockedParams: {
+              issuerUri: `${iamUrl}/realms/${iamRealm}`,
+              // issuerUri: "http://localhost:8000",
+              clientId: iamClientId,
+          },
+          mockedTokens: {
+              decodedIdToken: {
+                  email: "mock.email@test.com",
+                  preferred_username: "Mocked User",
+              } satisfies z.infer<typeof decodedIdTokenSchema>,
+              // accessToken: "mocked access token",
+              // ...
+          },
+          autoLogin: true,
+      })
+    : createOidc({
+          // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
 
-    debugLogs: import.meta.env.DEV,
+          issuerUri: `${iamUrl}/realms/${iamRealm}`,
+          // issuerUri: "http://localhost:8000",
+          clientId: iamClientId,
+          // Permet de gérer la redirection dans le cas de l'appli déployé
+          // (sinon renvoi sur "/", donc sur l'entrée carto)
+          BASE_URL: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
 
-    // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
-    autoLogin: true,
+          debugLogs: import.meta.env.DEV,
 
-    decodedIdTokenSchema: z.object({
-        preferred_username: z.string(),
-        email: z.string(),
-    }),
-}).catch((error) => error as OidcInitializationError);
+          // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
+          autoLogin: true,
+
+          decodedIdTokenSchema: decodedIdTokenSchema,
+      }).catch((error) => error as OidcInitializationError);
 
 if (prOidc instanceof Error) {
     const oidcInitializationError = prOidc;
