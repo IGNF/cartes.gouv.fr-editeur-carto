@@ -1,0 +1,85 @@
+{
+ "param": {
+  "lon": 2,
+  "lat": 47,
+  "zoom": 6,
+  "rot": 0,
+  "controlParams": {
+   "zoomBtn": true,
+   "scaleLine": true,
+   "pSearchBar": false,
+   "legend": false,
+   "coords": false,
+   "selectLayer": true,
+   "geoloc": false,
+   "profil": false,
+   "printDlg": false
+  },
+  "proj": {
+   "valeur": "EPSG:4326"
+  }
+ },
+ "legende": {
+  "legendtitle": "Ma légende",
+  "lineHeight": 45,
+  "legendWidth": 300,
+  "legendParam": {
+   "width": 300,
+   "lineHeight": 45
+  },
+  "items": [],
+  "legendVisible": false
+ },
+ "layers": [
+  {
+   "id": 1,
+   "type": "Geoportail",
+   "name": "Plan IGN",
+   "title": "Plan IGN",
+   "visibility": true,
+   "opacity": 1,
+   "description": "Cartographie multi-échelles sur le territoire national, issue des bases de données vecteur de l’IGN, mis à jour régulièrement et réalisée selon un processus entièrement automatisé. Version actuellement en beta test",
+   "copyright": "",
+   "popupContent": {},
+   "grayscale": false,
+   "blendMode": "",
+   "minZoom": null,
+   "maxZoom": null,
+   "crop": {},
+   "layer": "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2"
+  },
+  {
+   "dessin": true,
+   "attributes": [],
+   "id": 2,
+   "type": "Vector",
+   "name": "",
+   "title": "Dessin",
+   "visibility": true,
+   "thumbnail": "personal-drawing",
+   "logo": "personal-drawing",
+   "opacity": 1,
+   "copyright": "",
+   "selectable": true,
+   "multiSelect": true,
+   "popupContent": {},
+   "grayscale": false,
+   "blendMode": "",
+   "minZoom": null,
+   "maxZoom": null,
+   "conditionStyle": [],
+   "mode": "vector",
+   "crop": {},
+   "data": {
+    "type": "FeatureCollection",
+    "decimals": 3,
+    "hashProperties": [],
+    "features": [],
+    "style": [],
+    "popupContent": []
+   }
+  }
+ ],
+ "symbolLib": [],
+ "version": 3.01
+}
