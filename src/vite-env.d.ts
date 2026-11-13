@@ -11,6 +11,7 @@ interface ImportMetaEnv {
     readonly IAM_URL: string;
     readonly IAM_REALM: string;
     readonly IAM_CLIENT_ID: string;
+    readonly VITE_OIDC_USE_MOCK: boolean;
     // more env variables...
 }
 
