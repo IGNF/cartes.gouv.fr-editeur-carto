@@ -191,23 +191,23 @@ class Action {
         this._content = value;
     }
 
-    /** @returns {ActionButton[]} */
+    /** @returns {FooterButton[]} */
     get buttons() {
         return this._buttons;
     }
 
-    /** @param {ActionButton[]} buttons */
+    /** @param {FooterButton[]} buttons */
     set buttons(buttons) {
         if (!Array.isArray(buttons)) return;
         this._buttons = buttons;
     }
 
-    /** @returns {ActionButton[]} */
+    /** @returns {FooterButton[]} */
     get items() {
         return this._items;
     }
 
-    /** @param {ActionButton[]} items */
+    /** @param {FooterButton[]} items */
     set items(items) {
         if (!Array.isArray(items)) return;
         this._items = items;
@@ -233,7 +233,7 @@ class Action {
 
     /**
      * Ajoute un bouton dans le buttons
-     * @param {ActionButton} button
+     * @param {FooterButton} button
      */
     addButton(button) {
         this._buttons.push(button);
@@ -242,7 +242,7 @@ class Action {
     /**
      * Récupère le bouton à un index donné
      * @param {number} index
-     * @returns {ActionButton|undefined}
+     * @returns {FooterButton|undefined}
      */
     getButton(index) {
         return this._buttons[index];

@@ -86,7 +86,7 @@ class Charte extends BaseObject {
      * @param {Object} options Options pour créer le bouton / lien
      *  @param {string} options.type Type du menu : button|a
      *  @param {string} options.label Label du bouton
-     *  @param {string} options.href Lien pour le type a
+     *  @param {string} [options.href] Lien pour le type a
      *  @param {string} options.icon Icône du bouton
      *  @param {string} options.action Action associée au bouton
      * @returns {HTMLElement} Le bouton créé ou trouvé

@@ -20,6 +20,7 @@ import "./page/page.js";
 // Custom CSS
 import "remixicon/fonts/remixicon.css";
 import "./css/index.scss";
+import { getOidc } from "./oidc";
 
 document.title = i18next.t("pages:document.title");
 document.querySelector('meta[name="description"]').setAttribute("content", i18next.t("pages:document.description"));
@@ -37,6 +38,24 @@ carte.once("read", () => {
 // introDialog.setAction(connectActionTest);
 
 introDialog.setAction(connectAction);
+(async () => {
+    const buttons = introDialog.querySelectorAll(`${introDialog.selectors.BUTTON_GROUP} button, ${introDialog.selectors.BUTTON_GROUP} a`);
+
+    const oidc = await getOidc();
+    if (oidc.isUserLoggedIn === false) {
+        buttons.forEach((btn) => {
+            console.log(btn);
+            const isHidden = btn.classList?.contains("fr-hidden");
+            btn.classList?.toggle("fr-hidden", isHidden);
+        });
+    } else {
+        buttons.forEach((btn) => {
+            const isHidden = btn.classList?.contains("fr-hidden");
+            btn.classList?.toggle("fr-hidden", !isHidden);
+        });
+    }
+})();
+
 const params = new URLSearchParams(window.location.search);
 if (params.get("edit")) {
     introDialog.close();

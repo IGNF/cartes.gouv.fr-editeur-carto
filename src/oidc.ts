@@ -1,8 +1,8 @@
-import { createOidc, type OidcInitializationError } from "oidc-spa/core";
+import { createOidc } from "oidc-spa/core";
 import { z } from "zod";
 import { createMockOidc } from "oidc-spa/core-mock";
 import { iamClientId, iamRealm, iamUrl, redirectUri } from "./env";
-import i18next from "./i18n/i18n";
+// import i18next from "./i18n/i18n";
 
 const decodedIdTokenSchema = z.object({
     preferred_username: z.string(),
@@ -27,8 +27,8 @@ const prOidc = import.meta.env.VITE_OIDC_USE_MOCK
               // ...
           },
 
-          autoLogin: true,
-          //   isUserInitiallyLoggedIn: false,
+          // autoLogin: true,
+          isUserInitiallyLoggedIn: false,
       })
     : createOidc({
           // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
@@ -43,36 +43,13 @@ const prOidc = import.meta.env.VITE_OIDC_USE_MOCK
           debugLogs: import.meta.env.DEV,
 
           // See: https://docs.oidc-spa.dev/v/v9/features/auto-login
-          autoLogin: true,
+          autoLogin: false,
 
           decodedIdTokenSchema: decodedIdTokenSchema,
-      }).catch((error) => error as OidcInitializationError);
-
-if (prOidc instanceof Error) {
-    const oidcInitializationError = prOidc;
-
-    // Use this to distinguish a misconfiguration from a temporary auth-server outage.
-    // NOTE: below references should use `oidcInitializationError`.
-    // @ts-ignore car renvoi une erreur de type puisqu'on est censé être toujours loggé
-    console.log(oidcInitializationError.isAuthServerLikelyDown);
-
-    // Developer-only diagnostic with likely cause and fix.
-    // Do not display this to end users.
-    import.meta.env.DEV && console.log(oidcInitializationError.message);
-
-    alert(i18next.t("notifications:authentication.unavailable"));
-
-    // Halt the app in a typed-safe way (nothing renders until you decide otherwise).
-    await new Promise<never>(() => {});
-}
+      });
 
 export async function getOidc() {
     const oidc = await prOidc;
-
-    if (oidc instanceof Error || !oidc.isUserLoggedIn) {
-        return undefined;
-    }
-
     return oidc;
 }
 
@@ -84,7 +61,7 @@ export async function getOidc() {
 export const getAuthHeader = async () => {
     const oidc = await getOidc();
 
-    if (oidc instanceof Error || !oidc.isUserLoggedIn) {
+    if (!oidc.isUserLoggedIn) {
         return undefined;
     }
 
@@ -99,12 +76,15 @@ export const getAuthHeader = async () => {
     };
 };
 /**
- * Retourne juste le header Authorization avec le token OIDC
- * Utile pour passer à des requêtes personnalisées
+ * Retourne les informations du jeton d'identité OIDC
  * Retourne undefined si l'utilisateur n'est pas connecté
  */
 export const getUserInfo = async () => {
     const oidc = await getOidc();
+
+    if (!oidc.isUserLoggedIn) {
+        return undefined;
+    }
 
     return oidc.getDecodedIdToken();
 };

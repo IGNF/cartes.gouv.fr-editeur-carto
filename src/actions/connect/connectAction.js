@@ -8,6 +8,7 @@ import carte from "../../carte.js";
 import charte from "../../charte/charte.js";
 import dirty, { setDirty } from "../../utils/dirtyMap";
 import { setInert, unsetInert } from "../../utils/inert.js";
+import { getOidc } from "@/oidc.js";
 
 /**
  * @type {import('../../control/Dialog/AbstractDialog.js').default}
@@ -22,7 +23,7 @@ let dialog;
  * @param {import('../../control/Dialog/AbstractDialog.js').default} e.target
  * Dialog utilisé par l'action
  */
-function onOpen(e) {
+async function onOpen(e) {
     dialog = e.target;
     setInert(carte);
 }
@@ -39,14 +40,28 @@ const connectAction = new Action({
     content: translateHtml(content),
     buttons: [
         {
+            label: i18next.t("actions:connect.connect"),
+            className: "fr-icon-arrow-right-s-line fr-btn--icon-right",
+            kind: 0,
+            callback: async () => {
+                const oidc = await getOidc();
+                if (oidc.isUserLoggedIn === false) {
+                    oidc.login({
+                        doesCurrentHrefRequiresAuth: false,
+                    });
+                }
+            },
+        },
+        {
             label: i18next.t("actions:connect.viewMaps"),
+            className: "fr-hidden",
             kind: 1,
             markup: "a",
             href: "/tableau-de-bord/editeur/cartes",
         },
         {
             label: i18next.t("actions:connect.createMap"),
-            className: "fr-icon-arrow-right-s-line fr-btn--icon-right createMap",
+            className: "fr-icon-arrow-right-s-line fr-btn--icon-right fr-hidden createMap",
             kind: 0,
             close: true,
             callback: (e) => {

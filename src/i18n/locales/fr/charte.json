@@ -51,6 +51,7 @@
         "account": {
             "dashboard": "Tableau de bord",
             "label": "Mon espace",
+            "login": "Se connecter",
             "logout": "Se déconnecter",
             "myAccount": "Mon compte"
         },

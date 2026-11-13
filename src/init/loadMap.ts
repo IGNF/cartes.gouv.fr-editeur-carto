@@ -36,7 +36,12 @@ export function loadMap() {
             true
         );
         getOidc()
-            .then(async () => {
+            .then(async (oidc) => {
+                if (oidc.isUserLoggedIn === false) {
+                    await oidc.login({ doesCurrentHrefRequiresAuth: true });
+                    return;
+                }
+
                 const { data: metadata, status: metadataStatus } = await api.map.getMapEditByEditId(editId);
                 const { data: map, status } = await api.map.getMapFileByEditId(editId);
                 if (metadataStatus !== 200) {

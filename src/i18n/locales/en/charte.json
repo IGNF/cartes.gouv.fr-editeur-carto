@@ -51,6 +51,7 @@
         "account": {
             "dashboard": "Dashboard",
             "label": "My space",
+            "login": "Sign in",
             "logout": "Sign out",
             "myAccount": "My account"
         },

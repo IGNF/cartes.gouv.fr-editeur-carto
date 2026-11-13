@@ -1,16 +1,26 @@
 import charte from "./charte.js";
 import "./nav-user.scss";
-import { getOidc } from "../oidc.js";
+import { getOidc } from "../oidc";
 import i18next from "../i18n/i18n.js";
+import { redirectUri } from "@/env.js";
 
 // Menu
+export const connect = charte.getHeaderButton({
+    icon: "fr-icon-account-fill",
+    action: "connect",
+    label: i18next.t("charte:navigation.account.login"),
+    type: "button",
+});
+
 export const account = charte.getHeaderMenu({
     icon: "fr-icon-account-fill",
     action: "connect",
     text: i18next.t("charte:navigation.account.label"),
 });
+const accountBtn = account.element as HTMLElement;
+accountBtn.style.display = "none";
 
-/* User menu */
+// /* User menu */
 account.addMenu([
     {
         type: "description",
@@ -43,12 +53,30 @@ account.addMenu([
 (async () => {
     const oidc = await getOidc();
 
-    const decodedIdToken = oidc.getDecodedIdToken();
+    if (oidc.isUserLoggedIn === true) {
+        const decodedIdToken = oidc.getDecodedIdToken();
 
-    charte.getHeaderMenu({ action: "connect" }).setMenu("user", {
-        label: decodedIdToken.preferred_username,
-        info: decodedIdToken.email,
-    });
+        account.setMenu("user", {
+            label: decodedIdToken.preferred_username,
+            info: decodedIdToken.email,
+        });
+
+        // Affiche / cache les boutons correspondants
+        accountBtn.style.display = "flex";
+        connect.style.display = "none";
+    } else {
+        // Affiche / cache les boutons correspondants
+        accountBtn.style.display = "none";
+        connect.style.display = "flex";
+
+        // Se connecte au clic
+        connect.addEventListener("click", () => {
+            oidc.login({
+                doesCurrentHrefRequiresAuth: false,
+                redirectUrl: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
+            });
+        });
+    }
 })();
 
 // Attend que le DSFR soit prêt pour la duplication du header
@@ -58,7 +86,10 @@ document.documentElement.addEventListener("dsfr.start", () => {
     disconnect.forEach((btn) => {
         btn.link?.addEventListener("click", async () => {
             const oidc = await getOidc();
-            oidc.logout({ redirectTo: "specific url", url: "/" });
+
+            if (oidc.isUserLoggedIn) {
+                oidc.logout({ redirectTo: "specific url", url: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL });
+            }
         });
     });
 });

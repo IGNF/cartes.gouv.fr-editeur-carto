@@ -7,7 +7,12 @@ div:has(.ol-beta.beta-map) .ol-control.legendBt {
     bottom: 3rem;
 }
 
-// Bouton je donne mon avis
-div:has(.ol-beta.beta-map) .ol-control.ol-bar.temp-form-button {
+// Bouton je donne mon avis avec bouton de légende
+div:has(.ol-beta.beta-map):not(:has(.ol-control.legendBt[style*="display: none"])) .ol-control.ol-bar.temp-form-button {
     bottom: 6.375rem;
+}
+
+// Bouton je donne mon avis sans légende affichée
+div:has(.ol-beta.beta-map):has(.ol-control.legendBt[style*="display: none"]) .ol-control.ol-bar.temp-form-button {
+    bottom: 3rem;
 }
