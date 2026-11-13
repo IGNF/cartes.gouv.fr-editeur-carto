@@ -27,6 +27,30 @@ jobs:
               if: github.event.action != 'closed'
               run: npm install
 
+            - name: Use variables
+              run: |
+                  echo "Test sans variables d'environnements (api_url) : $api_url"
+                  echo "Test sans variables d'environnements (env.api_url) : ${{ env.api_url }}"
+                  echo "Test sans variables d'environnements (env.API_URL) : ${{ env.API_URL }}"
+                  echo "Test sans variables d'environnements (vars.api_url) : ${{ vars.api_url }}"
+                  echo "Test sans variables d'environnements (vars.API_URL) : ${{ vars.API_URL }}"
+                  echo "TEST_API_URL sans double { : $TEST_API_URL"
+                  echo "ENV_API_URL sans double { : $ENV_API_URL"
+                  echo "ENV_API_URL_BIS sans double { : $ENV_API_URL_BIS"
+                  echo "VARS_API_URL sans double { : $VARS_API_URL"
+                  echo "VARS_API_URL_BIS sans double { : $VARS_API_URL_BIS"
+                  echo "TEST_API_URL avec double { : ${{ env.TEST_API_URL }}"
+                  echo "ENV_API_URL sans double { : ${{ env.ENV_API_URL }}"
+                  echo "ENV_API_URL_BIS sans double { : ${{ env.ENV_API_URL_BIS }}"
+                  echo "VARS_API_URL sans double { : ${{ env.VARS_API_URL }}"
+                  echo "VARS_API_URL_BIS sans double { : ${{ env.VARS_API_URL_BIS }}"
+              env:
+                  TEST_API_URL: $api_url
+                  ENV_API_URL: ${{ env.api_url }}
+                  ENV_API_URL_BIS: ${{ env.API_URL }}
+                  VARS_API_URL: ${{ vars.api_url }}
+                  VARS_API_URL_BIS: ${{ vars.API_URL }}
+
             - name: Build
               if: github.event.action != 'closed'
               env:
