@@ -35,8 +35,13 @@ carte.once("read", () => {
  * UNIQUEMENT EN TEST, SI LOGIN NON SOUHAITÉ
  */
 // introDialog.setAction(connectActionTest);
+
 introDialog.setAction(connectAction);
-introDialog.open();
+const params = new URLSearchParams(window.location.search);
+if (params.get("edit")) {
+    introDialog.close();
+    setTimeout(() => introDialog.querySelector(".intro-dialog_footer button.createMap").click(), 500);
+}
 
 /* DEBUG */
 if (import.meta.env.DEV) {

@@ -400,7 +400,7 @@ class ConditionContainer extends BaseObject {
                     li.id = "combobox-" + listId + "-item-" + i;
                     li.textContent = value;
                     combobox.appendChild(li);
-                    li.addEventListener("click", () => (inputNode.value = value));
+                    li.addEventListener("pointerdown", () => (inputNode.value = value));
                 });
                 currentValue = "";
                 inputNode.ariaExpanded = "true";
@@ -426,7 +426,9 @@ class ConditionContainer extends BaseObject {
                 inputNode.ariaExpanded = "true";
             });
             // Hide on blur
-            inputNode.addEventListener("blur", () => (inputNode.ariaExpanded = "false"));
+            inputNode.addEventListener("blur", (e) => {
+                setTimeout(() => (inputNode.ariaExpanded = "false"), 100);
+            });
             // filter on key down
             inputNode.addEventListener("keyup", (e) => {
                 switch (e.key) {

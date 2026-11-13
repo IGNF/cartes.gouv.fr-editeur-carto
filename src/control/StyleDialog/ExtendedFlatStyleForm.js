@@ -275,7 +275,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
 
         // Alerte pour le style au calque
         const divAlert = document.createElement("div");
-        divAlert.className = "fr-alert fr-alert--warning fr-alert--small";
+        divAlert.className = "fr-notice fr-notice--warning";
         this.getContent().appendChild(divAlert);
 
         // Ajoute les inputs personnalisés
@@ -469,14 +469,23 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
      */
     showError(statistic = false) {
         this.getContent().dataset.conditionStyle = "";
-        const alert = this.getContent().querySelector(".style-form-container .fr-alert");
-        const message = document.createElement("p");
+        const alert = this.getContent().querySelector(".style-form-container .fr-notice");
+        const message = document.createElement("div");
+        message.className = "fr-container";
+        alert.replaceChildren(message);
+        // Container
+        const container = document.createElement("div");
+        container.className = "fr-notice__body";
+        message.appendChild(container);
+        const title = document.createElement("h3");
+        title.className = "fr-notice__title";
+        container.appendChild(title);
+        // Info
         const styleType = statistic ? (this.labels.statistical ?? "statistique") : (this.labels.conditional ?? "conditionnel");
-        message.textContent = (
+        title.textContent = (
             this.labels.styleNotIndividuallyEditable ??
             `Un style {{type}} est défini sur cette couche. Le style des objets de la couche ne peut pas être modifié individuellement.`
         ).replace("{{type}}", styleType);
-        alert.replaceChildren(message);
     }
 
     /**
@@ -741,6 +750,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         input.type = "text";
         input.id = "style-input-name-" + getUid();
         input.className = "fr-input style-name";
+        input.placeholder = this.labels.namePlaceholder ?? "Nom du symbole";
         inputGroup.appendChild(input);
 
         return preview;

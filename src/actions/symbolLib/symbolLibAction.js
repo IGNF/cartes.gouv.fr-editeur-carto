@@ -288,7 +288,7 @@ class SymbolLibAction extends Action {
         if (symbolList.querySelectorAll(".symbol-lib-item").length === 0) {
             element.create("div", {
                 className: "fr-alert fr-alert--info fr-info--small",
-                text: i18next.t(this.typeGeom ? "actions:symbolLib.emptyForGeometry" : "actions:symbolLib.empty"),
+                html: i18next.t(filter !== "all" ? "actions:symbolLib.emptyForGeometry" : "actions:symbolLib.empty"),
                 parent: symbolList,
             });
         }

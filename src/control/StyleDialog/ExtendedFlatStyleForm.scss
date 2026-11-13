@@ -19,7 +19,8 @@
 }
 
 .style-form-container {
-    .fr-alert {
+    .fr-alert,
+    .fr-notice {
         display: none;
     }
     &[data-condition-style] {
@@ -28,7 +29,8 @@
         .style-form__footer {
             display: none !important;
         }
-        .fr-alert {
+        .fr-alert,
+        .fr-notice {
             display: block;
         }
     }

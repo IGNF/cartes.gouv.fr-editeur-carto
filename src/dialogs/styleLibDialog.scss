@@ -1,3 +1,5 @@
+@use "../css/mixins.scss" as mix;
+
 [id^="style-lib-modal"] {
     .fr-modal__header {
         background-color: var(--background-open-blue-france);
@@ -9,6 +11,9 @@
         gap: 0.5rem;
         align-items: center;
         justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 99;
 
         span:before {
             vertical-align: calc((1em - var(--icon-size)) * 0.5);
@@ -38,6 +43,28 @@
             }
         }
     }
+    .fr-modal__body {
+        max-height: calc(100vh - 5rem);
+    }
+    @include mix.respond-from("md") {
+        .fr-modal__body {
+            max-height: 80vh;
+        }
+    }
+
     .fr-modal__content {
+        margin-bottom: 0;
+    }
+    .edit-style__content {
+        padding-bottom: 1rem;
+    }
+    .fr-notice--warning:empty {
+        display: none;
+    }
+
+    .edit-style__footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 99;
     }
 }
