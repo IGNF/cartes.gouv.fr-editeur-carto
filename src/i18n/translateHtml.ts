@@ -1,4 +1,5 @@
-import i18next from "./index";
+import type { ParseKeys } from "i18next";
+import i18next from "./i18n";
 import { translationAttributes } from "./htmlAttributes";
 
 /**
@@ -21,7 +22,7 @@ export function translateHtml(html: string): string {
             }
             // textContent et setAttribute traitent la traduction comme du texte :
             // l'échapper ici provoquerait un double encodage lors de la sérialisation.
-            const text = i18next.t(key, { interpolation: { escapeValue: false } });
+            const text = i18next.t(key as ParseKeys, { interpolation: { escapeValue: false } });
             if (attribute) {
                 element.setAttribute(attribute, text);
             } else {

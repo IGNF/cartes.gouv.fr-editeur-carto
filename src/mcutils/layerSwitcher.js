@@ -12,7 +12,7 @@ import Alert from "../control/Alert/Alert";
 import editLayerInfoAction from "../actions/editLayerInfo/editLayerInfoAction.js";
 import editLayerPopupAction from "../actions/editLayerPopup/editLayerPopupAction.js";
 import VectorStyle from "mcutils/layer/VectorStyle.js";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 const switcher = new LayerSwitcher({
     options: {

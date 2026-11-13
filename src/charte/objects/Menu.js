@@ -1,17 +1,22 @@
 import ol_ext_element from "ol-ext/util/element.js";
 import BaseObject from "ol/Object.js";
 import getUid from "../../utils/getUid.js";
+import i18next from "../../i18n/i18n";
 
 /** Menu */
 class Menu extends BaseObject {
     /**
-     * @param {Objet} options
-     *  @param {string} options.type menu type description|link|option
-     *  @param {string} options.label
-     *  @param {string} options.info information for type description
-     *  @param {string} options.href information for type link
-     *  @param {string} options.icon
-     *  @param {string} options.action
+     * @param {Object} options
+     *  @param {string} [options.type] menu type description|link|option
+     *  @param {string} [options.label]
+     *  @param {string} [options.info] information for type description
+     *  @param {string} [options.href] information for type link
+     *  @param {string} [options.icon]
+     *  @param {string} [options.action]
+     *  @param {string} [options.html] Button HTML content
+     *  @param {string} [options.text] Button text
+     *  @param {string} [options.title] Button title
+     *  @param {HTMLElement} [options.parent] Parent element
      */
     constructor(options) {
         super();
@@ -63,6 +68,7 @@ class Menu extends BaseObject {
     /** Get Menu
      * @param {string|Element} action
      * @private
+     * @returns {{parent: HTMLElement|Text, element:string|Element, type: string, link: HTMLAnchorElement}}
      */
     _getMenu(action) {
         let li = action;
@@ -78,7 +84,7 @@ class Menu extends BaseObject {
     }
     /** Get all menu in the page for an action
      * @param {string} action
-     * @returns {Array<Element>}
+     * @returns {Array<{parent: HTMLElement|Text, element:string|Element, type: string, link: HTMLAnchorElement}>}
      */
     getMenu(action) {
         const parent = document.querySelectorAll('nav[role="navigation"] [data-action="' + this._action + '"]');
@@ -139,82 +145,89 @@ class Menu extends BaseObject {
     /** SetMenu info
      * @param {string} action
      * @param {Object} options
-     *  @param {string} options.title
-     *  @param {string} options.href
-     *  @param {string} options.label
-     *  @param {string} options.info
-     *  @param {Object} options.data
+     *  @param {string} [options.title]
+     *  @param {string} [options.href]
+     *  @param {string} [options.label]
+     *  @param {string} [options.info]
+     *  @param {Object} [options.data]
      */
     setMenu(action, options) {
         this.getMenu(action).forEach((m) => this._setMenu(m, options));
     }
     /** Add a new menu
-     * @param { MenuOptions|Array<MenuOptions> }
+     * @param { Array<MenuOptions> } array
      */
-    addMenu(options) {
-        if (Array.isArray(options)) {
-            options.forEach((o) => this.addMenu(o));
+    addMenu(array) {
+        if (!Array.isArray(array)) {
             return;
         }
-        const li = ol_ext_element.create("LI", {
-            className: "fr-menu__item",
-            "data-type": options.type,
-            parent: this._menuList,
-        });
-        if (options.action) {
-            li.dataset.action = options.action;
-        }
-        switch (options.type) {
-            case "description": {
-                const desc = ol_ext_element.create("DIV", {
-                    className: "fr-description",
-                    id: getUid("description"),
-                    parent: li,
-                });
-                ol_ext_element.create("DIV", {
-                    className: "fr-description__label fr-text--bold fr-text--sm fr-text-action-high--grey",
-                    text: options.label,
-                    parent: desc,
-                });
-                ol_ext_element.create("DIV", {
-                    className: "fr-description__info fr-text--xs fr-text-mention--grey",
-                    text: options.info,
-                    parent: desc,
-                });
-                break;
+        array.forEach((options) => {
+            const li = ol_ext_element.create("LI", {
+                className: "fr-menu__item",
+                "data-type": options.type,
+                parent: this._menuList,
+            });
+            if (options.action) {
+                li.dataset.action = options.action;
             }
-            case "link": {
-                let a = ol_ext_element.create("A", {
-                    id: getUid("access__link"),
-                    className: (options.icon || "") + " fr-link--icon-left fr-access__link fr-nav__link fr-access__link fr-nav__link",
-                    title: options.title || "",
-                    text: options.label || "no label",
-                    href: options.href,
-                    parent: li,
-                });
-                if (options.external) {
-                    a.target = "_blank";
-                    a.rel = "noopener external";
+            switch (options.type) {
+                case "description": {
+                    const desc = ol_ext_element.create("DIV", {
+                        className: "fr-description",
+                        id: getUid("description"),
+                        parent: li,
+                    });
+                    ol_ext_element.create("DIV", {
+                        className: "fr-description__label fr-text--bold fr-text--sm fr-text-action-high--grey",
+                        text: options.label,
+                        parent: desc,
+                    });
+                    ol_ext_element.create("DIV", {
+                        className: "fr-description__info fr-text--xs fr-text-mention--grey",
+                        text: options.info,
+                        parent: desc,
+                    });
+                    break;
                 }
-                break;
+                case "link": {
+                    let a = ol_ext_element.create("A", {
+                        id: getUid("access__link"),
+                        className: (options.icon || "") + " fr-link--icon-left fr-access__link fr-nav__link fr-access__link fr-nav__link",
+                        title: options.title || "",
+                        text: options.label || "no label",
+                        href: options.href,
+                        parent: li,
+                    });
+                    if (options.external) {
+                        a.target = "_blank";
+                        a.rel = "noopener external";
+                    }
+                    if (options.beta) {
+                        const beta = document.createElement("span");
+                        beta.className = "fr-badge fr-badge--sm fr-badge--green-emeraude fr-ml-1w";
+                        beta.textContent = i18next.t("common:beta");
+                        a.appendChild(beta);
+                    }
+                    break;
+                }
+                case "option": {
+                    li.classList.add("fr-menu__option");
+                    const opt = ol_ext_element.create("DIV", {
+                        className: "fr-option",
+                        parent: li,
+                    });
+                    ol_ext_element.create("A", {
+                        id: getUid("access__link"),
+                        className: (options.icon || "") + " fr-option__btn fr-btn fr-btn--sm fr-btn--icon-left fr-btn--tertiary",
+                        title: options.title || "",
+                        text: options.label || "no label",
+                        href: options.href,
+                        parent: opt,
+                    });
+                    break;
+                }
             }
-            case "option": {
-                li.classList.add("fr-menu__option");
-                const opt = ol_ext_element.create("DIV", {
-                    className: "fr-option",
-                    parent: li,
-                });
-                ol_ext_element.create("A", {
-                    id: getUid("access__link"),
-                    className: (options.icon || "") + " fr-option__btn fr-btn fr-btn--sm fr-btn--icon-left fr-btn--tertiary",
-                    title: options.title || "",
-                    text: options.label || "no label",
-                    href: options.href,
-                    parent: opt,
-                });
-                break;
-            }
-        }
+        });
     }
 }
 

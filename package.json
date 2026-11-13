@@ -1,11 +1,22 @@
 {
     "name": "editeur-carto",
-    "private": true,
-    "version": "0.0.0",
+    "version": "v0.1-beta.27",
     "type": "module",
-    "description": "Test de l'éditeur carto, entre extgpf, mcutils et dsfr personnalisé",
+    "description": "Interface cartographique permettant de créer et partager des cartes. Brique logicielle de cartes.gouv.fr",
     "author": "IGNF",
     "license": "GPL-3",
+    "keywords": [
+        "ol-ext",
+        "macarte",
+        "javascript",
+        "openlayers",
+        "dsfr",
+        "cartes.gouv.fr"
+    ],
+    "bugs": {
+        "url": "https://github.com/IGNF/cartes.gouv.fr-editeur-carto/issues"
+    },
+    "homepage": "https://github.com/IGNF/cartes.gouv.fr-editeur-carto#readme",
     "scripts": {
         "start": "vite --force",
         "dev": "vite",
@@ -13,6 +24,7 @@
         "build": "npm run lint && vite build",
         "publish": "npm run init && npm run lint && vite build",
         "clean": "vite --force",
+        "check-type": "tsc -b",
         "test": "npm run test:unit",
         "test:unit": "vitest --reporter=verbose run",
         "init": "npm run extract",

@@ -6,6 +6,7 @@
  * @property {string} [href] Lien associé
  * @property {OperatorLogo} [operator] Logo partenaire
  * @property {BadgeOptions} [badge] Badge
+ * @property {boolean} [beta] Ajoute un badge beta. Faux par défaut.
  */
 
 /**
@@ -40,4 +41,17 @@
  * @typedef FooterBottomLink Options d'un lien du bas du footer
  * @property {string} title Texte du lien
  * @property {string} href URL du lien
+ */
+
+/**
+ * @typedef MenuOptions Options d'une entrée ajoutée avec Menu.addMenu
+ * @property {"description"|"link"|"option"} type Type de l'entrée
+ * @property {string} [label] Libellé de l'entrée. Par défaut « no label » pour les types link et option.
+ * @property {string} [info] Texte complémentaire pour le type description
+ * @property {string} [href] URL du lien pour les types link et option
+ * @property {string} [title] Attribut title du lien pour les types link et option
+ * @property {string} [icon] Classe de l'icône pour les types link et option
+ * @property {string} [action] Identifiant data-action utilisé pour retrouver et modifier l'entrée
+ * @property {boolean} [external] Ouvre le lien dans un nouvel onglet pour le type link. Faux par défaut.
+ * @property {boolean} [beta] Ajoute une icône beta dans le lien.
  */

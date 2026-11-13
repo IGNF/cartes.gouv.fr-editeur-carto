@@ -1,11 +1,11 @@
 import charte from "./charte.js";
 import displayDialog from "../dialogs/displayDialog.js";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 // Set service info
 charte.setService({
     service: i18next.t("charte:header.service.name") + " ",
-    href: "./",
+    href: "/creer-une-carte",
     title: i18next.t("charte:header.service.title"),
     baseline: i18next.t("charte:header.service.baseline"),
     operator: {
@@ -78,10 +78,6 @@ charte.addFooterLink({
 charte.addFooterLink({
     title: i18next.t("charte:footer.links.personalData"),
     href: "https://cartes.gouv.fr/donnees-personnelles",
-});
-charte.addFooterLink({
-    title: i18next.t("charte:footer.links.cookies"),
-    href: "#",
 });
 charte.addFooterButton(i18next.t("charte:footer.links.displaySettings"), {
     icon: "fr-icon-theme-fill",

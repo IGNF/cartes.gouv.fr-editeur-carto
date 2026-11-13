@@ -41,7 +41,7 @@
         },
         "menu": "Menu",
         "service": {
-            "baseline": "Le service public des cartes et données du territoire",
+            "baseline": "Notre territoire commun",
             "createBadge": "Créer",
             "name": "cartes.gouv.fr",
             "title": "Accueil - Cartes.gouv.fr - IGN France"
@@ -51,6 +51,7 @@
         "account": {
             "dashboard": "Tableau de bord",
             "label": "Mon espace",
+            "login": "Se connecter",
             "logout": "Se déconnecter",
             "myAccount": "Mon compte"
         },
@@ -66,7 +67,9 @@
             "exploreMaps": "Explorer les cartes",
             "label": "Services",
             "publishData": "Publier une donnée",
-            "searchData": "Rechercher une donnée"
+            "searchData": "Rechercher une donnée",
+            "extract": "Extraire une donnée",
+            "collaborate": "Contribuer aux données"
         }
     }
 }

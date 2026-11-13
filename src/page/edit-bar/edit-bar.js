@@ -1,5 +1,5 @@
 import carte from "../../carte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 import Bar from "ol-ext/control/Bar.js";
 import Toggle from "ol-ext/control/Toggle.js";

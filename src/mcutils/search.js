@@ -4,7 +4,7 @@ import LocationAdvancedSearch from "geopf-extensions-openlayers/src/packages/Con
 import CoordinateAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/CoordinateAdvancedSearch.js";
 import ParcelAdvancedSearch from "geopf-extensions-openlayers/src/packages/Controls/SearchEngine/ParcelAdvancedSearch.js";
 import carte from "../carte.js";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 const insee = new InseeAdvancedSearch({
     name: i18next.t("controls:search.insee"),

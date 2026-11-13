@@ -55,12 +55,15 @@ class Charte extends BaseObject {
     }
     /** Récupère un menu existant ou en crée un nouveau
      * @param {Object} options Options du menu
-     *  @param {string} options.type Type de menu : description|link|option
-     *  @param {string} options.label Label du menu
-     *  @param {string} options.info Information pour le type description
-     *  @param {string} options.href Lien pour le type link
-     *  @param {string} options.icon Icône du menu
-     *  @param {string} options.action Action associée au menu
+     *  @param {string} [options.type] Type de menu : description|link|option
+     *  @param {string} [options.label] Label du menu
+     *  @param {string} [options.info] Information pour le type description
+     *  @param {string} [options.href] Lien pour le type link
+     *  @param {string} [options.icon] Icône du menu
+     *  @param {string} [options.action] Action associée au menu
+     *  @param {string} [options.html] Contenu HTML du bouton
+     *  @param {string} [options.text] Texte du bouton
+     *  @param {string} [options.title] Titre du bouton
      * @returns {Menu} Le menu trouvé ou créé
      */
     getHeaderMenu(options) {
@@ -83,7 +86,7 @@ class Charte extends BaseObject {
      * @param {Object} options Options pour créer le bouton / lien
      *  @param {string} options.type Type du menu : button|a
      *  @param {string} options.label Label du bouton
-     *  @param {string} options.href Lien pour le type a
+     *  @param {string} [options.href] Lien pour le type a
      *  @param {string} options.icon Icône du bouton
      *  @param {string} options.action Action associée au bouton
      * @returns {HTMLElement} Le bouton créé ou trouvé
@@ -110,7 +113,6 @@ class Charte extends BaseObject {
         }
         return ol_ext_element.create(options.type, btnOptions);
     }
-
     /** Définit les informations du service
      * @param {ServiceOptions} options Options du service
      */

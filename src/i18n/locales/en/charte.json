@@ -51,6 +51,7 @@
         "account": {
             "dashboard": "Dashboard",
             "label": "My space",
+            "login": "Sign in",
             "logout": "Sign out",
             "myAccount": "My account"
         },
@@ -66,7 +67,9 @@
             "exploreMaps": "Explore maps",
             "label": "Services",
             "publishData": "Publish data",
-            "searchData": "Search for data"
+            "searchData": "Search for data",
+            "extract": "Extract data",
+            "collaborate": "Collaborate with others"
         }
     }
 }

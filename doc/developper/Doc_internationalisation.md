@@ -3,7 +3,7 @@
 Le projet utilise [i18next](https://www.i18next.com/) pour centraliser les libellés
 dans des catalogues JSON, sous [`src/i18n/locales/`](../../src/i18n/locales/).
 Les ressources sont importées par
-[`src/i18n/index.ts`](../../src/i18n/index.ts), sans chargement réseau.
+[`src/i18n/i18n.ts`](../../src/i18n/i18n.ts), sans chargement réseau.
 
 ## Namespaces : organiser les libellés
 
@@ -20,7 +20,7 @@ fichier JSON par langue. Il ne dépend pas du dossier technique du code.
 | `notifications` | Messages globaux, avertissements et chargement                  |
 
 ```js
-import i18next from "../../i18n/index"; // Adapter le chemin au fichier appelant.
+import i18next from "../../i18n/i18n"; // Adapter le chemin au fichier appelant.
 
 const label = i18next.t("common:cancel");
 const title = i18next.t("actions:open-map.title");
@@ -102,7 +102,7 @@ Voir la [documentation des pluriels](https://www.i18next.com/translation-functio
    et l'interpolation `{{number}}` (il s'agit d'un numéro, pas d'un pluriel).
    Ne pas traduire les contenus utilisateur, URL ou identifiants techniques.
 4. Pour un nouveau namespace, importer ses ressources et l'enregistrer dans
-   [`index.ts`](../../src/i18n/index.ts).
+   [`index.ts`](../../src/i18n/i18n.ts).
 
 Depuis la racine du projet :
 
@@ -202,7 +202,7 @@ Le français est la langue par défaut et de repli. Pour ajouter une langue
 
 1. Créer `src/i18n/locales/es/` avec les mêmes namespaces et clés que les autres
    catalogues. Adapter les variantes de pluriel aux règles de cette langue.
-2. Importer ces JSON dans [`index.ts`](../../src/i18n/index.ts), les ajouter sous
+2. Importer ces JSON dans [`index.ts`](../../src/i18n/i18n.ts), les ajouter sous
    `resources.es` et compléter `supportedLngs`.
 3. Ajouter `es` à `locales` dans
    [`i18next.config.ts`](../../i18next.config.ts), puis vérifier les traductions

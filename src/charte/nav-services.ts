@@ -1,5 +1,5 @@
 import charte from "./charte.js";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 const servicesLabel = document.createElement("span");
 servicesLabel.textContent = i18next.t("charte:navigation.services.label");
@@ -34,7 +34,22 @@ service.addMenu([
         type: "link",
         label: i18next.t("charte:navigation.services.createMap"),
         icon: "fr-icon-brush-line",
-        href: "/editeur",
+        href: "/creer-une-carte",
+        beta: true,
+    },
+    {
+        type: "link",
+        label: i18next.t("charte:navigation.services.extract"),
+        icon: "fr-icon-extract",
+        href: "/extraction",
+        beta: true,
+    },
+    {
+        type: "link",
+        label: i18next.t("charte:navigation.services.collaborate"),
+        icon: "fr-icon-message-2-line",
+        href: "/guichet-collaboratif",
+        beta: true,
     },
     {
         type: "option",

@@ -1,6 +1,7 @@
 {
     "connect": {
         "beta": "beta",
+        "connect": "Connect before you start",
         "tagline": "Create, customize, share",
         "description": "A free and open service to turn your data into customized, annotated maps that are easy to share.",
         "createMap": "Create a map",

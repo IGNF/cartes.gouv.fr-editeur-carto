@@ -1,6 +1,6 @@
 import carte from "../../carte.js";
 import modal from "../../dialogs/modal.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 import "./file-bar.scss";
 
