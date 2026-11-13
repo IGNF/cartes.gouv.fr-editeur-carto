@@ -1,3 +1,13 @@
 .ol-beta.beta-map {
     z-index: auto;
 }
+
+// Légende
+div:has(.ol-beta.beta-map) .ol-control.legendBt {
+    bottom: 3rem;
+}
+
+// Bouton je donne mon avis
+div:has(.ol-beta.beta-map) .ol-control.ol-bar.temp-form-button {
+    bottom: 6.375rem;
+}

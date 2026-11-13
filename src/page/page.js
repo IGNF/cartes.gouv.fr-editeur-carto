@@ -4,3 +4,4 @@ import "./step-bar/step-bar.js";
 import "./beta/beta.js";
 import "./fullScreen/fullScreen.js";
 import "./layout/layout.js";
+import "./form/form.js";

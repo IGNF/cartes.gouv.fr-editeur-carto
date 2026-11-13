@@ -18,5 +18,6 @@
     "share": "Partager",
     "validate": "Valider",
     "yes": "Oui",
-    "beta": "Beta"
+    "beta": "Beta",
+    "externalRef": "{{title}} - nouvelle fenêtre"
 }

@@ -26,7 +26,9 @@ const prOidc = import.meta.env.VITE_OIDC_USE_MOCK
               // accessToken: "mocked access token",
               // ...
           },
+
           autoLogin: true,
+          //   isUserInitiallyLoggedIn: false,
       })
     : createOidc({
           // See: https://docs.oidc-spa.dev/v/v9/providers-configuration/provider-configuration
