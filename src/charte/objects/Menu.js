@@ -204,7 +204,7 @@ class Menu extends BaseObject {
                     }
                     if (options.beta) {
                         const beta = document.createElement("span");
-                        beta.className = "fr-badge fr-badge--sm fr-badge--green-emeraude fr-ml-1w";
+                        beta.className = "fr-badge fr-badge--sm fr-badge--green-emeraude fr-ml-auto";
                         beta.textContent = i18next.t("common:beta");
                         a.appendChild(beta);
                     }
