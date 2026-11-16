@@ -11,6 +11,8 @@ interface ImportMetaEnv {
     readonly IAM_URL: string;
     readonly IAM_REALM: string;
     readonly IAM_CLIENT_ID: string;
+    readonly VITE_FORM_ICON: string;
+    readonly VITE_FORM_URL: string;
     readonly VITE_OIDC_USE_MOCK: boolean;
     // more env variables...
 }
@@ -27,6 +29,8 @@ interface DashboardEditeurEnv {
     readonly apiUrl?: string;
     readonly viewerUrl?: string;
     readonly redirectUri?: string;
+    readonly formIcon?: string;
+    readonly formUrl?: string;
 }
 
 interface Window {

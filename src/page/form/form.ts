@@ -4,23 +4,30 @@ import carte from "../../carte.js";
 import i18next from "../../i18n/i18n";
 import formImageUrl from "./form.svg";
 import "./form.scss";
+import { formIcon, formUrl } from "@/env.js";
 
-const formImage = document.createElement("img");
-formImage.src = formImageUrl;
-formImage.alt = "";
-formImage.width = 24;
-formImage.height = 24;
+const icon = formIcon ?? "";
+
+let html: HTMLElement | undefined = undefined;
+if (icon === "jedonnemonavis") {
+    const img = document.createElement("img");
+    img.src = formImageUrl;
+    img.alt = "";
+    img.width = 24;
+    img.height = 24;
+    html = img;
+}
 
 const formBtn = new Button({
-    className: "form-button",
-    classButton: "fr-btn fr-btn--tertiary-no-outline",
+    className: `form-button ${icon === "jedonnemonavis" && "je-donne-mon-avis"}`,
+    classButton: `fr-btn fr-btn--tertiary-no-outline ${icon}`,
     title: i18next.t("controls:ui.form"),
     attributes: {
         "aria-label": i18next.t("controls:ui.form"),
     },
-    html: formImage,
+    html: html,
     handleClick: () => {
-        window.open("https://macarte.ign.fr/", "_blank", "noopener,noreferrer");
+        window.open(formUrl, "_blank", "noopener,noreferrer");
     },
 });
 

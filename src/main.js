@@ -43,15 +43,16 @@ introDialog.setAction(connectAction);
 
     const oidc = await getOidc();
     if (oidc.isUserLoggedIn === false) {
-        buttons.forEach((btn) => {
-            console.log(btn);
+        buttons.forEach((/** @type {HTMLButtonElement} */ btn) => {
             const isHidden = btn.classList?.contains("fr-hidden");
             btn.classList?.toggle("fr-hidden", isHidden);
         });
     } else {
-        buttons.forEach((btn) => {
+        buttons.forEach((/** @type {HTMLButtonElement} */ btn, key, parent) => {
             const isHidden = btn.classList?.contains("fr-hidden");
             btn.classList?.toggle("fr-hidden", !isHidden);
+            // Met le focus sur le dernier bouton visible
+            isHidden && parent.length - 1 === key && btn.focus({ focusVisible: true });
         });
     }
 })();
