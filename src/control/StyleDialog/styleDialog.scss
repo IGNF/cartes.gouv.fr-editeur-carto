@@ -247,6 +247,10 @@
 }
 
 .edit-style__header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
     .fr-tabnav ul {
         border: 1px solid var(--border-default-grey);
         border-radius: 0.25rem;
@@ -279,6 +283,9 @@
     flex-direction: column;
     padding: 0.75rem 0.75rem 0;
     background-color: var(--background-default-grey);
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
 
     div {
         flex-direction: row-reverse;
@@ -288,10 +295,13 @@
 
 .edit-style__tabnav-content {
     overflow: hidden;
+}
+.main-modal .edit-style__tabnav-content {
     box-shadow: inset 0 1px 0 0 var(--border-default-grey);
     margin: 0 -0.5rem;
     padding: 0 0.5rem;
 }
+
 .style-form-container {
     display: block;
 
@@ -322,6 +332,7 @@
         margin-bottom: -0.5rem !important;
         margin-left: 0;
         margin-right: 0;
+        padding: 0 0 1rem;
 
         .fr-fieldset__element {
             display: flex;
@@ -382,7 +393,7 @@
             &::before {
                 content: "";
                 position: absolute;
-                top: -5rem;
+                top: -2rem;
                 bottom: 0;
                 left: -0.75rem;
                 border-left: 1px solid var(--border-default-grey);
