@@ -157,6 +157,70 @@
             button[aria-pressed="true"] + div {
                 display: block;
             }
+            button {
+                position: relative;
+                overflow: visible;
+            }
+            @media (hover: hover) and (pointer: fine) {
+                & > button:hover:after {
+                    content: attr(aria-label);
+                    display: block;
+                    position: absolute;
+                    top: calc(100% - 0.5rem);
+                    right: 0;
+                    left: unset;
+                    z-index: 10;
+                    background-color: transparent;
+                    mask: unset;
+                    width: fit-content;
+                    height: fit-content;
+                    white-space: nowrap;
+                    color: var(--text-default-grey);
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    font-style: normal;
+                    line-height: 1.25rem;
+                    width: fit-content;
+
+                    padding: 1.25rem 0.5rem 0.5rem;
+
+                    filter: drop-shadow(0 2px 6px rgba(0, 0, 18, 0.16));
+                    filter: drop-shadow(var(--overlap-shadow));
+
+                    background-image:
+                        conic-gradient(
+                            from 146.31deg at 50% 0%,
+                            transparent 0deg,
+                            var(--background-overlap-grey) 0deg,
+                            var(--background-overlap-grey) 67.38deg,
+                            transparent 67.38deg
+                        ),
+                        conic-gradient(
+                            from 146.31deg at 50% 10%,
+                            transparent 0deg,
+                            var(--border-default-grey) 0deg,
+                            var(--border-default-grey) 67.38deg,
+                            transparent 67.38deg
+                        ),
+                        linear-gradient(to bottom, var(--border-default-grey), var(--border-default-grey)),
+                        linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
+                    background-position:
+                        calc(100% - 0.75rem) 0.125rem,
+                        calc(100% - 0.75rem) 0,
+                        0 0.45rem,
+                        0 0.5rem;
+                    background-size:
+                        0.5rem 0.5rem,
+                        0.5rem 0.5rem,
+                        100% 1px,
+                        100%;
+                    background-repeat: no-repeat;
+                    margin-top: 0.125rem;
+                }
+                & > button[aria-label=""]:hover:after {
+                    display: none;
+                }
+            }
         }
     }
 }
@@ -225,12 +289,15 @@
     }
     .style-popup-content {
         padding: 0.5rem;
+        position: relative;
 
-        .fr-btn {
-            margin: 0.5rem 0 0;
+        .fr-btn.fr-icon-search-line {
+            margin: 0.5rem 0 0 !important;
             width: 100%;
             display: inline-block;
             text-align: center;
+            top: 1rem;
+            color: var(--grey-425-625) !important;
         }
     }
 
