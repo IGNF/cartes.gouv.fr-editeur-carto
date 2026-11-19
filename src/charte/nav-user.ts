@@ -4,7 +4,7 @@ import { getOidc } from "../oidc";
 import i18next from "../i18n/i18n.js";
 import { redirectUri } from "@/env.js";
 
-// Menu
+// Bouton "se connecter"
 export const connect = charte.getHeaderButton({
     icon: "fr-icon-account-fill",
     action: "connect",
@@ -12,10 +12,12 @@ export const connect = charte.getHeaderButton({
     type: "button",
 });
 
+// Bouton "Mon espace"
 export const account = charte.getHeaderMenu({
     icon: "fr-icon-account-fill",
     action: "connect",
     text: i18next.t("charte:navigation.account.label"),
+    forceAlignRight: true,
 });
 const accountBtn = account.element as HTMLElement;
 accountBtn.style.display = "none";

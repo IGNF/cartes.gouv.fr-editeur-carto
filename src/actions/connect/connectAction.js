@@ -57,7 +57,7 @@ const connectAction = new Action({
             className: "fr-hidden",
             kind: 1,
             markup: "a",
-            href: "/tableau-de-bord/editeur/cartes",
+            href: "/creer-une-carte/mes-cartes/",
         },
         {
             label: i18next.t("actions:connect.createMap"),

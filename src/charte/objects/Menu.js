@@ -9,6 +9,7 @@ class Menu extends BaseObject {
      * @param {Object} options
      *  @param {string} [options.type] menu type description|link|option
      *  @param {string} [options.label]
+     *  @param {boolean} [options.forceAlignRight] si vrai, force l'ajout de la classe `fr-nav__item--align-right`
      *  @param {string} [options.info] information for type description
      *  @param {string} [options.href] information for type link
      *  @param {string} [options.icon]
@@ -21,7 +22,7 @@ class Menu extends BaseObject {
     constructor(options) {
         super();
         const nav = (this.element = ol_ext_element.create("DIV", {
-            className: "fr-nav__item",
+            className: `fr-nav__item ${options.forceAlignRight && "fr-nav__item--align-right"}`,
             parent: ol_ext_element.create("NAV", {
                 role: "navigation",
                 className: "fr-access fr-nav",

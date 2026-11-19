@@ -57,7 +57,8 @@ class Charte extends BaseObject {
      * @param {Object} options Options du menu
      *  @param {string} [options.type] Type de menu : description|link|option
      *  @param {string} [options.label] Label du menu
-     *  @param {string} [options.info] Information pour le type description
+     *  @param {boolean} [options.forceAlignRight] si vrai, force l'ajout de la classe `fr-nav__item--align-right`e type description
+     *  @param {string} [options.info] Information pour l
      *  @param {string} [options.href] Lien pour le type link
      *  @param {string} [options.icon] Icône du menu
      *  @param {string} [options.action] Action associée au menu
