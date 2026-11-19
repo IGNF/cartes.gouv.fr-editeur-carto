@@ -4,6 +4,7 @@ import ol_ext_element from "ol-ext/util/element.js";
 import Menu from "./Menu.js";
 import Footer from "./Footer.js";
 import Header from "./Header.js";
+import getUid from "@/utils/getUid.js";
 
 /** Classe représentant la charte DSFR
  *
@@ -102,9 +103,10 @@ class Charte extends BaseObject {
             if (button) return button;
         }
         let btnOptions = {
-            className: "fr-btn " + (options.icon ? options.icon : ""),
+            className: "fr-btn " + (options.icon ? options.icon + " fr-btn--icon-left" : ""),
             text: options.label,
             parent: options.parent,
+            id: getUid("access-header-btn"),
         };
         // Ajoute les attributs supplémentaires au bouton
         for (const attr in options) {

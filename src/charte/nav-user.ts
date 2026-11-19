@@ -54,6 +54,10 @@ account.addMenu([
 
 (async () => {
     const oidc = await getOidc();
+    // Bouton en mobile
+    // accountBtn ne correspond pas au parent, qui est le seul à être dupliqué avec un id en mobile
+    const mobileAccountBtn = document.getElementById(`${accountBtn.parentElement.id}-mobile`)?.firstChild as HTMLElement;
+    const mobileConnect = document.getElementById(`${connect.id}-mobile`);
 
     if (oidc.isUserLoggedIn === true) {
         const decodedIdToken = oidc.getDecodedIdToken();
@@ -66,18 +70,32 @@ account.addMenu([
         // Affiche / cache les boutons correspondants
         accountBtn.style.display = "flex";
         connect.style.display = "none";
+
+        // Affiche / cache les boutons correspondants
+        if (mobileAccountBtn && mobileConnect) {
+            mobileAccountBtn.style.display = "flex";
+            mobileConnect.style.display = "none";
+        }
     } else {
         // Affiche / cache les boutons correspondants
         accountBtn.style.display = "none";
         connect.style.display = "flex";
 
+        // Mobile
+        if (mobileAccountBtn && mobileConnect) {
+            mobileAccountBtn.style.display = "none";
+            mobileConnect.style.display = "flex";
+        }
+
         // Se connecte au clic
-        connect.addEventListener("click", () => {
-            oidc.login({
-                doesCurrentHrefRequiresAuth: false,
-                redirectUrl: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
-            });
-        });
+        [connect, mobileConnect].forEach((btn) =>
+            btn.addEventListener("click", () => {
+                oidc.login({
+                    doesCurrentHrefRequiresAuth: false,
+                    redirectUrl: import.meta.env.PROD ? redirectUri : import.meta.env.BASE_URL,
+                });
+            })
+        );
     }
 })();
 

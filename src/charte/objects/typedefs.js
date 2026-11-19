@@ -47,6 +47,7 @@
  * @typedef MenuOptions Options d'une entrée ajoutée avec Menu.addMenu
  * @property {"description"|"link"|"option"} type Type de l'entrée
  * @property {string} [label] Libellé de l'entrée. Par défaut « no label » pour les types link et option.
+ * @property {boolean} [primary] Option seulement. Si vrai, le bouton sera un bouton primaire.
  * @property {string} [info] Texte complémentaire pour le type description
  * @property {string} [href] URL du lien pour les types link et option
  * @property {string} [title] Attribut title du lien pour les types link et option

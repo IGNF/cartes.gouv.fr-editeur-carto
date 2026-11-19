@@ -219,7 +219,8 @@ class Menu extends BaseObject {
                     });
                     ol_ext_element.create("A", {
                         id: getUid("access__link"),
-                        className: (options.icon || "") + " fr-option__btn fr-btn fr-btn--sm fr-btn--icon-left fr-btn--tertiary",
+                        className:
+                            (options.icon || "") + " fr-option__btn fr-btn fr-btn--sm fr-btn--icon-left" + (options.primary !== true && " fr-btn--tertiary"),
                         title: options.title || "",
                         text: options.label || "no label",
                         href: options.href,

@@ -7,7 +7,7 @@ servicesLabel.textContent = i18next.t("charte:navigation.services.label");
 // Menu
 const service = charte.getHeaderMenu({
     action: "services",
-    html: '<i class="fr-mr-1w ri-lg ri-grid-fill"></i>' + servicesLabel.outerHTML,
+    html: '<i class="fr-mr-1w fr-ml-n0-5v ri-grid-fill"></i>' + servicesLabel.outerHTML,
     text: i18next.t("charte:navigation.services.label"),
 });
 
@@ -57,5 +57,6 @@ service.addMenu([
         title: i18next.t("charte:navigation.services.discover"),
         href: "/decouvrir",
         icon: "fr-icon-external-link-line fr-btn--icon-right",
+        primary: true,
     },
 ]);
