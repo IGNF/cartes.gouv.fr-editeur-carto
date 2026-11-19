@@ -13,12 +13,12 @@ COPY . .
 RUN npm pkg delete devDependencies.canvas devDependencies.jsdom \
 	devDependencies.vitest devDependencies.msw 'devDependencies.@faker-js/faker' \
 	&& npm ci \
-	&& npm run build
+	&& npm run build-image
 
 #----------------------------------------------------------------------
-# cartes.gouv.fr-editeur-mes-cartes : Config d'un serveur statique avec nginx
+# cartes.gouv.fr-editeur-carto : Config d'un serveur statique avec nginx
 #----------------------------------------------------------------------
-FROM ${registry}/nginxinc/nginx-unprivileged:alpine-slim
+FROM ${registry}/nginx/nginx-unprivileged:1.31.9-alpine-slim@sha256:75e85a09b0f25bd46d49a9fd85589ffa70b0459c8ed5ee0dc6596fd642e1f829
 COPY --from=builder /app/dist /usr/share/nginx/html/
 COPY .docker/nginx.conf /etc/nginx/nginx.conf
 COPY .docker/entrypoint.sh /entrypoint.sh

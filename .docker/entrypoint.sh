@@ -7,8 +7,6 @@ set -eu
 : "${API_URL:?Missing required env var API_URL}"
 : "${VIEWER_URL:?Missing required env var VIEWER_URL}"
 : "${REDIRECT_URI:?Missing required env var REDIRECT_URI}"
-: "${VITE_FORM_ICON:?Missing required env var VITE_FORM_ICON}"
-: "${VITE_FORM_URL:?Missing required env var VITE_FORM_URL}"
 
 if [ ! -w /tmp ]; then
     echo >&2 "ERROR: /tmp is not writable; mount an emptyDir/tmpfs at /tmp"
@@ -27,8 +25,17 @@ iam_client_id_escaped="$(escape_js_string "$IAM_CLIENT_ID")"
 api_url_escaped="$(escape_js_string "$API_URL")"
 viewer_url_escaped="$(escape_js_string "$VIEWER_URL")"
 redirect_uri_escaped="$(escape_js_string "$REDIRECT_URI")"
-form_icon_escaped="$(escape_js_string "$VITE_FORM_ICON")"
-form_url_escaped="$(escape_js_string "$VITE_FORM_URL")"
+# Variables non obligatoires pour le build
+if [ -n "${VITE_FORM_ICON:-}" ]; then
+    form_icon_escaped="$(escape_js_string "$VITE_FORM_ICON")"
+else
+    form_icon_escaped=undefined
+fi
+if [ -n "${VITE_FORM_URL:-}" ]; then
+    form_url_escaped="$(escape_js_string "$VITE_FORM_URL")"
+else
+    form_url_escaped=undefined
+fi
 
 cat > /tmp/env.js <<EOF
 // Generated at container startup. Do not edit.
@@ -41,8 +48,8 @@ cat > /tmp/env.js <<EOF
         apiUrl: "${api_url_escaped}",
         viewerUrl: "${viewer_url_escaped}",
         redirectUri: "${redirect_uri_escaped}",
-        formIcon: "${form_icon_escaped}",
-        formUrl: "${form_url_escaped}",
+        formIcon: ${form_icon_escaped},
+        formUrl: ${form_url_escaped},
     };
     // @ts-ignore
     Object.freeze(window.__DASHBOARD_EDITEUR_ENV);

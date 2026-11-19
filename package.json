@@ -22,6 +22,7 @@
         "dev": "vite",
         "generate-api": "orval",
         "build": "npm run lint && vite build",
+        "build-image": "vite build",
         "publish": "npm run init && npm run lint && vite build",
         "clean": "vite --force",
         "check-type": "tsc -b",
@@ -60,7 +61,7 @@
         "sass-embedded": ">=1.89.2 <1.106.0",
         "typescript": "~6.0.2",
         "typescript-eslint": "^8.62.1",
-        "vite": "^8.0.0",
+        "vite": "^8.3.8",
         "vitest": "^5.0.0"
     },
     "dependencies": {
