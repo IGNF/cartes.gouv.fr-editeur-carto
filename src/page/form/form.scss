@@ -17,6 +17,8 @@
         > button {
             width: 3rem;
             height: 3rem;
+            max-width: 3rem;
+            max-height: 3rem;
             border-radius: inherit;
 
             // Icône je donne mon avis
@@ -29,6 +31,11 @@
                     height: 1.5rem;
                     flex: none;
                 }
+            }
+
+            &[class*="fr-icon-"] {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
             &[aria-label]:hover::after {
                 margin-left: 0;

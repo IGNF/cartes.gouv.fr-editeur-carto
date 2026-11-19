@@ -12,6 +12,11 @@ div:has(.ol-beta.beta-map):not(:has(.ol-control.legendBt[style*="display: none"]
     bottom: 6.375rem;
 }
 
+// Bouton je donne mon avis en mode storymap, sans légende
+[data-mode="storymap"]:has(.ol-control.legendBt[style*="display: none"]) .ol-control.ol-bar.temp-form-button {
+    bottom: 0.5rem;
+}
+
 // Bouton je donne mon avis sans légende affichée
 div:has(.ol-beta.beta-map):has(.ol-control.legendBt[style*="display: none"]) .ol-control.ol-bar.temp-form-button {
     bottom: 3rem;
