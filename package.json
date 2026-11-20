@@ -69,7 +69,7 @@
     "dependencies": {
         "@gouvfr/dsfr": "^1.15.4",
         "ci": "^2.3.0",
-        "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.15.3/ignf-dsfr-v1.15.3.tgz",
+        "dsfrign": "https://github.com/IGNF/cartes.gouv.fr-editeur-dsfr/releases/download/v1.15.4/ignf-dsfr-v1.15.4.tgz",
         "geoimport": "^0.7.0",
         "geopf-extensions-openlayers": "./geopf-extensions-openlayers-1.0.0-beta.16-490.tgz",
         "i18next": "^26.5.4",
