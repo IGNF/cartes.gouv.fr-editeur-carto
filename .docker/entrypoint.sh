@@ -29,12 +29,12 @@ redirect_uri_escaped="$(escape_js_string "$REDIRECT_URI")"
 if [ -n "${VITE_FORM_ICON:-}" ]; then
     form_icon_escaped="$(escape_js_string "$VITE_FORM_ICON")"
 else
-    form_icon_escaped=undefined
+    form_icon_escaped="$(escape_js_string "")"
 fi
 if [ -n "${VITE_FORM_URL:-}" ]; then
     form_url_escaped="$(escape_js_string "$VITE_FORM_URL")"
 else
-    form_url_escaped=undefined
+    form_url_escaped="$(escape_js_string "")"
 fi
 
 cat > /tmp/env.js <<EOF
@@ -48,8 +48,8 @@ cat > /tmp/env.js <<EOF
         apiUrl: "${api_url_escaped}",
         viewerUrl: "${viewer_url_escaped}",
         redirectUri: "${redirect_uri_escaped}",
-        formIcon: ${form_icon_escaped},
-        formUrl: ${form_url_escaped},
+        formIcon: "${form_icon_escaped}",
+        formUrl: "${form_url_escaped}",
     };
     // @ts-ignore
     Object.freeze(window.__DASHBOARD_EDITEUR_ENV);
