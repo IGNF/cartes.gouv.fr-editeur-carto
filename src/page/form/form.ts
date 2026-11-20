@@ -21,7 +21,7 @@ if (icon === "jedonnemonavis") {
 const formBtn = new Button({
     className: `form-button ${icon === "jedonnemonavis" && "je-donne-mon-avis"}`,
     classButton: `fr-btn fr-btn--tertiary-no-outline ${icon}`,
-    title: i18next.t("controls:ui.form"),
+    title: i18next.t("common:externalRef", { title: i18next.t("controls:ui.form") }),
     attributes: {
         "aria-label": i18next.t("controls:ui.form"),
     },

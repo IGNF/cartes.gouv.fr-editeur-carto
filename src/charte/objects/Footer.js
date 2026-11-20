@@ -194,7 +194,7 @@ class Footer extends BaseObject {
             rel: "noopener external",
             title:
                 options.titleAttr ||
-                i18next.t("charte:externalLink.title", {
+                i18next.t("common:externalRef", {
                     title,
                     interpolation: { escapeValue: false },
                 }),
