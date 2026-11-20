@@ -1,7 +1,7 @@
 import TabNavItem from "geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js";
 import LegendContainer from "../Legend/LegendContainer.js";
 import story from "../../story.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import { getControlLabels } from "../../i18n/controlLabels";
 
 // Legende container sur la story

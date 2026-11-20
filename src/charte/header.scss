@@ -43,6 +43,20 @@ header.fr-header {
         a[target="_blank"]::after {
             margin-left: auto;
         }
+
+        .fr-option__btn.fr-btn:not(.fr-btn--tertiary) {
+            @include mix.button-state($text-color: var(--text-inverted-blue-france), $background: var(--background-action-high-blue-france));
+            --hover: var(--background-action-high-blue-france-hover);
+            --active: var(--background-action-high-blue-france-active);
+        }
+    }
+
+    // Mobile
+    .fr-header__menu-links {
+        > button {
+            font-size: 0.875rem;
+            width: 100%;
+        }
     }
 
     &--compact {

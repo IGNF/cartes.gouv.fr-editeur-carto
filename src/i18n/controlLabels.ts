@@ -1,4 +1,4 @@
-import i18next from "./index";
+import i18next from "./i18n";
 import type controlsFr from "./locales/fr/controls.json";
 
 export type ControlLabels = typeof controlsFr.ui & {
@@ -13,7 +13,7 @@ export type ControlLabels = typeof controlsFr.ui & {
 /** Fournit les libellés traduits aux contrôles, qui conservent leurs valeurs par défaut. */
 export function getControlLabels(): ControlLabels {
     return {
-        ...i18next.t<string, { returnObjects: true }, typeof controlsFr.ui>("controls:ui", { returnObjects: true }),
+        ...(i18next.t("controls:ui", { returnObjects: true }) as typeof controlsFr.ui),
         add: i18next.t("common:add"),
         apply: i18next.t("common:apply"),
         save: i18next.t("common:save"),

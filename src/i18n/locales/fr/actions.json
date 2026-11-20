@@ -1,6 +1,7 @@
 {
     "connect": {
-        "beta": "bêta",
+        "beta": "beta",
+        "connect": "Connectez-vous avant de commencer",
         "tagline": "Créer, personnaliser, partager",
         "description": "Un service gratuit et libre pour transformer vos données en cartes personnalisées, annotées et faciles à partager.",
         "createMap": "Créer une carte",

@@ -9,3 +9,5 @@ export const redirectUri = dashboardEnv.redirectUri ?? env.REDIRECT_URI ?? "";
 export const iamClientId = dashboardEnv.iamClientId ?? env.IAM_CLIENT_ID ?? "";
 export const iamRealm = dashboardEnv.iamRealm ?? env.IAM_REALM ?? "";
 export const iamUrl = dashboardEnv.iamUrl ?? env.IAM_URL ?? "";
+export const formIcon = dashboardEnv.formIcon ?? env.VITE_FORM_ICON ?? "";
+export const formUrl = dashboardEnv.formUrl ?? env.VITE_FORM_URL ?? "";

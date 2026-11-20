@@ -1,5 +1,5 @@
 import Notification from "ol-ext/control/Notification.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import "./notification.scss";
 
 class NotificationExtended extends Notification {

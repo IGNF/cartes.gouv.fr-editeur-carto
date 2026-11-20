@@ -1,5 +1,5 @@
 import TabNavItem from "geopf-extensions-openlayers/src/packages/Controls/Toggle/TabNavItem.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 /**
  * @returns {HTMLElement}

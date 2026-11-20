@@ -129,7 +129,8 @@
             "NOT_IN": "Does not contain",
             "LIKE": "Like",
             "NOT": "Is not"
-        }
+        },
+        "form": "Je donne mon avis"
     },
     "layout": {
         "closePanel": "Close panel",

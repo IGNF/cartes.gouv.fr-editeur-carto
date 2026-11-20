@@ -17,5 +17,7 @@
     "search": "Search",
     "share": "Share",
     "validate": "Validate",
-    "yes": "Yes"
+    "yes": "Yes",
+    "beta": "Beta",
+    "externalRef": "{{title}} - new window"
 }

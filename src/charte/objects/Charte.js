@@ -4,6 +4,7 @@ import ol_ext_element from "ol-ext/util/element.js";
 import Menu from "./Menu.js";
 import Footer from "./Footer.js";
 import Header from "./Header.js";
+import getUid from "@/utils/getUid.js";
 
 /** Classe représentant la charte DSFR
  *
@@ -55,12 +56,16 @@ class Charte extends BaseObject {
     }
     /** Récupère un menu existant ou en crée un nouveau
      * @param {Object} options Options du menu
-     *  @param {string} options.type Type de menu : description|link|option
-     *  @param {string} options.label Label du menu
-     *  @param {string} options.info Information pour le type description
-     *  @param {string} options.href Lien pour le type link
-     *  @param {string} options.icon Icône du menu
-     *  @param {string} options.action Action associée au menu
+     *  @param {string} [options.type] Type de menu : description|link|option
+     *  @param {string} [options.label] Label du menu
+     *  @param {boolean} [options.forceAlignRight] si vrai, force l'ajout de la classe `fr-nav__item--align-right`e type description
+     *  @param {string} [options.info] Information pour l
+     *  @param {string} [options.href] Lien pour le type link
+     *  @param {string} [options.icon] Icône du menu
+     *  @param {string} [options.action] Action associée au menu
+     *  @param {string} [options.html] Contenu HTML du bouton
+     *  @param {string} [options.text] Texte du bouton
+     *  @param {string} [options.title] Titre du bouton
      * @returns {Menu} Le menu trouvé ou créé
      */
     getHeaderMenu(options) {
@@ -83,7 +88,7 @@ class Charte extends BaseObject {
      * @param {Object} options Options pour créer le bouton / lien
      *  @param {string} options.type Type du menu : button|a
      *  @param {string} options.label Label du bouton
-     *  @param {string} options.href Lien pour le type a
+     *  @param {string} [options.href] Lien pour le type a
      *  @param {string} options.icon Icône du bouton
      *  @param {string} options.action Action associée au bouton
      * @returns {HTMLElement} Le bouton créé ou trouvé
@@ -98,9 +103,10 @@ class Charte extends BaseObject {
             if (button) return button;
         }
         let btnOptions = {
-            className: "fr-btn " + (options.icon ? options.icon : ""),
+            className: "fr-btn " + (options.icon ? options.icon + " fr-btn--icon-left" : ""),
             text: options.label,
             parent: options.parent,
+            id: getUid("access-header-btn"),
         };
         // Ajoute les attributs supplémentaires au bouton
         for (const attr in options) {
@@ -110,7 +116,6 @@ class Charte extends BaseObject {
         }
         return ol_ext_element.create(options.type, btnOptions);
     }
-
     /** Définit les informations du service
      * @param {ServiceOptions} options Options du service
      */

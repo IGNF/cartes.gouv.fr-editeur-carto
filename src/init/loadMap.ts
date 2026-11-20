@@ -4,7 +4,7 @@ import introDialog from "../dialogs/introDialog";
 import { getOidc } from "../oidc";
 import { carte } from "../story";
 import { setInert, unsetInert } from "../utils/inert";
-import i18next from "../i18n/index";
+import i18next from "../i18n/i18n";
 
 export type SearchParams = {
     /** Id de la carte */
@@ -36,7 +36,12 @@ export function loadMap() {
             true
         );
         getOidc()
-            .then(async () => {
+            .then(async (oidc) => {
+                if (oidc.isUserLoggedIn === false) {
+                    await oidc.login({ doesCurrentHrefRequiresAuth: true });
+                    return;
+                }
+
                 const { data: metadata, status: metadataStatus } = await api.map.getMapEditByEditId(editId);
                 const { data: map, status } = await api.map.getMapFileByEditId(editId);
                 if (metadataStatus !== 200) {

@@ -4,7 +4,7 @@ import LayerStyleContainer from "../../control/LayerStyle/LayerStyleContainer.js
 import "./editLayerStyle.scss";
 import EditStyle from "../../control/LayerStyle/EditStyle.js";
 import { ignStyleToFlatStyle } from "../../control/StyleDialog/styleToFlatStyle.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import { getControlLabels } from "../../i18n/controlLabels";
 
 /// INSTANCES UTILISÉS DANS DIFFÉRENTES FONCTIONS ///

@@ -2,7 +2,7 @@ import story from "../../story.js";
 import Layout from "../../control/Layout/Layout.js";
 import charte from "../../charte/charte.js";
 import Charte from "../../charte/objects/Charte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 const layout = new Layout(story, {
     id: "layout-dialog",
