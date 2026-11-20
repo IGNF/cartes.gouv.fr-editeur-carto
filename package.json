@@ -1,6 +1,6 @@
 {
     "name": "editeur-carto",
-    "version": "v0.1-beta.27",
+    "version": "v0.1-beta.28",
     "type": "module",
     "description": "Interface cartographique permettant de créer et partager des cartes. Brique logicielle de cartes.gouv.fr",
     "author": "IGNF",
