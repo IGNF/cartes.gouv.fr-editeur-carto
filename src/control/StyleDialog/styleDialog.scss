@@ -9,6 +9,11 @@
         top: 4rem;
     }
 
+    .GPF-tabnav {
+        margin-bottom: 0;
+        padding: 0;
+    }
+
     .GPF-dialog__content {
         background: var(--background-contrast-grey);
         padding: 0.75rem;
@@ -152,6 +157,70 @@
             button[aria-pressed="true"] + div {
                 display: block;
             }
+            button {
+                position: relative;
+                overflow: visible;
+            }
+            @media (hover: hover) and (pointer: fine) {
+                & > button:hover:after {
+                    content: attr(aria-label);
+                    display: block;
+                    position: absolute;
+                    top: calc(100% - 0.5rem);
+                    right: 0;
+                    left: unset;
+                    z-index: 10;
+                    background-color: transparent;
+                    mask: unset;
+                    width: fit-content;
+                    height: fit-content;
+                    white-space: nowrap;
+                    color: var(--text-default-grey);
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    font-style: normal;
+                    line-height: 1.25rem;
+                    width: fit-content;
+
+                    padding: 1.25rem 0.5rem 0.5rem;
+
+                    filter: drop-shadow(0 2px 6px rgba(0, 0, 18, 0.16));
+                    filter: drop-shadow(var(--overlap-shadow));
+
+                    background-image:
+                        conic-gradient(
+                            from 146.31deg at 50% 0%,
+                            transparent 0deg,
+                            var(--background-overlap-grey) 0deg,
+                            var(--background-overlap-grey) 67.38deg,
+                            transparent 67.38deg
+                        ),
+                        conic-gradient(
+                            from 146.31deg at 50% 10%,
+                            transparent 0deg,
+                            var(--border-default-grey) 0deg,
+                            var(--border-default-grey) 67.38deg,
+                            transparent 67.38deg
+                        ),
+                        linear-gradient(to bottom, var(--border-default-grey), var(--border-default-grey)),
+                        linear-gradient(90deg, var(--background-overlap-grey), var(--background-overlap-grey));
+                    background-position:
+                        calc(100% - 0.75rem) 0.125rem,
+                        calc(100% - 0.75rem) 0,
+                        0 0.45rem,
+                        0 0.5rem;
+                    background-size:
+                        0.5rem 0.5rem,
+                        0.5rem 0.5rem,
+                        100% 1px,
+                        100%;
+                    background-repeat: no-repeat;
+                    margin-top: 0.125rem;
+                }
+                & > button[aria-label=""]:hover:after {
+                    display: none;
+                }
+            }
         }
     }
 }
@@ -220,12 +289,15 @@
     }
     .style-popup-content {
         padding: 0.5rem;
+        position: relative;
 
-        .fr-btn {
-            margin: 0.5rem 0 0;
+        .fr-btn.fr-icon-search-line {
+            margin: 0.5rem 0 0 !important;
             width: 100%;
             display: inline-block;
             text-align: center;
+            top: 1rem;
+            color: var(--grey-425-625) !important;
         }
     }
 
@@ -247,6 +319,10 @@
 }
 
 .edit-style__header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
     .fr-tabnav ul {
         border: 1px solid var(--border-default-grey);
         border-radius: 0.25rem;
@@ -279,6 +355,9 @@
     flex-direction: column;
     padding: 0.75rem 0.75rem 0;
     background-color: var(--background-default-grey);
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
 
     div {
         flex-direction: row-reverse;
@@ -288,10 +367,13 @@
 
 .edit-style__tabnav-content {
     overflow: hidden;
+}
+.main-modal .edit-style__tabnav-content {
     box-shadow: inset 0 1px 0 0 var(--border-default-grey);
     margin: 0 -0.5rem;
     padding: 0 0.5rem;
 }
+
 .style-form-container {
     display: block;
 
@@ -322,6 +404,7 @@
         margin-bottom: -0.5rem !important;
         margin-left: 0;
         margin-right: 0;
+        padding: 0 0 1rem;
 
         .fr-fieldset__element {
             display: flex;
@@ -382,7 +465,7 @@
             &::before {
                 content: "";
                 position: absolute;
-                top: -5rem;
+                top: -2rem;
                 bottom: 0;
                 left: -0.75rem;
                 border-left: 1px solid var(--border-default-grey);

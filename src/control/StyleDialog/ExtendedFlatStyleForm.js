@@ -338,7 +338,7 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         // Création du bouton
         const btn = document.createElement("button");
         btn.className = (options.icon || "") + " fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline";
-        btn.title = options.title;
+        btn.setAttribute("aria-label", options.title || "");
         btn.id = "style-popup-btn-" + getUid();
         popupContainer.appendChild(btn);
         // Has popup
