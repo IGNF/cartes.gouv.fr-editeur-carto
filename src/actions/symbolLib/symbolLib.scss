@@ -28,17 +28,23 @@
     }
     .symbol-lib-item-list {
         margin: 0.5rem 0;
+        min-height: 368px;
     }
 
-    .style-form-container .style-form__select-geom .fr-radio-group {
-        label {
-            width: auto;
-            padding-left: 2.3rem;
-            padding-right: 0.5rem;
-            &:before {
-                width: 2.1rem;
-                margin-left: -2.3rem;
+    .style-form-container .style-form__select-geom {
+        .fr-radio-group {
+            label {
+                width: auto;
+                padding-left: 2.3rem;
+                padding-right: 0.5rem;
+                &:before {
+                    width: 2.1rem;
+                    margin-left: -2.3rem;
+                }
             }
+        }
+        .fr-fieldset__element {
+            flex: 5em;
         }
     }
 }
@@ -88,7 +94,6 @@
             }
             &:has(input:checked) {
                 color: var(--text-action-high-blue-france);
-                background-color: var(--background-alt-blue-france);
                 box-shadow: 0 0 0 1px currentColor;
             }
 
@@ -114,6 +119,15 @@
     padding: 1rem;
     border: 0;
 
+    &:has(.info--small) {
+        flex-direction: row;
+    }
+    .info--small {
+        justify-content: center;
+        align-self: center;
+        text-align: center;
+        width: 100%;
+    }
     .symbol-lib-item {
         position: relative;
         display: flex;

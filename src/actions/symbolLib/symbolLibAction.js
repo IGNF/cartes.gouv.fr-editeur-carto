@@ -287,7 +287,7 @@ class SymbolLibAction extends Action {
         // Message si aucun symbole disponible
         if (symbolList.querySelectorAll(".symbol-lib-item").length === 0) {
             element.create("div", {
-                className: "fr-alert fr-alert--info fr-info--small",
+                className: "info--small",
                 html: i18next.t(filter !== "all" ? "actions:symbolLib.emptyForGeometry" : "actions:symbolLib.empty"),
                 parent: symbolList,
             });

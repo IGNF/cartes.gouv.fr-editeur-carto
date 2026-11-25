@@ -456,7 +456,7 @@
         .style-form {
             @include mix.respond-from("md") {
                 width: calc(100% - 200px - 1.5rem);
-                max-width: fit-content;
+                /* max-width: fit-content; */
             }
             position: relative;
             padding-bottom: 1rem;
