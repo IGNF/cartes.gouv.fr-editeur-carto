@@ -203,7 +203,9 @@ class SymbolLibAction extends Action {
                 "data-sortable-id": i,
                 html: translateHtml(symbolLibItem).replace(/-ID/g, "-" + getUid()),
                 parent: symbolList,
-                click: () => this.selectItem(elt, item),
+                click: () => {
+                    this.selectItem(elt, item);
+                },
                 on: {
                     dblclick: () => {
                         if (this._onSelect) {
@@ -212,6 +214,16 @@ class SymbolLibAction extends Action {
                         }
                     },
                 },
+            });
+            elt.querySelectorAll(".style-container__actions button").forEach((btn) => {
+                const id = "tooltip-" + getUid();
+                btn.setAttribute("aria-describedby", id);
+                const tip = document.createElement("span");
+                tip.id = id;
+                tip.className = "fr-tooltip fr-placement";
+                tip.setAttribute("role", "tooltip");
+                tip.innerText = btn.getAttribute("aria-label") || "";
+                btn.after(tip);
             });
             if (item === this.selectedSymbol) {
                 this.selectItem(elt, item);
@@ -250,9 +262,12 @@ class SymbolLibAction extends Action {
                 }
             });
             elt.querySelector(".edit-symbol-lib-name-btn").addEventListener("click", () => {
-                elt.classList.add("edit");
-                elt.querySelector(".symbol-lib-container__mask input").value = item.get("name") || "";
-                elt.querySelector(".symbol-lib-container__mask input").focus();
+                // Delay to allow tooltip updates before focusing the input
+                setTimeout(() => {
+                    elt.classList.add("edit");
+                    elt.querySelector(".symbol-lib-container__mask input").value = item.get("name") || "";
+                    elt.querySelector(".symbol-lib-container__mask input").focus();
+                }, 0);
             });
             elt.querySelector(".cancel-symbol-lib-name-btn").addEventListener("click", () => {
                 elt.classList.remove("edit");
@@ -292,12 +307,11 @@ class SymbolLibAction extends Action {
                 parent: symbolList,
             });
         }
-
         // Boutons d'action pour la bibliothèque de symboles
         const btns = modal.getDialogContent().querySelector(".symbol-lib-action-btns");
         // Ajouter un nouveau style
         const btnContainer = document.createElement("div");
-        btnContainer.className = "fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-md";
+        btnContainer.className = "fr-btns-group fr-btns-group--sm fr-btns-group--right fr-btns-group--inline-reverse";
         btns.appendChild(btnContainer);
         const addBtn = document.createElement("button");
         addBtn.className = "fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary-no-outline";

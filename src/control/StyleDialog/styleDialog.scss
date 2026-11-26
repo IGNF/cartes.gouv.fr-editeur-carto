@@ -154,13 +154,14 @@
                 }
             }
 
-            button[aria-pressed="true"] + div {
+            button[aria-pressed="true"] ~ div {
                 display: block;
             }
             button {
                 position: relative;
                 overflow: visible;
             }
+            /* Use DSFR tooltips
             @media (hover: hover) and (pointer: fine) {
                 & > button:hover:after {
                     content: attr(aria-label);
@@ -221,6 +222,7 @@
                     display: none;
                 }
             }
+*/
         }
     }
 }

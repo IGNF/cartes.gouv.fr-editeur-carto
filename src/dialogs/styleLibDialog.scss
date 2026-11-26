@@ -49,6 +49,7 @@
     @include mix.respond-from("md") {
         .fr-modal__body {
             max-height: 80vh;
+            border-radius: 0.25rem;
         }
     }
 
@@ -56,7 +57,7 @@
         margin-bottom: 0;
     }
     .edit-style__content {
-        padding-bottom: 1rem;
+        padding-bottom: 0;
     }
     .fr-notice--warning:empty {
         display: none;
@@ -66,5 +67,6 @@
         position: sticky;
         bottom: 0;
         z-index: 99;
+        box-shadow: inset 0 1px 0 var(--border-default-grey);
     }
 }

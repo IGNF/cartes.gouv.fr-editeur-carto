@@ -338,9 +338,20 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
         // Création du bouton
         const btn = document.createElement("button");
         btn.className = (options.icon || "") + " fr-btn fr-btn--sm gpf-btn--tertiary fr-btn--tertiary-no-outline";
+        btn.type = "button";
         btn.setAttribute("aria-label", options.title || "");
         btn.id = "style-popup-btn-" + getUid();
         popupContainer.appendChild(btn);
+        // Addtooltip
+        const id = "tooltip-" + getUid();
+        btn.setAttribute("aria-describedby", id);
+        const tip = document.createElement("span");
+        tip.id = id;
+        tip.className = "fr-tooltip fr-placement";
+        tip.setAttribute("role", "tooltip");
+        tip.innerText = btn.getAttribute("aria-label") || "";
+        popupContainer.appendChild(tip);
+
         // Has popup
         if (options.haspopup !== undefined) {
             // Create popup
@@ -382,42 +393,48 @@ class ExtendedFlatStyleForm extends FlatStyleForm {
             popup.appendChild(popupContent);
             // Click on the button to toggle the popup
             btn.addEventListener("click", (event) => {
-                popupContent.innerHTML = "";
-                // Pressed ?
-                const isPressed = btn.getAttribute("aria-pressed") === "false";
-                btn.setAttribute("aria-pressed", isPressed);
-                btn.setAttribute("aria-expanded", isPressed);
-                popup.dataset.visible = "true";
-                if (isPressed) {
-                    // Do something on click (fill the popup)
-                    if (typeof options.onClick === "function") {
-                        options.onClick({
-                            event: event,
-                            isPressed: isPressed,
-                            element: popupContent,
-                            hide: hideonclick,
-                        });
-                    }
-                    // Place the popup on screen
-                    document.addEventListener("click", hideonclick);
-                    window.addEventListener("resize", hideonclick);
-                    const rect = btn.getBoundingClientRect();
-                    // const popupHeight = popup.offsetHeight;
-                    popup.style.top = rect.top + "px";
-                    const popupWidth = popup.offsetWidth;
-                    if (rect.right + popup.offsetWidth > window.innerWidth) {
-                        popup.style.left = window.innerWidth - popupWidth + "px";
+                // Wait for tootip updates before
+                setTimeout(() => {
+                    popupContent.innerHTML = "";
+                    // Pressed ?
+                    const isPressed = btn.getAttribute("aria-pressed") === "false";
+                    btn.setAttribute("aria-pressed", isPressed);
+                    btn.setAttribute("aria-expanded", isPressed);
+                    popup.dataset.visible = "true";
+                    if (isPressed) {
+                        // Do something on click (fill the popup)
+                        if (typeof options.onClick === "function") {
+                            options.onClick({
+                                event: event,
+                                isPressed: isPressed,
+                                element: popupContent,
+                                hide: hideonclick,
+                            });
+                        }
+                        // Place the popup on screen
+                        document.addEventListener("click", hideonclick);
+                        window.addEventListener("resize", hideonclick);
+                        const rect = btn.getBoundingClientRect();
+                        // const popupHeight = popup.offsetHeight;
+                        popup.style.top = rect.top + "px";
+                        const popupWidth = popup.offsetWidth;
+                        if (rect.right + popup.offsetWidth > window.innerWidth) {
+                            popup.style.left = window.innerWidth - popupWidth + "px";
+                        } else {
+                            popup.style.left = rect.right + "px";
+                        }
                     } else {
-                        popup.style.left = rect.right + "px";
+                        hideonclick();
                     }
-                } else {
-                    hideonclick();
-                }
+                }, 0);
             });
         } else {
             if (typeof options.onClick === "function") {
                 btn.addEventListener("click", (event) => {
-                    options.onClick(event);
+                    // Wait for tootip updates before
+                    setTimeout(() => {
+                        options.onClick(event);
+                    }, 0);
                 });
             }
         }
