@@ -39,3 +39,8 @@
         }
     }
 }
+
+// Enlève le flex-wrap apporté par le DSFR v1.15.4
+#catalog-container-search-specific > .fr-search-bar {
+    flex-wrap: unset;
+}

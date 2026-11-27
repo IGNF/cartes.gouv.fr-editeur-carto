@@ -1,5 +1,5 @@
 import Action from "../Action.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import { translateHtml } from "../../i18n/translateHtml";
 import content from "./openMap.html?raw";
 import loadingContent from "./loading.html?raw";

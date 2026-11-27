@@ -1,4 +1,4 @@
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import carte from "../../carte.js";
 import * as importLocal from "../importLocal/importLocal.js";
 import Alert from "../../control/Alert/Alert";

@@ -1,0 +1,52 @@
+@use "../../css/mixins.scss" as mix;
+
+.ol-bar.ol-control.temp-form-button.ol-bottom.ol-left {
+    position: absolute;
+    top: unset;
+    right: unset;
+    bottom: 3.875rem;
+    left: 0.5rem;
+    transform: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+
+    > .ol-control.form-button {
+        padding: 0;
+        margin: 0;
+        border-radius: inherit;
+
+        > button {
+            display: flex;
+            width: 3rem;
+            height: 3rem;
+            max-width: 3rem;
+            max-height: 3rem;
+            border-radius: inherit;
+
+            // Icône je donne mon avis
+            &.jedonnemonavis {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                > svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    flex: none;
+                }
+            }
+
+            &[class*="fr-icon-"] {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            &[aria-label]:hover::after,
+            &[aria-label]:not([aria-pressed="true"]):not([aria-extended="true"]):focus:focus-visible::after {
+                margin-left: 0;
+                content: attr(data-tooltip) "  "
+                    url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="-4 0 26 17" fill="%233a3a3a"%3E%3Cpath d="M10 6v2H5v11h11v-5h2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z"/%3E%3C/svg%3E');
+            }
+        }
+    }
+}

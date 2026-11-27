@@ -1,7 +1,7 @@
 import BaseObject from "ol/Object.js";
 import ol_ext_element from "ol-ext/util/element.js";
 import getUid from "../../utils/getUid.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 /** Header */
 class Header extends BaseObject {
@@ -152,6 +152,10 @@ class Header extends BaseObject {
             this.setBadge(options.badge);
         }
 
+        if (options.beta) {
+            this.setBeta(options.beta);
+        }
+
         if (options.operator) {
             this.setOperator(options.operator);
         }
@@ -179,6 +183,29 @@ class Header extends BaseObject {
                 text: options.text,
             });
             this.title.querySelector("p").appendChild(badge);
+        }
+    }
+
+    /**
+     * Ajoute un badge bêta.
+     *
+     * @see {@link https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/badge} Composant badge
+     * @see {@link https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/en-tete/code-de-l-en-tete#variante-avec-badge-beta} Header avec adge beta
+     *
+     * @param {boolean} beta Si vrai, ajoute le badge bêta
+     */
+    setBeta(beta) {
+        const betaBadge = this.title.querySelector("p > span.fr-badge.fr-badge--sm.fr-badge--green-emeraude");
+        const hasBeta = betaBadge?.textContent === i18next.t("common:beta");
+        if (beta && !hasBeta) {
+            if (!hasBeta) {
+                const beta = document.createElement("span");
+                beta.className = "fr-badge fr-badge--sm fr-badge--green-emeraude";
+                beta.textContent = i18next.t("common:beta");
+                this.title.querySelector("p").appendChild(beta);
+            }
+        } else if (!beta && hasBeta) {
+            betaBadge?.remove();
         }
     }
 

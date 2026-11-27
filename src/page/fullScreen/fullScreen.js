@@ -2,7 +2,7 @@ import { FullScreen } from "ol/control.js";
 import Toggle from "ol-ext/control/Toggle.js";
 import Bar from "ol-ext/control/Bar.js";
 import carte from "../../carte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 const fullScreenClass = "ri-fullscreen-line";
 const fullScreenExitClass = "ri-fullscreen-exit-line";

@@ -9,6 +9,8 @@
         apiUrl: undefined,
         viewerUrl: undefined,
         redirectUri: undefined,
+        formIcon: undefined,
+        formUrl: undefined,
     };
     // @ts-ignore
     Object.freeze(window.__DASHBOARD_EDITEUR_ENV);

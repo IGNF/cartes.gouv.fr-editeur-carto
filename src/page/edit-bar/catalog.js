@@ -1,5 +1,5 @@
 import carte from "../../carte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 import Catalog from "geopf-extensions-openlayers/src/packages/Controls/Catalog/Catalog.js";
 
@@ -25,6 +25,7 @@ import Alert from "../../control/Alert/Alert";
 
 const catalog = new Catalog({
     position: "top-right",
+    gutter: true,
     listable: false,
     titlePrimary: i18next.t("pages:catalog.title"),
     layerLabel: "title",
@@ -35,6 +36,7 @@ const catalog = new Catalog({
     addToMap: false, // Gestion directement dans l'éditeur
     search: {
         display: false,
+        criteria: ["name", "title", "description", "producer", "thematic"],
     },
     categories: [
         {
@@ -42,6 +44,7 @@ const catalog = new Catalog({
             id: "base",
             order: false,
             featured: true,
+            producer: false,
             filter: {
                 field: "base",
                 value: "true",

@@ -1,7 +1,7 @@
 import BaseObject from "ol/Object.js";
 import ol_ext_element from "ol-ext/util/element.js";
 import getUid from "../../utils/getUid.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 /** Footer complet avec tous les éléments du DSFR */
 class Footer extends BaseObject {
@@ -194,7 +194,7 @@ class Footer extends BaseObject {
             rel: "noopener external",
             title:
                 options.titleAttr ||
-                i18next.t("charte:externalLink.title", {
+                i18next.t("common:externalRef", {
                     title,
                     interpolation: { escapeValue: false },
                 }),

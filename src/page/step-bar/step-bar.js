@@ -5,7 +5,7 @@ import Charte from "../../charte/objects/Charte.js";
 import Button from "ol-ext/control/Button.js";
 import Bar from "ol-ext/control/Bar.js";
 import Toggle from "ol-ext/control/Toggle.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 
 import Action from "../../actions/Action.js";
 

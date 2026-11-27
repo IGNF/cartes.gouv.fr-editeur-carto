@@ -10,7 +10,7 @@ import StyleObj from "../../control/LayerStyle/StyleObj.js";
 import { defaultIgnStyle } from "mcutils/style/ignStyleFn.js";
 
 import carte from "../../carte.js";
-import i18next from "../../i18n/index";
+import i18next from "../../i18n/i18n";
 import { translateHtml } from "../../i18n/translateHtml";
 import { getControlLabels } from "../../i18n/controlLabels";
 

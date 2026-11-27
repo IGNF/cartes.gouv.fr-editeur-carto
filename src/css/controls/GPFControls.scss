@@ -193,11 +193,14 @@ span.GPlayerCounter {
 }
 
 // Ajuste le tooltip
-div[id^="GPlayerSwitcher-"].gpf-widget.gpf-tooltip-right > .gpf-btn-icon[aria-label]:hover::before {
-    transform: translateX(calc(-100% - 4px)) translateY(4px);
-    display: none;
-    @include mix.hover-media-query {
-        display: unset;
+div[id^="GPlayerSwitcher-"].gpf-widget.gpf-tooltip-right {
+    & > .gpf-btn-icon[aria-label]:hover::before,
+    & > .gpf-btn-icon[aria-label]:not([aria-pressed="true"]):not([aria-extended="true"]):focus:focus-visible::before {
+        transform: translateX(calc(-100% - 4px)) translateY(4px);
+        display: none;
+        @include mix.hover-media-query {
+            display: unset;
+        }
     }
 }
 div:not(.position) > button[id^="GPshowLayersListPicto"][aria-pressed="true"] + dialog[id^="GPlayersList"] {
