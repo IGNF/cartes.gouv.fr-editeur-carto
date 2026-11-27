@@ -28,17 +28,23 @@
     }
     .symbol-lib-item-list {
         margin: 0.5rem 0;
+        min-height: 368px;
     }
 
-    .style-form-container .style-form__select-geom .fr-radio-group {
-        label {
-            width: auto;
-            padding-left: 2.3rem;
-            padding-right: 0.5rem;
-            &:before {
-                width: 2.1rem;
-                margin-left: -2.3rem;
+    .style-form-container .style-form__select-geom {
+        .fr-radio-group {
+            label {
+                width: auto;
+                padding-left: 2.3rem;
+                padding-right: 0.5rem;
+                &:before {
+                    width: 2.1rem;
+                    margin-left: -2.3rem;
+                }
             }
+        }
+        .fr-fieldset__element {
+            flex: 5em;
         }
     }
 }
@@ -84,12 +90,17 @@
             border-radius: 4px;
             width: 100%;
 
+            label {
+                font-size: 0.875rem; // Adjust the font size as needed
+            }
             &:hover {
             }
             &:has(input:checked) {
                 color: var(--text-action-high-blue-france);
-                background-color: var(--background-alt-blue-france);
                 box-shadow: 0 0 0 1px currentColor;
+            }
+            &:hover {
+                background-color: var(--background-default-grey-hover);
             }
 
             label {
@@ -114,6 +125,15 @@
     padding: 1rem;
     border: 0;
 
+    &:has(.info--small) {
+        flex-direction: row;
+    }
+    .info--small {
+        justify-content: center;
+        align-self: center;
+        text-align: center;
+        width: 100%;
+    }
     .symbol-lib-item {
         position: relative;
         display: flex;
@@ -122,7 +142,6 @@
         border-radius: 0.25rem;
         height: 4.25rem;
         background-color: var(--background-default-grey);
-        overflow: hidden;
 
         &.selected {
             background-color: var(--background-alt-blue-france);
@@ -138,13 +157,18 @@
         background-color: var(--background-default-grey);
         inset: 0;
         display: none;
+        margin: 1rem;
         margin-left: 6.5rem;
 
         input.fr-input {
             height: 2.5rem;
             max-height: unset;
-            padding: 1.9rem 1rem;
-            margin: 0.25rem;
+        }
+        button {
+            margin-top: 0.25rem;
+        }
+        button:first-of-type {
+            margin-left: 0.25rem;
         }
     }
     .symbol-lib-item.edit {
@@ -152,7 +176,7 @@
             display: flex;
         }
         .style-container__actions {
-            display: none;
+            visibility: hidden;
         }
     }
 

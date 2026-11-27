@@ -220,7 +220,7 @@ class EditStyle extends BaseObject {
 
         // Bouton retour en arrière
         const saveStyleBtn = document.createElement("button");
-        saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-go-back-line";
+        saveStyleBtn.className = "save-style-btn fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-icon-arrow-left-line";
         saveStyleBtn.addEventListener("click", this.rollbackStyle.bind(this));
         saveStyleBtn.textContent = saveStyleBtn.title = this.labels.saveStyle ?? "Enregistrer le style";
 
